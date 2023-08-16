@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import './calender.scss';
 
 type ValuePiece = Date | null;
 
@@ -10,9 +11,11 @@ const CalenderPage = () => {
   );
 
   return (
-    <div>
-      <Calendar onChange={onCalChange} value={value} />
-    </div>
+    <main className="calendar_page">
+      <section className="calendar_wrap">
+        <Calendar onChange={onCalChange} value={value} />
+      </section>
+    </main>
   );
 };
 export default CalenderPage;

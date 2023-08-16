@@ -3,7 +3,7 @@ import './App.css';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import DiaryPage from './pages/DiaryPage';
-import MyPage from './pages/Mypage';
+import MyPage from './pages/MyPage';
 import MyPlantPage from './pages/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
 

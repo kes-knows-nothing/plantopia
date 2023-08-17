@@ -1,8 +1,3 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-  v2.0 | 20110126
-  License: none (public domain)
-*/
-
 html,
 body,
 div,
@@ -92,7 +87,14 @@ video {
   vertical-align: baseline;
 }
 
-/* HTML5 display-role reset for older browsers */
+body,
+input,
+select,
+textarea,
+button {
+  border: none;
+}
+
 article,
 aside,
 details,
@@ -101,10 +103,20 @@ figure,
 footer,
 header,
 hgroup,
+main,
 menu,
 nav,
 section {
   display: block;
+}
+
+label,
+img,
+input,
+select,
+textarea,
+button {
+  vertical-align: middle;
 }
 
 body {
@@ -132,4 +144,27 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+address,
+cite,
+code {
+  font-style: normal;
+  font-weight: normal;
+}
+
+em,
+i {
+  font-style: normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background-color: unset;
+  border: none;
+  outline: none;
 }

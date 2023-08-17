@@ -5,6 +5,19 @@ body {
   font-family: 'Pretendard', Arial, sans-serif;
   margin: auto;
   max-width: 768px;
+  -webkit-text-size-adjust: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+  background: #fff;
+
+  * {
+    box-sizing: border-box;
+    outline: none;
+  }
+}
+
+button {
+  cursor: pointer;
 }
 
 .inner {

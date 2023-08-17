@@ -1,9 +1,10 @@
 .footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 5.6rem;
-  background: white;
+  background: #fff;
 
   .home_btn {
     height: min-content;

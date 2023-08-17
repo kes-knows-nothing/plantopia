@@ -1,0 +1,38 @@
+.header {
+  width: 100%;
+  height: 5.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .main_logo {
+    display: flex;
+    align-items: center;
+
+    .logo_img {
+      width: 24px;
+      height: 24px;
+    }
+
+    h1 {
+      font-weight: bold;
+      font-size: 1.6rem;
+      margin-left: 0.6rem;
+    }
+  }
+
+  .btns {
+    display: flex;
+    align-items: center;
+
+    .calendar_btn img {
+      width: 2.2rem;
+      height: 2.2rem;
+    }
+
+    .noti_btn img {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import DiaryPage from './pages/DiaryPage';
 import MyPage from './pages/MyPage';
 import MyPlantPage from './pages/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
+import DictPage from './pages/dictPage/DictPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/myplant" element={<MyPlantPage />} />
+      <Route path="/dict" element={<DictPage />} />
     </Routes>
   );
 }

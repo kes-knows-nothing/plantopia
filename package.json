@@ -19,7 +19,7 @@
     "react-router-dom": "^6.15.0",
     "redux": "^4.2.1",
     "sass": "^1.65.1",
-    "swiper": "^10.1.0"
+    "swiper": "^10.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.5.0",

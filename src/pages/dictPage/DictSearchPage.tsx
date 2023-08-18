@@ -18,7 +18,7 @@ const DictSearchPage = () => {
       </header>
       <main>
         <InputForm nextPath={'/dict/detail'} initialInput={inputValue} />
-        <section>
+        <section className="plant_container">
           <div className="plant_wrapper">
             <img src={PLANT2_ICON} alt="plant image" />
             <div className="name_wrapper">

@@ -1,0 +1,238 @@
+/* Common Styles */
+$main-blue: #22264c;
+$blue: #1fb0ad;
+$gray: #9b9fb1;
+$white-gray: #f7f8f7;
+$light-gray: #f9f9f9;
+
+
+
+.hide {
+  display: none;
+}
+
+/* Diary Main Styles */
+
+.diary_main {
+  position: relative;
+}
+
+/* Photo Section Styles */
+
+.photo_section {
+  display: flex;
+  align-items: center;
+  padding: 2.5rem 0;
+  margin: 0 2rem;
+  overflow: hidden;
+  border-bottom: 1px solid $white-gray;
+
+  .my_swiper {
+    width: 100%;
+    display: flex;
+
+    .photo-slide {
+      width: 7.2rem;
+      height: 7.2rem;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      margin-right: 2rem;
+      position: relative;
+    }
+  }
+
+  .upload_button {
+    width: 7.2rem;
+    height: 7.2rem;
+    border-radius: 0.5rem;
+    position: relative;
+    padding: 0;
+
+    .photo_label {
+      width: 100%;
+      height: 100%;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      .camera_icon {
+        font-size: 2rem;
+        color: $main-blue;
+      }
+
+      .photo-counter {
+        margin-top: 0.5rem;
+        color: $gray;
+        span {
+          margin-right: 0.2rem;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+
+    .photo_input {
+      display: none;
+    }
+  }
+
+  /* 메인 사진 표기 */
+
+  .main_photo {
+    width: 100%;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    left: 0;
+    bottom: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+
+  /* 사진 삭제 버튼 */
+  .photo_delete_btn {
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    border-radius: 50%;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    border: none;
+    background-color: $main-blue;
+    color: #fff;
+  }
+}
+
+/* Board Section Styles */
+
+.board_section {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 5rem);
+}
+
+input[type='text'] {
+  width: 100%;
+  padding: 2rem;
+  color: $main-blue;
+}
+
+input::placeholder {
+  color: $gray;
+}
+
+/* 제목 작성 */
+
+.subject {
+  font-size: 1.8rem;
+  border-bottom: 1px solid $white-gray;
+}
+
+/* 식물 선택 */
+.input_wrapper.select {
+  font-size: 1.4rem;
+  color: $gray;
+  border-bottom: 1px solid $white-gray;
+
+  .plant_select {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+
+    .choose_text {
+      padding: 2rem 0;
+    }
+
+    .chosen_plant {
+      display: flex;
+      align-items: center;
+      height: 3rem;
+      margin: 0.5rem 0;
+      margin-right: 1rem;
+      padding: 0 1.5rem;
+      border-radius: 5rem;
+      background: $blue;
+      color: #fff;
+
+      span {
+        margin-left: 1rem;
+      }
+
+      &:hover {
+        background: rgb(51, 142, 142);
+      }
+    }
+
+    .arrow_icon {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .plant_list {
+    width: 100%;
+    height: 21rem;
+    overflow: auto;
+    padding: 1rem 2rem;
+    position: absolute;
+    background: $light-gray;
+    border-bottom: 1px solid $white-gray;
+
+    li {
+      display: flex;
+      align-items: center;
+
+      input[type='checkbox'] {
+        appearance: none;
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        position: relative;
+        cursor: pointer;
+
+        &:checked {
+          background-color: $blue;
+          border-color: $blue;
+
+          &::before {
+            content: '✓';
+            font-size: 1.5rem;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+
+      label {
+        width: 100%;
+        padding: 1.7rem 0.8rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+/* 내용 작성 */
+
+.contents {
+  font-size: 1.4rem;
+}

@@ -5,13 +5,23 @@ import { TbCameraPlus } from 'react-icons/tb';
 import { RiCloseFill } from 'react-icons/ri';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import './photoSection.scss';
+
+const Counter = ({ current, max }) => {
+  return (
+    <div className="photo_counter hidden">
+      <span className="current_count">{current}</span>
+      <span>/</span>
+      <span className="max_count">{max}</span>
+    </div>
+  );
+};
 
 const SectionPhoto = () => {
   const [slidesPerView, setSlidesPerView] = useState(3.5);
-  const [slides, setSlides] = useState([]);
-  const [isFileAttached, setIsFileAttached] = useState(false);
-  const uploadButtonRef = useRef(null);
+  const [slides, setSlides] = useState(
+    new Array(4).fill({ backgroundImage: '' }),
+  );
+  const uploadButtonRefs = useRef([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -26,26 +36,35 @@ const SectionPhoto = () => {
     };
   }, []);
 
-  const handleFileSelect = useCallback(event => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const backgroundImage = `url(${e.target.result})`;
-        const updatedSlides = [{ backgroundImage }];
-        setSlides(updatedSlides);
-        uploadButtonRef.current.style.backgroundImage = backgroundImage;
-        setIsFileAttached(true);
-      };
-      reader.readAsDataURL(file);
-    }
-  }, []);
+  const handleFileSelect = useCallback(
+    (event, index) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const backgroundImage = `url(${e.target.result})`;
+          const updatedSlides = [...slides];
+          updatedSlides[index] = { backgroundImage };
+          uploadButtonRefs.current[index].style.backgroundImage =
+            backgroundImage;
+          setSlides(updatedSlides);
+        };
+        reader.readAsDataURL(file);
+      }
+      event.target.value = null;
+    },
+    [slides],
+  );
 
-  const handleDeleteFile = useCallback(() => {
-    setSlides([]);
-    uploadButtonRef.current.style.backgroundImage = '';
-    setIsFileAttached(false);
-  }, []);
+  const handleDeleteFile = useCallback(
+    index => {
+      const updatedSlides = [...slides];
+      updatedSlides[index] = { backgroundImage: '' };
+      setSlides(updatedSlides);
+      uploadButtonRefs.current[index].style.backgroundImage = '';
+    },
+    [slides],
+  );
 
   return (
     <section className="photo_section">
@@ -55,40 +74,53 @@ const SectionPhoto = () => {
         slidesPerView={slidesPerView}
         spaceBetween={0}
       >
-        <SwiperSlide className="slide">
-          <button
-            className={`upload_button ${isFileAttached ? 'attached' : ''}`}
-            ref={uploadButtonRef}
+        {slides.map((slide, index) => (
+          <SwiperSlide
+            key={index}
+            className={`slide ${index === 0 ? 'first_slide' : ''}`}
           >
-            <label htmlFor="photoInput" className="photo_label">
-              <div className="photo_text">
-                {!isFileAttached && (
-                  <>
-                    <TbCameraPlus className="camera_icon" />
-                    <div className="photo_counter">
-                      <span className="current_count">0</span>
-                      <span>/</span>
-                      <span className="max_count">4</span>
-                    </div>
-                  </>
-                )}
-              </div>
-            </label>
-            <input
-              className="photo_input"
-              id="photoInput"
-              accept="image/*"
-              type="file"
-              onChange={handleFileSelect}
-            />
-            {isFileAttached && <div className="main_photo">대표사진</div>}
-          </button>
-          {isFileAttached && (
-            <button className="photo_delete_btn" onClick={handleDeleteFile}>
-              <RiCloseFill />
+            <button
+              className={`upload_button ${
+                slide.backgroundImage ? 'attached' : ''
+              }`}
+              ref={el => (uploadButtonRefs.current[index] = el)}
+            >
+              <label htmlFor={`photoInput-${index}`} className="photo_label">
+                <div className="photo_text">
+                  {!slide.backgroundImage && (
+                    <>
+                      <TbCameraPlus className="camera_icon" />
+
+                      <div className="photo_counter hidden">
+                        <span className="current_count">{index}</span>
+                        <span>/</span>
+                        <span className="max_count">4</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </label>
+              <input
+                className="photo_input"
+                id={`photoInput-${index}`}
+                accept="image/*"
+                type="file"
+                onChange={e => handleFileSelect(e, index)}
+              />
+              {index === 0 && slide.backgroundImage && (
+                <div className="main_photo">대표사진</div>
+              )}
             </button>
-          )}
-        </SwiperSlide>
+            {slide.backgroundImage && (
+              <button
+                className="photo_delete_btn"
+                onClick={() => handleDeleteFile(index)}
+              >
+                <RiCloseFill />
+              </button>
+            )}
+          </SwiperSlide>
+        ))}
       </Swiper>
     </section>
   );

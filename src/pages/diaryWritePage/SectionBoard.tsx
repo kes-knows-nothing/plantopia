@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { RiArrowUpSLine, RiArrowDownSLine, RiCloseFill } from 'react-icons/ri';
 
 const SectionBoard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [chosenPlants, setChosenPlants] = useState([]);
+  const wrapperRef = useRef(null);
 
   const plantData = [
     { id: 'chk1', value: '식물1' },
@@ -29,6 +30,20 @@ const SectionBoard = () => {
     });
   }
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsVisible(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   function handleChosenPlantClick(plant) {
     setChosenPlants(chosenPlants.filter(p => p !== plant));
   }
@@ -43,7 +58,7 @@ const SectionBoard = () => {
         />
       </div>
 
-      <div className="plant_select_wrapper">
+      <div className="plant_select_wrapper" ref={wrapperRef}>
         <div className="plant_select">
           {chosenPlants.length === 0 ? (
             <div className="choose_text" onClick={toggleSelect}>

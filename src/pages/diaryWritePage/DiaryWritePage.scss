@@ -10,6 +10,10 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
+.hidden {
+  display: none;
+}
+
 /* DIARY-WRITE 페이지 */
 
 .diary_write_page {
@@ -68,7 +72,7 @@
           margin: auto;
           width: 8rem;
           height: 8rem;
-          border: 1px solid #d8dae5;
+          border: 1px solid #efefef;
           border-radius: 1rem;
           overflow: hidden;
           padding: 0;
@@ -100,7 +104,7 @@
           .photo_input {
             display: none;
           }
-          .main-photo {
+          .main_photo {
             width: 100%;
             height: 25%;
 
@@ -120,13 +124,6 @@
             justify-content: center;
             line-height: 1;
           }
-
-          .photo_text.hidden {
-            display: none;
-          }
-          .hidden {
-            display: none;
-          }
         }
 
         .photo_delete_btn {
@@ -143,12 +140,8 @@
           justify-content: center;
 
           position: absolute;
-          right: 0.5rem;
-          top: -0.5rem;
-        }
-
-        .hidden {
-          display: none;
+          right: 0rem;
+          top: -1rem;
         }
       }
     }
@@ -194,6 +187,8 @@
 
           display: flex;
           align-items: center;
+          justify-content: space-between;
+
           position: relative;
           cursor: pointer;
 
@@ -204,10 +199,10 @@
           }
 
           .chosen_wrap {
-            display: flex;
-            align-items: center;
             min-height: 6rem;
 
+            display: flex;
+            align-items: center;
             flex-wrap: wrap;
             font-size: 1.4rem;
 
@@ -233,11 +228,13 @@
           }
 
           .arrow_icon {
-            padding: 2rem;
-            position: absolute;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
+            height: 6rem;
+            font-size: 1.6rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-grow: 1;
           }
         }
 
@@ -350,7 +347,7 @@
               width: 4rem;
               height: 4rem;
               right: 1rem;
-              top: -1rem;
+              top: -1.5rem;
             }
           }
         }

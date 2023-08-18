@@ -91,8 +91,6 @@ const dateWeekFomater = (date: Date) => {
   return `${dateFomater(date)} ${weekArr[week]}요일`;
 };
 
-// const colorArr = ['F4EFD3', 'D6E9E5', 'EBDDE4', 'E1DDEB', 'BEE5FA'];
-
 interface ItileContents {
   date: Date;
 }
@@ -135,11 +133,11 @@ const CalendarPage = () => {
           />
         </section>
 
-        {dateList ? (
-          <section className="date_list_wrap inner">
-            <strong className="date_title">
-              {dateWeekFomater(value as Date)}
-            </strong>
+        <section className="date_list_wrap inner">
+          <strong className="date_title">
+            {dateWeekFomater(value as Date)}
+          </strong>
+          {dateList ? (
             <div className="date_list">
               <div className="list_line"></div>
               <ul>
@@ -151,10 +149,12 @@ const CalendarPage = () => {
                 ))}
               </ul>
             </div>
-          </section>
-        ) : (
-          <div>없음</div>
-        )}
+          ) : (
+            <div className="no_data">
+              <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
+            </div>
+          )}
+        </section>
       </div>
     </main>
   );

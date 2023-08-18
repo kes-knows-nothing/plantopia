@@ -1,0 +1,64 @@
+.weather_text_box {
+  width: max-content;
+  padding: 0.8rem 1.6rem 0.7rem 1.6rem;
+  border-radius: 0.6rem;
+  background: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #22264c;
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.08);
+}
+
+/* 날씨 영역 */
+.weather_wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+
+  .weather_text_wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+
+    div:not(:first-child) {
+      margin-top: 0.8rem;
+    }
+
+    .location_wrapper {
+      display: flex;
+      align-items: center;
+
+      .location_icon {
+        width: 1.6rem;
+        height: 1.6rem;
+      }
+
+      .location_text {
+        margin-left: 0.6rem;
+        font-size: 1.4rem;
+        color: #22264c;
+        font-weight: 500;
+      }
+    }
+
+    .temperature_lg > .temperature_sm {
+      color: #9b9fb1;
+      font-size: 1.2rem;
+      font-weight: 500;
+
+      &:first-child {
+        margin-left: 0.8rem;
+
+        &::after {
+          content: '|';
+          margin: 0 0.6rem;
+        }
+      }
+    }
+  }
+
+  .weather_icon {
+    width: 10rem;
+    height: 10rem;
+  }
+}

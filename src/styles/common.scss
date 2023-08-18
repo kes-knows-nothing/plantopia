@@ -9,6 +9,13 @@ body {
   word-wrap: break-word;
   word-break: break-all;
   background: #fff;
+  /* 뷰포트 모바일 대응 */
+  min-height: calc(var(--vh, 1vh) * 100);
+
+  #root {
+    width: 100%;
+    min-height: inherit;
+  }
 
   * {
     box-sizing: border-box;

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/loginPage/LoginPage';
@@ -7,8 +8,13 @@ import MyPage from './pages/myPage/MyPage';
 import MyPlantPage from './pages/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
+import { setBodyHeight } from './utils/setBodyHeight';
 
 function App() {
+  useEffect(() => {
+    setBodyHeight();
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />

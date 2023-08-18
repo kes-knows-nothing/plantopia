@@ -9,7 +9,7 @@ import HOME from '@/assets/images/icons/home.png';
 
 const Footer = () => {
   return (
-    <footer className="footer inner">
+    <footer className="inner footer">
       <Link className="btn" to="/dict">
         <img src={DICT_OFF} alt="plant dictionary" />
         식물도감

@@ -1,0 +1,84 @@
+
+.author_section {
+  margin-top: 100px;
+  position: relative;
+  h2 {
+    font-size: 30px;
+    padding-bottom: 30px;
+  }
+  .img_box {
+    position: relative;
+    margin: auto;
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: right top;
+      filter: grayscale(100%);
+    }
+    .img_hover {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      transition: 0.3s;
+
+      p {
+        position: absolute;
+        width: 230px;
+        text-align: center;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 400;
+      }
+    }
+    &:hover .img_hover {
+      opacity: 1;
+    }
+  }
+  p {
+    padding-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .swiper_nav {
+    width: 1200px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+
+    .swiper_nav_prev,
+    .swiper_nav_next {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border: 1px solid #ccc;
+      background: #fff url('../../../assets/images/icons/swiper_arr.png')
+        no-repeat center / 44px;
+      border-radius: 50%;
+      color: transparent;
+      cursor: pointer;
+    }
+    .swiper_nav_next {
+      right: -54px;
+    }
+    .swiper_nav_prev {
+      left: -54px;
+      transform: rotate(180deg);
+    }
+  }
+}

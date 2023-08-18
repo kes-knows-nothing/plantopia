@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { RiArrowUpSLine, RiArrowDownSLine, RiCloseFill } from 'react-icons/ri';
 
-const BoardSection = () => {
+const SectionBoard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [chosenPlants, setChosenPlants] = useState([]);
-  const [isChecked, setIsChecked] = useState({});
 
   const plantData = [
     { id: 'chk1', value: '식물1' },
@@ -14,31 +13,23 @@ const BoardSection = () => {
     { id: 'chk5', value: '식물5' },
   ];
 
-  function toggleSelect() {
+  const toggleSelect = useCallback(() => {
     setIsVisible(prevVisible => !prevVisible);
-  }
+  }, []);
 
   function handlePlantSelection(event) {
     const selectedPlant = event.target.value;
 
-    setIsChecked(prevChecked => ({
-      ...prevChecked,
-      [selectedPlant]: !prevChecked[selectedPlant],
-    }));
+    setChosenPlants(prevChosenPlants => {
+      const isSelected = prevChosenPlants.includes(selectedPlant);
 
-    if (chosenPlants.includes(selectedPlant)) {
-      setChosenPlants(chosenPlants.filter(plant => plant !== selectedPlant));
-    } else {
-      setChosenPlants([...chosenPlants, selectedPlant]);
-    }
+      return isSelected
+        ? prevChosenPlants.filter(plant => plant !== selectedPlant)
+        : [...prevChosenPlants, selectedPlant];
+    });
   }
 
   function handleChosenPlantClick(plant) {
-    setIsChecked(prevChecked => ({
-      ...prevChecked,
-      [plant]: false,
-    }));
-
     setChosenPlants(chosenPlants.filter(p => p !== plant));
   }
 
@@ -55,7 +46,7 @@ const BoardSection = () => {
       <div className="plant_select_wrapper">
         <div className="plant_select">
           {chosenPlants.length === 0 ? (
-            <div className="choose_text" onClick={() => toggleSelect()}>
+            <div className="choose_text" onClick={toggleSelect}>
               식물을 선택하세요.
             </div>
           ) : (
@@ -63,9 +54,7 @@ const BoardSection = () => {
               {chosenPlants.map(plant => (
                 <div
                   key={plant}
-                  className={`chosen_plant ${
-                    isChecked[plant] ? 'checked' : ''
-                  }`}
+                  className="chosen_plant"
                   onClick={() => handleChosenPlantClick(plant)}
                 >
                   {plant}
@@ -76,7 +65,7 @@ const BoardSection = () => {
               ))}
             </div>
           )}
-          <div className="arrow_icon" onClick={() => toggleSelect()}>
+          <div className="arrow_icon" onClick={toggleSelect}>
             {isVisible ? <RiArrowUpSLine /> : <RiArrowDownSLine />}
           </div>
         </div>
@@ -91,7 +80,7 @@ const BoardSection = () => {
                   id={plant.id}
                   value={plant.value}
                   onChange={handlePlantSelection}
-                  checked={isChecked[plant.value] || false}
+                  checked={chosenPlants.includes(plant.value)}
                 />
                 <label htmlFor={plant.id}>{plant.value}</label>
               </li>
@@ -105,4 +94,4 @@ const BoardSection = () => {
   );
 };
 
-export default BoardSection;
+export default SectionBoard;

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { TbCameraPlus } from 'react-icons/tb';
@@ -7,11 +7,24 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import './photoSection.scss';
 
-const PhotoSection = () => {
-  const [slidesPerView, setSlidesPerView] = useState(window.innerWidth > 768 ? 4 : 3.5);
+const SectionPhoto = () => {
+  const [slidesPerView, setSlidesPerView] = useState(3.5);
   const [slides, setSlides] = useState([]);
   const [isFileAttached, setIsFileAttached] = useState(false);
   const uploadButtonRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesPerView(window.innerWidth > 768 ? 4 : 3.5);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleFileSelect = useCallback(event => {
     const file = event.target.files[0];
@@ -43,7 +56,10 @@ const PhotoSection = () => {
         spaceBetween={0}
       >
         <SwiperSlide className="slide">
-          <button className="upload_button" ref={uploadButtonRef}>
+          <button
+            className={`upload_button ${isFileAttached ? 'attached' : ''}`}
+            ref={uploadButtonRef}
+          >
             <label htmlFor="photoInput" className="photo_label">
               <div className="photo_text">
                 {!isFileAttached && (
@@ -78,4 +94,4 @@ const PhotoSection = () => {
   );
 };
 
-export default PhotoSection;
+export default SectionPhoto;

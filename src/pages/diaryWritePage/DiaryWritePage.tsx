@@ -1,5 +1,5 @@
-import PhotoSection from './PhotoSection';
-import BoardSection from './BoardSection';
+import SectionPhoto from './SectionPhoto';
+import SectionBoard from './SectionBoard';
 
 import './diaryWritePage.scss';
 
@@ -13,8 +13,8 @@ const DiaryWritePage = () => {
             <span className="hide">닫기</span>
           </button>
         </div>
-        <PhotoSection />
-        <BoardSection />
+        <SectionPhoto />
+        <SectionBoard />
         <button className="button save">저장</button>
       </div>
     </main>

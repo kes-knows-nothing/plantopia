@@ -1,9 +1,10 @@
-import React from 'react';
 import './mainPage.scss';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import weather from '@/assets/images/weather';
+import plants from '@/assets/images/plants';
 import LOCATION from '@/assets/images/icons/location.png';
+import WATERING from '@/assets/images/icons/watering.png';
 
 const MainPage = () => {
   return (
@@ -27,6 +28,15 @@ const MainPage = () => {
               </div>
             </div>
             <img src={weather.RAIN} className="weather_icon" alt="weather" />
+          </div>
+          <div className="main_plant">
+            <div className="inner_circle">
+              <img src={plants.MAIN_PLANT} alt="plant" />
+            </div>
+            <button className="watering_btn">
+              <img src={WATERING} alt="watering" />
+              <div className="watering_label">물주기</div>
+            </button>
           </div>
         </section>
       </main>

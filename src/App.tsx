@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
-import LoginPage from './pages/loginPage/LoginPage';
+import LoginPage from './pages/LoginPage/LoginPage';
 import DiaryPage from './pages/DiaryPage';
-import MyPage from './pages/myPage/MyPage';
+import MyPage from './pages/MyPage/MyPage';
 import MyPlantPage from './pages/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';

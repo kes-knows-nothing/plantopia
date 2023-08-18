@@ -1,0 +1,110 @@
+@mixin common_img_props($bgColor) {
+  display: inline-block;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  box-shadow: 0.1rem 0.1rem 0.3rem rgba(1, 1, 1, 0.15);
+  text-align: center;
+  line-height: 3.2rem;
+  background-color: $bgColor;
+}
+
+.recommend_container {
+  padding-bottom: 2rem;
+  .title_wrapper {
+    display: flex;
+
+    .img_wrapper {
+      @include common_img_props(#f8f8fa);
+    }
+
+    .img_wrapper_white {
+      @include common_img_props(#f8f8fa);
+    }
+
+    .img_wrapper_navy {
+      @include common_img_props(#373b65);
+    }
+
+    .img_wrapper_blue {
+      @include common_img_props(#60b7ff);
+    }
+
+    .img_wrapper_gray {
+      @include common_img_props(#473e49);
+    }
+
+    .plant_img {
+      width: 2rem;
+      height: 2rem;
+      margin-bottom: 0.27rem;
+    }
+
+    span {
+      display: inline-block;
+      padding-left: 1rem;
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 3.2rem;
+    }
+  }
+
+  .plants_container {
+    padding: 1rem 0 2rem 0;
+    display: flex;
+    position: relative;
+
+    .plant_wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 16rem;
+      height: 21rem;
+      border-radius: 1rem;
+      margin-right: 2rem;
+      box-shadow: 0.1rem 0.1rem 0.5rem rgba(1, 1, 1, 0.08);
+
+      img {
+        width: 13.8rem;
+        height: 13.8rem;
+        margin: 1rem;
+        border-radius: 1rem;
+        background-color: lightcyan;
+      }
+
+      .english_name {
+        padding-top: 0.3rem;
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: #b8b8b8;
+      }
+
+      .korean_name {
+        padding-top: 0.9rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+      }
+    }
+
+    .next_button {
+      position: absolute;
+      top: 10.5rem;
+      right: 0.8rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: #9e9e9e80;
+      opacity: 40%;
+
+      &:hover {
+        transition: ease;
+        opacity: 80%;
+      }
+
+      img {
+        width: 0.6rem;
+        height: 1rem;
+      }
+    }
+  }
+}

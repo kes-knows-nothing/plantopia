@@ -10,7 +10,6 @@ const DiaryWritePage = () => {
         <div className="sub_header">
           <strong>글쓰기</strong>
           <button className="close_btn">
-            <span className="hide">닫기</span>
           </button>
         </div>
         <SectionPhoto />

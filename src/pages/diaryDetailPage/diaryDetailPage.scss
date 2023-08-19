@@ -1,0 +1,56 @@
+/* Common Styles */
+
+.hide {
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  border: 0;
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* DIARY-Detail 페이지 */
+
+.diary_write_page {
+  width: 100%;
+  position: relative;
+
+  .container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+
+    .sub_header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 6.4rem;
+      background-color: #fff;
+      border-bottom: 1px solid #f7f8f7;
+
+      strong {
+        font-size: 1.6rem;
+        font-weight: 900;
+      }
+      .header_btn {
+        position: absolute;
+        font-size: 1.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2.4rem;
+        height: 2.4rem;
+
+        &.back {
+          left: 2rem;
+        }
+
+        &.more {
+          right: 2rem;
+        }
+      }
+    }
+  }
+}

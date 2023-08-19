@@ -4,7 +4,7 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/DiaryPage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage';
+import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';

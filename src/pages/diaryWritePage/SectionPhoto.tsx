@@ -6,16 +6,6 @@ import { RiCloseFill } from 'react-icons/ri';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const Counter = ({ current, max }) => {
-  return (
-    <div className="photo_counter hidden">
-      <span className="current_count">{current}</span>
-      <span>/</span>
-      <span className="max_count">{max}</span>
-    </div>
-  );
-};
-
 const SectionPhoto = () => {
   const [slidesPerView, setSlidesPerView] = useState(3.5);
   const [slides, setSlides] = useState(
@@ -91,7 +81,7 @@ const SectionPhoto = () => {
                     <>
                       <TbCameraPlus className="camera_icon" />
 
-                      <div className="photo_counter hidden">
+                      <div className="photo_counter hide">
                         <span className="current_count">{index}</span>
                         <span>/</span>
                         <span className="max_count">4</span>

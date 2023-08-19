@@ -12,7 +12,7 @@ const ListView = () => {
   };
 
   return (
-    <div className ="list_view" >
+    <div className="list_view">
       <div className="date_wrap inner">
         <button className="prev_btn date_btn" type="button"></button>
         <button className="date_picker">
@@ -34,7 +34,9 @@ const ListView = () => {
                 <RiMore2Fill />
               </button>
               <div
-                className={`main_img ${diary.imgUrl.length > 1 ? 'many' : ''}`}
+                className={`main_img ${
+                  diary.imgUrl.length === 0 ? 'hide' : ''
+                } ${diary.imgUrl.length > 1 ? 'many' : ''}`}
                 style={{ backgroundImage: getMainImage(diary) }}
               ></div>
             </div>

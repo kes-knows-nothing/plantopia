@@ -22,9 +22,9 @@ const recommend = [
 
 const DictPage = () => {
   return (
-    <div>
+    <div className="dict_conatiner">
       <Header />
-      <main className="main_container">
+      <main className="dict_wrapper">
         <h2 className="search_title">
           <span>{'Joy'}</span>님, 어떤 식물을 찾고있나요?
         </h2>

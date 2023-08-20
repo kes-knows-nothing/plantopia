@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Recommend.scss';
-import NEXT_ICON from '@/assets/images/icons/dict_next.png';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
 import PLANT_IMG from '@/assets/images/icons/dict_plant2.png';
+import './Recommend.scss';
 
 interface RecommendProps {
   icon: string;
@@ -33,6 +34,21 @@ const tartgetPlants = [
     englishName: 'Pachira aquatica',
     koreanName: '파키라',
   },
+  {
+    image: PLANT_IMG,
+    englishName: 'Philodendron Congo',
+    koreanName: '필로덴드론 콩고',
+  },
+  {
+    image: PLANT_IMG,
+    englishName: 'Monstera deliciosa',
+    koreanName: '몬스테라',
+  },
+  {
+    image: PLANT_IMG,
+    englishName: 'Pachira aquatica',
+    koreanName: '파키라',
+  },
 ];
 
 const Recommend = ({ icon, title, target }: RecommendProps) => {
@@ -46,20 +62,29 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
         </div>
         <span>{title}</span>
       </div>
-      <div className="plants_container">
+      <Swiper
+        slidesPerView={target === 'beginner' ? 2 : 3}
+        spaceBetween={target === 'beginner' ? 20 : 10}
+        navigation={true}
+        loop={true}
+        pagination={{ clickable: true }}
+        modules={[Navigation, Pagination]}
+        className="plants_container"
+      >
         {tartgetPlants.map(({ image, englishName, koreanName }) => (
-          <div key={englishName} className="plant_wrapper">
+          <SwiperSlide key={Math.random()} className="plant_wrapper">
             <Link to="/dict/detail">
-              <img src={image} alt="plant image" />
+              <img
+                className={target === 'beginner' ? 'img_two' : 'img_three'}
+                src={image}
+                alt="plant image"
+              />
               <p className="english_name">{englishName}</p>
               <p className="korean_name">{koreanName}</p>
             </Link>
-          </div>
+          </SwiperSlide>
         ))}
-        <button className="next_button">
-          <img className="search_img" src={NEXT_ICON} alt="search icon" />
-        </button>
-      </div>
+      </Swiper>
     </div>
   );
 };

@@ -58,7 +58,7 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
         <div
           className={targetClassName[target as keyof typeof targetClassName]}
         >
-          <img className="plant_img" src={icon} alt="search icon" />
+          <img className="plant_icon" src={icon} alt="search icon" />
         </div>
         <span>{title}</span>
       </div>

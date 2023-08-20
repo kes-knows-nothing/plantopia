@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import '@/pages/MyPlantPage/components/subplantlist.scss';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
@@ -22,6 +23,7 @@ const dummyData = [
 
 const SubPlantList = () => {
   // const [plantData, setPlantData] = useState<dummyData[]>([])
+  const [isMainPlant, setIsMainPlant] = useState<boolean>();
   return (
     <div className="subplant_container">
       {dummyData.map((plantData: dummyData, idx: number) => (
@@ -37,7 +39,7 @@ const SubPlantList = () => {
           <div className="main_check_and_edit">
             <img
               className="mainPlantOrNot"
-              src={mainPlantTrueIcon}
+              src={isMainPlant ? mainPlantTrueIcon : mainPlantFalseIcon}
               alt="mainPlantOrNotImg"
             />
             <img src={myPlantEditIcon} alt="EditPlantImg" />

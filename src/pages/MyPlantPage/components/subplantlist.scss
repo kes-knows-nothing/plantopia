@@ -1,11 +1,11 @@
 .subplant_container {
   font-family: 'Pretendard', Arial, sans-serif;
-  width: 36rem;
+  width: 32rem;
   border-top: 1px solid #f8f8fa;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  margin-top: 1.8rem;
   :last-child {
     border-bottom: none;
   }

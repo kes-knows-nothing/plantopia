@@ -4,7 +4,8 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/DiaryPage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
+import MyPlantPage from './pages/MyPlantPage/MyPlantMainPage';
+import MyPlantDetailPage from './pages/MyPlantPage/MyPlantDetailPage';
 import RegisterPage from './pages/RegisterPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
@@ -23,6 +24,7 @@ function App() {
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/myplant" element={<MyPlantPage />} />
+      <Route path="/myplant/detail" element={<MyPlantDetailPage />} />
     </Routes>
   );
 }

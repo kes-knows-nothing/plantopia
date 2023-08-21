@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { RiArrowUpSLine, RiArrowDownSLine, RiCloseFill } from 'react-icons/ri';
 
 const SectionBoard = () => {
@@ -18,7 +18,7 @@ const SectionBoard = () => {
     setIsVisible(prevVisible => !prevVisible);
   }, []);
 
-  function handlePlantSelection(event) {
+  const handlePlantSelection = (event) => {
     const selectedPlant = event.target.value;
 
     setChosenPlants(prevChosenPlants => {
@@ -28,14 +28,14 @@ const SectionBoard = () => {
         ? prevChosenPlants.filter(plant => plant !== selectedPlant)
         : [...prevChosenPlants, selectedPlant];
     });
-  }
+  };
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setIsVisible(false);
       }
-    }
+    };
 
     document.addEventListener('mousedown', handleClickOutside);
 
@@ -44,9 +44,9 @@ const SectionBoard = () => {
     };
   }, []);
 
-  function handleChosenPlantClick(plant) {
+  const handleChosenPlantClick = (plant) => {
     setChosenPlants(chosenPlants.filter(p => p !== plant));
-  }
+  };
 
   return (
     <section className="board_section">
@@ -104,7 +104,7 @@ const SectionBoard = () => {
         )}
       </div>
 
-      <textarea placeholder="내용을 작성하세요." className="content" />
+      <textarea placeholder="내용을 작성하세요." />
     </section>
   );
 };

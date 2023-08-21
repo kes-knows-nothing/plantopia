@@ -6,11 +6,11 @@ import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
 import DiaryDetailPage from './pages/diaryDetailPage/DiaryDetailPage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage';
+import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/DictSearchPage';
-// import DictDetailPage from './pages/dictPage/DictDetailPage';
+import DictDetailPage from './pages/dictPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
 
@@ -32,7 +32,7 @@ function App() {
       <Route path="/myplant" element={<MyPlantPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />
-      {/* <Route path="/dict/detail" element={<DictDetailPage />} /> */}
+      <Route path="/dict/detail" element={<DictDetailPage />} />
     </Routes>
   );
 }

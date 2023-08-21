@@ -5,12 +5,13 @@ import weather from '@/assets/images/weather';
 import plants from '@/assets/images/plants';
 import LOCATION from '@/assets/images/icons/location.png';
 import WATERING from '@/assets/images/icons/watering.png';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const MainPage = () => {
   return (
     <>
       <Header isMainPage />
-      <main className="inner">
+      <main className="container inner">
         <section>
           <div className="weather_wrapper">
             <div className="weather_text_wrapper">
@@ -38,6 +39,29 @@ const MainPage = () => {
               <div className="watering_label">물주기</div>
             </button>
           </div>
+          {/* main_plant_info */}
+          <div className="main_plant_info">
+            <div className="plant_name_label">아글라오네마</div>
+            <h2 className="plant_nickname">쑥쑥이</h2>
+            <div className="plant_info_wrapper">
+              <div className="plant_info">
+                <span className="info_title">물주기</span>
+                <div className="info_content label_content">
+                  <span>D-5</span>
+                </div>
+              </div>
+              <div className="plant_info">
+                <span className="info_title">마지막 물준 날</span>
+                <span className="info_content">2023-08-02</span>
+              </div>
+              <div className="plant_info">
+                <span className="info_title">처음 함께한 날</span>
+                <span className="info_content">2023-06-13</span>
+              </div>
+            </div>
+          </div>
+          {/* swiper로 처리 */}
+          {/* plants_list */}
         </section>
       </main>
       <Footer />

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Header from '@/components/header/Header';
@@ -7,7 +8,56 @@ import plants from '@/assets/images/plants';
 import LOCATION from '@/assets/images/icons/location.png';
 import WATERING from '@/assets/images/icons/watering.png';
 
+interface PlantInfoProps {
+  plants: typeof mockPlants;
+}
+
+/* Dummy Data */
+const mockPlants = [
+  {
+    imgUrl: plants.SUB_PLANT_1,
+    plantName: '이상해풀',
+  },
+  {
+    imgUrl: plants.SUB_PLANT_2,
+    plantName: '치코리타',
+  },
+  {
+    imgUrl: plants.SUB_PLANT_3,
+    plantName: '늘푸른',
+  },
+  {
+    imgUrl: plants.SUB_PLANT_2,
+    plantName: '늘푸른2',
+  },
+  {
+    imgUrl: plants.SUB_PLANT_1,
+    plantName: '쑥쑥이',
+  },
+];
+
+const PlantList = ({ plants }: PlantInfoProps) => {
+  return (
+    <div className="slide_wrapper">
+      <Swiper slidesPerView={4} className="swiper">
+        {plants.map(({ imgUrl, plantName }) => (
+          <SwiperSlide>
+            <button className="slide">
+              <div className="avatar">
+                <img src={imgUrl} alt="plant" />
+              </div>
+              <span className="name">{plantName}</span>
+            </button>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+};
+
 const MainPage = () => {
+  const [plantList, setPlantList] = useState(mockPlants);
+
   return (
     <>
       <Header isMainPage />
@@ -66,52 +116,7 @@ const MainPage = () => {
               </div>
             </div>
           </div>
-          {/* swiper로 처리 */}
-          {/* plants_list */}
-          <div className="slide_wrapper">
-            <Swiper slidesPerView={4} className="swiper">
-              <SwiperSlide>
-                <button className="slide">
-                  <div className="avatar">
-                    <img src={plants.SUB_PLANT_1} alt="plant" />
-                  </div>
-                  <span className="name">이상해풀</span>
-                </button>
-              </SwiperSlide>
-              <SwiperSlide>
-                <button className="slide">
-                  <div className="avatar">
-                    <img src={plants.SUB_PLANT_1} alt="plant" />
-                  </div>
-                  <span className="name">이상해풀</span>
-                </button>
-              </SwiperSlide>
-              <SwiperSlide>
-                <button className="slide">
-                  <div className="avatar">
-                    <img src={plants.SUB_PLANT_1} alt="plant" />
-                  </div>
-                  <span className="name">이상해풀</span>
-                </button>
-              </SwiperSlide>
-              <SwiperSlide>
-                <button className="slide">
-                  <div className="avatar">
-                    <img src={plants.SUB_PLANT_1} alt="plant" />
-                  </div>
-                  <span className="name">이상해풀</span>
-                </button>
-              </SwiperSlide>
-              <SwiperSlide>
-                <button className="slide">
-                  <div className="avatar">
-                    <img src={plants.SUB_PLANT_1} alt="plant" />
-                  </div>
-                  <span className="name">이상해풀</span>
-                </button>
-              </SwiperSlide>
-            </Swiper>
-          </div>
+          <PlantList plants={plantList} />
         </section>
       </main>
       <Footer />

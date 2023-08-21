@@ -4,7 +4,6 @@ import { Navigation } from 'swiper/modules';
 import { TbCameraPlus } from 'react-icons/tb';
 import { RiCloseFill } from 'react-icons/ri';
 import 'swiper/css';
-import 'swiper/css/navigation';
 
 const SectionPhoto = () => {
   const [slidesPerView, setSlidesPerView] = useState(3.5);

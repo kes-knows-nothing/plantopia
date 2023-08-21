@@ -15,7 +15,7 @@ const DiaryWritePage = () => {
         </div>
         <SectionPhoto />
         <SectionBoard />
-        <button className="button save">저장</button>
+        <button className="save_button">저장</button>
       </div>
     </main>
   );

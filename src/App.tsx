@@ -5,7 +5,7 @@ import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage';
+import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/DictSearchPage';

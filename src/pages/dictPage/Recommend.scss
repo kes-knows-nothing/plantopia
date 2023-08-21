@@ -47,7 +47,7 @@
       @include common_img_props(#473e49);
     }
 
-    .plant_img {
+    .plant_icon {
       width: 2rem;
       height: 2rem;
     }
@@ -72,6 +72,11 @@
       border-radius: 1rem;
       text-align: center;
       box-shadow: 0.1rem 0.1rem 0.5rem rgba(1, 1, 1, 0.08);
+
+      &:hover {
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+      }
 
       .img_two {
         height: 12.6rem;

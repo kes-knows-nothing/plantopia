@@ -8,9 +8,8 @@ interface InputFormProps {
   initialInput?: string;
 }
 
-const InputForm = (props: InputFormProps) => {
+const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { nextPath, initialInput } = props;
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

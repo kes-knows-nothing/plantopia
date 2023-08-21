@@ -68,7 +68,7 @@
           margin: auto;
           width: 8rem;
           height: 8rem;
-          border: 1px solid #d8dae5;
+          border: 1px solid #efefef;
           border-radius: 1rem;
           overflow: hidden;
           padding: 0;
@@ -100,7 +100,7 @@
           .photo_input {
             display: none;
           }
-          .main-photo {
+          .main_photo {
             width: 100%;
             height: 25%;
 
@@ -120,13 +120,6 @@
             justify-content: center;
             line-height: 1;
           }
-
-          .photo_text.hidden {
-            display: none;
-          }
-          .hidden {
-            display: none;
-          }
         }
 
         .photo_delete_btn {
@@ -143,12 +136,8 @@
           justify-content: center;
 
           position: absolute;
-          right: 0.5rem;
-          top: -0.5rem;
-        }
-
-        .hidden {
-          display: none;
+          right: 0rem;
+          top: -1rem;
         }
       }
     }
@@ -194,6 +183,8 @@
 
           display: flex;
           align-items: center;
+          justify-content: space-between;
+
           position: relative;
           cursor: pointer;
 
@@ -204,10 +195,10 @@
           }
 
           .chosen_wrap {
-            display: flex;
-            align-items: center;
             min-height: 6rem;
 
+            display: flex;
+            align-items: center;
             flex-wrap: wrap;
             font-size: 1.4rem;
 
@@ -233,11 +224,13 @@
           }
 
           .arrow_icon {
-            padding: 2rem;
-            position: absolute;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
+            height: 6rem;
+            font-size: 1.6rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-grow: 1;
           }
         }
 
@@ -297,6 +290,7 @@
         font-family: 'pretendard';
         font-size: 1.4rem;
         padding: 2rem;
+        resize: none;
 
         &::placeholder {
           color: #9b9fb1;
@@ -307,7 +301,7 @@
 
   /* 저장 버튼 */
 
-  .button.save {
+  .save_button {
     width: 100%;
     height: 5rem;
     margin-top: auto;
@@ -350,7 +344,7 @@
               width: 4rem;
               height: 4rem;
               right: 1rem;
-              top: -1rem;
+              top: -1.5rem;
             }
           }
         }

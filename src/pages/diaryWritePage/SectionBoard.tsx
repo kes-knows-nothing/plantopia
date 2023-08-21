@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { RiArrowUpSLine, RiArrowDownSLine, RiCloseFill } from 'react-icons/ri';
 
 const SectionBoard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [chosenPlants, setChosenPlants] = useState([]);
+  const wrapperRef = useRef(null);
 
   const plantData = [
     { id: 'chk1', value: '식물1' },
@@ -17,7 +18,7 @@ const SectionBoard = () => {
     setIsVisible(prevVisible => !prevVisible);
   }, []);
 
-  function handlePlantSelection(event) {
+  const handlePlantSelection = (event) => {
     const selectedPlant = event.target.value;
 
     setChosenPlants(prevChosenPlants => {
@@ -27,11 +28,25 @@ const SectionBoard = () => {
         ? prevChosenPlants.filter(plant => plant !== selectedPlant)
         : [...prevChosenPlants, selectedPlant];
     });
-  }
+  };
 
-  function handleChosenPlantClick(plant) {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleChosenPlantClick = (plant) => {
     setChosenPlants(chosenPlants.filter(p => p !== plant));
-  }
+  };
 
   return (
     <section className="board_section">
@@ -43,7 +58,7 @@ const SectionBoard = () => {
         />
       </div>
 
-      <div className="plant_select_wrapper">
+      <div className="plant_select_wrapper" ref={wrapperRef}>
         <div className="plant_select">
           {chosenPlants.length === 0 ? (
             <div className="choose_text" onClick={toggleSelect}>
@@ -89,7 +104,7 @@ const SectionBoard = () => {
         )}
       </div>
 
-      <textarea placeholder="내용을 작성하세요." className="content" />
+      <textarea placeholder="내용을 작성하세요." />
     </section>
   );
 };

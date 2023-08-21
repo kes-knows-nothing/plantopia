@@ -4,6 +4,24 @@ import './DictSearchPage.scss';
 import InputForm from './InputForm';
 import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';
 
+const searchResult = [
+  {
+    image: PLANT2_ICON,
+    koreanName: '바나나 크로톤',
+    englishName: 'Banana Croton',
+  },
+  {
+    image: PLANT2_ICON,
+    koreanName: '포도 크로톤',
+    englishName: 'Grape Croton',
+  },
+  {
+    image: PLANT2_ICON,
+    koreanName: '복숭아 크로톤',
+    englishName: 'Peach Croton',
+  },
+];
+
 const DictSearchPage = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue;
@@ -19,28 +37,17 @@ const DictSearchPage = () => {
       <main>
         <InputForm nextPath={'/dict/detail'} initialInput={inputValue} />
         <section className="plant_container">
-          <div className="plant_wrapper">
-            <img src={PLANT2_ICON} alt="plant image" />
-            <div className="name_wrapper">
-              <h3 className="korean_name">바나나 크로톤</h3>
-              <h3 className="english_name">Banana Croton</h3>
-            </div>
-          </div>
-          <div className="plant_wrapper">
-            <img src={PLANT2_ICON} alt="plant image" />
-            <div className="name_wrapper">
-              <h3 className="korean_name">바나나 크로톤</h3>
-              <h3 className="english_name">Banana Croton</h3>
-            </div>
-          </div>
-          <div className="plant_wrapper">
-            <img src={PLANT2_ICON} alt="plant image" />
-            <div className="name_wrapper">
-              <h3 className="korean_name">바나나 크로톤</h3>
-              <h3 className="english_name">Banana Croton</h3>
-            </div>
-          </div>
-
+          {searchResult.map(({ image, koreanName, englishName }) => (
+            <Link key={englishName} to="/dict/detail">
+              <div className="plant_wrapper">
+                <img src={image} alt="plant image" />
+                <div className="name_wrapper">
+                  <h3 className="korean_name">{koreanName}</h3>
+                  <h3 className="english_name">{englishName}</h3>
+                </div>
+              </div>
+            </Link>
+          ))}
           <div className="no_search">
             <p>검색 결과가 없습니다.</p>
             <a href="https://www.google.co.kr/">

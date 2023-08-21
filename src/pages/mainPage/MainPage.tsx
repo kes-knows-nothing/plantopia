@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { nanoid } from 'nanoid';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import weather from '@/assets/images/weather';
@@ -41,7 +42,7 @@ const PlantList = ({ plants }: PlantInfoProps) => {
     <div className="slide_wrapper">
       <Swiper slidesPerView={4} className="swiper">
         {plants.map(({ imgUrl, plantName }) => (
-          <SwiperSlide>
+          <SwiperSlide key={nanoid()}>
             <button className="slide">
               <div className="avatar">
                 <img src={imgUrl} alt="plant" />
@@ -65,19 +66,15 @@ const MainPage = () => {
         <section>
           <div className="inner">
             <div className="weather_wrapper">
-              <div className="weather_text_wrapper">
+              <div className="text_wrapper">
                 <div className="location_wrapper">
-                  <img
-                    src={LOCATION}
-                    className="location_icon"
-                    alt="location"
-                  />
-                  <span className="location_text">서울, 후암동</span>
+                  <img src={LOCATION} className="weather_icon" alt="location" />
+                  <span className="text">서울, 후암동</span>
                 </div>
-                <div className="weather_text_box temperature_lg">
-                  비 조금 36°
-                  <span className="temperature_sm">36°</span>
-                  <span className="temperature_sm">27°</span>
+                <div className="weather_text_box temperature_wrapper">
+                  <span className="text_lg">비 조금 36°</span>
+                  <span className="text_sm">36°</span>
+                  <span className="text_sm">27°</span>
                 </div>
                 <div className="weather_text_box">
                   오늘은 창밖으로 빗소리가 들리겠어요
@@ -96,22 +93,22 @@ const MainPage = () => {
             </div>
             {/* main_plant_info */}
             <div className="main_plant_info">
-              <div className="plant_name_label">아글라오네마</div>
-              <h2 className="plant_nickname">쑥쑥이</h2>
+              <div className="eng_name_label">아글라오네마</div>
+              <h2 className="nickname">쑥쑥이</h2>
               <div className="plant_info_wrapper">
                 <div className="plant_info">
-                  <span className="info_title">물주기</span>
-                  <div className="info_content label_content">
+                  <span className="title">물주기</span>
+                  <div className="content cotent_label">
                     <span>D-5</span>
                   </div>
                 </div>
                 <div className="plant_info">
-                  <span className="info_title">마지막 물준 날</span>
-                  <span className="info_content">2023-08-02</span>
+                  <span className="title">마지막 물준 날</span>
+                  <span className="content">2023-08-02</span>
                 </div>
                 <div className="plant_info">
-                  <span className="info_title">처음 함께한 날</span>
-                  <span className="info_content">2023-06-13</span>
+                  <span className="title">처음 함께한 날</span>
+                  <span className="content">2023-06-13</span>
                 </div>
               </div>
             </div>

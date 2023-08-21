@@ -1,14 +1,3 @@
-.weather_text_box {
-  width: max-content;
-  padding: 0.8rem 1.6rem 0.7rem 1.6rem;
-  border-radius: 0.6rem;
-  background: #ffffff;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #22264c;
-  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.08);
-}
-
 .container {
   background-color: #ffffff;
   min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
@@ -18,33 +7,44 @@
   > section {
     min-height: inherit;
   }
+
+  .weather_text_box {
+    width: max-content;
+    padding: 0.8rem 1.6rem 0.7rem 1.6rem;
+    border-radius: 0.6rem;
+    background: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #22264c;
+    box-shadow: 0 0.2rem 1.6rem 0 rgba(0, 0, 0, 0.08);
+  }
 }
 
 /* 날씨 영역 */
-.weather_wrapper {
+.container > section > div > .weather_wrapper {
   display: flex;
   justify-content: space-between;
   padding-top: 0.4rem;
 
-  .weather_text_wrapper {
+  > .text_wrapper {
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
 
-    div:not(:first-child) {
+    > div:not(:first-child) {
       margin-top: 0.8rem;
     }
 
-    .location_wrapper {
+    > .location_wrapper {
       display: flex;
       align-items: center;
 
-      .location_icon {
+      > .weather_icon {
         width: 1.6rem;
         height: 1.6rem;
       }
 
-      .location_text {
+      > .text {
         margin-left: 0.6rem;
         font-size: 1.4rem;
         color: #22264c;
@@ -52,15 +52,17 @@
       }
     }
 
-    .temperature_lg > .temperature_sm {
-      color: #9b9fb1;
-      font-size: 1.2rem;
-      font-weight: 500;
+    > .temperature_wrapper {
+      > .text_lg {
+        margin-right: 0.8rem;
+      }
 
-      &:first-child {
-        margin-left: 0.8rem;
+      > .text_sm {
+        color: #9b9fb1;
+        font-size: 1.2rem;
+        font-weight: 500;
 
-        &::after {
+        &:not(:nth-child(2))::before {
           content: '|';
           margin: 0 0.6rem;
         }
@@ -74,70 +76,69 @@
   }
 }
 
-.main_plant {
+/* 메인 식물 영역*/
+.container > section > div > .main_plant {
   position: relative;
   margin: 2.8rem auto 0 auto;
   padding: 1rem;
   width: 26rem;
   height: 26rem;
-  background: #fff;
+  background: #ffffff;
   border-radius: 26rem;
-  box-shadow: 0px 10px 16px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1rem 1.6rem 0 rgba(0, 0, 0, 0.1);
 
-  .inner_circle {
+  > .inner_circle {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
     width: 100%;
     height: 100%;
     background-color: #dfe9e4;
     border-radius: 26rem;
 
-    img {
-      /* 수치는 추후 수정 */
-      width: 13.5rem;
-      height: 21.2rem;
+    > img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 
-  .watering_btn {
+  > .watering_btn {
     position: absolute;
     right: 2.4rem;
     bottom: 0.7rem;
     padding: 0 0 0.3rem 0;
     width: 4.6rem;
     height: 4.6rem;
-    filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0 0.4rem 2rem rgba(0, 0, 0, 0.25));
 
-    img {
+    > img {
       width: 100%;
       height: 100%;
     }
 
-    .watering_label {
+    > .watering_label {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       padding: 0.2rem 0.6rem;
-      height: 1.6rem;
       border-radius: 3rem;
       background-color: #ffffff;
       color: #22264c;
       font-size: 1rem;
-      font-style: normal;
       font-weight: 700;
-      line-height: normal;
     }
   }
 }
 
 /* 메인 식물 정보 */
-.main_plant_info {
+.container > section > div > .main_plant_info {
   margin-top: 1.8rem;
   text-align: center;
 
-  .plant_name_label {
+  > .eng_name_label {
     display: inline-block;
     margin: auto;
     padding: 0.4rem 0.6rem;
@@ -150,14 +151,14 @@
     font-weight: 700;
   }
 
-  .plant_nickname {
+  > .nickname {
     margin-top: 0.8rem;
     color: #22264c;
     font-size: 2.2rem;
     font-weight: 700;
   }
 
-  .plant_info_wrapper {
+  > .plant_info_wrapper {
     margin-top: 1.2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -180,22 +181,22 @@
         background: #e4e6ef;
       }
 
-      > .info_title,
-      .info_content {
+      > .title,
+      .content {
         display: block;
       }
 
-      > .info_title {
+      > .title {
         font-size: 1.2rem;
         font-weight: 400;
       }
 
-      > .info_content {
+      > .content {
         margin-top: 1.1rem;
         font-size: 1.4rem;
         font-weight: 700;
 
-        &.label_content {
+        &.cotent_label {
           margin-top: 0.5rem;
           display: flex;
           padding: 0.55rem 1.1rem;
@@ -208,7 +209,8 @@
   }
 }
 
-.slide_wrapper {
+/* 서브 식물 리스트 슬라이드*/
+.container > section > .slide_wrapper {
   margin-top: 3.3rem;
   padding-left: 2rem;
   min-height: 10.9rem;

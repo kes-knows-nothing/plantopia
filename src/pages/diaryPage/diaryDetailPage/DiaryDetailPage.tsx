@@ -23,7 +23,7 @@ const DiaryDetailPage = () => {
 
   return (
     <main className="diary_detail_page">
-      <div className="container">
+      <div className="diary_detail_container">
         <div className="sub_header">
           <button className="header_btn back">
             <HiOutlineArrowLeft />

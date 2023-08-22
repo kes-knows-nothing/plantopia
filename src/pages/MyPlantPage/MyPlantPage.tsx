@@ -1,9 +1,26 @@
+import { useEffect, useState } from 'react';
 import './myPlantPage.scss';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import ellipseImage from './img/Ellipse_200.png';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
 import MyPlantList from '@/pages/MyPlantPage/components/SubPlantList';
+
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { doc, getDoc} from 'firebase/firestore';
+import { db } from '@/utils/firebaseApp';
+
+
+interface MyPlantProps {
+  frequency: number,
+  imgUrl: string,
+  isMain: boolean,
+  nickname: string,
+  plantName: string,
+  purchasedDay: 
+
+}
 
 const dummyData = [
   {
@@ -14,6 +31,22 @@ const dummyData = [
 ];
 
 const MyPlantPage = () => {
+  const [myPlantData, setMyPlantData] = useState();
+
+  useEffect(() => {
+    const docRef = doc(db, 'plant', 'zEpCaZp6bG55uRSckG6h');
+    const getDocSnap = async () => {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log('Document data:', docSnap.data());
+        let data = docSnap.data();
+        setMyPlantData(data);
+      } else {
+        console.log('No such document!');
+      }
+    };
+    
+  }, [myPlantData]);
   return (
     <>
       <Header />

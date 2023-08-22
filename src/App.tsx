@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/mainPage/MainPage';
-import LoginPage from './pages/loginPage/LoginPage';
+
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
 import MyPage from './pages/myPage/MyPage';

@@ -8,19 +8,18 @@ import MyPlantList from '@/pages/MyPlantPage/components/SubPlantList';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { doc, getDoc} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 
+// interface MyPlantProps {
+//   frequency: number,
+//   imgUrl: string,
+//   isMain: boolean,
+//   nickname: string,
+//   plantName: string,
+//   purchasedDay:
 
-interface MyPlantProps {
-  frequency: number,
-  imgUrl: string,
-  isMain: boolean,
-  nickname: string,
-  plantName: string,
-  purchasedDay: 
-
-}
+// }
 
 const dummyData = [
   {
@@ -31,7 +30,7 @@ const dummyData = [
 ];
 
 const MyPlantPage = () => {
-  const [myPlantData, setMyPlantData] = useState();
+  const [myPlantData, setMyPlantData] = useState<any>();
 
   useEffect(() => {
     const docRef = doc(db, 'plant', 'zEpCaZp6bG55uRSckG6h');
@@ -39,14 +38,14 @@ const MyPlantPage = () => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log('Document data:', docSnap.data());
-        let data = docSnap.data();
+        const data = docSnap.data();
         setMyPlantData(data);
       } else {
         console.log('No such document!');
       }
     };
-    
-  }, [myPlantData]);
+    getDocSnap();
+  }, []);
   return (
     <>
       <Header />

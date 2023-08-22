@@ -5,11 +5,11 @@ import ALERT from '@/assets/images/icons/alert.png';
 import EMPTY_ALERT from '@/assets/images/icons/empty_alert.png';
 import CALENDAR from '@/assets/images/icons/calendar.png';
 
-interface IProps {
+interface HeaderProps {
   isMainPage?: boolean;
 }
 
-const Header = ({ isMainPage }: IProps) => {
+const Header = ({ isMainPage }: HeaderProps) => {
   return (
     <header className="inner header">
       <Link to="/" className="main_logo">

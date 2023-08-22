@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import MainPage from './pages/MainPage';
+import MainPage from './pages/mainPage/MainPage';
 import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
@@ -15,7 +15,7 @@ import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
 
 
-function App() {
+const App = () => {
   useEffect(() => {
     setBodyHeight();
   }, []);
@@ -36,6 +36,6 @@ function App() {
       <Route path="/dict/detail" element={<DictDetailPage />} />
     </Routes>
   );
-}
+};
 
 export default App;

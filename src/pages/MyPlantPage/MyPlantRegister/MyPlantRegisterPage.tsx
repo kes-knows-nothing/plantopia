@@ -12,7 +12,7 @@ const MyPlantRegisterPage = () => {
       </div>
       <div className="my_plant_registeration_container">
         <div className="my_plant_register_img_box">
-          <div className='img_wrapper'>
+          <div className="img_wrapper">
             <img className="main_img" src={samplePlant1} alt="samplePlant1" />
             <img
               className="edit_icon"

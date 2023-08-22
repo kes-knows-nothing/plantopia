@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
-import LoginPage from './pages/LoginPage/LoginPage';
+
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
-import MyPage from './pages/MyPage/MyPage';
+import Mypage from './pages/MyPage';
 import MyPlantMainPage from './pages/MyPlantPage/MyPlantMainPage';
 import MyPlantRegisterPage from '@/pages/MyPlantPage/MyPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';

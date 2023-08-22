@@ -6,7 +6,9 @@ import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
 import DiaryDetailPage from './pages/diaryPage/diaryDetailPage/DiaryDetailPage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
+import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
+import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
+import MyPlantRegisterPage from '@/pages/myPlantPage/MyPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/DictSearchPage';
@@ -29,7 +31,9 @@ const App = () => {
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/diary/Detail" element={<DiaryDetailPage />} />
       <Route path="/mypage" element={<MyPage />} />
-      <Route path="/myplant" element={<MyPlantPage />} />
+      <Route path="/myplant" element={<MyPlantMainPage />} />
+      <Route path="/myplant/detail" element={<MyPlantDetailPage />} />
+      <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />
       <Route path="/dict/detail" element={<DictDetailPage />} />

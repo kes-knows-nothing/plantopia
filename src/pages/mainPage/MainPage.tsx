@@ -9,45 +9,57 @@ import plants from '@/assets/images/plants';
 import LOCATION from '@/assets/images/icons/location.png';
 import WATERING from '@/assets/images/icons/watering.png';
 
-interface PlantInfoProps {
-  plants: typeof mockPlants;
+interface PlantInfo {
+  imgUrl: string;
+  nickName: string;
+  plantName: string;
+}
+
+interface PlantListProps {
+  plants: PlantInfo[];
+  onClickItem: (plant: PlantInfo) => void;
 }
 
 /* Dummy Data */
-const mockPlants = [
+const mockPlants: PlantInfo[] = [
   {
     imgUrl: plants.SUB_PLANT_1,
-    plantName: '이상해풀',
+    nickName: '이상해풀',
+    plantName: '백량금',
   },
   {
     imgUrl: plants.SUB_PLANT_2,
-    plantName: '치코리타',
+    nickName: '치코리타',
+    plantName: '부겐빌레아',
   },
   {
     imgUrl: plants.SUB_PLANT_3,
-    plantName: '늘푸른',
+    nickName: '늘푸른',
+    plantName: '네마탄투스',
   },
   {
     imgUrl: plants.SUB_PLANT_2,
-    plantName: '늘푸른2',
+    nickName: '늘푸른2',
+    plantName: '인삼벤자민',
   },
   {
     imgUrl: plants.SUB_PLANT_1,
-    plantName: '쑥쑥이',
+    nickName: '쑥쑥이',
+    plantName: '동백',
   },
 ];
 
-const PlantList = ({ plants }: PlantInfoProps) => {
+const PlantList = ({ plants, onClickItem }: PlantListProps) => {
   return (
     <div className="slide_wrapper">
       <Swiper slidesPerView={4} className="swiper">
-        {plants.map(({ imgUrl, plantName }) => (
+        {plants.map(plant => (
           <SwiperSlide key={nanoid()}>
-            <button className="slide">
+            <button className="slide" onClick={() => onClickItem(plant)}>
               <div className="avatar">
-                <img src={imgUrl} alt="plant" />
+                <img src={plant.imgUrl} alt="plant" />
               </div>
-              <span className="name">{plantName}</span>
+              <span className="name">{plant.nickName}</span>
             </button>
           </SwiperSlide>
         ))}
@@ -57,7 +69,12 @@ const PlantList = ({ plants }: PlantInfoProps) => {
 };
 
 const MainPage = () => {
+  const [mainPlant, setMainPlant] = useState(mockPlants[0]);
   const [plantList, setPlantList] = useState(mockPlants);
+
+  const switchMainPlant = (plant: PlantInfo) => {
+    setMainPlant(plant);
+  };
 
   return (
     <>
@@ -93,8 +110,8 @@ const MainPage = () => {
             </div>
             {/* main_plant_info */}
             <div className="main_plant_info">
-              <div className="eng_name_label">아글라오네마</div>
-              <h2 className="nickname">쑥쑥이</h2>
+              <div className="eng_name_label">{mainPlant.plantName}</div>
+              <h2 className="nickname">{mainPlant.nickName}</h2>
               <div className="plant_info_wrapper">
                 <div className="plant_info">
                   <span className="title">물주기</span>
@@ -113,7 +130,7 @@ const MainPage = () => {
               </div>
             </div>
           </div>
-          <PlantList plants={plantList} />
+          <PlantList plants={plantList} onClickItem={switchMainPlant} />
         </section>
       </main>
       <Footer />

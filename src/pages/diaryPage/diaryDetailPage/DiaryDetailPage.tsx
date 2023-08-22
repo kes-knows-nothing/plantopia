@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import { RiMore2Fill } from 'react-icons/ri';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
@@ -25,9 +26,11 @@ const DiaryDetailPage = () => {
     <main className="diary_detail_page">
       <div className="diary_detail_container">
         <div className="sub_header">
-          <button className="header_btn back">
-            <HiOutlineArrowLeft />
-          </button>
+          <Link to="/diary">
+            <button className="header_btn back">
+              <HiOutlineArrowLeft />
+            </button>
+          </Link>
           <strong>다이어리</strong>
           <button className="header_btn more">
             <RiMore2Fill />

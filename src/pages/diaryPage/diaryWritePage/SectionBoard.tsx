@@ -1,7 +1,6 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { RiArrowUpSLine, RiArrowDownSLine, RiCloseFill } from 'react-icons/ri';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where, limit } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png'
@@ -93,20 +92,21 @@ const SectionBoard = () => {
                   onClick={() => handleChosenPlantClick(plant)}
                 >
                   {plant}
-                  <span className="cancle"></span>
+                  <span className="cancle">
+                  </span>
                 </div>
               ))}
             </div>
           )}
           <div className="arrow_icon" onClick={toggleSelect}>
-            {isVisible ? <img src={ARROW_UP} alt="close select" /> : <img src={ARROW_DOWN} alt="open slect" />}
+            {isVisible ? <img src={ARROW_UP} alt="Up" /> : <img src={ARROW_DOWN} alt="Down" />}
           </div>
         </div>
 
         {isVisible && (
           <ul className="plant_list">
             {plantTag.map(plant => (
-              <li key={plant.nickname}>
+              <li key={nanoid()}>
                 <input
                   type="checkbox"
                   name={plant.nickname}

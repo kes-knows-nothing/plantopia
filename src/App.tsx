@@ -5,15 +5,14 @@ import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
-import MyPlantRegisterPage from '@/pages/MyPlantPage/MyPlantRegister/MyPlantRegisterPage'
+import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
+import MyPlantRegisterPage from '@/pages/myPlantPage/MyPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
-
 
 const App = () => {
   useEffect(() => {
@@ -29,7 +28,7 @@ const App = () => {
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/mypage" element={<MyPage />} />
-      <Route path="/myplant" element={<MyPlantPage />} />
+      <Route path="/myplant" element={<MyPlantMainPage />} />
       <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />

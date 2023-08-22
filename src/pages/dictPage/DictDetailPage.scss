@@ -1,15 +1,22 @@
 @mixin section_form {
   margin: 2rem;
-  padding: 1rem 0.5rem;
   border-radius: 1rem;
   background-color: white;
   box-shadow: 0px 0px 15px -4px rgba(0, 0, 0, 0.1);
+
+  hr {
+    height: 1px;
+    border: 0;
+    margin: 1.5rem 0;
+    background-color: #f8f8fa;
+  }
 }
 
 @mixin wrapper_title {
   h3 {
-    padding: 1rem 0.5rem 2rem 0.5rem;
-    font-size: 1.7rem;
+    padding: 1.6rem 0 0 1.4rem;
+    font-size: 1.4rem;
+    font-weight: 400;
     color: #22264c;
   }
 }
@@ -36,37 +43,37 @@ header {
     text-align: center;
 
     > img {
-      width: 13rem;
-      height: 13rem;
+      width: 14.8rem;
+      height: 14.8rem;
       border-radius: 50%;
-      background: lightgoldenrodyellow;
+      background: lightcoral;
     }
 
     .english_name {
-      padding-top: 2rem;
-      font-size: 1.5rem;
-      font-weight: 300;
+      padding-top: 2.1rem;
+      font-size: 1.2rem;
+      font-weight: 400;
       color: #b8b8b8;
     }
 
     .korean_name {
-      padding-top: 0.8rem;
-      font-size: 2rem;
+      padding-top: 0.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: #22264c;
     }
 
-    button {
+    > button {
       width: 100%;
-      height: 5rem;
+      height: 5.2rem;
       border: 1px solid #d6d6d6;
       border-radius: 3rem;
-      margin-top: 2rem;
+      margin-top: 1.1rem;
       font-size: 1.3rem;
       line-height: 4rem;
 
-      img {
-        margin-right: 0.5rem;
+      > img {
+        margin-right: 1rem;
         width: 2rem;
       }
     }
@@ -81,25 +88,24 @@ header {
       @include wrapper_title();
 
       .info_type {
-        padding: 0.5rem 0.5rem;
+        padding: 0 1.4rem 1.6rem 1.4rem;
 
-        h4 {
+        > h4 {
           display: inline-block;
           width: 12rem;
-          height: 3rem;
-          font-size: 1.4rem;
-          line-height: 3rem;
+          font-size: 1.2rem;
+          font-weight: 400;
 
-          img {
-            width: 2.5rem;
-            height: 1.6rem;
-            padding-right: 1rem;
+          > img {
+            width: 2rem;
+            margin: 0 0.8rem 0 0;
           }
         }
 
-        p {
+        > p {
           display: inline-block;
-          font-size: 1.4rem;
+          font-size: 1.2rem;
+          font-weight: 400;
         }
       }
     }
@@ -113,10 +119,21 @@ header {
         width: 33%;
         text-align: center;
         font-size: 1.4rem;
-        line-height: 3rem;
 
-        p {
+        > h4 {
+          font-size: 1.2rem;
+          font-weight: 400;
+        }
+
+        > p {
+          padding: 1.3rem 1.3rem 1.6rem 1.3rem;
           font-weight: 700;
+          display: flex;
+          justify-content: space-evenly;
+
+          > img {
+            height: 1.5rem;
+          }
         }
       }
     }

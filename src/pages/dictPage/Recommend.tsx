@@ -21,7 +21,7 @@ const targetClassName = {
 const tartgetPlants = [
   {
     image: PLANT_IMG,
-    englishName: 'Philodendron Congo',
+    englishName: 'Philodendron Congos',
     koreanName: '필로덴드론 콩고',
   },
   {
@@ -64,7 +64,7 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
       </div>
       <Swiper
         slidesPerView={target === 'beginner' ? 2 : 3}
-        spaceBetween={target === 'beginner' ? 20 : 10}
+        spaceBetween={target === 'beginner' ? 14 : 13}
         navigation={true}
         loop={true}
         pagination={{ clickable: true }}
@@ -79,8 +79,24 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
                 src={image}
                 alt="plant image"
               />
-              <p className="english_name">{englishName}</p>
-              <p className="korean_name">{koreanName}</p>
+              <p
+                className={
+                  target === 'beginner'
+                    ? 'english_name_two'
+                    : 'english_name_three'
+                }
+              >
+                {englishName}
+              </p>
+              <p
+                className={
+                  target === 'beginner'
+                    ? 'korean_name_two'
+                    : 'korean_name_three'
+                }
+              >
+                {koreanName}
+              </p>
             </Link>
           </SwiperSlide>
         ))}

@@ -6,7 +6,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import PLANT1_ICON from '@/assets/images/icons/dict_plant1.png';
 import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';
-import WATER_ICON from '@/assets/images/icons/dict_water.png';
+import WATER_ICON from '@/assets/images/icons/dict_water2.png';
 import MOON_ICON from '@/assets/images/icons/dict_moon.png';
 
 const recommend = [

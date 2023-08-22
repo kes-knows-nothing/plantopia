@@ -1,24 +1,43 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { RiArrowUpSLine, RiArrowDownSLine, RiCloseFill } from 'react-icons/ri';
+import { db } from '@/utils/firebaseApp';
+import { collection, getDocs, query, where, limit } from 'firebase/firestore';
+import { nanoid } from 'nanoid';
+
+import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png'
+import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png'
+
+interface Plant {
+  nickname: string;
+  userEmail: string;
+}
 
 const SectionBoard = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [chosenPlants, setChosenPlants] = useState([]);
-  const wrapperRef = useRef(null);
+  const [chosenPlants, setChosenPlants] = useState<string[]>([]);
+  const [plantTag, setPlantTag] = useState<Plant[]>([]);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const plantData = [
-    { id: 'chk1', value: '식물1' },
-    { id: 'chk2', value: '식물2' },
-    { id: 'chk3', value: '식물3' },
-    { id: 'chk4', value: '식물4' },
-    { id: 'chk5', value: '식물5' },
-  ];
+  useEffect(() => {
+    const getPlantsFromFirestore = async () => {
+      const plantRef = collection(db, 'plant');
+      const q = query(plantRef, where('userEmail', '==', 'test@test.com'));
+      const querySnapshot = await getDocs(q);
+      const plants: Plant[] = [];
+      querySnapshot.forEach(doc => {
+        const { nickname, userEmail } = doc.data();
+        plants.push({ nickname, userEmail });
+      });
+      setPlantTag(plants);
+    };
+    getPlantsFromFirestore();
+  }, []);
 
   const toggleSelect = useCallback(() => {
     setIsVisible(prevVisible => !prevVisible);
   }, []);
 
-  const handlePlantSelection = (event) => {
+  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedPlant = event.target.value;
 
     setChosenPlants(prevChosenPlants => {
@@ -30,9 +49,18 @@ const SectionBoard = () => {
     });
   };
 
+  const handleChosenPlantClick = (plant: string) => {
+    setChosenPlants(prevChosenPlants =>
+      prevChosenPlants.filter(p => p !== plant),
+    );
+  };
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setIsVisible(false);
       }
     };
@@ -44,18 +72,10 @@ const SectionBoard = () => {
     };
   }, []);
 
-  const handleChosenPlantClick = (plant) => {
-    setChosenPlants(chosenPlants.filter(p => p !== plant));
-  };
-
   return (
     <section className="board_section">
-      <div className="subject_wrapper">
-        <input
-          type="text"
-          placeholder="제목을 작성하세요."
-          className="subject"
-        />
+      <div className="title_wrapper">
+        <input type="text" placeholder="제목을 작성하세요." className="title" />
       </div>
 
       <div className="plant_select_wrapper" ref={wrapperRef}>
@@ -73,31 +93,29 @@ const SectionBoard = () => {
                   onClick={() => handleChosenPlantClick(plant)}
                 >
                   {plant}
-                  <span>
-                    <RiCloseFill />
-                  </span>
+                  <span className="cancle"></span>
                 </div>
               ))}
             </div>
           )}
           <div className="arrow_icon" onClick={toggleSelect}>
-            {isVisible ? <RiArrowUpSLine /> : <RiArrowDownSLine />}
+            {isVisible ? <img src={ARROW_UP} alt="close select" /> : <img src={ARROW_DOWN} alt="open slect" />}
           </div>
         </div>
 
         {isVisible && (
           <ul className="plant_list">
-            {plantData.map(plant => (
-              <li key={plant.id}>
+            {plantTag.map(plant => (
+              <li key={plant.nickname}>
                 <input
                   type="checkbox"
-                  name={plant.id}
-                  id={plant.id}
-                  value={plant.value}
+                  name={plant.nickname}
+                  id={plant.nickname}
+                  value={plant.nickname}
                   onChange={handlePlantSelection}
-                  checked={chosenPlants.includes(plant.value)}
+                  checked={chosenPlants.includes(plant.nickname)}
                 />
-                <label htmlFor={plant.id}>{plant.value}</label>
+                <label htmlFor={plant.nickname}>{plant.nickname}</label>
               </li>
             ))}
           </ul>

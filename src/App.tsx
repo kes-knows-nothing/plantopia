@@ -6,6 +6,7 @@ import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
 import MyPage from './pages/myPage/MyPage';
 import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
+import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
 import MyPlantRegisterPage from '@/pages/myPlantPage/MyPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
@@ -29,6 +30,7 @@ const App = () => {
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
+      <Route path="/myplant/detail" element={<MyPlantDetailPage />} />
       <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />

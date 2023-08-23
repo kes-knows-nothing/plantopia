@@ -138,7 +138,7 @@ const MainPage = () => {
   return (
     <>
       <Header isMainPage />
-      <main className="container">
+      <main className="main_page">
         <section>
           <div className="inner">
             <div className="weather_wrapper">

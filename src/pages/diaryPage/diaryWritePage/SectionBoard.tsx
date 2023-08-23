@@ -92,7 +92,7 @@ const SectionBoard = () => {
                   onClick={() => handleChosenPlantClick(plant)}
                 >
                   {plant}
-                  <span className="cancle">
+                  <span className="cancel">
                   </span>
                 </div>
               ))}

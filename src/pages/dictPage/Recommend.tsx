@@ -1,14 +1,36 @@
-import React from 'react';
+import { useState, useEffect, Children } from 'react';
 import { Link } from 'react-router-dom';
+import { db } from '@/utils/firebaseApp';
+import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
-import PLANT_IMG from '@/assets/images/icons/dict_plant2.png';
+import { mockData } from '@/mock/dictMock';
+import { codeInfo } from './DictDetailPage';
 import './Recommend.scss';
+import 'swiper/scss';
+import 'swiper/scss/navigation';
+import 'swiper/scss/pagination';
+
+export interface PlantType {
+  name: string;
+  scientificName: string;
+  imageUrl: string;
+  adviseInfo: string;
+  blightInfo: string[];
+  growCode: keyof typeof codeInfo;
+  humidityCode: keyof typeof codeInfo;
+  lightCode: keyof typeof codeInfo;
+  recommendCode: keyof typeof codeInfo;
+  temperatureCode: keyof typeof codeInfo;
+  waterCode: keyof typeof codeInfo;
+  speciesInfo: string;
+  classificationInfo: string[];
+}
 
 interface RecommendProps {
   icon: string;
   title: string;
-  target: string;
+  target: keyof typeof TargetQuery;
 }
 
 const targetClassName = {
@@ -18,46 +40,46 @@ const targetClassName = {
   dark: 'img_wrapper_gray',
 };
 
-const tartgetPlants = [
-  {
-    image: PLANT_IMG,
-    englishName: 'Philodendron Congos',
-    koreanName: '필로덴드론 콩고',
-  },
-  {
-    image: PLANT_IMG,
-    englishName: 'Monstera deliciosa',
-    koreanName: '몬스테라',
-  },
-  {
-    image: PLANT_IMG,
-    englishName: 'Pachira aquatica',
-    koreanName: '파키라',
-  },
-  {
-    image: PLANT_IMG,
-    englishName: 'Philodendron Congo',
-    koreanName: '필로덴드론 콩고',
-  },
-  {
-    image: PLANT_IMG,
-    englishName: 'Monstera deliciosa',
-    koreanName: '몬스테라',
-  },
-  {
-    image: PLANT_IMG,
-    englishName: 'Pachira aquatica',
-    koreanName: '파키라',
-  },
-];
+export const TargetQuery = {
+  beginner: ['recommendCode', 'RC01'],
+  growWell: ['growCode', 'GC01'],
+  lessWater: ['waterCode', 'WC01'],
+  dark: ['lightCode', 'LC01'],
+};
 
 const Recommend = ({ icon, title, target }: RecommendProps) => {
+  const [plant, setPlant] = useState<PlantType[]>([]);
+
+  useEffect(() => {
+    // Mock Data 사용시 아래 주석 처리
+    const getDouments = async (target: keyof typeof TargetQuery) => {
+      const dictRef = collection(db, 'dictionary');
+      const q = query(
+        dictRef,
+        where(TargetQuery[target][0], '==', TargetQuery[target][1]),
+        limit(8),
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        setPlant(prev => {
+          const data = doc.data();
+          return [...prev, data] as PlantType[];
+        });
+      });
+    };
+    getDouments(target);
+
+    // Mock Data 사용시 아래 주석 해제
+    // const getDouments = async () => {
+    //   mockData.map(item => setPlant(prev => [...prev, item]));
+    // };
+    // getDouments();
+  }, []);
+
   return (
     <div className="recommend_container">
       <div className="title_wrapper">
-        <div
-          className={targetClassName[target as keyof typeof targetClassName]}
-        >
+        <div className={targetClassName[target]}>
           <img className="plant_icon" src={icon} alt="search icon" />
         </div>
         <span>{title}</span>
@@ -71,35 +93,37 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
         modules={[Navigation, Pagination]}
         className="plants_container"
       >
-        {tartgetPlants.map(({ image, englishName, koreanName }) => (
-          <SwiperSlide key={Math.random()} className="plant_wrapper">
-            <Link to="/dict/detail">
-              <img
-                className={target === 'beginner' ? 'img_two' : 'img_three'}
-                src={image}
-                alt="plant image"
-              />
-              <p
-                className={
-                  target === 'beginner'
-                    ? 'english_name_two'
-                    : 'english_name_three'
-                }
-              >
-                {englishName}
-              </p>
-              <p
-                className={
-                  target === 'beginner'
-                    ? 'korean_name_two'
-                    : 'korean_name_three'
-                }
-              >
-                {koreanName}
-              </p>
-            </Link>
-          </SwiperSlide>
-        ))}
+        {Children.toArray(
+          plant?.map(item => (
+            <SwiperSlide className="plant_wrapper">
+              <Link to={`/dict/detail?plantName=${item.name}`} state={item}>
+                <img
+                  className={target === 'beginner' ? 'img_two' : 'img_three'}
+                  src={item.imageUrl}
+                  alt="plant image"
+                />
+                <p
+                  className={
+                    target === 'beginner'
+                      ? 'english_name_two'
+                      : 'english_name_three'
+                  }
+                >
+                  {item.scientificName}
+                </p>
+                <p
+                  className={
+                    target === 'beginner'
+                      ? 'korean_name_two'
+                      : 'korean_name_three'
+                  }
+                >
+                  {item.name}
+                </p>
+              </Link>
+            </SwiperSlide>
+          )),
+        )}
       </Swiper>
     </div>
   );

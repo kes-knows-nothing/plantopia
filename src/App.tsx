@@ -3,9 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/mainPage/MainPage';
 import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/diaryPage/DiaryPage';
-import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
+import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
+import DiaryDetailPage from './pages/diaryPage/diaryDetailPage/DiaryDetailPage';
 import MyPage from './pages/myPage/MyPage';
-import MyPlantPage from './pages/MyPlantPage/MyPlantPage';
+import MyInfo from './pages/myPage/MyInfo';
+import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
+import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
+import MyPlantRegisterPage from '@/pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/DictSearchPage';
@@ -26,8 +30,12 @@ const App = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/write" element={<DiaryWritePage />} />
+      <Route path="/diary/Detail" element={<DiaryDetailPage />} />
       <Route path="/mypage" element={<MyPage />} />
-      <Route path="/myplant" element={<MyPlantPage />} />
+      <Route path="/mypage/info" element={<MyInfo />} />
+      <Route path="/myplant" element={<MyPlantMainPage />} />
+      <Route path="/myplant/:id" element={<MyPlantDetailPage />} />
+      <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />
       <Route path="/dict/detail" element={<DictDetailPage />} />

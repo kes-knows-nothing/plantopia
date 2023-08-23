@@ -1,53 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
+import { Timestamp } from 'firebase/firestore';
+import { differenceInDays, format } from 'date-fns';
+import { db } from '@/utils/firebaseApp';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import weather from '@/assets/images/weather';
 import plants from '@/assets/images/plants';
+
 import LOCATION from '@/assets/images/icons/location.png';
 import WATERING from '@/assets/images/icons/watering.png';
 
-interface PlantInfo {
+interface UserPlant {
+  id: string;
+  frequency: number;
   imgUrl: string;
-  nickName: string;
+  isMain: boolean;
+  nickname: string;
   plantName: string;
+  purchasedDay: InstanceType<typeof Timestamp>;
+  userEmail: string;
+  wateredDays: InstanceType<typeof Timestamp>[];
 }
 
 interface PlantListProps {
-  plants: PlantInfo[];
-  onClickItem: (plant: PlantInfo) => void;
+  plants: UserPlant[];
+  onClickItem: (plant: UserPlant) => void;
 }
-
-/* Dummy Data */
-const mockPlants: PlantInfo[] = [
-  {
-    imgUrl: plants.SUB_PLANT_1,
-    nickName: '이상해풀',
-    plantName: '백량금',
-  },
-  {
-    imgUrl: plants.SUB_PLANT_2,
-    nickName: '치코리타',
-    plantName: '부겐빌레아',
-  },
-  {
-    imgUrl: plants.SUB_PLANT_3,
-    nickName: '늘푸른',
-    plantName: '네마탄투스',
-  },
-  {
-    imgUrl: plants.SUB_PLANT_2,
-    nickName: '늘푸른2',
-    plantName: '인삼벤자민',
-  },
-  {
-    imgUrl: plants.SUB_PLANT_1,
-    nickName: '쑥쑥이',
-    plantName: '동백',
-  },
-];
 
 const PlantList = ({ plants, onClickItem }: PlantListProps) => {
   return (
@@ -59,7 +43,7 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
               <div className="avatar">
                 <img src={plant.imgUrl} alt="plant" />
               </div>
-              <span className="name">{plant.nickName}</span>
+              <span className="name">{plant.nickname}</span>
             </button>
           </SwiperSlide>
         ))}
@@ -69,12 +53,74 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 };
 
 const MainPage = () => {
-  const [mainPlant, setMainPlant] = useState(mockPlants[0]);
-  const [plantList, setPlantList] = useState(mockPlants);
+  const navigate = useNavigate();
+  const [mainPlant, setMainPlant] = useState<UserPlant>();
+  const [plantList, setPlantList] = useState<UserPlant[]>([]);
 
-  const switchMainPlant = (plant: PlantInfo) => {
+  const switchMainPlant = (plant: UserPlant) => {
     setMainPlant(plant);
   };
+
+  const getUserPlant = async () => {
+    // dummy
+    const email = 'test@test.com';
+
+    const emailRef = collection(db, 'plant');
+    const q = query(emailRef, where('userEmail', '==', email));
+
+    const userPlantList: UserPlant[] = [];
+    let mainPlantData: UserPlant | null = null;
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+      const plantData: UserPlant = {
+        id: doc.id,
+        ...(doc.data() as Omit<UserPlant, 'id'>),
+      };
+
+      if (plantData.isMain) {
+        mainPlantData = plantData;
+      }
+
+      userPlantList.push(plantData);
+    });
+
+    setMainPlant(mainPlantData || userPlantList[0]);
+    setPlantList(userPlantList);
+  };
+
+  const navigateToDetail = (id?: string) => {
+    if (id) {
+      navigate(`/myplant/detail`, {
+        state: mainPlant?.id,
+      });
+    }
+  };
+
+  // frequency, prevWateringDate
+  const getWateringDday = (prevWateringDate: number | null): string => {
+    // frequency 이용해야함.
+    if (!prevWateringDate) return '정보 없음';
+
+    const diffDays = differenceInDays(prevWateringDate, Date.now());
+    if (diffDays > 0) {
+      return 'D-0';
+    }
+
+    return `D-${Math.abs(diffDays)}`;
+  };
+
+  useEffect(() => {
+    getUserPlant();
+  }, []);
+
+  const wateringDate = mainPlant?.wateredDays[0].seconds
+    ? mainPlant?.wateredDays[0].seconds * 1000
+    : null;
+
+  const firstDate = mainPlant?.purchasedDay.seconds
+    ? mainPlant?.purchasedDay.seconds * 1000
+    : null;
 
   return (
     <>
@@ -99,7 +145,10 @@ const MainPage = () => {
               </div>
               <img src={weather.RAIN} className="weather_icon" alt="weather" />
             </div>
-            <div className="main_plant">
+            <button
+              className="main_plant"
+              onClick={() => navigateToDetail(mainPlant?.id)}
+            >
               <div className="inner_circle">
                 <img src={plants.MAIN_PLANT} alt="plant" />
               </div>
@@ -107,25 +156,31 @@ const MainPage = () => {
                 <img src={WATERING} alt="watering" />
                 <div className="watering_label">물주기</div>
               </button>
-            </div>
+            </button>
             {/* main_plant_info */}
             <div className="main_plant_info">
-              <div className="eng_name_label">{mainPlant.plantName}</div>
-              <h2 className="nickname">{mainPlant.nickName}</h2>
+              <div className="eng_name_label">{mainPlant?.plantName}</div>
+              <h2 className="nickname">{mainPlant?.nickname}</h2>
               <div className="plant_info_wrapper">
                 <div className="plant_info">
                   <span className="title">물주기</span>
                   <div className="content cotent_label">
-                    <span>D-5</span>
+                    <span>{getWateringDday(wateringDate) ?? '정보 없음'}</span>
                   </div>
                 </div>
                 <div className="plant_info">
                   <span className="title">마지막 물준 날</span>
-                  <span className="content">2023-08-02</span>
+                  <span className="content">
+                    {wateringDate
+                      ? format(wateringDate, 'yyyy-MM-dd')
+                      : '정보 없음'}
+                  </span>
                 </div>
                 <div className="plant_info">
                   <span className="title">처음 함께한 날</span>
-                  <span className="content">2023-06-13</span>
+                  <span className="content">
+                    {firstDate ? format(firstDate, 'yyyy-MM-dd') : '정보 없음'}
+                  </span>
                 </div>
               </div>
             </div>

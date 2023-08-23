@@ -1,10 +1,7 @@
-import React from 'react';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-import { fireBaseAuth } from '@/myFirebase';
 
 const MainPage = () => {
-  console.log(fireBaseAuth);
   return (
     <div>
       <Header isMainPage />

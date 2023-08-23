@@ -6,6 +6,7 @@ import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
 import DiaryDetailPage from './pages/diaryPage/diaryDetailPage/DiaryDetailPage';
 import MyPage from './pages/myPage/MyPage';
+import MyInfo from './pages/myPage/MyInfo';
 import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
 import MyPlantRegisterPage from '@/pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
@@ -15,7 +16,6 @@ import DictSearchPage from './pages/dictPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
-import KaKaoLoginCallback from './pages/loginPage/KaKaoLogin';
 
 const App = () => {
   useEffect(() => {
@@ -32,13 +32,13 @@ const App = () => {
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/diary/Detail" element={<DiaryDetailPage />} />
       <Route path="/mypage" element={<MyPage />} />
+      <Route path="/mypage/info" element={<MyInfo />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
       <Route path="/myplant/:id" element={<MyPlantDetailPage />} />
       <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />
       <Route path="/dict/detail" element={<DictDetailPage />} />
-      <Route path="/auth/kakao/callback" element={<KaKaoLoginCallback />} />
     </Routes>
   );
 };

@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { fireBaseAuth } from '../../myFirebase';
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
+import { auth } from '../../utils/firebaseApp';
 import './login.scss';
 
 const LoginPage = () => {
@@ -35,11 +39,7 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await signInWithEmailAndPassword(
-        fireBaseAuth,
-        email,
-        password,
-      );
+      const response = await signInWithEmailAndPassword(auth, email, password);
       const { operationType } = response;
       // 로그인에 성공하면 fireBaseAuth의 currentUser에 정보가 담긴다
       if (operationType === 'signIn') {
@@ -51,11 +51,18 @@ const LoginPage = () => {
     }
   };
 
-  const goKakao = () => {
-    const CLIENT_ID = `${import.meta.env.VITE_KAKAO_CLIENT_ID}`;
-    const REDIRECT_URI = `${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    window.location.href = kakaoURL;
+  // 구글 OAuth
+  const goSignGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+      const response = await signInWithPopup(auth, provider); // popup을 이용한 signup
+      // 유저 정보의 이메일까지 있으면 통과
+      if (response.user.email) {
+        navigate('/');
+      }
+    } catch (e) {
+      console.warn(e);
+    }
   };
 
   return (
@@ -104,12 +111,12 @@ const LoginPage = () => {
               </button>
             </li>
             <li>
-              <button className="kakao" onClick={goKakao}>
+              <button className="kakao">
                 <span className="hide">카카오 아이디로 로그인하기</span>
               </button>
             </li>
             <li>
-              <button className="google">
+              <button className="google" onClick={goSignGoogle}>
                 <span className="hide">구글 아이디로 로그인하기</span>
               </button>
             </li>

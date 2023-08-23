@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import diaryData from './diaryData.tsx';
+import { Link } from 'react-router-dom';
 
 const GalleryView = () => {
   const cardRefs = useRef([]);

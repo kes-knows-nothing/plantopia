@@ -5,20 +5,24 @@ import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import { mockData } from '@/mock/dictMock';
+import { codeInfo } from './DictDetailPage';
 import './Recommend.scss';
+import 'swiper/scss';
+import 'swiper/scss/navigation';
+import 'swiper/scss/pagination';
 
-interface plantType {
+export interface PlantType {
   name: string;
   scientificName: string;
   imageUrl: string;
   adviseInfo: string;
   blightInfo: string[];
-  growCode: string;
-  humidityCode: string;
-  lightCode: string;
-  recommendCode: string;
-  temperatureCode: string;
-  waterCode: string;
+  growCode: keyof typeof codeInfo;
+  humidityCode: keyof typeof codeInfo;
+  lightCode: keyof typeof codeInfo;
+  recommendCode: keyof typeof codeInfo;
+  temperatureCode: keyof typeof codeInfo;
+  waterCode: keyof typeof codeInfo;
   speciesInfo: string;
   classificationInfo: string[];
 }
@@ -26,7 +30,7 @@ interface plantType {
 interface RecommendProps {
   icon: string;
   title: string;
-  target: string;
+  target: keyof typeof TargetQuery;
 }
 
 const targetClassName = {
@@ -36,7 +40,7 @@ const targetClassName = {
   dark: 'img_wrapper_gray',
 };
 
-const targetQuery = {
+export const TargetQuery = {
   beginner: ['recommendCode', 'RC01'],
   growWell: ['growCode', 'GC01'],
   lessWater: ['waterCode', 'WC01'],
@@ -44,26 +48,26 @@ const targetQuery = {
 };
 
 const Recommend = ({ icon, title, target }: RecommendProps) => {
-  const [plant, setPlant] = useState<plantType[]>([]);
+  const [plant, setPlant] = useState<PlantType[]>([]);
 
   useEffect(() => {
     // Mock Data 사용시 아래 주석 처리
-    const getDouments = async (target: keyof typeof targetQuery) => {
+    const getDouments = async (target: keyof typeof TargetQuery) => {
       const dictRef = collection(db, 'dictionary');
       const q = query(
         dictRef,
-        where(targetQuery[target][0], '==', targetQuery[target][1]),
+        where(TargetQuery[target][0], '==', TargetQuery[target][1]),
         limit(8),
       );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
         setPlant(prev => {
           const data = doc.data();
-          return [...prev, data] as plantType[];
+          return [...prev, data] as PlantType[];
         });
       });
     };
-    getDouments(target as keyof typeof targetQuery);
+    getDouments(target);
 
     // Mock Data 사용시 아래 주석 해제
     // const getDouments = async () => {
@@ -75,9 +79,7 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
   return (
     <div className="recommend_container">
       <div className="title_wrapper">
-        <div
-          className={targetClassName[target as keyof typeof targetClassName]}
-        >
+        <div className={targetClassName[target]}>
           <img className="plant_icon" src={icon} alt="search icon" />
         </div>
         <span>{title}</span>

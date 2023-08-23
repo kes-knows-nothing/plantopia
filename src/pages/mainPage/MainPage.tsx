@@ -97,7 +97,6 @@ const MainPage = () => {
     const q = query(emailRef, where('userEmail', '==', email));
 
     const userPlantList: UserPlant[] = [];
-    let mainPlantData: UserPlant | null = null;
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {
@@ -106,14 +105,19 @@ const MainPage = () => {
         ...(doc.data() as Omit<UserPlant, 'id'>),
       };
 
-      if (plantData.isMain) {
-        mainPlantData = plantData;
-      }
-
       userPlantList.push(plantData);
     });
 
-    setMainPlant(mainPlantData || userPlantList[0]);
+    let mainPlantData: UserPlant | undefined;
+
+    if (mainPlant) {
+      mainPlantData = userPlantList.find(plant => plant.id === mainPlant.id);
+    } else {
+      mainPlantData =
+        userPlantList.find(plant => plant.isMain) || userPlantList[0];
+    }
+
+    setMainPlant(mainPlantData);
     setPlantList(userPlantList);
   };
 

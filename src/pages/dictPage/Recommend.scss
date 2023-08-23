@@ -80,7 +80,6 @@
         height: 13.182rem;
         margin: 1rem 0;
         border-radius: 1rem;
-        background-color: lightpink;
       }
 
       .img_three {
@@ -88,7 +87,6 @@
         height: 8.5rem;
         margin: 0.7rem 0;
         border-radius: 1rem;
-        background-color: lightpink;
       }
 
       .english_name_two {
@@ -137,6 +135,10 @@
     .swiper-button-prev::after {
       font-size: 1.2rem;
       color: #ffffffd0;
+    }
+
+    .swiper-pagination-bullet {
+      display: none;
     }
   }
 }

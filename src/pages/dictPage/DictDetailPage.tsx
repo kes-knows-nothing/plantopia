@@ -1,5 +1,6 @@
 import { Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { PlantType } from './Recommend';
 import './DictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
@@ -17,7 +18,7 @@ const codeToImg = (icons: string[]) => {
   );
 };
 
-const codeInfo = {
+export const codeInfo = {
   HC: '',
   HC01: '~ 40%',
   HC02: '40 ~ 70%',
@@ -43,7 +44,7 @@ const codeInfo = {
 
 const DictDetailPage = () => {
   const location = useLocation();
-  const plantData = location.state;
+  const plantData: PlantType = location.state;
 
   const plantInfoForm = [
     {
@@ -59,12 +60,12 @@ const DictDetailPage = () => {
     {
       image: WATER_ICON,
       title: '습도',
-      content: codeInfo[plantData.humidityCode as keyof typeof codeInfo],
+      content: codeInfo[plantData.humidityCode],
     },
     {
       image: WATERPOT_ICON,
       title: '관리 수준',
-      content: codeInfo[plantData.recommendCode as keyof typeof codeInfo],
+      content: codeInfo[plantData.recommendCode],
     },
     { image: BUG_ICON, title: '병해충 정보', content: plantData.blightInfo },
   ];
@@ -72,15 +73,15 @@ const DictDetailPage = () => {
   const plantEnvForm = [
     {
       type: '햇빛',
-      value: codeInfo[plantData.lightCode as keyof typeof codeInfo],
+      value: codeInfo[plantData.lightCode],
     },
     {
       type: '물',
-      value: codeInfo[plantData.waterCode as keyof typeof codeInfo],
+      value: codeInfo[plantData.waterCode],
     },
     {
       type: '생육적정온도',
-      value: codeInfo[plantData.temperatureCode as keyof typeof codeInfo],
+      value: codeInfo[plantData.temperatureCode],
     },
   ];
 

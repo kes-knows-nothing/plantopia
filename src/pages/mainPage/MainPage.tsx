@@ -96,29 +96,39 @@ const MainPage = () => {
     const emailRef = collection(db, 'plant');
     const q = query(emailRef, where('userEmail', '==', email));
 
-    const userPlantList: UserPlant[] = [];
+    try {
+      const userPlantList: UserPlant[] = [];
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
-      const plantData: UserPlant = {
-        id: doc.id,
-        ...(doc.data() as Omit<UserPlant, 'id'>),
-      };
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        const plantData: UserPlant = {
+          id: doc.id,
+          ...(doc.data() as Omit<UserPlant, 'id'>),
+        };
 
-      userPlantList.push(plantData);
-    });
+        userPlantList.push(plantData);
+      });
 
-    let mainPlantData: UserPlant | undefined;
+      let mainPlantData: UserPlant | undefined;
 
-    if (mainPlant) {
-      mainPlantData = userPlantList.find(plant => plant.id === mainPlant.id);
-    } else {
-      mainPlantData =
-        userPlantList.find(plant => plant.isMain) || userPlantList[0];
+      if (mainPlant) {
+        mainPlantData = userPlantList.find(plant => plant.id === mainPlant.id);
+      } else {
+        mainPlantData =
+          userPlantList.find(plant => plant.isMain) || userPlantList[0];
+      }
+
+      setMainPlant(mainPlantData);
+      setPlantList(userPlantList);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error(error);
+      }
+
+      alert('에러가 발생하였습니다. 새로고침을 해주세요!');
     }
-
-    setMainPlant(mainPlantData);
-    setPlantList(userPlantList);
   };
 
   useEffect(() => {
@@ -148,7 +158,9 @@ const MainPage = () => {
               </div>
               <img src={weather.RAIN} className="weather_icon" alt="weather" />
             </div>
-            <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
+            {mainPlant && (
+              <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
+            )}
           </div>
           <PlantList plants={plantList} onClickItem={switchMainPlant} />
         </section>

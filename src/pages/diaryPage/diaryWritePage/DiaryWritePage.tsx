@@ -1,10 +1,12 @@
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import SectionPhoto from './SectionPhoto';
 import SectionBoard from './SectionBoard';
 
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
+  const userId = 'test_user';
+
   return (
     <>
       <header className="sub_header">
@@ -14,7 +16,7 @@ const DiaryWritePage = () => {
         </Link>
       </header>
       <main className="diary_write_wrap">
-        <SectionPhoto />
+        <SectionPhoto userId={userId} />
         <SectionBoard />
         <button className="save_button">저장</button>
       </main>

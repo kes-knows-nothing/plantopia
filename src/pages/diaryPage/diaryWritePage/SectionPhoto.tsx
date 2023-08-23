@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
+import { storage } from '@/utils/firebaseApp';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import { RiCloseFill } from 'react-icons/ri';
 import 'swiper/css';
 
-const SectionPhoto = () => {
+
+const SectionPhoto: React.FC<{ userId: string }> = ({ userId }) => {
   const [slidesPerView, setSlidesPerView] = useState(3);
-  const [imgUrls, setImgUrls] = useState([]); 
+  const [imgUrls, setImgUrls] = useState<{ backgroundImage: string }[]>([]);
+  const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
+    [],
+  );
   const [currentCount, setCurrentCount] = useState(0);
 
-  /* 반응형 설정 */
   useEffect(() => {
     const handleResize = () => {
       setSlidesPerView(window.innerWidth > 768 ? 4 : 2.5);
@@ -22,25 +31,66 @@ const SectionPhoto = () => {
     };
   }, []);
 
-  const handleFileSelect = event => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files[0];
-    if (file && currentCount < 4) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const backgroundImage = `url(${e.target.result})`;
-        const updatedImgUrls = [...imgUrls, { backgroundImage }];
-        setImgUrls(updatedImgUrls);
-        setCurrentCount(currentCount + 1);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+  
+    try {
+      const previewUrl = await readFileAsDataURL(file);
+      setPreviewImgs([
+        ...previewImgs,
+        { backgroundImage: `url(${previewUrl})` },
+      ]);
+      setCurrentCount(currentCount + 1);
+  
+      const storagePath = `diary_images/${userId}/${file.name}`;
+      const imageRef = ref(storage, storagePath); 
+  
+      const snapshot = await uploadBytes(imageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      setImgUrls([...imgUrls, { backgroundImage: `url(${url})` }]);
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
+  
     event.target.value = null;
   };
 
-  const handleDeleteFile = index => {
-    const updatedImgUrls = imgUrls.filter((_, i) => i !== index);
-    setImgUrls(updatedImgUrls);
-    setCurrentCount(currentCount - 1);
+  const handleDeleteFile = async (index: number) => {
+    const imageUrlToDelete = imgUrls[index].backgroundImage;
+    const fileName = getImageFileName(imageUrlToDelete);
+
+    const imageRef = ref(storage, fileName);
+
+    try {
+      const updatedPreviewImgs = previewImgs.filter((_, i) => i !== index);
+      setPreviewImgs(updatedPreviewImgs);
+      setCurrentCount(currentCount - 1);
+
+      await deleteObject(imageRef);
+
+      const updatedImgUrls = imgUrls.filter((_, i) => i !== index);
+      setImgUrls(updatedImgUrls);
+    } catch (error) {
+      console.error('Error deleting file:', error);
+    }
+  };
+
+  const getImageFileName = (imageUrl: string) => {
+    const urlParts = imageUrl.split('/');
+    const fileName = urlParts[urlParts.length - 1].split('?')[0];
+    return decodeURIComponent(fileName);
+  };
+
+  const readFileAsDataURL = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -72,7 +122,7 @@ const SectionPhoto = () => {
         modules={[Navigation]}
         slidesPerView={slidesPerView}
       >
-        {imgUrls.map((url, index) => (
+        {previewImgs.map((url, index) => (
           <SwiperSlide key={index} className="slide">
             <div
               className={`photo_slide attached`}
@@ -88,9 +138,7 @@ const SectionPhoto = () => {
               <button
                 className="photo_delete_btn"
                 onClick={() => handleDeleteFile(index)}
-              >
-                <RiCloseFill />
-              </button>
+              ></button>
             )}
           </SwiperSlide>
         ))}

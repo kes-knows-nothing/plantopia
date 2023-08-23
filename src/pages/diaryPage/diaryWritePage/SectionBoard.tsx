@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { db } from '@/utils/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
@@ -13,9 +13,9 @@ interface Plant {
 
 const SectionBoard = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [chosenPlants, setChosenPlants] = useState([]);
-  const [plantTag, setPlantTag] = useState([]);
-  const selectWrapperRef = useRef(null);
+  const [chosenPlants, setChosenPlants] = useState<string[]>([]);
+  const [plantTag, setPlantTag] = useState<Plant[]>([]);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const getPlantsFromFirestore = async () => {
@@ -32,11 +32,11 @@ const SectionBoard = () => {
     getPlantsFromFirestore();
   }, []);
 
-  const toggleSelect = useCallback(() => {
+  const toggleSelect = () => {
     setIsVisible(prevVisible => !prevVisible);
-  }, []);
+  };
 
-  const handlePlantSelection = (event) => {
+  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedPlant = event.target.value;
 
     setChosenPlants(prevChosenPlants => {
@@ -48,7 +48,7 @@ const SectionBoard = () => {
     });
   };
 
-  const handleChosenPlantClick = (plant) => {
+  const handleChosenPlantClick = (plant: string) => {
     setChosenPlants(prevChosenPlants =>
       prevChosenPlants.filter(p => p !== plant),
     );
@@ -57,8 +57,8 @@ const SectionBoard = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        selectWrapperRef.current &&
-        !selectWrapperRef.current.contains(event.target)
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
       ) {
         setIsVisible(false);
       }
@@ -77,7 +77,7 @@ const SectionBoard = () => {
         <input type="text" placeholder="제목을 작성하세요." className="title" />
       </div>
 
-      <div className="plant_select_wrapper" ref={selectWrapperRef}>
+      <div className="plant_select_wrapper" ref={wrapperRef}>
         <div className="plant_select">
           {chosenPlants.length === 0 ? (
             <div className="choose_text" onClick={toggleSelect}>

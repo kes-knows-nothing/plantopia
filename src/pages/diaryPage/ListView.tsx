@@ -1,5 +1,6 @@
 import diaryData from './diaryData.tsx';
 
+import { Link } from 'react-router-dom';
 import { RiMore2Fill } from 'react-icons/ri';
 
 const ListView = () => {
@@ -23,24 +24,26 @@ const ListView = () => {
       </div>
       <ul className="diary_list_wrap inner">
         {diaryData.map((diary, index) => (
-          <li className="diary_list inner" key={index}>
-            <div className="left_box">
-              <h5 className="content_title head">{diary.title}</h5>
-              <p className="content_content">{diary.content}</p>
-              <span className="content_date">{diary.postedAt}</span>
-            </div>
-            <div className="right_box">
-              <button className="more head">
-                <RiMore2Fill />
-              </button>
-              <div
-                className={`main_img ${
-                  diary.imgUrl.length === 0 ? 'hide' : ''
-                } ${diary.imgUrl.length > 1 ? 'many' : ''}`}
-                style={{ backgroundImage: getMainImage(diary) }}
-              ></div>
-            </div>
-          </li>
+          <Link to="/diary/detail">
+            <li className="diary_list inner" key={index}>
+              <div className="left_box">
+                <h5 className="content_title head">{diary.title}</h5>
+                <p className="content_content">{diary.content}</p>
+                <span className="content_date">{diary.postedAt}</span>
+              </div>
+              <div className="right_box">
+                <button className="more head">
+                  <RiMore2Fill />
+                </button>
+                <div
+                  className={`main_img ${
+                    diary.imgUrl.length === 0 ? 'hide' : ''
+                  } ${diary.imgUrl.length > 1 ? 'many' : ''}`}
+                  style={{ backgroundImage: getMainImage(diary) }}
+                ></div>
+              </div>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

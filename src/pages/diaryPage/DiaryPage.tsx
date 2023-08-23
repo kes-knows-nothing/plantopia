@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';
@@ -35,7 +35,7 @@ const DiaryPage = () => {
 
   return (
     <main className="diary_page">
-      <div className="container">
+      <div className="diary_container">
         <Header />
         <h2 className="title inner">
           <span>{'Joy'}</span>님, 식물의 성장 기록을 남겨보세요

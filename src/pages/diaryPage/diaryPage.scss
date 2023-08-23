@@ -17,7 +17,6 @@
   -webkit-box-orient: vertical;
 }
 
-
 @mixin diary-stack-icon($top: 0.2rem, $right: 0.2rem, $size: 1rem) {
   &.many::before {
     content: '';
@@ -41,7 +40,7 @@
   flex-direction: column;
   min-height: 100vh;
 
-  .container {
+  .diary_container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -79,6 +78,7 @@
         width: 45%;
         height: 100%;
         color: #d6d6d6;
+        cursor: pointer;
       }
       .list_tab {
         font-size: 2.8rem;
@@ -152,7 +152,7 @@
                 font-weight: 700;
                 color: #22264c;
 
-                @include ellipsis(1, 3rem)
+                @include ellipsis(1, 3rem);
               }
 
               .content_content {

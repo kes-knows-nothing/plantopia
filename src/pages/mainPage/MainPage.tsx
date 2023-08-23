@@ -3,7 +3,7 @@ import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
 import { Timestamp } from 'firebase/firestore';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, format, addDays } from 'date-fns';
 import { db } from '@/utils/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -97,17 +97,21 @@ const MainPage = () => {
     }
   };
 
-  // frequency, prevWateringDate
-  const getWateringDday = (prevWateringDate: number | null): string => {
-    // frequency 이용해야함.
-    if (!prevWateringDate) return '정보 없음';
+  const getWateringDday = (
+    lastWateringDate: number | null,
+    frequency?: number,
+  ): string => {
+    if (!lastWateringDate || !frequency) return '정보 없음';
 
-    const diffDays = differenceInDays(prevWateringDate, Date.now());
+    const nextWateringDate = addDays(lastWateringDate, frequency);
+    const diffDays = differenceInDays(Date.now(), nextWateringDate);
+
+    /* 물을 주어야할 날이 지났다면 모두 D-day로 표시 */
     if (diffDays > 0) {
-      return 'D-0';
+      return 'D-day';
     }
 
-    return `D-${Math.abs(diffDays)}`;
+    return `D${diffDays}`;
   };
 
   useEffect(() => {
@@ -165,7 +169,9 @@ const MainPage = () => {
                 <div className="plant_info">
                   <span className="title">물주기</span>
                   <div className="content cotent_label">
-                    <span>{getWateringDday(wateringDate) ?? '정보 없음'}</span>
+                    <span>
+                      {getWateringDday(wateringDate, mainPlant?.frequency)}
+                    </span>
                   </div>
                 </div>
                 <div className="plant_info">

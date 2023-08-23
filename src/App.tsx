@@ -12,6 +12,7 @@ import DictSearchPage from './pages/dictPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
+import KaKaoLoginCallback from './pages/loginPage/KaKaoLogin';
 
 function App() {
   useEffect(() => {
@@ -31,6 +32,7 @@ function App() {
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />
       <Route path="/dict/detail" element={<DictDetailPage />} />
+      <Route path="/auth/kakao/callback" element={<KaKaoLoginCallback />} />
     </Routes>
   );
 }

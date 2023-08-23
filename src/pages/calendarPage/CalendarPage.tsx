@@ -22,10 +22,11 @@ import {
   setDoc,
   doc,
 } from 'firebase/firestore';
-import { db } from '@/myFirebase';
-import { getAuth } from 'firebase/auth';
+import { db, fireBaseAuth } from '@/myFirebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import 'react-calendar/dist/Calendar.css';
 import './calendar.scss';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * firebase에서 받아온걸로 변경해야함
@@ -106,6 +107,7 @@ const stickerArr = [
 /** 샘플 데이터 END */
 
 const CalendarPage = () => {
+  const navigator = useNavigate();
   const iconIdxRef = useRef(0);
   const [selectDate, setSelectDate] = useState<CalendarType>(new Date());
   const dateList = waterValue.find(arr => {
@@ -148,6 +150,13 @@ const CalendarPage = () => {
   };
 
   useEffect(() => {
+    /* firebase 로그인 체크 */
+    onAuthStateChanged(fireBaseAuth, user => {
+      if (!user) {
+        alert('로그인이 필요한 서비스입니다');
+        navigator('/login');
+      }
+    });
     getWatering();
   }, []);
 

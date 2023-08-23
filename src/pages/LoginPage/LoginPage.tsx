@@ -51,6 +51,13 @@ const LoginPage = () => {
     }
   };
 
+  const goKakao = () => {
+    const CLIENT_ID = `${import.meta.env.VITE_KAKAO_CLIENT_ID}`;
+    const REDIRECT_URI = `${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    window.location.href = kakaoURL;
+  };
+
   return (
     <main className="login_page">
       <div className="login_box inner">
@@ -97,7 +104,7 @@ const LoginPage = () => {
               </button>
             </li>
             <li>
-              <button className="kakao">
+              <button className="kakao" onClick={goKakao}>
                 <span className="hide">카카오 아이디로 로그인하기</span>
               </button>
             </li>

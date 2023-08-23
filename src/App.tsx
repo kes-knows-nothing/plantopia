@@ -3,7 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/mainPage/MainPage';
 import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/diaryPage/DiaryPage';
-import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
+import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
+import DiaryDetailPage from './pages/diaryPage/diaryDetailPage/DiaryDetailPage';
 import MyPage from './pages/myPage/MyPage';
 import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
@@ -28,6 +29,7 @@ const App = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/write" element={<DiaryWritePage />} />
+      <Route path="/diary/Detail" element={<DiaryDetailPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
       <Route path="/myplant/detail" element={<MyPlantDetailPage />} />

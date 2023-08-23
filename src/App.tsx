@@ -7,7 +7,7 @@ import DiaryWritePage from './pages/diaryWritePage/DiaryWritePage';
 import MyPage from './pages/myPage/MyPage';
 import MyPlantMainPage from './pages/myPlantPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
-import MyPlantRegisterPage from '@/pages/myPlantPage/MyPlantRegister/MyPlantRegisterPage';
+import MyPlantRegisterPage from '@/pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/DictSearchPage';

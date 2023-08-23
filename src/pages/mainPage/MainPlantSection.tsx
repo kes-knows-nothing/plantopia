@@ -1,5 +1,5 @@
 import { differenceInDays, format, addDays } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { UserPlant } from './MainPage';
 
 import plants from '@/assets/images/plants';
@@ -10,16 +10,6 @@ interface MainPlantProps {
 }
 
 const MainPlant = ({ mainPlant }: MainPlantProps) => {
-  const navigate = useNavigate();
-
-  const navigateToDetail = (id?: string) => {
-    if (id) {
-      navigate(`/myplant/detail`, {
-        state: mainPlant?.id,
-      });
-    }
-  };
-
   const getWateringDday = (
     lastWateringDate: number | null,
     frequency?: number,
@@ -37,20 +27,17 @@ const MainPlant = ({ mainPlant }: MainPlantProps) => {
     return `D${diffDays}`;
   };
 
-  const wateringDate = mainPlant?.wateredDays[0].seconds
+  const lastWateringDate = mainPlant?.wateredDays[0].seconds
     ? mainPlant?.wateredDays[0].seconds * 1000
     : null;
 
-  const firstDate = mainPlant?.purchasedDay.seconds
+  const registerDate = mainPlant?.purchasedDay.seconds
     ? mainPlant?.purchasedDay.seconds * 1000
     : null;
 
   return (
     <>
-      <button
-        className="main_plant"
-        onClick={() => navigateToDetail(mainPlant?.id)}
-      >
+      <Link to="/myplant/detail" state={mainPlant?.id} className="main_plant">
         <div className="inner_circle">
           <img src={plants.MAIN_PLANT} alt="plant" />
         </div>
@@ -58,7 +45,7 @@ const MainPlant = ({ mainPlant }: MainPlantProps) => {
           <img src={WATERING} alt="watering" />
           <div className="watering_label">물주기</div>
         </button>
-      </button>
+      </Link>
       {/* main_plant_info */}
       <div className="main_plant_info">
         <div className="eng_name_label">{mainPlant?.plantName}</div>
@@ -67,19 +54,23 @@ const MainPlant = ({ mainPlant }: MainPlantProps) => {
           <div className="plant_info">
             <span className="title">물주기</span>
             <div className="content cotent_label">
-              <span>{getWateringDday(wateringDate, mainPlant?.frequency)}</span>
+              <span>
+                {getWateringDday(lastWateringDate, mainPlant?.frequency)}
+              </span>
             </div>
           </div>
           <div className="plant_info">
             <span className="title">마지막 물준 날</span>
             <span className="content">
-              {wateringDate ? format(wateringDate, 'yyyy-MM-dd') : '정보 없음'}
+              {lastWateringDate
+                ? format(lastWateringDate, 'yyyy-MM-dd')
+                : '정보 없음'}
             </span>
           </div>
           <div className="plant_info">
             <span className="title">처음 함께한 날</span>
             <span className="content">
-              {firstDate ? format(firstDate, 'yyyy-MM-dd') : '정보 없음'}
+              {registerDate ? format(registerDate, 'yyyy-MM-dd') : '정보 없음'}
             </span>
           </div>
         </div>

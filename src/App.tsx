@@ -30,7 +30,7 @@ const App = () => {
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
-      <Route path="/myplant/detail" element={<MyPlantDetailPage />} />
+      <Route path="/myplant/:id" element={<MyPlantDetailPage />} />
       <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />

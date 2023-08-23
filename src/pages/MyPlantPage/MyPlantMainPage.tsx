@@ -40,26 +40,26 @@ const dummyData = [
 const MyPlantMainPage = () => {
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
   const [myMainPlant, setMyMainPlant] = useState<MyPlantProps[]>();
+  const userId = 'test@test.com';
+  const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
+  const getQuerySnapshot = async () => {
+    const querySnapshot = await getDocs(q);
+    const plantData: Array<MyPlantProps> = [];
+    querySnapshot.forEach(doc => {
+      plantData.push(doc.data());
+    });
+    const mainPlant: Array<MyPlantProps> = plantData.filter(
+      plant => plant.isMain == true,
+    );
+    const notMainPlant: Array<MyPlantProps> = plantData.filter(
+      plant => plant.isMain == false,
+    );
+    setMyMainPlant(mainPlant);
+    setMyPlantData(notMainPlant);
+    console.log(myPlantData);
+    console.log(myMainPlant);
+  };
   useEffect(() => {
-    const userId = 'test@test.com';
-    const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
-    const getQuerySnapshot = async () => {
-      const querySnapshot = await getDocs(q);
-      const plantData: Array<MyPlantProps> = [];
-      querySnapshot.forEach(doc => {
-        plantData.push(doc.data());
-      });
-      const mainPlant: Array<MyPlantProps> = plantData.filter(
-        plant => plant.isMain == true,
-      );
-      const notMainPlant: Array<MyPlantProps> = plantData.filter(
-        plant => plant.isMain == false,
-      );
-      setMyMainPlant(mainPlant);
-      setMyPlantData(notMainPlant);
-      console.log(myPlantData);
-      console.log(myMainPlant);
-    };
     getQuerySnapshot();
   }, []);
 

@@ -7,9 +7,10 @@ import WATERING from '@/assets/images/icons/watering.png';
 
 interface MainPlantProps {
   mainPlant?: UserPlant;
+  onWaterPlant: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const MainPlant = ({ mainPlant }: MainPlantProps) => {
+const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
   const getWateringDday = (
     lastWateringDate: number | null,
     frequency?: number,
@@ -41,7 +42,7 @@ const MainPlant = ({ mainPlant }: MainPlantProps) => {
         <div className="inner_circle">
           <img src={plants.MAIN_PLANT} alt="plant" />
         </div>
-        <button className="watering_btn">
+        <button className="watering_btn" onClick={onWaterPlant}>
           <img src={WATERING} alt="watering" />
           <div className="watering_label">물주기</div>
         </button>

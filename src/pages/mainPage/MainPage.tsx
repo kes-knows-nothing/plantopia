@@ -2,9 +2,16 @@ import { useEffect, useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
-import { Timestamp } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  Timestamp,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
@@ -52,6 +59,31 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 const MainPage = () => {
   const [mainPlant, setMainPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
+
+  const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    if (!mainPlant) return;
+
+    const plantRef = doc(db, 'plant', mainPlant.id);
+
+    try {
+      await updateDoc(plantRef, {
+        wateredDays: [...mainPlant.wateredDays, Timestamp.fromDate(new Date())],
+      });
+      await getUserPlant();
+
+      alert('물을 잘 먹었어요!');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error(error);
+      }
+
+      alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
+    }
+  };
 
   const switchMainPlant = (plant: UserPlant) => {
     setMainPlant(plant);
@@ -112,7 +144,7 @@ const MainPage = () => {
               </div>
               <img src={weather.RAIN} className="weather_icon" alt="weather" />
             </div>
-            <MainPlant mainPlant={mainPlant} />
+            <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
           </div>
           <PlantList plants={plantList} onClickItem={switchMainPlant} />
         </section>

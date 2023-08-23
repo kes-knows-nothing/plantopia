@@ -5,7 +5,7 @@ import SectionBoard from './SectionBoard';
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
-  const userId = 'test_user';
+  const userId = 'test@test.com';
 
   return (
     <>

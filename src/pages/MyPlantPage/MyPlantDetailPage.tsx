@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './myPlantDetailPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import ellipseImage from './img/Ellipse_200.png';
@@ -8,7 +9,7 @@ import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
 
-import { getDocs, collection, where, query } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 
 interface WateredDay {
@@ -42,20 +43,19 @@ const dummyData = [
 ];
 
 const MyPlantDetailPage = () => {
-  const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
-  const userId = 'test@test.com';
-  const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
-  const getQuerySnapshot = async () => {
-    const querySnapshot = await getDocs(q);
-    const plantData: Array<MyPlantProps> = [];
-    querySnapshot.forEach(doc => {
-      plantData.push(doc.data());
-    });
-    setMyPlantData(plantData);
+  const { id } = useParams();
+  const getPlantDetail = async () => {
+    const docRef = doc(db, 'plant', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data());
+    } else {
+      console.log('문서가 존재하지 않습니다.');
+    }
   };
+
   useEffect(() => {
-    getQuerySnapshot();
-    console.log(myPlantData);
+    getPlantDetail();
   }, []);
 
   return (

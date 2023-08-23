@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import '@/pages/MyPlantPage/components/subplantlist.scss';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
@@ -6,7 +7,7 @@ import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png';
 import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
 import ellipseImage from '@/pages/MyPlantPage/img/Ellipse_200.png';
-import { getDocs, collection, where, query } from 'firebase/firestore';
+import { getDocs, collection, where, query, doc } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 
 interface WateredDay {
@@ -15,6 +16,7 @@ interface WateredDay {
 }
 
 interface MyPlantProps {
+  id: string;
   frequency: number;
   imgUrl: string;
   isMain: boolean;
@@ -60,7 +62,7 @@ const SubPlantList = () => {
     const querySnapshot = await getDocs(q);
     const plantData: Array<MyPlantProps> = [];
     querySnapshot.forEach(doc => {
-      plantData.push(doc.data());
+      plantData.push({ ...doc.data(), id: doc.id });
       plantData.sort(compare);
       setMyPlantData(plantData);
     });
@@ -80,7 +82,9 @@ const SubPlantList = () => {
               src={plant.imgUrl}
               alt="subPlantImg"
             />
-            <p className="subplant_name">{plant.plantName}</p>
+            <Link to={`/myplant/${plant.id}`}>
+              <p className="subplant_name">{plant.plantName}</p>
+            </Link>
           </div>
           <div className="main_check_and_edit">
             <img

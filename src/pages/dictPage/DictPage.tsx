@@ -1,5 +1,6 @@
 import React from 'react';
 import Recommend from './Recommend';
+import { TargetQuery } from './Recommend';
 import InputForm from './InputForm';
 import './DictPage.scss';
 import Header from '@/components/header/Header';
@@ -9,7 +10,13 @@ import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';
 import WATER_ICON from '@/assets/images/icons/dict_water2.png';
 import MOON_ICON from '@/assets/images/icons/dict_moon.png';
 
-const recommend = [
+interface RecommendType {
+  icon: string;
+  title: string;
+  target: keyof typeof TargetQuery;
+}
+
+const recommend: RecommendType[] = [
   { icon: PLANT1_ICON, title: '식린이를 위한 추천 식물!', target: 'beginner' },
   {
     icon: PLANT2_ICON,

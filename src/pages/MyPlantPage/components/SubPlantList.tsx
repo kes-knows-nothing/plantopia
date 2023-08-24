@@ -10,6 +10,9 @@ import ellipseImage from '@/pages/MyPlantPage/img/Ellipse_200.png';
 import { getDocs, collection, where, query, doc } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 
+
+
+
 interface WateredDay {
   seconds: number;
   nanoseconds: number;

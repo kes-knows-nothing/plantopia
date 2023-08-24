@@ -19,41 +19,47 @@ const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
 const DictSearchPage = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue;
+  const [searchValue, setSearchValue] = useState(inputValue);
   const [plant, setPlant] = useState<PlantType[]>([]);
-  const [reSearch, setReSearch] = useState<boolean>(false);
+
+  const getDouments = async (plantName: string) => {
+    let fieldName = 'name';
+    if (!koreanRe.test(plantName)) {
+      fieldName = 'scientificName';
+      plantName = plantName.replace(plantName[0], plantName[0].toUpperCase());
+    }
+    const dictRef = collection(db, 'dictionary');
+    const q = query(
+      dictRef,
+      orderBy(fieldName),
+      startAt(`${plantName}`),
+      endAt(`${plantName}\uf8ff`),
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+      setPlant(prev => {
+        const data = doc.data();
+        return [...prev, data] as PlantType[];
+      });
+    });
+  };
+
+  const getMockData = async () => {
+    mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
+  };
 
   useEffect(() => {
     setPlant([]);
-    // Mock Data 사용시 아래 주석 처리
-    const getDouments = async (plantName: string) => {
-      let fieldName = 'name';
-      if (!koreanRe.test(plantName)) {
-        fieldName = 'scientificName';
-        plantName = plantName.replace(plantName[0], plantName[0].toUpperCase());
-      }
-      const dictRef = collection(db, 'dictionary');
-      const q = query(
-        dictRef,
-        orderBy(fieldName),
-        startAt(`${plantName}`),
-        endAt(`${plantName}\uf8ff`),
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(doc => {
-        setPlant(prev => {
-          const data = doc.data();
-          return [...prev, data] as PlantType[];
-        });
-      });
-    };
-    getDouments(inputValue);
+    // Mock Data 사용시 getDouments 주석 처리
+    getDouments(searchValue);
 
-    // Mock Data 사용시 아래 주석 해제
-    // const getDouments = async () => {
-    //   mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
-    // };
-    // getDouments();
-  }, [reSearch]);
+    // Mock Data 사용시 getMockData 주석 해제
+    // getMockData();
+  }, [searchValue]);
+
+  const updateSearchValue = (input: string | undefined) => {
+    setSearchValue(input);
+  };
 
   return (
     <div className="search_container">
@@ -67,8 +73,8 @@ const DictSearchPage = () => {
         <input />
         <InputForm
           nextPath={'/dict/search'}
-          initialInput={inputValue}
-          setReSearch={setReSearch}
+          initialInput={searchValue}
+          updateInputValue={updateSearchValue}
         />
         <section className="plant_container">
           {plant.length ? (

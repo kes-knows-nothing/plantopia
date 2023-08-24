@@ -5,7 +5,7 @@ import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import { mockData } from '@/mock/dictMock';
-import { codeInfo } from './DictDetailPage';
+import { codeInfo } from './dictDetailPage/DictDetailPage';
 import './Recommend.scss';
 import 'swiper/scss';
 import 'swiper/scss/navigation';

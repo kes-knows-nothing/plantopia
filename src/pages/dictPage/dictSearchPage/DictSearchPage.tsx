@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './DictSearchPage.scss';
-import InputForm from './InputForm';
+import InputForm from '../InputForm';
 import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';
 
 const searchResult = [

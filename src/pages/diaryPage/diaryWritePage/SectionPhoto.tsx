@@ -36,7 +36,7 @@ const SectionPhoto: React.FC<{ userId: string }> = ({ userId }) => {
 
       const snapshot = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(snapshot.ref);
-      setImgUrls([...imgUrls, { backgroundImage: `url(${url})` }]);
+      setImgUrls([...imgUrls, url]);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -45,7 +45,7 @@ const SectionPhoto: React.FC<{ userId: string }> = ({ userId }) => {
   };
 
   const handleDeleteFile = async (index: number) => {
-    const imageUrlToDelete = imgUrls[index].backgroundImage;
+    const imageUrlToDelete = imgUrls[index];
     const fileName = getImageFileName(imageUrlToDelete);
 
     const imageRef = ref(storage, fileName);

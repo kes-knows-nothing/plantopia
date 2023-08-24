@@ -4,7 +4,8 @@
 body {
   font-family: 'Pretendard', Arial, sans-serif;
   margin: auto;
-  max-width: 768px;
+  min-width: 320px;
+  max-width: 500px;
   -webkit-text-size-adjust: 100%;
   word-wrap: break-word;
   word-break: break-all;

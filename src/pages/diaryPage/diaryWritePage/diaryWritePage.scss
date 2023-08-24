@@ -20,11 +20,12 @@
   background-color: #fff;
   border-bottom: 1px solid #f7f8f7;
 
-  strong {
+  > strong {
     font-size: 1.6rem;
     font-weight: 900;
   }
-  .close_btn {
+
+  > .close_btn {
     position: absolute;
     right: 2rem;
     top: 50%;
@@ -157,7 +158,8 @@
           height: 2.4rem;
           border: none;
           border-radius: 50%;
-          background-color: #000;
+          background: #000 url('@/assets/images/icons/diary_close_w.png')
+            no-repeat center / 1rem;
           color: #fff;
           font-size: 1.6rem;
 
@@ -350,55 +352,36 @@
   }
 
   /* PC 반응형 작업 */
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 500px) {
     .photo_section {
-      padding: 0;
+      padding-right: 0;
 
       > .upload_button_wrapper {
-        width: 15rem;
-        margin: 0;
-
+        min-width: 10rem;
         > .upload_button {
-          @include photo-slide-wrap(13rem, 13rem);
+          @include photo-slide-wrap(10rem, 10rem);
         }
       }
 
       > .photo_select_swiper {
-        width: 100%;
-        display: flex;
-        margin-right: 0;
+        padding-right: 0.5rem;
 
-        &.full_photo {
-          .swiper-wrapper {
-            justify-content: space-between;
-            padding-left: 2rem;
+        .slide {
+          width: 10rem !important;
+
+          > .photo_slide {
+            @include photo-slide-wrap(10rem, 10rem);
+
+            > .main_photo {
+              font-size: 1.2rem;
+            }
           }
-        }
 
-        > .swiper-wrapper {
-          padding-left: 4.5rem;
-
-          > .slide {
-            width: 13rem !important;
-            margin-right: 4.5rem;
-
-            &:last-child {
-              margin-right: 3rem;
-            }
-
-            > .photo_slide {
-              @include photo-slide-wrap(13rem, 13rem);
-
-              > .main_photo {
-                font-size: 1.4rem;
-              }
-            }
-            > .photo_delete_btn {
-              width: 3.7rem;
-              height: 3.7rem;
-              right: -1.2rem;
-              top: -1.2rem;
-            }
+          > .photo_delete_btn {
+            width: 3rem;
+            height: 3rem;
+            right: -1rem;
+            top: -1rem;
           }
         }
       }
@@ -414,6 +397,12 @@
       > .plant_select_wrapper {
         > .plant_select {
           font-size: 1.6rem;
+          > .chosen_wrap {
+            font-size: 1.6rem;
+            .chosen_plant {
+              padding: 1.5rem;
+            }
+          }
 
           > .choose_text {
             font-size: 1.6rem;

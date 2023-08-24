@@ -11,6 +11,7 @@
 }
 
 /* sub_header */
+
 .sub_header {
   position: relative;
   display: flex;
@@ -20,12 +21,11 @@
   background-color: #fff;
   border-bottom: 1px solid #f7f8f7;
 
-  > strong {
+  strong {
     font-size: 1.6rem;
     font-weight: 900;
   }
-
-  > .close_btn {
+  .close_btn {
     position: absolute;
     right: 2rem;
     top: 50%;

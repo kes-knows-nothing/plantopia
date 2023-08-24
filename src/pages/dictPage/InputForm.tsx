@@ -6,9 +6,10 @@ import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
 interface InputFormProps {
   nextPath: string;
   initialInput?: string;
+  setReSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
+const InputForm = ({ nextPath, initialInput, setReSearch }: InputFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
         inputValue: inputRef?.current?.value,
       },
     });
+    setReSearch && setReSearch(prev => !prev);
   };
 
   return (

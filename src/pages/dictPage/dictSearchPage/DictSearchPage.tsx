@@ -1,30 +1,44 @@
-import React from 'react';
+import { useState, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { db } from '@/utils/firebaseApp';
+import {
+  collection,
+  getDocs,
+  query,
+  startAt,
+  endAt,
+  orderBy,
+} from 'firebase/firestore';
+import { PlantType } from '../Recommend';
 import './DictSearchPage.scss';
 import InputForm from '../InputForm';
-import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';
-
-const searchResult = [
-  {
-    image: PLANT2_ICON,
-    koreanName: '바나나 크로톤',
-    englishName: 'Banana Croton',
-  },
-  {
-    image: PLANT2_ICON,
-    koreanName: '포도 크로톤',
-    englishName: 'Grape Croton',
-  },
-  {
-    image: PLANT2_ICON,
-    koreanName: '복숭아 크로톤',
-    englishName: 'Peach Croton',
-  },
-];
 
 const DictSearchPage = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue;
+  const [plant, setPlant] = useState<PlantType[]>([]);
+  const [reSearch, setReSearch] = useState<boolean>(false);
+
+  useEffect(() => {
+    setPlant([]);
+    const getDouments = async (plantName: string) => {
+      const dictRef = collection(db, 'dictionary');
+      const q = query(
+        dictRef,
+        orderBy('name'),
+        startAt(`${plantName}`),
+        endAt(`${plantName}\uf8ff`),
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        setPlant(prev => {
+          const data = doc.data();
+          return [...prev, data] as PlantType[];
+        });
+      });
+    };
+    getDouments(inputValue);
+  }, [reSearch]);
 
   return (
     <div className="search_container">
@@ -35,25 +49,35 @@ const DictSearchPage = () => {
         <span className="search_header">검색 결과(임시 헤더)</span>
       </header>
       <main>
-        <InputForm nextPath={'/dict/detail'} initialInput={inputValue} />
+        <input />
+        <InputForm
+          nextPath={'/dict/search'}
+          initialInput={inputValue}
+          setReSearch={setReSearch}
+        />
         <section className="plant_container">
-          {searchResult.map(({ image, koreanName, englishName }) => (
-            <Link key={englishName} to="/dict/detail">
-              <div className="plant_wrapper">
-                <img src={image} alt="plant image" />
-                <div className="name_wrapper">
-                  <h3 className="korean_name">{koreanName}</h3>
-                  <h3 className="english_name">{englishName}</h3>
-                </div>
-              </div>
-            </Link>
-          ))}
-          <div className="no_search">
-            <p>검색 결과가 없습니다.</p>
-            <a href="https://www.google.co.kr/">
-              내가 찾는 식물이 없다면, 식물 등록 요청하기
-            </a>
-          </div>
+          {plant.length ? (
+            Children.toArray(
+              plant.map(item => (
+                <Link to={`/dict/detail?plantName=${item.name}`} state={item}>
+                  <div className="plant_wrapper">
+                    <img src={item.imageUrl} alt="plant image" />
+                    <div className="name_wrapper">
+                      <h3 className="korean_name">{item.name}</h3>
+                      <h3 className="english_name">{item.scientificName}</h3>
+                    </div>
+                  </div>
+                </Link>
+              )),
+            )
+          ) : (
+            <div className="no_search">
+              <p>검색 결과가 없습니다.</p>
+              <a href="https://www.google.co.kr/">
+                내가 찾는 식물이 없다면, 식물 등록 요청하기
+              </a>
+            </div>
+          )}
         </section>
       </main>
     </div>

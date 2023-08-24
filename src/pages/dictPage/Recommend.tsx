@@ -71,7 +71,7 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
 
     // Mock Data 사용시 아래 주석 해제
     // const getDouments = async () => {
-    //   mockData.map(item => setPlant(prev => [...prev, item]));
+    //   mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
     // };
     // getDouments();
   }, []);

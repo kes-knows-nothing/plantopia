@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where} from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 
-import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png'
-import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png'
+import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
+import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
 
 interface Plant {
   nickname: string;
@@ -16,6 +16,7 @@ const SectionBoard = () => {
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null); 
 
   useEffect(() => {
     const getPlantsFromFirestore = async () => {
@@ -71,6 +72,8 @@ const SectionBoard = () => {
     };
   }, []);
 
+  SectionBoard.getChosenPlants = () => chosenPlants;
+
   return (
     <section className="board_section">
       <div className="title_wrapper">
@@ -99,7 +102,11 @@ const SectionBoard = () => {
             </div>
           )}
           <div className="arrow_icon" onClick={toggleSelect}>
-            {isVisible ? <img src={ARROW_UP} alt="Up" /> : <img src={ARROW_DOWN} alt="Down" />}
+            {isVisible ? (
+              <img src={ARROW_UP} alt="Up" />
+            ) : (
+              <img src={ARROW_DOWN} alt="Down" />
+            )}
           </div>
         </div>
 
@@ -122,7 +129,11 @@ const SectionBoard = () => {
         )}
       </div>
 
-      <textarea placeholder="내용을 작성하세요." />
+      <textarea
+        placeholder="내용을 작성하세요."
+        ref={contentRef}
+        className="content"
+      />
     </section>
   );
 };

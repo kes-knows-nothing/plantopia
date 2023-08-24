@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { storage } from '@/utils/firebaseApp';
 import {
   ref,
@@ -10,33 +10,19 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 
-
 const SectionPhoto: React.FC<{ userId: string }> = ({ userId }) => {
-  const [slidesPerView, setSlidesPerView] = useState(3);
   const [imgUrls, setImgUrls] = useState<{ backgroundImage: string }[]>([]);
   const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
     [],
   );
   const [currentCount, setCurrentCount] = useState(0);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setSlidesPerView(window.innerWidth > 768 ? 4 : 2.5);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     try {
       const previewUrl = await readFileAsDataURL(file);
       setPreviewImgs([
@@ -44,17 +30,17 @@ const SectionPhoto: React.FC<{ userId: string }> = ({ userId }) => {
         { backgroundImage: `url(${previewUrl})` },
       ]);
       setCurrentCount(currentCount + 1);
-  
+
       const storagePath = `diary_images/${userId}/${file.name}`;
-      const imageRef = ref(storage, storagePath); 
-  
+      const imageRef = ref(storage, storagePath);
+
       const snapshot = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(snapshot.ref);
       setImgUrls([...imgUrls, { backgroundImage: `url(${url})` }]);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
-  
+
     event.target.value = null;
   };
 
@@ -120,7 +106,7 @@ const SectionPhoto: React.FC<{ userId: string }> = ({ userId }) => {
           currentCount === 4 ? 'full_photo' : ''
         }`}
         modules={[Navigation]}
-        slidesPerView={slidesPerView}
+        slidesPerView={2.5}
       >
         {previewImgs.map((url, index) => (
           <SwiperSlide key={index} className="slide">

@@ -12,6 +12,7 @@ const DiaryWritePage = () => {
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
+  const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
@@ -27,16 +28,18 @@ const DiaryWritePage = () => {
       postedAt: timestamp,
       tags: chosenPlants,
       title: title,
+      imgUrls: imgUrls,
     };
 
     await addDoc(collection(db, 'diary'), dataToSave);
-    
+
     setChosenPlants([]);
-    titleRef.current.value = ''; 
-    contentRef.current.value = ''; 
+    titleRef.current.value = '';
+    contentRef.current.value = '';
+    setImgUrls([]);
     setSaving(false);
-    
-    navigate('/diary')
+
+    navigate('/diary');
   };
 
   return (
@@ -48,7 +51,11 @@ const DiaryWritePage = () => {
         </Link>
       </header>
       <main className="diary_write_wrap">
-        <SectionPhoto userId={userId} />
+        <SectionPhoto
+          userId={userId}
+          imgUrls={imgUrls}
+          setImgUrls={setImgUrls}
+        />
         <SectionBoard
           titleRef={titleRef}
           contentRef={contentRef}

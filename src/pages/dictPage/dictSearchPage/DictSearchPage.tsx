@@ -13,6 +13,8 @@ import { PlantType } from '../Recommend';
 import './DictSearchPage.scss';
 import InputForm from '../InputForm';
 
+const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
+
 const DictSearchPage = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue;
@@ -22,10 +24,15 @@ const DictSearchPage = () => {
   useEffect(() => {
     setPlant([]);
     const getDouments = async (plantName: string) => {
+      let fieldName = 'name';
+      if (!koreanRe.test(plantName)) {
+        fieldName = 'scientificName';
+        plantName = plantName.replace(plantName[0], plantName[0].toUpperCase());
+      }
       const dictRef = collection(db, 'dictionary');
       const q = query(
         dictRef,
-        orderBy('name'),
+        orderBy(fieldName),
         startAt(`${plantName}`),
         endAt(`${plantName}\uf8ff`),
       );

@@ -40,38 +40,40 @@
   flex-direction: column;
   min-height: 100vh;
 
-  .diary_container {
+  > .diary_container {
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     flex: 1 auto;
 
-    .title {
+    > .title {
+      width: 100%;
       padding-top: 2rem;
       padding-bottom: 2rem;
       font-size: 1.6rem;
       font-weight: 400;
       line-height: 1.5;
 
-      span {
+      > span {
         font-size: 1.8rem;
         font-weight: 700;
       }
-      .plant_icon {
+
+      > .plant_icon {
         margin-left: 0.3rem;
         font-size: 1.2rem;
       }
     }
 
-    .view_section {
+    > .view_section {
       width: 100%;
       height: 5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f7f8f7;
 
-      .view_tab {
+      > .view_tab {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -80,51 +82,60 @@
         color: #d6d6d6;
         cursor: pointer;
       }
-      .list_tab {
+
+      > .list_tab {
         font-size: 2.8rem;
       }
-      .gallery_tab {
+
+      > .gallery_tab {
         font-size: 2rem;
       }
 
-      .on {
+      > .on {
         color: #22264c;
+        border-bottom: 1px solid #22274c;
       }
     }
 
-    .content_section {
-      .list_view {
-        .date_wrap {
+    > .content_section {
+      width: 100%;
+
+      > .list_view {
+        > .date_wrap {
           width: 100%;
           height: 5.7rem;
           display: flex;
           align-items: center;
 
-          .date_picker {
+          > .date_picker {
             flex-grow: 1;
             height: 100%;
-            span {
+
+            > span {
               font-family: 'Pretendard', Arial, sans-serif;
               font-size: 1.6rem;
               font-weight: 700;
             }
           }
-          .date_btn {
+
+          > .date_btn {
             padding: 0;
             width: 5rem;
             height: 100%;
           }
-          .prev_btn {
+
+          > .prev_btn {
             background: url('@/assets/images/icons/calendar_prev.png') no-repeat
               left center / 1.8rem 1.8rem;
           }
-          .next_btn {
+
+          > .next_btn {
             background: url('@/assets/images/icons/calendar_next.png') no-repeat
               right center / 1.8rem 1.8rem;
           }
         }
 
-        .diary_list_wrap {
+        > .diary_list_wrap {
           margin-bottom: 5.6rem;
 
           .diary_list {
@@ -134,20 +145,20 @@
             border-bottom: 1px solid #f7f8f7;
             display: flex;
 
-            .head {
+            > .head {
               height: 3rem;
               line-height: 3rem;
               margin-bottom: 0.5rem;
             }
 
-            .left_box {
+            > .left_box {
               width: calc(100% - 6rem);
               height: 100%;
               display: flex;
               flex-direction: column;
               padding-right: 1.8rem;
 
-              .content_title {
+              > .title {
                 font-size: 1.6rem;
                 font-weight: 700;
                 color: #22264c;
@@ -155,34 +166,34 @@
                 @include ellipsis(1, 3rem);
               }
 
-              .content_content {
+              > .content {
                 @include ellipsis(2, 1.6rem);
 
                 font-size: 1.3rem;
                 color: #979797;
               }
 
-              .content_date {
+              > .date {
                 margin-top: auto;
                 color: #979797;
               }
             }
 
-            .right_box {
+            > .right_box {
               width: 7rem;
               height: 100%;
               display: flex;
               flex-direction: column;
               align-items: end;
 
-              .more {
+              > .more {
                 font-size: 1.8rem;
                 transform: translateX(1.2rem);
                 color: #979797;
                 float: right;
               }
 
-              .main_img {
+              > .main_img {
                 min-width: 6rem;
                 min-height: 6rem;
                 border-radius: 0.5rem;
@@ -196,7 +207,7 @@
         }
       }
 
-      .gallery_view {
+      > .gallery_view {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -206,7 +217,8 @@
         padding: 2rem 2rem 7rem 2rem;
         margin-bottom: 6rem;
 
-        .card {
+        > .card {
+          height: 3rem;
           position: relative;
           width: 100%;
           border-radius: 0.5rem;
@@ -233,10 +245,8 @@
       height: 6.2rem;
       border-radius: 50%;
       color: #fff;
-      background-color: #1fb0ad;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-image: url('@/assets/images/icons/diary_add.png');
+      background: #1fb0ad url('@/assets/images/icons/diary_add.png') no-repeat
+        center / 1.5rem;
 
       &:hover {
         background-color: rgb(51, 142, 142);
@@ -253,11 +263,8 @@
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
-      background-color: rgba(0, 0, 0, 0.2);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 0.8rem 0.5rem;
-      background-image: url('@/assets/images/icons/top.png');
+      background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
+        no-repeat center / 0.8rem 0.5rem;
     }
   }
 }

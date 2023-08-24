@@ -18,7 +18,7 @@ const diaryData = [
     imgUrl: [img3, img5],
     postedAt: '2023.08.16',
     nickname: ['플래피노'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 29,
@@ -28,7 +28,7 @@ const diaryData = [
     imgUrl: [img5],
     postedAt: '2023.08.14',
     nickname: ['하트호야'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 28,
@@ -38,7 +38,7 @@ const diaryData = [
     imgUrl: [img2],
     postedAt: '2023.08.12',
     nickname: ['이름이긴어떤식물'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 27,
@@ -48,7 +48,7 @@ const diaryData = [
     imgUrl: [],
     postedAt: '2023.08.10',
     nickname: [],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 26,
@@ -58,7 +58,7 @@ const diaryData = [
     imgUrl: [img10],
     postedAt: '2023.08.09',
     nickname: ['자스민공주'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 25,
@@ -68,7 +68,7 @@ const diaryData = [
     imgUrl: [img8],
     postedAt: '2023.08.08',
     nickname: ['블루라벤더'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 24,
@@ -78,7 +78,7 @@ const diaryData = [
     imgUrl: [img1],
     postedAt: '2023.08.07',
     nickname: ['치치'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 23,
@@ -88,7 +88,7 @@ const diaryData = [
     imgUrl: [img5],
     postedAt: '2023.08.06',
     nickname: ['스뚜끼'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 22,
@@ -98,7 +98,7 @@ const diaryData = [
     imgUrl: [],
     postedAt: '2023.08.05',
     nickname: ['플래피노'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 21,
@@ -108,7 +108,7 @@ const diaryData = [
     imgUrl: [img6],
     postedAt: '2023.08.04',
     nickname: ['플래피노'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 20,
@@ -118,7 +118,7 @@ const diaryData = [
     imgUrl: [img9, img1],
     postedAt: '2023.08.03',
     nickname: ['자스민공주'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 19,
@@ -128,7 +128,7 @@ const diaryData = [
     imgUrl: [img7, img8],
     postedAt: '2023.08.02',
     nickname: ['플래피노', '치치', '사랑초'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryld: 18,
@@ -138,7 +138,7 @@ const diaryData = [
     imgUrl: [img10],
     postedAt: '2023.08.01',
     nickname: ['스뚜끼'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 17,
@@ -148,7 +148,7 @@ const diaryData = [
     imgUrl: [img4, img5],
     postedAt: '2023.07.31',
     nickname: [],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 16,
@@ -158,7 +158,7 @@ const diaryData = [
     imgUrl: [img3, img6],
     postedAt: '2023.07.30',
     nickname: ['이름이긴어떤식물'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 15,
@@ -168,7 +168,7 @@ const diaryData = [
     imgUrl: [img9],
     postedAt: '2023.07.29',
     nickname: ['블루라벤더'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 14,
@@ -178,7 +178,7 @@ const diaryData = [
     imgUrl: [img5],
     postedAt: '2023.07.28',
     nickname: ['스뚜끼'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 13,
@@ -188,7 +188,7 @@ const diaryData = [
     imgUrl: [img7],
     postedAt: '2023.07.27',
     nickname: ['플래피노'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 12,
@@ -198,7 +198,7 @@ const diaryData = [
     imgUrl: [img8],
     postedAt: '2023.07.26',
     nickname: ['사랑초'],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 11,
@@ -208,7 +208,7 @@ const diaryData = [
     imgUrl: [img1, img6, img8],
     postedAt: '2023.07.15',
     nickname: [],
-    userEmail: 'test@gmail.com',
+    userEmail: 'test@test.com',
   },
   {
     diaryId: 10,
@@ -218,7 +218,7 @@ const diaryData = [
     imgUrl: [img3, img3, img4],
     postedAt: '2023.07.01',
     nickname: ['플래피노'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 9,
@@ -227,7 +227,7 @@ const diaryData = [
     imgUrl: [img2],
     postedAt: '2023.06.25',
     nickname: ['치치', '자스민공주'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 8,
@@ -237,7 +237,7 @@ const diaryData = [
     imgUrl: [],
     postedAt: '2023.06.20',
     nickname: ['사랑초'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 7,
@@ -247,7 +247,7 @@ const diaryData = [
     imgUrl: [img4, img1],
     postedAt: '2023.06.10',
     nickname: ['블루라벤더'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 6,
@@ -257,7 +257,7 @@ const diaryData = [
     imgUrl: [img6],
     postedAt: '2023.06.08',
     nickname: ['하트호야'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 5,
@@ -267,7 +267,7 @@ const diaryData = [
     imgUrl: [img3],
     postedAt: '2023.05.06',
     nickname: ['스뚜끼'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 4,
@@ -277,7 +277,7 @@ const diaryData = [
     imgUrl: [],
     postedAt: '2023.05.04',
     nickname: ['치치'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 3,
@@ -287,7 +287,7 @@ const diaryData = [
     imgUrl: [],
     postedAt: '2023.05.03',
     nickname: ['자스민공주'],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 2,
@@ -306,7 +306,7 @@ const diaryData = [
       '스뚜끼',
       '이름이긴어떤식물',
     ],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
   {
     diaryId: 1,
@@ -325,7 +325,7 @@ const diaryData = [
       '스뚜끼',
       '이름이긴어떤식물',
     ],
-    userEmail: 'user1@gmail.com',
+    userEmail: 'user1@test.com',
   },
 ];
 

@@ -11,12 +11,10 @@ interface Plant {
   userEmail: string;
 }
 
-const SectionBoard = () => {
+const SectionBoard = ({titleRef, contentRef, chosenPlants, setChosenPlants}) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLTextAreaElement>(null); 
 
   useEffect(() => {
     const getPlantsFromFirestore = async () => {
@@ -77,7 +75,7 @@ const SectionBoard = () => {
   return (
     <section className="board_section">
       <div className="title_wrapper">
-        <input type="text" placeholder="제목을 작성하세요." className="title" />
+        <input type="text" placeholder="제목을 작성하세요." className="title" ref={titleRef} />
       </div>
 
       <div className="plant_select_wrapper" ref={wrapperRef}>

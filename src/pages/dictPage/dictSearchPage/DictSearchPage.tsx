@@ -10,6 +10,7 @@ import {
   orderBy,
 } from 'firebase/firestore';
 import { PlantType } from '../Recommend';
+import { mockData } from '@/mock/dictMock';
 import './DictSearchPage.scss';
 import InputForm from '../InputForm';
 
@@ -23,6 +24,7 @@ const DictSearchPage = () => {
 
   useEffect(() => {
     setPlant([]);
+    // Mock Data 사용시 아래 주석 처리
     const getDouments = async (plantName: string) => {
       let fieldName = 'name';
       if (!koreanRe.test(plantName)) {
@@ -45,6 +47,12 @@ const DictSearchPage = () => {
       });
     };
     getDouments(inputValue);
+
+    // Mock Data 사용시 아래 주석 해제
+    // const getDouments = async () => {
+    //   mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
+    // };
+    // getDouments();
   }, [reSearch]);
 
   return (
@@ -80,7 +88,7 @@ const DictSearchPage = () => {
           ) : (
             <div className="no_search">
               <p>검색 결과가 없습니다.</p>
-              <a href="https://www.google.co.kr/">
+              <a href="https://forms.gle/g4AjkNKqVDP48Xnc7" target="_blank">
                 내가 찾는 식물이 없다면, 식물 등록 요청하기
               </a>
             </div>

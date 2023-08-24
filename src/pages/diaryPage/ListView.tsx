@@ -1,15 +1,15 @@
-import diaryData from './diaryData.tsx';
-
 import { Link } from 'react-router-dom';
-import { RiMore2Fill } from 'react-icons/ri';
 
-const ListView = () => {
-  const getMainImage = diary => {
-    if (diary.imgUrl.length > 0) {
-      return `url(${diary.imgUrl[0]})`;
-    } else {
-      return 'none';
-    }
+const ListView = ({ diaryData }) => {
+  const sortedDiaryData = [...diaryData].sort((a, b) => {
+    return b.postedAt.toDate() - a.postedAt.toDate();
+  });
+
+  const getImageClassName = imgUrls => {
+    if (!imgUrls) return '';
+    if (imgUrls.length === 0) return 'hide';
+    if (imgUrls.length > 1) return 'many';
+    return '';
   };
 
   return (
@@ -23,23 +23,27 @@ const ListView = () => {
         <button className="next_btn date_btn" type="button"></button>
       </div>
       <ul className="diary_list_wrap inner">
-        {diaryData.map((diary, index) => (
-          <Link to="/diary/detail">
-            <li className="diary_list inner" key={index}>
+        {sortedDiaryData.map((diary, index) => (
+          <Link to={`/diary/detail`} key={index}>
+            <li className="diary_list inner">
               <div className="left_box">
-                <h5 className="content_title head">{diary.title}</h5>
-                <p className="content_content">{diary.content}</p>
-                <span className="content_date">{diary.postedAt}</span>
+                <h5 className="title head">{diary.title}</h5>
+                <p className="content">{diary.content}</p>
+                <span className="date">
+                  {diary.postedAt.toDate().toLocaleDateString()}
+                </span>
               </div>
               <div className="right_box">
-                <button className="more head">
-                  <RiMore2Fill />
-                </button>
+                <button className="more head"></button>
                 <div
-                  className={`main_img ${
-                    diary.imgUrl.length === 0 ? 'hide' : ''
-                  } ${diary.imgUrl.length > 1 ? 'many' : ''}`}
-                  style={{ backgroundImage: getMainImage(diary) }}
+                  className={`main_img ${getImageClassName(diary.imgUrls)}`}
+                  style={{
+                    backgroundImage: `url('${
+                      diary.imgUrls && diary.imgUrls.length > 0
+                        ? diary.imgUrls[0]
+                        : ''
+                    }')`,
+                  }}
                 ></div>
               </div>
             </li>

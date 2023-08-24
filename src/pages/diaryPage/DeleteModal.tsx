@@ -1,4 +1,4 @@
-const DiaryModal = () => {
+const DeleteModal = () => {
   return (
     <div className="diary_modal hide">
       <p className="modal_question">게시글을 삭제하시겠습니까?</p>
@@ -10,4 +10,4 @@ const DiaryModal = () => {
   );
 };
 
-export default DiaryModal;
+export default DeleteModal;

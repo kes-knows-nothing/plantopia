@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SectionPhoto from './SectionPhoto';
 import SectionBoard from './SectionBoard';
 import { db } from '@/utils/firebaseApp';
@@ -9,17 +9,17 @@ import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
   const userId = 'test@test.com';
-
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
+  const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+  const navigate = useNavigate();
 
   const handleSaveClick = async () => {
     setSaving(true);
     const timestamp = new Date();
-    const title = document.querySelector('.title')?.value;
-
-    const content = document.querySelector('.content')?.value;
-
-    const chosenPlants = SectionBoard.getChosenPlants();
+    const title = titleRef.current.value;
+    const content = contentRef.current.value;
 
     const dataToSave = {
       userEmail: userId,
@@ -30,8 +30,13 @@ const DiaryWritePage = () => {
     };
 
     await addDoc(collection(db, 'diary'), dataToSave);
-
+    
+    setChosenPlants([]);
+    titleRef.current.value = ''; 
+    contentRef.current.value = ''; 
     setSaving(false);
+    
+    navigate('/diary')
   };
 
   return (
@@ -44,13 +49,17 @@ const DiaryWritePage = () => {
       </header>
       <main className="diary_write_wrap">
         <SectionPhoto userId={userId} />
-        <SectionBoard />
+        <SectionBoard
+          titleRef={titleRef}
+          contentRef={contentRef}
+          chosenPlants={chosenPlants}
+          setChosenPlants={setChosenPlants}
+        />
         <button
           className="save_button"
           onClick={handleSaveClick}
           disabled={saving}
         >
-          {' '}
           {saving ? '저장 중...' : '저장'}
         </button>
       </main>

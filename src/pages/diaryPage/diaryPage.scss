@@ -39,6 +39,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
 
   > .diary_container {
     width: 100%;
@@ -190,7 +191,6 @@
                 border-radius: 0.5rem;
                 background: no-repeat center / cover;
                 position: relative;
-
                 @include diary-stack-icon(0.2rem, 0.2rem, 1rem);
               }
             }
@@ -209,13 +209,13 @@
             }
 
             .more_modal {
-              width: 10rem;
+              width: 11.5rem;
               height: 7.5rem;
               display: flex;
               flex-direction: column;
               position: absolute;
               right: 2rem;
-              top: 3.5rem;
+              top: 4rem;
               font-size: 1.3rem;
               background: #fff;
               overflow: hidden;
@@ -257,7 +257,7 @@
         padding: 2rem 2rem 7rem 2rem;
         margin-bottom: 6rem;
 
-        > .card {
+        > .show {
           height: 3rem;
           position: relative;
           width: 100%;
@@ -266,19 +266,37 @@
           background-size: cover;
           background-position: center;
 
-          &.hide {
-            display: none;
-          }
-
           @include diary-stack-icon(0.5rem, 0.5rem, 1.5rem);
         }
       }
     }
 
-    .write_btn {
+    .top_btn {
+      display: none; // 스크롤 추가 구현 예정
       position: fixed;
-      right: 1.9rem;
+      left: 50%;
       bottom: 2rem;
+      margin-bottom: 5.7rem;
+      transform: translateX(-50%);
+
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
+        no-repeat center / 0.8rem 0.5rem;
+    }
+  }
+
+  .write_btn_wrap {
+    position: absolute;
+    right: 0;
+    width: 6.2rem;
+    height: 6.2rem;
+    bottom: 7.5rem;
+    padding: 0 1.8rem;
+
+    .write_btn {
+      float: right;
       margin-bottom: 5.7rem;
 
       width: 6.2rem;
@@ -291,20 +309,6 @@
       &:hover {
         background-color: rgb(51, 142, 142);
       }
-    }
-
-    .top_btn {
-      position: fixed;
-      left: 50%;
-      bottom: 2rem;
-      margin-bottom: 5.7rem;
-      transform: translateX(-50%);
-
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
-        no-repeat center / 0.8rem 0.5rem;
     }
   }
 }

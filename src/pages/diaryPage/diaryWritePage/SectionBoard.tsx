@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where} from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
@@ -11,7 +11,12 @@ interface Plant {
   userEmail: string;
 }
 
-const SectionBoard = ({titleRef, contentRef, chosenPlants, setChosenPlants}) => {
+const SectionBoard = ({
+  titleRef,
+  contentRef,
+  chosenPlants,
+  setChosenPlants,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -75,7 +80,12 @@ const SectionBoard = ({titleRef, contentRef, chosenPlants, setChosenPlants}) => 
   return (
     <section className="board_section">
       <div className="title_wrapper">
-        <input type="text" placeholder="제목을 작성하세요." className="title" ref={titleRef} />
+        <input
+          type="text"
+          placeholder="제목을 작성하세요."
+          className="title"
+          ref={titleRef}
+        />
       </div>
 
       <div className="plant_select_wrapper" ref={wrapperRef}>
@@ -93,8 +103,7 @@ const SectionBoard = ({titleRef, contentRef, chosenPlants, setChosenPlants}) => 
                   onClick={() => handleChosenPlantClick(plant)}
                 >
                   {plant}
-                  <span className="cancel">
-                  </span>
+                  <span className="cancel"></span>
                 </div>
               ))}
             </div>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   GoogleAuthProvider,
+  browserSessionPersistence,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
@@ -39,14 +41,10 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      const { operationType } = response;
-      // 로그인에 성공하면 fireBaseAuth의 currentUser에 정보가 담긴다
-      if (operationType === 'signIn') {
-        navigate('/'); // 로그인 성공시 메인 페이지 이동
-      }
-    } catch (error) {
-      console.warn(error);
+      await setPersistence(auth, browserSessionPersistence); // 인증 상태 지속성 -> 세션 -> 인증된 탭이나 창이 닫히면 인증 삭제
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/');
+    } catch {
       alert('이메일 또는 비밀번호가 일치하지 않습니다');
     }
   };
@@ -54,14 +52,12 @@ const LoginPage = () => {
   // 구글 OAuth
   const goSignGoogle = async () => {
     try {
-      const provider = new GoogleAuthProvider(); // provider를 구글로 설정
-      const response = await signInWithPopup(auth, provider); // popup을 이용한 signup
-      // 유저 정보의 이메일까지 있으면 통과
-      if (response.user.email) {
-        navigate('/');
-      }
-    } catch (e) {
-      console.warn(e);
+      const provider = new GoogleAuthProvider();
+      await setPersistence(auth, browserSessionPersistence); // 인증 상태 지속성 -> 세션 -> 인증된 탭이나 창이 닫히면 인증 삭제
+      await signInWithPopup(auth, provider);
+      navigate('/');
+    } catch {
+      navigate('/login');
     }
   };
 

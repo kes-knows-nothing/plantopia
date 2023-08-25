@@ -3,7 +3,6 @@ import { useState } from 'react';
 import MoreModal from './MoreModal';
 
 const ListView = ({ diaryData }) => {
-
   const getImageClassName = imgUrls => {
     if (!imgUrls) return '';
     if (imgUrls.length === 0) return 'hide';

@@ -39,6 +39,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
 
   > .diary_container {
     width: 100%;
@@ -270,31 +271,6 @@
       }
     }
 
-    .write_btn_wrap {
-      width: 100%;
-      max-width: 500px;
-      height: 6.2rem;
-      bottom: 7.5rem;
-      position: fixed;
-      padding: 0 1.8rem;
-
-      .write_btn {
-        float: right;
-        margin-bottom: 5.7rem;
-
-        width: 6.2rem;
-        height: 6.2rem;
-        border-radius: 50%;
-        color: #fff;
-        background: #1fb0ad url('@/assets/images/icons/diary_add.png') no-repeat
-          center / 1.5rem;
-
-        &:hover {
-          background-color: rgb(51, 142, 142);
-        }
-      }
-    }
-
     .top_btn {
       display: none; // 스크롤 추가 구현 예정
       position: fixed;
@@ -308,6 +284,31 @@
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
         no-repeat center / 0.8rem 0.5rem;
+    }
+  }
+
+  .write_btn_wrap {
+    position: absolute;
+    right: 0;
+    width: 6.2rem;
+    height: 6.2rem;
+    bottom: 7.5rem;
+    padding: 0 1.8rem;
+
+    .write_btn {
+      float: right;
+      margin-bottom: 5.7rem;
+
+      width: 6.2rem;
+      height: 6.2rem;
+      border-radius: 50%;
+      color: #fff;
+      background: #1fb0ad url('@/assets/images/icons/diary_add.png') no-repeat
+        center / 1.5rem;
+
+      &:hover {
+        background-color: rgb(51, 142, 142);
+      }
     }
   }
 }

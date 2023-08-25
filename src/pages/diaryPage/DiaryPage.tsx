@@ -30,18 +30,20 @@ const DiaryPage = () => {
       const q = query(diaryRef, where('userEmail', '==', userEmail));
       const querySnapshot = await getDocs(q);
       const data = [];
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(doc => {
         data.push(doc.data());
       });
 
-      const sortedData = data.sort((a,b) => b.postedAt.toDate() - a.postedAt.toDate())
+      const sortedData = data.sort(
+        (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
+      );
       setDiaryData(sortedData);
     };
 
     fetchData();
   }, []);
 
-  const handleTabChange = (tab) => {
+  const handleTabChange = tab => {
     if (tab !== currentTab) {
       setCurrentTab(tab);
     }
@@ -52,15 +54,13 @@ const DiaryPage = () => {
     { icon: <BsFillGridFill />, tabName: 'gallery_tab' },
   ];
 
-  
   return (
     <main className="diary_page">
       <div className="diary_container">
         <Header />
         <h2 className="title inner">
           <span>{'Joy'}</span>님, 식물의 성장 기록을 남겨보세요
-          <span className="plant_icon">
-          </span>
+          <span className="plant_icon"></span>
         </h2>
         <section className="view_section">
           {tabs.map((tab, index) => (
@@ -74,15 +74,19 @@ const DiaryPage = () => {
           ))}
         </section>
         <section className="content_section">
-          {currentTab === 'list_tab' ? <ListView diaryData={diaryData} /> : <GalleryView diaryData={diaryData} />}
+          {currentTab === 'list_tab' ? (
+            <ListView diaryData={diaryData} />
+          ) : (
+            <GalleryView diaryData={diaryData} />
+          )}
         </section>
-        <div className="write_btn_wrap">
-          <Link to="/diary/write" className="write_btn"></Link>
-        </div>
         <div className="top_btn"></div>
         <Footer />
       </div>
       <DiaryModal />
+      <div className="write_btn_wrap">
+        <Link to="/diary/write" className="write_btn"></Link>
+      </div>
     </main>
   );
 };

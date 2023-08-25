@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './myPlantDetailPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import ellipseImage from './img/Ellipse_200.png';
@@ -18,46 +18,58 @@ import {
   collection,
   where,
   query,
+  deleteDoc,
+  Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 
 interface MyPlantProps {
+  id: string;
   frequency: number;
   imgUrl: string;
   isMain: boolean;
   nickname: string;
   plantName: string;
-  purchasedDay: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  purchasedDay: InstanceType<typeof Timestamp>;
   userEmail: string;
-  wateredDays: [
-    {
-      seconds: number;
-      nanoseconds: number;
-    },
-  ];
+  wateredDays: InstanceType<typeof Timestamp>[];
 }
 
 const MyPlantDetailPage = () => {
+  const navigate = useNavigate();
   const { docId } = useParams();
-  const [plantDetail, setPlantDetail] = useState<MyPlantProps>();
+  const [plantDetail, setPlantDetail] = useState<MyPlantProps>({
+    plantName: '헬로우',
+  });
   const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
 
-  function formatSeconds(seconds: number) {
+  const formatSeconds = (seconds: number) => {
     const date = new Date(seconds * 1000);
     const formattedDate = format(date, 'yyyy/MM/dd');
     return formattedDate;
-  }
+  };
 
-  function calculateMonthDifference(seconds: number) {
+  const calculateMonthDifference = (seconds: number) => {
     const monthsDifference = differenceInMonths(
       new Date(),
       new Date(seconds * 1000),
     );
     return monthsDifference;
-  }
+  };
+
+  const deletePlant = async () => {
+    if (plantDetail) {
+      const docRef = doc(db, 'plant', docId);
+      navigate('/myplant');
+      try {
+        await deleteDoc(docRef);
+        console.log('Document successfully deleted!');
+        // 삭제 후 이동할 페이지로 리다이렉션하거나 다른 동작 수행 가능
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
+    }
+  };
 
   useEffect(() => {
     const getPlantDetailData = async () => {
@@ -73,7 +85,7 @@ const MyPlantDetailPage = () => {
 
     const q = query(
       collection(db, 'dictionary'),
-      where('name', '==', '몬스테라'),
+      where('name', '==', plantDetail?.plantName),
     );
 
     const getDictDetailData = async () => {
@@ -85,8 +97,8 @@ const MyPlantDetailPage = () => {
       setPlantDictDetail(plantData);
     };
     getPlantDetailData();
-    console.log(plantDetail);
     getDictDetailData();
+    console.log(plantDetail);
   }, [docId]);
 
   return (
@@ -242,6 +254,10 @@ const MyPlantDetailPage = () => {
         </div>
         <p className="more_info_btn">식물 도감에서 이 식물 정보 더 알아보기!</p>
       </div>
+
+      <button className="delete_my_plant" onClick={deletePlant}>
+        내 식물 삭제하기
+      </button>
     </>
   );
 };

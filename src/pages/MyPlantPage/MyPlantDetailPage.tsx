@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import './myPlantDetailPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import ellipseImage from './img/Ellipse_200.png';
@@ -103,7 +103,10 @@ const MyPlantDetailPage = () => {
   return (
     <>
       <div className="my_plant_detail_header">
-        <img src={previousPageIcon} alt="goToPreviousPage" />
+        <Link to={'/myplant'}>
+          <img src={previousPageIcon} alt="goToPreviousPage" />
+        </Link>
+
         <p>식물 상세</p>
       </div>
       <div className="my_plant_detail_upper_container">

@@ -136,7 +136,9 @@ const MyPlantRegisterPage = () => {
       <form action="" onSubmit={handleRegister}>
         <div className="plant_register_head">
           <p>식물 등록</p>
-          <img src={xIcon} alt="xIcon" />
+          <Link to={'/myplant'}>
+            <img src={xIcon} alt="xIcon" />
+          </Link>
         </div>
         <div className="my_plant_registeration_container">
           <div className="my_plant_register_img_box">

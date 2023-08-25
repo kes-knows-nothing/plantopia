@@ -52,9 +52,8 @@ const MyPlantDetailPage = () => {
   }
 
   function calculateMonthDifference(seconds: number) {
-    const currentSeconds = Math.floor(Date.now() / 1000);
     const monthsDifference = differenceInMonths(
-      new Date(currentSeconds * 1000),
+      new Date(),
       new Date(seconds * 1000),
     );
     return monthsDifference;

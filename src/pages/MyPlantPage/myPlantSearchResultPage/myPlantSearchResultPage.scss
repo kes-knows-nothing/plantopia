@@ -26,7 +26,6 @@
   height: 4rem;
   position: relative;
   display: flex;
-  z-index: 1;
   align-items: center;
   margin-top: 1.3rem;
 
@@ -49,5 +48,5 @@
 }
 
 .my_plant_search_input::placeholder {
-    padding-left: 1.6rem;
+  padding-left: 1.6rem;
 }

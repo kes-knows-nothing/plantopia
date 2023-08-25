@@ -4,15 +4,17 @@ import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import calenderIcon from '@/assets/images/icons/my-plant-calender_icon.png';
-import { collection, addDoc, getDocs, where, query } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  where,
+  query,
+  Timestamp,
+} from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 import { useState } from 'react';
 import { PlantType } from '@/pages/dictPage/Recommend';
-
-interface WateredDay {
-  seconds: number;
-  nanoseconds: number;
-}
 
 interface MyPlantProps {
   frequency: number;
@@ -20,12 +22,9 @@ interface MyPlantProps {
   isMain: boolean;
   nickname: string;
   plantName: string;
-  purchasedDay: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  purchasedDay: InstanceType<typeof Timestamp>;
   userEmail: string;
-  wateredDays: WateredDay[];
+  wateredDays: InstanceType<typeof Timestamp>[];
 }
 
 const MyPlantRegisterPage = () => {
@@ -63,12 +62,9 @@ const MyPlantRegisterPage = () => {
       isMain = false,
       nickname = '잘자라',
       plantName = '플랜토피아',
-      purchasedDay = {
-        seconds: Number(new Date()),
-        nanoseconds: Number(new Date()),
-      },
+      purchasedDay = Timestamp.fromDate(new Date()),
       userEmail = 'test@test.com',
-      wateredDays = [],
+      wateredDays = [Timestamp.fromDate(new Date())],
     }: MyPlantProps,
   ) => {
     e.preventDefault();

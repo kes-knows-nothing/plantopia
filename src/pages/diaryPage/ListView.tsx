@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import MoreModal from './MoreModal';
+import { Link } from 'react-router-dom';
 
-const ListView = ({ diaryData }) => {
+
+const ListView = ({ diaryData, handleDelete }) => {
   const getImageClassName = imgUrls => {
     if (!imgUrls) return '';
     if (imgUrls.length === 0) return 'hide';
@@ -19,22 +19,22 @@ const ListView = ({ diaryData }) => {
   return (
     <div className="list_view">
       <ul className="diary_list_wrap">
-        {diaryData.map((diary, index) => (
+        {diaryData.map((d, index) => (
           <li className="diary_list" key={index}>
             <Link to={`/diary/detail`}>
               <div className="left_box">
-                <h5 className="title">{diary.title}</h5>
-                <p className="content">{diary.content}</p>
+                <h5 className="title">{d.title}</h5>
+                <p className="content">{d.content}</p>
                 <span className="date">
-                  {diary.postedAt.toDate().toLocaleDateString()}
+                  {d.postedAt.toDate().toLocaleDateString()}
                 </span>
               </div>
               <div
-                className={`main_img ${getImageClassName(diary.imgUrls)}`}
+                className={`main_img ${getImageClassName(d.imgUrls)}`}
                 style={{
                   backgroundImage: `url('${
-                    diary.imgUrls && diary.imgUrls.length > 0
-                      ? diary.imgUrls[0]
+                    d.imgUrls && d.imgUrls.length > 0
+                      ? d.imgUrls[0]
                       : ''
                   }')`,
                 }}
@@ -44,7 +44,14 @@ const ListView = ({ diaryData }) => {
               className="more"
               onClick={() => toggleModal(index)}
             ></button>
-            {openModalIndex === index && <MoreModal />}
+            {openModalIndex === index && (
+              <div className="more_modal">
+                <div className="btn modify">게시글 수정</div>
+                <div className="btn delete" onClick={() => handleDelete(index)}>
+                  삭제
+                </div>
+              </div>
+            )}
           </li>
         ))}
       </ul>

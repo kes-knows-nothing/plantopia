@@ -8,7 +8,7 @@ import Footer from '@/components/footer/Footer';
 import { BsList, BsFillGridFill } from 'react-icons/bs';
 import './diaryPage.scss';
 import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
 
 const Tab = ({ icon, tabName, currentTab, handleTabChange }) => (
   <div
@@ -27,11 +27,12 @@ const DiaryPage = () => {
     const fetchData = async () => {
       const userEmail = 'test@test.com';
       const diaryRef = collection(db, 'diary');
+
       const q = query(diaryRef, where('userEmail', '==', userEmail));
       const querySnapshot = await getDocs(q);
       const data = [];
       querySnapshot.forEach(doc => {
-        data.push(doc.data());
+        data.push({ id: doc.id, ...doc.data() });
       });
 
       const sortedData = data.sort(
@@ -42,6 +43,19 @@ const DiaryPage = () => {
 
     fetchData();
   }, []);
+
+  const handleDelete = async (index) => {
+    try {
+      const diaryIdToDelete = diaryData[index].id;
+
+      await deleteDoc(doc(db, 'diary', diaryIdToDelete));
+
+      const updatedDiaryData = diaryData.filter((_, i) => i !== index);
+      setDiaryData(updatedDiaryData);
+    } catch (error) {
+      console.error('일기 삭제 중 오류:', error);
+    }
+  };
 
   const handleTabChange = tab => {
     if (tab !== currentTab) {
@@ -75,7 +89,7 @@ const DiaryPage = () => {
         </section>
         <section className="content_section">
           {currentTab === 'list_tab' ? (
-            <ListView diaryData={diaryData} />
+            <ListView diaryData={diaryData} handleDelete={handleDelete} />
           ) : (
             <GalleryView diaryData={diaryData} />
           )}

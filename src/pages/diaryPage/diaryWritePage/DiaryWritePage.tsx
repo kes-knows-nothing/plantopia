@@ -17,10 +17,26 @@ const DiaryWritePage = () => {
   const navigate = useNavigate();
 
   const handleSaveClick = async () => {
-    setSaving(true);
-    const timestamp = new Date();
     const title = titleRef.current.value;
     const content = contentRef.current.value;
+
+    if (!title) {
+      alert('제목을 작성해주세요.')
+      return;
+    }
+
+    if (chosenPlants.length === 0) {
+      alert('관련 식물을 1가지 이상 선택해주세요.');  
+      return
+    }
+
+    if (!content) {
+      alert('내용을 작성해주세요.')
+      return;
+    }
+
+    setSaving(true);
+    const timestamp = new Date();
 
     const dataToSave = {
       userEmail: userId,

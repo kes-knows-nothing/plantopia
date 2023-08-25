@@ -33,7 +33,9 @@ const DiaryPage = () => {
       querySnapshot.forEach((doc) => {
         data.push(doc.data());
       });
-      setDiaryData(data);
+
+      const sortedData = data.sort((a,b) => b.postedAt.toDate() - a.postedAt.toDate())
+      setDiaryData(sortedData);
     };
 
     fetchData();
@@ -50,6 +52,7 @@ const DiaryPage = () => {
     { icon: <BsFillGridFill />, tabName: 'gallery_tab' },
   ];
 
+  
   return (
     <main className="diary_page">
       <div className="diary_container">

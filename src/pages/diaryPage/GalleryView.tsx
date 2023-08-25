@@ -1,16 +1,10 @@
 import { useRef, useEffect } from 'react';
-import diaryData from './diaryData.tsx';
-import { Link } from 'react-router-dom';
 
-const GalleryView = () => {
+const GalleryView = ({ diaryData }) => {
   const cardRefs = useRef([]);
 
-  const getMainImage = diary => {
-    if (diary.imgUrl.length > 0) {
-      return `url(${diary.imgUrl[0]})`;
-    } else {
-      return 'none';
-    }
+  const getMainImage = imgUrls => {
+    return `url(${imgUrls[0]})`;
   };
 
   useEffect(() => {
@@ -24,12 +18,12 @@ const GalleryView = () => {
     <div className="gallery_view">
       {diaryData.map((diary, index) => (
         <div
-          className={`card ${diary.imgUrl.length === 0 ? 'hide' : ''} ${
-            diary.imgUrl.length > 1 ? 'many' : ''
+          className={`card ${diary.imgUrls.length === 0 ? 'hide' : 'show'} ${
+            diary.imgUrls.length > 1 ? 'many' : ''
           }`}
           key={index}
           ref={cardElement => (cardRefs.current[index] = cardElement)}
-          style={{ backgroundImage: getMainImage(diary) }}
+          style={{ backgroundImage: getMainImage(diary.imgUrls) }}
         ></div>
       ))}
     </div>

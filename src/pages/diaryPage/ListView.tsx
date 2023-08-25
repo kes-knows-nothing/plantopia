@@ -3,9 +3,6 @@ import { useState } from 'react';
 import MoreModal from './MoreModal';
 
 const ListView = ({ diaryData }) => {
-  const sortedDiaryData = [...diaryData].sort((a, b) => {
-    return b.postedAt.toDate() - a.postedAt.toDate();
-  });
 
   const getImageClassName = imgUrls => {
     if (!imgUrls) return '';
@@ -23,7 +20,7 @@ const ListView = ({ diaryData }) => {
   return (
     <div className="list_view">
       <ul className="diary_list_wrap">
-        {sortedDiaryData.map((diary, index) => (
+        {diaryData.map((diary, index) => (
           <li className="diary_list" key={index}>
             <Link to={`/diary/detail`}>
               <div className="left_box">

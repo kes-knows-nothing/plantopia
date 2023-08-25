@@ -7,13 +7,16 @@ import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png';
 import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
 import ellipseImage from '@/pages/MyPlantPage/img/Ellipse_200.png';
-import { getDocs, collection, where, query, doc } from 'firebase/firestore';
+import {
+  getDocs,
+  collection,
+  where,
+  query,
+  doc,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
-
-interface WateredDay {
-  seconds: number;
-  nanoseconds: number;
-}
 
 interface MyPlantProps {
   id: string;
@@ -22,28 +25,45 @@ interface MyPlantProps {
   isMain: boolean;
   nickname: string;
   plantName: string;
-  purchasedDay: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  purchasedDay: InstanceType<typeof Timestamp>;
   userEmail: string;
-  wateredDay: WateredDay[];
+  wateredDays: InstanceType<typeof Timestamp>[];
 }
 
 const SubPlantList = () => {
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
 
-  const isMainHandler = (clickedPlant: MyPlantProps) => {
-    const updatedData = myPlantData.map(item => {
-      if (item === clickedPlant) {
-        return { ...item, isMain: true };
-      } else if (item.isMain) {
-        return { ...item, isMain: false };
+  const isMainHandler = async (clickedPlant: MyPlantProps) => {
+    if (clickedPlant.isMain === false) {
+      const previousMain = myPlantData.filter(item => (item.isMain = true));
+      previousMain[0].isMain = false;
+      clickedPlant.isMain = true;
+
+      const documentTrueRef = doc(db, 'plant', clickedPlant.id);
+      const updatedTrueFields = {
+        isMain: true,
+      };
+
+      try {
+        await updateDoc(documentTrueRef, updatedTrueFields);
+        console.log('Document successfully updated!');
+      } catch (error) {
+        console.error('Error updating document: ', error);
       }
-      return item;
-    });
-    updatedData.sort(compare);
-    setMyPlantData(updatedData);
+
+      const documentFalseRef = doc(db, 'plant', previousMain[0].id);
+      const updatedFalseFields = {
+        isMain: false,
+      };
+
+      try {
+        await updateDoc(documentFalseRef, updatedFalseFields);
+        console.log('Document successfully updated!');
+      } catch (error) {
+        console.error('Error updating document: ', error);
+      }
+    }
+    window.location.reload();
   };
 
   const compare = (a: MyPlantProps, b: MyPlantProps): number => {
@@ -67,7 +87,6 @@ const SubPlantList = () => {
       setMyPlantData(plantData);
     });
   };
-  console.log(myPlantData);
   useEffect(() => {
     getNotMainPlants();
   }, []);
@@ -83,7 +102,7 @@ const SubPlantList = () => {
               alt="subPlantImg"
             />
             <Link to={`/myplant/${plant.id}`}>
-              <p className="subplant_name">{plant.plantName}</p>
+              <p className="subplant_name">{plant.nickname}</p>
             </Link>
           </div>
           <div className="main_check_and_edit">

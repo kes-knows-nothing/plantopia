@@ -23,8 +23,9 @@ const MyPlantSearchResultPage = () => {
           onChange={searchValueHandler}
         />
         <img src={inputGlass} alt="inputGlass" />
-        <MyPlantResultList searchValue={searchValue} />
       </div>
+
+      <MyPlantResultList searchValue={searchValue} />
     </>
   );
 };

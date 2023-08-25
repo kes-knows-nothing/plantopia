@@ -1,9 +1,11 @@
 import './myPlantRegisterPage.scss';
+import { Link } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
-import calenderIcon from '@/assets/images/icons/my-plant-calender_icon.png';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '@/utils/firebaseApp';
 import {
   collection,
   addDoc,
@@ -15,6 +17,7 @@ import {
 import { db } from '@/utils/firebaseApp';
 import { useState } from 'react';
 import { PlantType } from '@/pages/dictPage/Recommend';
+import 'firebase/storage';
 
 interface MyPlantProps {
   frequency: number;
@@ -31,6 +34,10 @@ const MyPlantRegisterPage = () => {
   const [searchInputValue, setSearchInputValue] = useState('');
   const [searchResult, setSearchResult] = useState<PlantType>();
   const [plantName, setPlantName] = useState<string>('');
+  const [purchasedDay, setPurchasedDay] = useState<Timestamp>();
+  const [wateredDays, setWateredDays] = useState<Timestamp[]>([]);
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [previewImg, setPreviewImg] = useState<string>();
   const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchInputValue(e.target.value);
@@ -41,10 +48,53 @@ const MyPlantRegisterPage = () => {
     console.log(plantName);
   };
 
+  const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPurchasedDay(e.target.value);
+  };
+  const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWateredDays([...wateredDays, e.target.value]);
+  };
   const q = query(
     collection(db, 'dictionary'),
     where('name', '==', searchInputValue),
   );
+
+  // 이미지 저장 로직
+  const cleanFileName = (fileName: string) => {
+    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
+    return cleanedName;
+  };
+
+  const readFileAsDataURL = (file: File) => {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const previewUrl = await readFileAsDataURL(file);
+      setPreviewImg(previewUrl);
+      const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
+      const imageRef = ref(storage, storagePath);
+      const snapshot = await uploadBytes(imageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      setImgUrl(url);
+    } catch (error) {
+      console.error('파일 업로드 에러:', error);
+    }
+    event.target.value = null;
+  };
+
+  // 이미지 저장 로직
   const getSearchResult = async () => {
     const querySnapshot = await getDocs(q);
     let plantData;
@@ -54,29 +104,19 @@ const MyPlantRegisterPage = () => {
     setSearchResult(plantData);
   };
 
-  const handleRegister = async (
-    e: React.FormEvent<HTMLFormElement>,
-    {
-      frequency = 7,
-      imgUrl = 'https://firebasestorage.googleapis.com/v0/b/plantopia-8452c.appspot.com/o/sub_plant_3.png?alt=media&token=8bba9cbc-4f54-4cbc-9c4f-1b8e097bd060',
-      isMain = false,
-      nickname = '잘자라',
-      plantName = '플랜토피아',
-      purchasedDay = Timestamp.fromDate(new Date()),
-      userEmail = 'test@test.com',
-      wateredDays = [Timestamp.fromDate(new Date())],
-    }: MyPlantProps,
-  ) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const defaultImageUrl =
+      'https://firebasestorage.googleapis.com/v0/b/plantopia-8452c.appspot.com/o/sub_plant_3.png?alt=media&token=8bba9cbc-4f54-4cbc-9c4f-1b8e097bd060';
     const newPlantData = {
-      frequency,
-      imgUrl,
-      isMain,
-      nickname,
-      plantName,
-      purchasedDay,
-      userEmail,
-      wateredDays,
+      frequency: 7,
+      imgUrl: imgUrl || defaultImageUrl,
+      isMain: false,
+      nickname: plantName,
+      plantName: searchInputValue,
+      purchasedDay: purchasedDay,
+      userEmail: 'test@test.com',
+      wateredDays: wateredDays,
     };
     const docRef = await addDoc(collection(db, 'plant'), newPlantData);
     console.log('Document written with ID: ', docRef.id);
@@ -91,12 +131,25 @@ const MyPlantRegisterPage = () => {
         <div className="my_plant_registeration_container">
           <div className="my_plant_register_img_box">
             <div className="img_wrapper">
-              <img className="main_img" src={samplePlant1} alt="samplePlant1" />
+              <img
+                className="main_img"
+                src={previewImg || samplePlant1}
+                alt="samplePlant1"
+              />
               <div className="edit_icon_wrapper">
-                <img
-                  className="edit_icon"
-                  src={myPlantImgEditIcon}
-                  alt="editIcon"
+                <label htmlFor="photoInput" className="photo_label">
+                  <img
+                    className="edit_icon"
+                    src={myPlantImgEditIcon}
+                    alt="editIcon"
+                  />
+                </label>
+                <input
+                  className="photo_input"
+                  id="photoInput"
+                  accept="image/*"
+                  type="file"
+                  onChange={handleFileSelect}
                 />
               </div>
             </div>
@@ -131,19 +184,29 @@ const MyPlantRegisterPage = () => {
             </div>
             <p className="my_plant_register_small_title">마지막 물준 날</p>
             <div className="my_plant_register_calender_value">
-              <p>2023-08-07</p>
-              <img src={calenderIcon} alt="calender" />
+              <input
+                type="date"
+                className="date_selector"
+                value={wateredDays}
+                onChange={wateredDaysHandler}
+              />
             </div>
             <p className="my_plant_register_small_title">
               식물과 처음 함께한 날
             </p>
             <div className="my_plant_register_calender_value">
-              <p>2023-06-07</p>
-              <img src={calenderIcon} alt="calender" />
+              <input
+                className="date_selector"
+                type="date"
+                value={purchasedDay}
+                onChange={purchasedDayHandler}
+              />
             </div>
           </div>
         </div>
-        <button className="my_plant_register_btn">등록</button>
+        <Link to={'/myplant'}>
+          <button className="my_plant_register_btn">등록</button>
+        </Link>
       </form>
     </>
   );

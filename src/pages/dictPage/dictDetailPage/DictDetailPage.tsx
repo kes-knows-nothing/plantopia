@@ -91,7 +91,6 @@ const DictDetailPage = () => {
                         <img src={image} alt="plant icon" />
                         {title}
                       </h4>
-
                       <p>
                         {Array.isArray(content)
                           ? content.map(item => `${item} `)

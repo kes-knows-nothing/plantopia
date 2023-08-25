@@ -9,6 +9,8 @@ import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
 import { PlantType } from '../dictPage/Recommend';
+import format from 'date-fns/format';
+import differenceInMonths from 'date-fns/differenceInMonths';
 import {
   doc,
   getDoc,
@@ -39,58 +41,54 @@ interface MyPlantProps {
 }
 
 const MyPlantDetailPage = () => {
-  const [plantDetail, setPlantDetail] = useState<MyPlantProps>({});
+  const { docId } = useParams();
+  const [plantDetail, setPlantDetail] = useState<MyPlantProps>();
   const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
 
   function formatSeconds(seconds: number) {
     const date = new Date(seconds * 1000);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate = format(date, 'yyyy/MM/dd');
     return formattedDate;
   }
 
-  function calculateMonthDifference(milliseconds: number) {
-    const currentDate = new Date();
-    const timestampDate = new Date(milliseconds);
-
-    const yearDiff = currentDate.getFullYear() - timestampDate.getFullYear();
-    const monthDiff = currentDate.getMonth() - timestampDate.getMonth();
-    const totalMonthDiff = yearDiff * 12 + monthDiff;
-
-    return totalMonthDiff;
+  function calculateMonthDifference(seconds: number) {
+    const currentSeconds = Math.floor(Date.now() / 1000);
+    const monthsDifference = differenceInMonths(
+      new Date(currentSeconds * 1000),
+      new Date(seconds * 1000),
+    );
+    return monthsDifference;
   }
 
-  const { docId } = useParams();
-  const getPlantDetailData = async () => {
-    const docRef = doc(db, 'plant', docId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log(docSnap.data());
-      setPlantDetail(docSnap.data());
-    } else {
-      console.log('문서가 존재하지 않습니다.');
-    }
-  };
-  const q = query(
-    collection(db, 'dictionary'),
-    where('name', '==', '몬스테라'),
-  );
-  const getDictDetailData = async () => {
-    const querySnapshot = await getDocs(q);
-    let plantData;
-    querySnapshot.forEach(doc => {
-      plantData = doc.data();
-    });
-    setPlantDictDetail(plantData);
-  };
-  console.log(plantDictDetail);
   useEffect(() => {
+    const getPlantDetailData = async () => {
+      const docRef = doc(db, 'plant', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log(docSnap.data());
+        setPlantDetail(docSnap.data());
+      } else {
+        console.log('문서가 존재하지 않습니다.');
+      }
+    };
+
+    const q = query(
+      collection(db, 'dictionary'),
+      where('name', '==', '몬스테라'),
+    );
+
+    const getDictDetailData = async () => {
+      const querySnapshot = await getDocs(q);
+      let plantData;
+      querySnapshot.forEach(doc => {
+        plantData = doc.data();
+      });
+      setPlantDictDetail(plantData);
+    };
     getPlantDetailData();
     console.log(plantDetail);
     getDictDetailData();
-  }, []);
+  }, [docId]);
 
   return (
     <>
@@ -103,10 +101,10 @@ const MyPlantDetailPage = () => {
           <p className="main_plant_head">메인 식물</p>
           <img
             className="main_plant_img"
-            src={plantDetail.imgUrl}
+            src={plantDetail?.imgUrl}
             alt="mainPlantImg"
           />
-          <p className="main_plant_name">{plantDetail.nickname}</p>
+          <p className="main_plant_name">{plantDetail?.nickname}</p>
         </div>
         <div className="my_plant_detail_edit_btn">
           <div className="my_plant_detail_edit_btn_inner_contents">
@@ -119,32 +117,32 @@ const MyPlantDetailPage = () => {
         <div className="my_plant_detail_info_box">
           <div className="my_plant_detail_info_head">
             <p>
-              ⏰ {plantDetail.nickname}와 함께한지 <span>6개월</span>이 지났어요
+              ⏰ {plantDetail?.nickname}와 함께한지{' '}
+              <span>
+                {calculateMonthDifference(
+                  plantDetail?.purchasedDay?.seconds || 0,
+                )}
+                개월
+              </span>
+              이 지났어요
             </p>
           </div>
           <div className="my_plant_detail_info_metadata">
             <div className="watering_info">
               <span>물주기</span>
-              <span>{plantDetail.frequency} Days</span>
+              <span>{plantDetail?.frequency} Days</span>
             </div>
             <div className="last_watering_info">
               <span>마지막 물준 날</span>
               <span>
-                {/* {plantDetail.wateredDays[plantDetail.wateredDays.length - 1] ==
-                undefined
-                  ? '안녕하세요'
-                  : formatSeconds(
-                      plantDetail.wateredDays[
-                        plantDetail.wateredDays.length - 1
-                      ].seconds,
-                    )} */}
-                미정
+                {formatSeconds(plantDetail?.wateredDays?.at(-1)?.seconds || 0)}
               </span>
             </div>
             <div className="first_day_info">
               <span>처음 함께한 날</span>
-              <span>헬로우</span>
-              {/* {formatSeconds(plantDetail.purchasedDay.seconds)}  */}
+              <span>
+                {formatSeconds(plantDetail?.purchasedDay?.seconds || 0)}
+              </span>
             </div>
           </div>
         </div>

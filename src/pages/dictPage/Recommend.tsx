@@ -13,60 +13,25 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import { mockData } from '@/mock/dictMock';
-import { codeInfo } from './dictDetailPage/DictDetailPage';
+import { targetQuery, targetClassName } from '@/constants/dictionary';
+import { RecommendProps, PlantType } from '@/@types/dictionary';
 import './Recommend.scss';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
 import 'swiper/scss/pagination';
-
-export interface PlantType {
-  name: string;
-  scientificName: string;
-  imageUrl: string;
-  adviseInfo: string;
-  blightInfo: string[];
-  growCode: string;
-  humidityCode: keyof typeof codeInfo;
-  lightCode: keyof typeof codeInfo;
-  recommendCode: keyof typeof codeInfo;
-  temperatureCode: keyof typeof codeInfo;
-  waterCode: keyof typeof codeInfo;
-  speciesInfo: string;
-  classificationInfo: string[];
-}
-
-interface RecommendProps {
-  icon: string;
-  title: string;
-  target: keyof typeof TargetQuery;
-}
-
-const targetClassName = {
-  beginner: 'img_wrapper_white',
-  growWell: 'img_wrapper_navy',
-  lessWater: 'img_wrapper_blue',
-  dark: 'img_wrapper_gray',
-};
-
-export const TargetQuery = {
-  beginner: ['recommendCode', 'RC01'],
-  growWell: ['growCode', 'GC01'],
-  lessWater: ['waterCode', 'WC03'],
-  dark: ['lightCode', 'LC01'],
-};
 
 const orderDirection: OrderByDirection[] = ['asc', 'desc'];
 
 const Recommend = ({ icon, title, target }: RecommendProps) => {
   const [plant, setPlant] = useState<PlantType[]>([]);
 
-  const getDouments = async (target: keyof typeof TargetQuery) => {
+  const getDouments = async (target: keyof typeof targetQuery) => {
     const dictRef = collection(db, 'dictionary');
     const q = query(
       dictRef,
-      where(TargetQuery[target][0], '==', TargetQuery[target][1]),
+      where(targetQuery[target][0], '==', targetQuery[target][1]),
       orderBy(
-        Object.values(TargetQuery)[getRandomIndex(4)][0],
+        Object.values(targetQuery)[getRandomIndex(4)][0],
         orderDirection[getRandomIndex(2)],
       ),
       limit(8),

@@ -6,9 +6,14 @@ import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
 interface InputFormProps {
   nextPath: string;
   initialInput?: string;
+  updateInputValue?: (input: string | undefined) => void;
 }
 
-const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
+const InputForm = ({
+  nextPath,
+  initialInput,
+  updateInputValue,
+}: InputFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -19,6 +24,7 @@ const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
         inputValue: inputRef?.current?.value,
       },
     });
+    updateInputValue && updateInputValue(inputRef?.current?.value);
   };
 
   return (

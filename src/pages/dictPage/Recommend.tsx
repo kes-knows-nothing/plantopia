@@ -5,7 +5,7 @@ import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import { mockData } from '@/mock/dictMock';
-import { codeInfo } from './DictDetailPage';
+import { codeInfo } from './dictDetailPage/DictDetailPage';
 import './Recommend.scss';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
@@ -71,7 +71,7 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
 
     // Mock Data 사용시 아래 주석 해제
     // const getDouments = async () => {
-    //   mockData.map(item => setPlant(prev => [...prev, item]));
+    //   mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
     // };
     // getDouments();
   }, []);

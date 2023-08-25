@@ -12,8 +12,8 @@ import MyPlantDetailPage from './pages/myPlantPage/MyPlantDetailPage';
 import MyPlantRegisterPage from '@/pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
-import DictSearchPage from './pages/dictPage/DictSearchPage';
-import DictDetailPage from './pages/dictPage/DictDetailPage';
+import DictSearchPage from './pages/dictPage/dictSearchPage/DictSearchPage';
+import DictDetailPage from './pages/dictPage/dictDetailPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
 

@@ -1,4 +1,6 @@
-export const mockData = [
+import { PlantType } from '@/pages/dictPage/Recommend';
+
+export const mockData: PlantType[] = [
   {
     adviseInfo: '',
     blightInfo: ['응애', '깍지벌레', '온실가루이'],

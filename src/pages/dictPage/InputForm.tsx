@@ -1,13 +1,8 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './InputForm.scss';
+import { InputFormProps } from '@/@types/dictionary';
 import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
-
-interface InputFormProps {
-  nextPath: string;
-  initialInput?: string;
-  updateInputValue?: (input: string | undefined) => void;
-}
+import './InputForm.scss';
 
 const InputForm = ({
   nextPath,

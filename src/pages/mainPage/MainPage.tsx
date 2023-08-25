@@ -21,7 +21,7 @@ import weather from '@/assets/images/weather';
 import LOCATION from '@/assets/images/icons/location.png';
 import { WeatherResponse } from '@/@types/weather.types';
 import { mockWeather } from '@/mock/weatherMock';
-import axios from 'axios';
+import { fetchWeatherInfo } from '@/api/weatherApi';
 
 export interface UserPlant {
   id: string;
@@ -146,15 +146,6 @@ const MainPage = () => {
 
       alert('에러가 발생하였습니다. 새로고침을 해주세요!');
     }
-  };
-
-  const fetchWeatherInfo = async (coords: GeolocationCoordinates) => {
-    console.log(coords);
-    // const res = await axios.get(
-    //   'https://api.openweathermap.org/data/2.5/weather?lat=37.62300789919497&lon=126.90270751177138&appid=adfe048492596ab8c94dfa41517e03c2&units=metric',
-    // );
-    // const weatherData: WeatherResponse = res.data;
-    // setWeatherInfo(weatherData);
   };
 
   const getUserLocation = () => {

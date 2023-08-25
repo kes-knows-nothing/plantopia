@@ -16,9 +16,7 @@ import {
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import MainPlant from './MainPlantSection';
-
-import weather from '@/assets/images/weather';
-import LOCATION from '@/assets/images/icons/location.png';
+import WeatherSection from './WeatherSection';
 
 export interface UserPlant {
   id: string;
@@ -141,23 +139,7 @@ const MainPage = () => {
       <main className="main_page">
         <section>
           <div className="inner">
-            <div className="weather_wrapper">
-              <div className="text_wrapper">
-                <div className="location_wrapper">
-                  <img src={LOCATION} className="weather_icon" alt="location" />
-                  <span className="text">서울, 후암동</span>
-                </div>
-                <div className="weather_text_box temperature_wrapper">
-                  <span className="text_lg">비 조금 36°</span>
-                  <span className="text_sm">36°</span>
-                  <span className="text_sm">27°</span>
-                </div>
-                <div className="weather_text_box">
-                  오늘은 창밖으로 빗소리가 들리겠어요
-                </div>
-              </div>
-              <img src={weather.RAIN} className="weather_icon" alt="weather" />
-            </div>
+            <WeatherSection />
             {mainPlant && (
               <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
             )}

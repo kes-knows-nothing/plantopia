@@ -1,46 +1,13 @@
 import { Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { PlantType } from './Recommend';
+import { codeInfo } from '@/constants/dictionary';
+import { PlantType } from '@/@types/dictionary';
 import './DictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
 import WATER_ICON from '@/assets/images/icons/dict_water1.png';
 import WATERPOT_ICON from '@/assets/images/icons/dict_waterpot.png';
 import BUG_ICON from '@/assets/images/icons/dict_bug.png';
-import SUN_ON_ICON from '@/assets/images/icons/dict_sun_on.png';
-import SUN_OFF_ICON from '@/assets/images/icons/dict_sun_off.png';
-import WATER_ON_ICON from '@/assets/images/icons/dict_water_on.png';
-import WATER_OFF_ICON from '@/assets/images/icons/dict_water_off.png';
-
-const codeToImg = (icons: string[]) => {
-  return (
-    <>{Children.toArray(icons.map(icon => <img src={icon} alt="icon" />))}</>
-  );
-};
-
-export const codeInfo = {
-  HC: '',
-  HC01: '~ 40%',
-  HC02: '40 ~ 70%',
-  HC03: '70% ~ 100%',
-  RC: '',
-  RC01: '초보자',
-  RC02: '경험자',
-  RC03: '전문가',
-  TC: '',
-  TC01: '10 ~ 15℃',
-  TC02: '16 ~ 20℃',
-  TC03: '21 ~ 25℃',
-  TC04: '26 ~ 30℃',
-  LC: '',
-  LC01: codeToImg([SUN_ON_ICON, SUN_OFF_ICON, SUN_OFF_ICON]),
-  LC02: codeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_OFF_ICON]),
-  LC03: codeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_ON_ICON]),
-  WC: '',
-  WC01: codeToImg([WATER_ON_ICON, WATER_OFF_ICON, WATER_OFF_ICON]),
-  WC02: codeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_OFF_ICON]),
-  WC03: codeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_ON_ICON]),
-};
 
 const DictDetailPage = () => {
   const location = useLocation();

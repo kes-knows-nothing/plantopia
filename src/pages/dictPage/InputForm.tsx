@@ -1,14 +1,14 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './InputForm.scss';
+import { InputFormProps } from '@/@types/dictionary';
 import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
+import './InputForm.scss';
 
-interface InputFormProps {
-  nextPath: string;
-  initialInput?: string;
-}
-
-const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
+const InputForm = ({
+  nextPath,
+  initialInput,
+  updateInputValue,
+}: InputFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -19,6 +19,7 @@ const InputForm = ({ nextPath, initialInput }: InputFormProps) => {
         inputValue: inputRef?.current?.value,
       },
     });
+    updateInputValue && updateInputValue(inputRef?.current?.value);
   };
 
   return (

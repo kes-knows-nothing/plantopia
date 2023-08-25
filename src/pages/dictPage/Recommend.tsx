@@ -43,7 +43,7 @@ const targetClassName = {
 export const TargetQuery = {
   beginner: ['recommendCode', 'RC01'],
   growWell: ['growCode', 'GC01'],
-  lessWater: ['waterCode', 'WC01'],
+  lessWater: ['waterCode', 'WC03'],
   dark: ['lightCode', 'LC01'],
 };
 

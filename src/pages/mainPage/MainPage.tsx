@@ -19,6 +19,8 @@ import MainPlant from './MainPlantSection';
 
 import weather from '@/assets/images/weather';
 import LOCATION from '@/assets/images/icons/location.png';
+import { WeatherResponse } from '@/@types/weather.types';
+import { mockWeather } from '@/mock/weatherMock';
 
 export interface UserPlant {
   id: string;
@@ -56,9 +58,23 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
   );
 };
 
+// 날씨와 이미지 매핑
+const weatherImage = {
+  200: weather.THUNDER,
+  300: weather.RAIN,
+  500: weather.SHOWER,
+  600: weather.SNOW,
+  800: weather.SUN,
+  801: weather.SUN_CLOUD,
+  802: weather.SUN_CLOUD,
+  803: weather.CLOUD,
+  804: weather.CLOUD,
+};
+
 const MainPage = () => {
   const [mainPlant, setMainPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const [weatherInfo, setWeatherInfo] = useState<WeatherResponse>(mockWeather);
 
   const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -145,12 +161,18 @@ const MainPage = () => {
               <div className="text_wrapper">
                 <div className="location_wrapper">
                   <img src={LOCATION} className="weather_icon" alt="location" />
-                  <span className="text">서울, 후암동</span>
+                  <span className="text">{mockWeather.name}</span>
                 </div>
                 <div className="weather_text_box temperature_wrapper">
-                  <span className="text_lg">비 조금 36°</span>
-                  <span className="text_sm">36°</span>
-                  <span className="text_sm">27°</span>
+                  <span className="text_lg">
+                    비 조금 {Math.floor(weatherInfo.main.temp)}°
+                  </span>
+                  <span className="text_sm">
+                    {Math.floor(weatherInfo.main.temp_max)}°
+                  </span>
+                  <span className="text_sm">
+                    {Math.floor(weatherInfo.main.temp_min)}°
+                  </span>
                 </div>
                 <div className="weather_text_box">
                   오늘은 창밖으로 빗소리가 들리겠어요

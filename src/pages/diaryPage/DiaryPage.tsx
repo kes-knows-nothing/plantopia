@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';
-import DiaryModal from './DiaryModal.tsx';
+import DiaryModal from './DeleteModal.tsx';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import { BsList, BsFillGridFill } from 'react-icons/bs';

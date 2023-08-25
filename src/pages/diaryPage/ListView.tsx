@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import MoreModal from './MoreModal';
 
 const ListView = ({ diaryData }) => {
   const sortedDiaryData = [...diaryData].sort((a, b) => {
@@ -12,42 +14,42 @@ const ListView = ({ diaryData }) => {
     return '';
   };
 
+  const [openModalIndex, setOpenModalIndex] = useState(null);
+
+  const toggleModal = index => {
+    setOpenModalIndex(prevIndex => (prevIndex === index ? null : index));
+  };
+
   return (
     <div className="list_view">
-      <div className="date_wrap inner">
-        <button className="prev_btn date_btn" type="button"></button>
-        <button className="date_picker">
-          <span>2023년 </span>
-          <span>8월</span>
-        </button>
-        <button className="next_btn date_btn" type="button"></button>
-      </div>
-      <ul className="diary_list_wrap inner">
+      <ul className="diary_list_wrap">
         {sortedDiaryData.map((diary, index) => (
-          <Link to={`/diary/detail`} key={index}>
-            <li className="diary_list inner">
+          <li className="diary_list" key={index}>
+            <Link to={`/diary/detail`}>
               <div className="left_box">
-                <h5 className="title head">{diary.title}</h5>
+                <h5 className="title">{diary.title}</h5>
                 <p className="content">{diary.content}</p>
                 <span className="date">
                   {diary.postedAt.toDate().toLocaleDateString()}
                 </span>
               </div>
-              <div className="right_box">
-                <button className="more head"></button>
-                <div
-                  className={`main_img ${getImageClassName(diary.imgUrls)}`}
-                  style={{
-                    backgroundImage: `url('${
-                      diary.imgUrls && diary.imgUrls.length > 0
-                        ? diary.imgUrls[0]
-                        : ''
-                    }')`,
-                  }}
-                ></div>
-              </div>
-            </li>
-          </Link>
+              <div
+                className={`main_img ${getImageClassName(diary.imgUrls)}`}
+                style={{
+                  backgroundImage: `url('${
+                    diary.imgUrls && diary.imgUrls.length > 0
+                      ? diary.imgUrls[0]
+                      : ''
+                  }')`,
+                }}
+              ></div>
+            </Link>
+            <button
+              className="more"
+              onClick={() => toggleModal(index)}
+            ></button>
+            {openModalIndex === index && <MoreModal />}
+          </li>
         ))}
       </ul>
     </div>

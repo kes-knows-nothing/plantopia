@@ -1,6 +1,6 @@
 import { Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { PlantType } from './Recommend';
+import { PlantType } from '../Recommend';
 import './DictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';

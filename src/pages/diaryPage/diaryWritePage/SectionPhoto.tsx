@@ -20,7 +20,6 @@ const SectionPhoto: React.FC<{
   );
   const [currentCount, setCurrentCount] = useState(0);
 
-  // 파일 선택 처리
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -28,7 +27,6 @@ const SectionPhoto: React.FC<{
     if (!file) return;
 
     try {
-      // 미리보기 이미지 URL 생성
       const previewUrl = await readFileAsDataURL(file);
       setPreviewImgs([
         ...previewImgs,
@@ -36,13 +34,11 @@ const SectionPhoto: React.FC<{
       ]);
       setCurrentCount(currentCount + 1);
 
-      // 파일을 스토리지에 업로드
-      const storagePath = `diary_images/${userId}/${file.name}`;
+      const storagePath = `diary_images/${cleanFileName(file.name)}`;
       const imageRef = ref(storage, storagePath);
       const snapshot = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(snapshot.ref);
 
-      // Add the URL to imgUrls state
       setImgUrls(prevImgUrls => [...prevImgUrls, url]);
     } catch (error) {
       console.error('파일 업로드 에러:', error);
@@ -51,36 +47,35 @@ const SectionPhoto: React.FC<{
     event.target.value = null;
   };
 
-  // 이미지 삭제 처리
+  const cleanFileName = (fileName: string) => {
+    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
+    return cleanedName;
+  };
+
   const handleDeleteFile = async (index: number) => {
     const imageUrlToDelete = imgUrls[index];
     const fileName = getImageFileName(imageUrlToDelete);
     const imageRef = ref(storage, fileName);
 
     try {
-      // 미리보기 이미지 삭제
       const updatedPreviewImgs = previewImgs.filter((_, i) => i !== index);
       setPreviewImgs(updatedPreviewImgs);
       setCurrentCount(currentCount - 1);
 
-      // 스토리지에서 이미지 삭제
       await deleteObject(imageRef);
 
-      // Remove the URL from imgUrls state
       setImgUrls(prevImgUrls => prevImgUrls.filter((_, i) => i !== index));
     } catch (error) {
       console.error('파일 삭제 에러:', error);
     }
   };
 
-  // URL에서 이미지 파일명 추출
   const getImageFileName = (imageUrl: string) => {
     const urlParts = imageUrl.split('/');
     const fileName = urlParts[urlParts.length - 1].split('?')[0];
     return decodeURIComponent(fileName);
   };
 
-  // 첨부 파일을 URL로 불러오기
   const readFileAsDataURL = (file: File) => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();

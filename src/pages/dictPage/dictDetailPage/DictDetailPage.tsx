@@ -1,5 +1,5 @@
 import { Children } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { codeInfo } from '@/constants/dictionary';
 import { PlantType } from '@/@types/dictionary';
 import './DictDetailPage.scss';
@@ -10,6 +10,7 @@ import WATERPOT_ICON from '@/assets/images/icons/dict_waterpot.png';
 import BUG_ICON from '@/assets/images/icons/dict_bug.png';
 
 const DictDetailPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const plantData: PlantType = location.state;
 
@@ -52,6 +53,14 @@ const DictDetailPage = () => {
     },
   ];
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    navigate('/myplant/register', {
+      state: { plantName: plantData.name, image: plantData.imageUrl },
+    });
+  };
+
   return (
     <div>
       <header>
@@ -65,7 +74,7 @@ const DictDetailPage = () => {
           <img src={plantData.imageUrl} alt="plant image" />
           <h3 className="english_name">{plantData.scientificName}</h3>
           <h3 className="korean_name">{plantData.name}</h3>
-          <button>
+          <button onClick={handleClick}>
             <img src={ADD_ICON} alt="plant add image" />내 식물로 등록
           </button>
         </section>

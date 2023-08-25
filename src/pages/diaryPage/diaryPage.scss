@@ -219,6 +219,7 @@
               font-size: 1.3rem;
               background: #fff;
               overflow: hidden;
+              z-index: 1;
 
               border-radius: 0.4rem;
               box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
@@ -293,7 +294,7 @@
     width: 6.2rem;
     height: 6.2rem;
     bottom: 7.5rem;
-    padding: 0 1.8rem;
+    padding: 0 1.9rem;
 
     .write_btn {
       float: right;

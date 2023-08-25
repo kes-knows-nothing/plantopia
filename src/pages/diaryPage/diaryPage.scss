@@ -190,7 +190,6 @@
                 border-radius: 0.5rem;
                 background: no-repeat center / cover;
                 position: relative;
-
                 @include diary-stack-icon(0.2rem, 0.2rem, 1rem);
               }
             }
@@ -209,13 +208,13 @@
             }
 
             .more_modal {
-              width: 10rem;
+              width: 11.5rem;
               height: 7.5rem;
               display: flex;
               flex-direction: column;
               position: absolute;
               right: 2rem;
-              top: 3.5rem;
+              top: 4rem;
               font-size: 1.3rem;
               background: #fff;
               overflow: hidden;
@@ -275,25 +274,33 @@
       }
     }
 
-    .write_btn {
-      position: fixed;
-      right: 1.9rem;
-      bottom: 2rem;
-      margin-bottom: 5.7rem;
-
-      width: 6.2rem;
+    .write_btn_wrap {
+      width: 100%;
+      max-width: 500px;
       height: 6.2rem;
-      border-radius: 50%;
-      color: #fff;
-      background: #1fb0ad url('@/assets/images/icons/diary_add.png') no-repeat
-        center / 1.5rem;
+      bottom: 7.5rem;
+      position: fixed;
+      padding: 0 1.8rem;
 
-      &:hover {
-        background-color: rgb(51, 142, 142);
+      .write_btn {
+        float: right;
+        margin-bottom: 5.7rem;
+
+        width: 6.2rem;
+        height: 6.2rem;
+        border-radius: 50%;
+        color: #fff;
+        background: #1fb0ad url('@/assets/images/icons/diary_add.png') no-repeat
+          center / 1.5rem;
+
+        &:hover {
+          background-color: rgb(51, 142, 142);
+        }
       }
     }
 
     .top_btn {
+      display: none; // 스크롤 추가 구현 예정
       position: fixed;
       left: 50%;
       bottom: 2rem;

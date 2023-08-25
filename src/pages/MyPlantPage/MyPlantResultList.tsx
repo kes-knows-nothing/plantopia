@@ -1,4 +1,5 @@
 import './myPlantResultList.scss';
+import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 import { PlantType } from '../dictPage/Recommend';
@@ -12,6 +13,7 @@ const MyPlantResultList: React.FC<MyPlantResultListProps> = ({
   searchValue,
 }) => {
   const [searchResult, setSearchResult] = useState<PlantType[]>([]);
+  const navigate = useNavigate();
   console.log(searchValue);
   const getSearchResult = async () => {
     const q = query(
@@ -25,6 +27,14 @@ const MyPlantResultList: React.FC<MyPlantResultListProps> = ({
     });
     setSearchResult(plantData);
   };
+
+  const handleSelect = (plantName: string) => {
+    const path = '/dict/detail';
+    const query = `?plantName=${encodeURIComponent(plantName)}`;
+    const fullPath = `${path}${query}`;
+    navigate(fullPath);
+  };
+
   useEffect(() => {
     getSearchResult();
   }, [searchValue]);
@@ -40,7 +50,12 @@ const MyPlantResultList: React.FC<MyPlantResultListProps> = ({
             <p>{plant.name}</p>
             <p>{plant.scientificName}</p>
           </div>
-          <button className="selectPlantResult">선택</button>
+          <button
+            className="selectPlantResult"
+            onClick={() => handleSelect(plant.name)}
+          >
+            선택
+          </button>
         </div>
       ))}
     </div>

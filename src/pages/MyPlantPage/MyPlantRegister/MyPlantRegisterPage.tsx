@@ -1,5 +1,5 @@
 import './myPlantRegisterPage.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
@@ -16,6 +16,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { PlantType } from '@/pages/dictPage/Recommend';
 import 'firebase/storage';
 
@@ -31,6 +32,10 @@ interface MyPlantProps {
 }
 
 const MyPlantRegisterPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  // const { plantNameFromDict, image } = location.state;
+  // 기존 검색값으로 데이터 찾는대신 dict에서 데이터 받아서 처리
   const [searchInputValue, setSearchInputValue] = useState('');
   const [searchResult, setSearchResult] = useState<PlantType>();
   const [plantName, setPlantName] = useState<string>('');
@@ -95,6 +100,11 @@ const MyPlantRegisterPage = () => {
   };
 
   // 이미지 저장 로직
+
+  const moveToSearch = () => {
+    navigate('/myplant/search');
+  };
+
   const getSearchResult = async () => {
     const querySnapshot = await getDocs(q);
     let plantData;
@@ -163,6 +173,7 @@ const MyPlantRegisterPage = () => {
                 placeholder="식물 이름으로 검색해보세요."
                 value={searchInputValue}
                 onChange={searchInputHandler}
+                onClick={moveToSearch}
               />
               <img src={inputGlass} alt="inputGlass" />
             </div>

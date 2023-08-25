@@ -64,7 +64,6 @@ const MyPlantDetailPage = () => {
       try {
         await deleteDoc(docRef);
         console.log('Document successfully deleted!');
-        // 삭제 후 이동할 페이지로 리다이렉션하거나 다른 동작 수행 가능
       } catch (error) {
         console.error('Error deleting document: ', error);
       }

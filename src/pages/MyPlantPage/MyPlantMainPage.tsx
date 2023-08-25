@@ -11,10 +11,8 @@ import {
   getDocs,
   collection,
   where,
-  doc,
   query,
   Timestamp,
-  updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 

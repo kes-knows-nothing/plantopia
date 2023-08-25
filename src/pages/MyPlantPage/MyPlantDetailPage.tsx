@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './myPlantDetailPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import ellipseImage from './img/Ellipse_200.png';
@@ -7,14 +8,18 @@ import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
-
-import { getDocs, collection, where, query } from 'firebase/firestore';
+import { PlantType } from '../dictPage/Recommend';
+import format from 'date-fns/format';
+import differenceInMonths from 'date-fns/differenceInMonths';
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  where,
+  query,
+} from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
-
-interface WateredDay {
-  seconds: number;
-  nanoseconds: number;
-}
 
 interface MyPlantProps {
   frequency: number;
@@ -27,36 +32,62 @@ interface MyPlantProps {
     nanoseconds: number;
   };
   userEmail: string;
-  wateredDay: WateredDay[];
+  wateredDays: [
+    {
+      seconds: number;
+      nanoseconds: number;
+    },
+  ];
 }
 
-const dummyData = [
-  {
-    name: '이상혁',
-    mainPlantName: '쑥쑥이',
-    imgUrl: ellipseImage,
-    purchasedDate: '2023-06-13',
-    watering: 5,
-    lastWatering: '2023-08-02',
-  },
-];
-
 const MyPlantDetailPage = () => {
-  const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
-  const userId = 'test@test.com';
-  const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
-  const getQuerySnapshot = async () => {
-    const querySnapshot = await getDocs(q);
-    const plantData: Array<MyPlantProps> = [];
-    querySnapshot.forEach(doc => {
-      plantData.push(doc.data());
-    });
-    setMyPlantData(plantData);
-  };
+  const { docId } = useParams();
+  const [plantDetail, setPlantDetail] = useState<MyPlantProps>();
+  const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
+
+  function formatSeconds(seconds: number) {
+    const date = new Date(seconds * 1000);
+    const formattedDate = format(date, 'yyyy/MM/dd');
+    return formattedDate;
+  }
+
+  function calculateMonthDifference(seconds: number) {
+    const monthsDifference = differenceInMonths(
+      new Date(),
+      new Date(seconds * 1000),
+    );
+    return monthsDifference;
+  }
+
   useEffect(() => {
-    getQuerySnapshot();
-    console.log(myPlantData);
-  }, []);
+    const getPlantDetailData = async () => {
+      const docRef = doc(db, 'plant', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log(docSnap.data());
+        setPlantDetail(docSnap.data());
+      } else {
+        console.log('문서가 존재하지 않습니다.');
+      }
+    };
+
+    const q = query(
+      collection(db, 'dictionary'),
+      where('name', '==', '몬스테라'),
+    );
+
+    const getDictDetailData = async () => {
+      const querySnapshot = await getDocs(q);
+      let plantData;
+      querySnapshot.forEach(doc => {
+        plantData = doc.data();
+      });
+      setPlantDictDetail(plantData);
+    };
+    getPlantDetailData();
+    console.log(plantDetail);
+    getDictDetailData();
+  }, [docId]);
 
   return (
     <>
@@ -69,10 +100,10 @@ const MyPlantDetailPage = () => {
           <p className="main_plant_head">메인 식물</p>
           <img
             className="main_plant_img"
-            src={dummyData[0].imgUrl}
+            src={plantDetail?.imgUrl}
             alt="mainPlantImg"
           />
-          <p className="main_plant_name">{dummyData[0].mainPlantName}</p>
+          <p className="main_plant_name">{plantDetail?.nickname}</p>
         </div>
         <div className="my_plant_detail_edit_btn">
           <div className="my_plant_detail_edit_btn_inner_contents">
@@ -85,22 +116,32 @@ const MyPlantDetailPage = () => {
         <div className="my_plant_detail_info_box">
           <div className="my_plant_detail_info_head">
             <p>
-              ⏰ {dummyData[0].mainPlantName}와 함께한지 <span>6개월</span>이
-              지났어요
+              ⏰ {plantDetail?.nickname}와 함께한지{' '}
+              <span>
+                {calculateMonthDifference(
+                  plantDetail?.purchasedDay?.seconds || 0,
+                )}
+                개월
+              </span>
+              이 지났어요
             </p>
           </div>
           <div className="my_plant_detail_info_metadata">
             <div className="watering_info">
               <span>물주기</span>
-              <span>{dummyData[0].watering} Days</span>
+              <span>{plantDetail?.frequency} Days</span>
             </div>
             <div className="last_watering_info">
               <span>마지막 물준 날</span>
-              <span>2023-08-02</span>
+              <span>
+                {formatSeconds(plantDetail?.wateredDays?.at(-1)?.seconds || 0)}
+              </span>
             </div>
             <div className="first_day_info">
               <span>처음 함께한 날</span>
-              <span>2023-06-13</span>
+              <span>
+                {formatSeconds(plantDetail?.purchasedDay?.seconds || 0)}
+              </span>
             </div>
           </div>
         </div>
@@ -112,22 +153,82 @@ const MyPlantDetailPage = () => {
             <div>
               <span>햇빛</span>
               <span className="sun_on_off">
-                <img src={sunOn} alt="" />
-                <img src={sunOn} alt="" />
-                <img src={sunOff} alt="" />
+                {(() => {
+                  if (plantDictDetail?.lightCode === 'LC01') {
+                    return (
+                      <>
+                        <img src={sunOn} alt="" />
+                        <img src={sunOff} alt="" />
+                        <img src={sunOff} alt="" />
+                      </>
+                    );
+                  } else if (plantDictDetail?.lightCode === 'LC02') {
+                    return (
+                      <>
+                        <img src={sunOn} alt="" />
+                        <img src={sunOn} alt="" />
+                        <img src={sunOff} alt="" />
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        <img src={sunOn} alt="" />
+                        <img src={sunOn} alt="" />
+                        <img src={sunOn} alt="" />
+                      </>
+                    );
+                  }
+                })()}
               </span>
             </div>
             <div>
               <span>물</span>
               <span className="water_on_off">
-                <img src={waterOn} alt="" />
-                <img src={waterOn} alt="" />
-                <img src={waterOff} alt="" />
+                {(() => {
+                  if (plantDictDetail?.waterCode === 'WC01') {
+                    return (
+                      <>
+                        <img src={waterOn} alt="" />
+                        <img src={waterOff} alt="" />
+                        <img src={waterOff} alt="" />
+                      </>
+                    );
+                  } else if (plantDictDetail?.lightCode === 'WC02') {
+                    return (
+                      <>
+                        <img src={waterOn} alt="" />
+                        <img src={waterOn} alt="" />
+                        <img src={waterOff} alt="" />
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        <img src={waterOn} alt="" />
+                        <img src={waterOn} alt="" />
+                        <img src={waterOn} alt="" />
+                      </>
+                    );
+                  }
+                })()}
               </span>
             </div>
             <div>
               <span>생육 적정 온도</span>
-              <span className="optimal_temp">16 ~ 20 ℃</span>
+              <span className="optimal_temp">
+                {(() => {
+                  if (plantDictDetail?.temperatureCode === 'TC01') {
+                    return '10 ~ 15℃';
+                  } else if (plantDictDetail?.temperatureCode === 'TC02') {
+                    return '16 ~ 20℃';
+                  } else if (plantDictDetail?.temperatureCode === 'TC03') {
+                    return '21 ~ 25℃';
+                  } else {
+                    return '26 ~ 30℃';
+                  }
+                })()}
+              </span>
             </div>
           </div>
         </div>
@@ -136,10 +237,7 @@ const MyPlantDetailPage = () => {
             <p>📌 관리 Tip</p>
           </div>
           <div className="my_plant_detail_info_metadata management_tip_box">
-            <p className="management_tip">
-              진달래과의 작은 관목으로 척박한 산성 토양에서 잘 자라며 키는
-              20cm정도로 포복형이다. 암석정원에 잘 어울린다.
-            </p>
+            <p className="management_tip">{plantDictDetail?.adviseInfo}</p>
           </div>
         </div>
         <p className="more_info_btn">식물 도감에서 이 식물 정보 더 알아보기!</p>

@@ -16,6 +16,7 @@ import DictSearchPage from './pages/dictPage/dictSearchPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/dictDetailPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import { setBodyHeight } from './utils/setBodyHeight';
+import MyPlantSearchResultPage from './pages/myPlantPage/myPlantSearchResultPage/MyPlantSearchResultPage';
 
 const App = () => {
   useEffect(() => {
@@ -34,8 +35,9 @@ const App = () => {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/mypage/info" element={<MyInfo />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
-      <Route path="/myplant/:id" element={<MyPlantDetailPage />} />
+      <Route path="/myplant/:docId" element={<MyPlantDetailPage />} />
       <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
+      <Route path="/myplant/search" element={<MyPlantSearchResultPage />} />
       <Route path="/dict" element={<DictPage />} />
       <Route path="/dict/search" element={<DictSearchPage />} />
       <Route path="/dict/detail" element={<DictDetailPage />} />

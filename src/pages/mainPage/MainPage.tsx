@@ -21,6 +21,7 @@ import weather from '@/assets/images/weather';
 import LOCATION from '@/assets/images/icons/location.png';
 import { WeatherResponse } from '@/@types/weather.types';
 import { mockWeather } from '@/mock/weatherMock';
+import axios from 'axios';
 
 export interface UserPlant {
   id: string;
@@ -147,8 +148,40 @@ const MainPage = () => {
     }
   };
 
+  const fetchWeatherInfo = async (coords: GeolocationCoordinates) => {
+    console.log(coords);
+    // const res = await axios.get(
+    //   'https://api.openweathermap.org/data/2.5/weather?lat=37.62300789919497&lon=126.90270751177138&appid=adfe048492596ab8c94dfa41517e03c2&units=metric',
+    // );
+    // const weatherData: WeatherResponse = res.data;
+    // setWeatherInfo(weatherData);
+  };
+
+  const getUserLocation = () => {
+    if ('geolocation' in navigator) {
+      // 위치 정보 서비스를 지원하는 경우
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+          fetchWeatherInfo(coords);
+        },
+        ({ code, message }) => {
+          if (code === 1) {
+            throw new Error('위치 정보 수집을 거부하였습니다.');
+          }
+
+          console.error(message);
+          throw new Error('알 수 없는 에러가 발생하였습니다.');
+        },
+      );
+    } else {
+      // 위치 정보 서비스를 지원하지 않는 경우
+      throw new Error('위치 정보를 지원하지 않는 환경입니다.');
+    }
+  };
+
   useEffect(() => {
     getUserPlant();
+    getUserLocation();
   }, []);
 
   return (

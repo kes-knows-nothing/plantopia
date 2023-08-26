@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { WeatherResponse } from '@/@types/weather.types';
-import { mockWeather } from '@/mock/weatherMock';
 import { fetchWeatherInfo } from '@/api/weatherApi';
 import { weatherContents } from '@/constants/weather';
 
+import { mockWeather } from '@/mock/weatherMock';
 import LOCATION from '@/assets/images/icons/location.png';
 
 const WeatherSection = () => {
@@ -24,8 +24,9 @@ const WeatherSection = () => {
     if ('geolocation' in navigator) {
       // 위치 정보 서비스를 지원하는 경우
       navigator.geolocation.getCurrentPosition(
-        ({ coords }) => {
-          fetchWeatherInfo(coords);
+        async ({ coords }) => {
+          const { data: weatherData } = await fetchWeatherInfo(coords);
+          setWeatherInfo(weatherData);
         },
         ({ code }) => {
           if (code === 1) {

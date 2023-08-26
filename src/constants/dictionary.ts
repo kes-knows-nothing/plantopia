@@ -1,5 +1,5 @@
 import { RecommendProps } from '@/@types/dictionary.type';
-import { codeToImg } from '@/utils/dictionaryUtil';
+import { CodeToImg } from '@/components/codeToImg/CodeToImg';
 import SUN_ON_ICON from '@/assets/images/icons/dict_sun_on.png';
 import SUN_OFF_ICON from '@/assets/images/icons/dict_sun_off.png';
 import WATER_ON_ICON from '@/assets/images/icons/dict_water_on.png';
@@ -24,13 +24,13 @@ const codeInfo = {
   TC03: '21 ~ 25℃',
   TC04: '26 ~ 30℃',
   LC: '',
-  LC01: codeToImg([SUN_ON_ICON, SUN_OFF_ICON, SUN_OFF_ICON]),
-  LC02: codeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_OFF_ICON]),
-  LC03: codeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_ON_ICON]),
+  LC01: CodeToImg([SUN_ON_ICON, SUN_OFF_ICON, SUN_OFF_ICON]),
+  LC02: CodeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_OFF_ICON]),
+  LC03: CodeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_ON_ICON]),
   WC: '',
-  WC01: codeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_ON_ICON]),
-  WC02: codeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_OFF_ICON]),
-  WC03: codeToImg([WATER_ON_ICON, WATER_OFF_ICON, WATER_OFF_ICON]),
+  WC01: CodeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_ON_ICON]),
+  WC02: CodeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_OFF_ICON]),
+  WC03: CodeToImg([WATER_ON_ICON, WATER_OFF_ICON, WATER_OFF_ICON]),
 };
 
 const targetQuery = {

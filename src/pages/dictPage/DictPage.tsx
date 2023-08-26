@@ -1,9 +1,10 @@
+import { Children } from 'react';
 import { recommend } from '@/constants/dictionary';
 import Recommend from './Recommend';
 import InputForm from './InputForm';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-import './DictPage.scss';
+import './dictPage.scss';
 
 const DictPage = () => {
   return (
@@ -14,9 +15,11 @@ const DictPage = () => {
           <span>{'Joy'}</span>님, 어떤 식물을 찾고있나요?
         </h2>
         <InputForm nextPath={'/dict/search'} />
-        {recommend.map(({ icon, title, target }) => (
-          <Recommend key={target} icon={icon} title={title} target={target} />
-        ))}
+        {Children.toArray(
+          recommend.map(({ icon, title, target }) => (
+            <Recommend icon={icon} title={title} target={target} />
+          )),
+        )}
       </main>
       <Footer />
     </div>

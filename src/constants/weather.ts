@@ -6,6 +6,9 @@ interface WeatherContentType {
   content: string;
 }
 
+/*
+ * 날씨 코드 200 ~ 800까지 (400대 코드는 정의되어있지 않은 코드)
+ */
 export const weatherContents: { [code: string]: WeatherContentType } = {
   200: {
     imgSrc: weather.THUNDER,
@@ -26,6 +29,11 @@ export const weatherContents: { [code: string]: WeatherContentType } = {
     imgSrc: weather.SNOW,
     title: '눈',
     content: '눈사람을 만들어보는건 어떨까요?',
+  },
+  741: {
+    imgSrc: weather.FOG,
+    title: '안개',
+    content: '차분하고 평온한 하루를 보내세요.',
   },
   800: {
     imgSrc: weather.SUN,

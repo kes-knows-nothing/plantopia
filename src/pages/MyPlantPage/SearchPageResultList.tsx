@@ -1,8 +1,8 @@
-import './myPlantResultList.scss';
+import './searchPageResultList.scss';
 import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
-import { PlantType } from '../dictPage/Recommend';
+import { PlantType } from '@/@types/dictionary';
 import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 interface MyPlantResultListProps {

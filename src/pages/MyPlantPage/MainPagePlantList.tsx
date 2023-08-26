@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import '@/pages/MyPlantPage/components/subplantlist.scss';
+import '@/pages/myPlantPage/mainPagePlantList.scss';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png';
@@ -30,7 +30,7 @@ interface MyPlantProps {
   wateredDays: InstanceType<typeof Timestamp>[];
 }
 
-const SubPlantList = () => {
+const MainPagePlantList = () => {
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
 
   const isMainHandler = async (clickedPlant: MyPlantProps) => {
@@ -121,4 +121,4 @@ const SubPlantList = () => {
   );
 };
 
-export default SubPlantList;
+export default MainPagePlantList;

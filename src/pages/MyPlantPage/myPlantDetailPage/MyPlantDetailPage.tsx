@@ -8,7 +8,7 @@ import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
-import { PlantType } from '../dictPage/Recommend';
+import { PlantType } from '../../dictPage/Recommend';
 import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import {

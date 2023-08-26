@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './myPlantSearchResultPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
-import MyPlantResultList from '../MyPlantResultList';
+import MyPlantResultList from '../SearchPageResultList';
 const MyPlantSearchResultPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const inputRef = useRef(null);

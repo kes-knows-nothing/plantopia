@@ -1,9 +1,10 @@
 import { Children } from 'react';
+import './codeToImg.scss';
 
-const codeToImg = (icons: string[]) => {
+const CodeToImg = (icons: string[]) => {
   return (
     <>{Children.toArray(icons.map(icon => <img src={icon} alt="icon" />))}</>
   );
 };
 
-export { codeToImg };
+export { CodeToImg };

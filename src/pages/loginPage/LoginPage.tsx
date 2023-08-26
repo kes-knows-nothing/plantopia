@@ -15,48 +15,43 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'email') {
-      setEmail(value);
-      return;
-    }
-
-    if (name === 'password') {
-      setPassword(value);
-      return;
-    }
+    name === 'email' ? setEmail(value) : setPassword(value);
   };
 
-  const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email) {
-      alert('이메일을 입력하세요');
-      return;
-    }
-    if (!password) {
-      alert('비밀번호를 입력하세요');
-      return;
+    const targets = [
+      { key: email, message: '이메일을 입력하세요.' },
+      { key: password, message: '비밀번호를 입력하세요.' },
+    ];
+
+    for (const target of targets) {
+      if (!target.key) {
+        alert(target.message);
+        return;
+      }
     }
 
     try {
-      await setPersistence(auth, browserSessionPersistence); // 인증 상태 지속성 -> 세션 -> 인증된 탭이나 창이 닫히면 인증 삭제
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch {
-      alert('이메일 또는 비밀번호가 일치하지 않습니다');
+      alert('이메일 또는 비밀번호가 일치하지 않습니다.');
     }
   };
 
-  // 구글 OAuth
-  const goSignGoogle = async () => {
+  const handleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await setPersistence(auth, browserSessionPersistence); // 인증 상태 지속성 -> 세션 -> 인증된 탭이나 창이 닫히면 인증 삭제
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch {
+      alert('구글 로그인에 실패했습니다.');
       navigate('/login');
     }
   };
@@ -74,13 +69,13 @@ const LoginPage = () => {
             <em>다양한 서비스를 이용하세요.</em>
           </div>
         </h2>
-        <form onSubmit={onLogin}>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="inpEmail">이메일</label>
           <input
             type="text"
             name="email"
             value={email}
-            onChange={onInputChange}
+            onChange={handleChange}
             placeholder="이메일을 입력해주세요."
             id="inpEmail"
           />
@@ -91,7 +86,7 @@ const LoginPage = () => {
             type="password"
             name="password"
             value={password}
-            onChange={onInputChange}
+            onChange={handleChange}
             placeholder="비밀번호를 입력해주세요."
           />
           <button type="submit" className="submit_btn">
@@ -100,23 +95,9 @@ const LoginPage = () => {
         </form>
         <div className="oauth_box">
           <p>SNS 계정으로 로그인하기</p>
-          <ul>
-            <li>
-              <button className="naver">
-                <span className="hide">네이버 아이디로 로그인하기</span>
-              </button>
-            </li>
-            <li>
-              <button className="kakao">
-                <span className="hide">카카오 아이디로 로그인하기</span>
-              </button>
-            </li>
-            <li>
-              <button className="google" onClick={goSignGoogle}>
-                <span className="hide">구글 아이디로 로그인하기</span>
-              </button>
-            </li>
-          </ul>
+          <button className="google" onClick={handleClick}>
+            <span className="hide">구글 아이디로 로그인하기</span>
+          </button>
         </div>
       </div>
     </main>

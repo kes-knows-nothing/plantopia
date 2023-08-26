@@ -1,4 +1,4 @@
-import { RecommendProps } from '@/@types/dictionary';
+import { RecommendProps } from '@/@types/dictionary.type';
 import { codeToImg } from '@/utils/dictionaryUtil';
 import SUN_ON_ICON from '@/assets/images/icons/dict_sun_on.png';
 import SUN_OFF_ICON from '@/assets/images/icons/dict_sun_off.png';

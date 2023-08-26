@@ -12,6 +12,9 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
+    "firebase": "^10.2.0",
+    "nanoid": "^4.0.2",
     "react": "^18.2.0",
     "react-calendar": "^4.6.0",
     "react-dom": "^18.2.0",

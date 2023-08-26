@@ -23,14 +23,10 @@ const DiaryItem = ({ diary, handleDelete }) => {
           </span>
         </div>
         <div
-          className={`main_img ${diary.imgUrls.length === 0 ? 'hide' : 'show'} ${
-            diary.imgUrls.length > 1 ? 'many' : ''
-          }`}
+          className={`main_img ${diary.imgUrls.length > 1 ? 'many' : ''}`}
           style={{
             backgroundImage: `url('${
-              diary.imgUrls && diary.imgUrls.length > 0
-                ? diary.imgUrls[0]
-                : ''
+              diary.imgUrls && diary.imgUrls.length > 0 ? diary.imgUrls[0] : ''
             }')`,
           }}
         ></div>
@@ -47,10 +43,13 @@ const Modal = ({ handleDelete, closeModal }) => {
   return (
     <div className="more_modal">
       <div className="btn modify">게시글 수정</div>
-      <div className="btn delete" onClick={() => {
-        handleDelete();
-        closeModal();
-      }}>
+      <div
+        className="btn delete"
+        onClick={() => {
+          handleDelete();
+          closeModal();
+        }}
+      >
         삭제
       </div>
     </div>

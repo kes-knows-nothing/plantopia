@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';
@@ -28,7 +28,7 @@ interface DiaryProps {
 
 const Tab = ({ icon, tabName, currentTab, handleTabChange }) => (
   <div
-    className={`view_tab ${tabName} ${currentTab === tabName ? `on` : ''}`}
+    className={`view_tab ${tabName} ${currentTab === tabName ? 'on' : ''}`}
     onClick={() => handleTabChange(tabName)}
   >
     {icon}
@@ -37,29 +37,31 @@ const Tab = ({ icon, tabName, currentTab, handleTabChange }) => (
 
 const DiaryPage = () => {
   const [currentTab, setCurrentTab] = useState('list_tab');
-  const [diaryData, setDiaryData] = useState<DiaryProps>([]);
+  const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
 
-  const fetchData = async () => {
-    const userEmail = 'test@test.com';
-    const q = query(
-      collection(db, 'diary'),
-      where('userEmail', '==', userEmail),
-    );
-    const querySnapshot = await getDocs(q);
-    const data:Array<DiaryProps> = [];
-    querySnapshot.forEach(doc => {
-      data.push({ id: doc.id, ...doc.data() });
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      const userEmail = 'test@test.com';
+      const q = query(
+        collection(db, 'diary'),
+        where('userEmail', '==', userEmail),
+      );
+      const querySnapshot = await getDocs(q);
+      const data: DiaryProps[] = [];
+      querySnapshot.forEach(doc => {
+        data.push({ id: doc.id, ...doc.data() });
+      });
 
-    const sortedData = data.sort(
-      (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
-    );
-    setDiaryData(sortedData);
-  };
+      const sortedData = data.sort(
+        (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
+      );
+      setDiaryData(sortedData);
+    };
 
-  fetchData();
+    fetchData();
+  }, []);
 
-  const handleDelete = async index => {
+  const handleDelete = async (index: number) => {
     try {
       const diaryIdToDelete = diaryData[index].id;
 
@@ -72,7 +74,7 @@ const DiaryPage = () => {
     }
   };
 
-  const handleTabChange = tab => {
+  const handleTabChange = (tab: string) => {
     if (tab !== currentTab) {
       setCurrentTab(tab);
     }

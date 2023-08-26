@@ -9,6 +9,17 @@ import LOCATION from '@/assets/images/icons/location.png';
 const WeatherSection = () => {
   const [weatherInfo, setWeatherInfo] = useState<WeatherResponse>(mockWeather);
 
+  const generateTempFormat = (temp: number) => `${Math.floor(temp)}°`;
+
+  const getWeatherContent = (code: number) => {
+    if (weatherContents[code]) {
+      return weatherContents[code];
+    }
+
+    const commonCode = code - (code % 100);
+    return weatherContents[commonCode];
+  };
+
   const getUserLocation = () => {
     if ('geolocation' in navigator) {
       // 위치 정보 서비스를 지원하는 경우
@@ -30,13 +41,13 @@ const WeatherSection = () => {
     }
   };
 
-  const generateTempFormat = (temp: number) => `${Math.floor(temp)}°`;
-
   useEffect(() => {
     getUserLocation();
   }, []);
 
-  const { imgSrc, title, content } = weatherContents[weatherInfo.weather[0].id];
+  const { imgSrc, title, content } = getWeatherContent(
+    weatherInfo.weather[0].id,
+  );
 
   return (
     <div className="weather_wrapper">

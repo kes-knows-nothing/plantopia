@@ -30,7 +30,7 @@ export const weatherContents: { [code: string]: WeatherContentType } = {
     title: '눈',
     content: '눈사람을 만들어보는건 어떨까요?',
   },
-  741: {
+  700: {
     imgSrc: weather.FOG,
     title: '안개',
     content: '차분하고 평온한 하루를 보내세요.',

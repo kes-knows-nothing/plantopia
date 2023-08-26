@@ -9,10 +9,10 @@ import {
   endAt,
   orderBy,
 } from 'firebase/firestore';
-import { PlantType } from '@/@types/dictionary';
+import { PlantType } from '@/@types/dictionary.type';
 import { mockData } from '@/mock/dictMock';
 import InputForm from '../InputForm';
-import './DictSearchPage.scss';
+import './dictSearchPage.scss';
 
 const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
 

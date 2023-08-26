@@ -12,7 +12,7 @@ import {
 import { PlantType } from '@/@types/dictionary';
 import { mockData } from '@/mock/dictMock';
 import InputForm from '../InputForm';
-import './DictSearchPage.scss';
+import './dictSearchPage.scss';
 
 const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
 

@@ -2,7 +2,7 @@ import { Children } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { codeInfo } from '@/constants/dictionary';
 import { PlantType } from '@/@types/dictionary';
-import './DictDetailPage.scss';
+import './dictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
 import WATER_ICON from '@/assets/images/icons/dict_water1.png';

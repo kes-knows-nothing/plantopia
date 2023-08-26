@@ -1,14 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';
-import DiaryModal from './DeleteModal.tsx';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import { BsList, BsFillGridFill } from 'react-icons/bs';
 import './diaryPage.scss';
 import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  deleteDoc,
+  doc,
+  Timestamp,
+} from 'firebase/firestore';
+
+interface DiaryProps {
+  userEmail: string;
+  content: string;
+  postedAt: Timestamp;
+  tags: string[];
+  title: string;
+  imgUrls: string[];
+}
 
 const Tab = ({ icon, tabName, currentTab, handleTabChange }) => (
   <div
@@ -21,30 +37,29 @@ const Tab = ({ icon, tabName, currentTab, handleTabChange }) => (
 
 const DiaryPage = () => {
   const [currentTab, setCurrentTab] = useState('list_tab');
-  const [diaryData, setDiaryData] = useState([]);
+  const [diaryData, setDiaryData] = useState<DiaryProps>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const userEmail = 'test@test.com';
-      const diaryRef = collection(db, 'diary');
+  const fetchData = async () => {
+    const userEmail = 'test@test.com';
+    const q = query(
+      collection(db, 'diary'),
+      where('userEmail', '==', userEmail),
+    );
+    const querySnapshot = await getDocs(q);
+    const data:Array<DiaryProps> = [];
+    querySnapshot.forEach(doc => {
+      data.push({ id: doc.id, ...doc.data() });
+    });
 
-      const q = query(diaryRef, where('userEmail', '==', userEmail));
-      const querySnapshot = await getDocs(q);
-      const data = [];
-      querySnapshot.forEach(doc => {
-        data.push({ id: doc.id, ...doc.data() });
-      });
+    const sortedData = data.sort(
+      (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
+    );
+    setDiaryData(sortedData);
+  };
 
-      const sortedData = data.sort(
-        (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
-      );
-      setDiaryData(sortedData);
-    };
+  fetchData();
 
-    fetchData();
-  }, []);
-
-  const handleDelete = async (index) => {
+  const handleDelete = async index => {
     try {
       const diaryIdToDelete = diaryData[index].id;
 
@@ -97,7 +112,6 @@ const DiaryPage = () => {
         <div className="top_btn"></div>
         <Footer />
       </div>
-      <DiaryModal />
       <div className="write_btn_wrap">
         <Link to="/diary/write" className="write_btn"></Link>
       </div>

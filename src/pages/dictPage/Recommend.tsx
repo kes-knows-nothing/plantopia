@@ -14,7 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import { mockData } from '@/mock/dictMock';
 import { targetQuery, targetClassName } from '@/constants/dictionary';
-import { RecommendProps, PlantType } from '@/@types/dictionary';
+import { RecommendProps, PlantType } from '@/@types/dictionary.type';
 import './recommend.scss';
 import 'swiper/scss';
 import 'swiper/scss/navigation';

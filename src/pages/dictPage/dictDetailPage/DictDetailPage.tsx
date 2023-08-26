@@ -57,7 +57,7 @@ const DictDetailPage = () => {
     e.preventDefault();
 
     navigate('/myplant/register', {
-      state: { plantName: plantData.name, image: plantData.imageUrl },
+      state: { name: plantData.name, image: plantData.imageUrl },
     });
   };
 

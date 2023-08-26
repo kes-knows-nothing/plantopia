@@ -1,5 +1,5 @@
-import { WeatherResponse } from '@/@types/weather.types';
 import axios, { AxiosResponse } from 'axios';
+import { WeatherResponse } from '@/@types/weather.type';
 
 const fetchWeatherInfo = ({
   latitude,

@@ -1,4 +1,4 @@
-import { WeatherResponse } from '@/@types/weather.types';
+import { WeatherResponse } from '@/@types/weather.type';
 
 export const mockWeather: WeatherResponse = {
   coord: {

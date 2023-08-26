@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { WeatherResponse } from '@/@types/weather.types';
+import { WeatherResponse } from '@/@types/weather.type';
 import { fetchWeatherInfo } from '@/api/weatherApi';
 import { weatherContents } from '@/constants/weather';
 

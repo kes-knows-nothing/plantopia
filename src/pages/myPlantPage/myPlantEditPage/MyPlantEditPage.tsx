@@ -1,21 +1,23 @@
 import './myPlantEditPage.scss';
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
+import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/utils/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
+import { formatSeconds, convertStringToTimestamp } from '@/utils/myPlantUtil';
 import { db } from '@/utils/firebaseApp';
 import { useState, useEffect } from 'react';
+import { PlantType } from '@/@types/dictionary';
 import { MyPlant } from '@/@types/myPlant.type';
 import 'firebase/storage';
+// import { dateToTimestamp, timestampToDate } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { docId } = useParams();
-
+  const location = useLocation();
   const {
     nicknameFromDetail,
     plantNameFromDetail,
@@ -25,14 +27,16 @@ const MyPlantEditPage = () => {
   } = location.state;
 
   const [myPlantData, setMyPlantData] = useState<MyPlant[]>([]);
+  const [searchInputValue, setSearchInputValue] = useState('');
+  const [searchResult, setSearchResult] = useState<PlantType>();
   const [plantNickname, setPlantNickname] =
     useState<string>(nicknameFromDetail);
   const [plantName, setPlantName] = useState<string>(plantNameFromDetail);
   const [purchasedDay, setPurchasedDay] = useState<string>(
-    secondsToDate(purchasedDayFromDetail.seconds),
+    formatSeconds(purchasedDayFromDetail.seconds),
   );
   const [wateredDay, setWateredDay] = useState<string>(
-    secondsToDate(wateredDayFromDetail.seconds),
+    formatSeconds(wateredDayFromDetail.seconds),
   );
   const [imgUrl, setImgUrl] = useState<string>(imgUrlFromDetail);
   const [previewImg, setPreviewImg] = useState<string>();
@@ -45,6 +49,8 @@ const MyPlantEditPage = () => {
   };
   const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWateredDay(e.target.value);
+
+    console.log(e.target.value);
   };
 
   // 이미지 저장 로직
@@ -90,8 +96,11 @@ const MyPlantEditPage = () => {
     const updatedFields = {
       imgUrl: imgUrl,
       nickname: plantNickname,
-      purchasedDay: dateToTimestamp(purchasedDay),
-      wateredDays: [...myPlantData[0].wateredDays, dateToTimestamp(wateredDay)],
+      purchasedDay: convertStringToTimestamp(purchasedDay),
+      wateredDays: [
+        ...myPlantData[0].wateredDays,
+        convertStringToTimestamp(wateredDay),
+      ],
     };
 
     try {
@@ -105,17 +114,16 @@ const MyPlantEditPage = () => {
 
   useEffect(() => {
     const getMyPlantData = async () => {
-      try {
-        const docRef = doc(db, 'plant', docId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const plantData = docSnap.data();
-          setMyPlantData(plantData);
-        } else {
-          throw new Error('문서가 존재하지 않습니다.');
-        }
-      } catch (error) {
-        console.error(error);
+      const docRef = doc(db, 'plant', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const plantData: Array<MyPlant> = [];
+        console.log(docSnap.data());
+        plantData.push(docSnap.data());
+        console.log(plantData);
+        setMyPlantData(plantData);
+      } else {
+        console.log('문서가 존재하지 않습니다.');
       }
     };
     getMyPlantData();

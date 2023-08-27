@@ -4,7 +4,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
 import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
-import './sectionBoard.scss';
+import './sectionEditBoard.scss';
 
 interface Plant {
   nickname: string;
@@ -20,7 +20,7 @@ interface SectionBoardProps {
   setChosenPlants: (plants: string[]) => void;
 }
 
-const SectionBoard: React.FC<SectionBoardProps> = ({
+const SectionEditBoard: React.FC<SectionBoardProps> = ({
   title,
   setTitle,
   content,
@@ -158,4 +158,4 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
   );
 };
 
-export default SectionBoard;
+export default SectionEditBoard;

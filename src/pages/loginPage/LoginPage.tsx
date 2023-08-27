@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   GoogleAuthProvider,
-  browserSessionPersistence,
-  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
@@ -15,44 +13,55 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    name === 'email' ? setEmail(value) : setPassword(value);
+    if (name === 'email') {
+      setEmail(value);
+      return;
+    }
+
+    if (name === 'password') {
+      setPassword(value);
+      return;
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const targets = [
-      { key: email, message: '이메일을 입력하세요.' },
-      { key: password, message: '비밀번호를 입력하세요.' },
-    ];
-
-    for (const target of targets) {
-      if (!target.key) {
-        alert(target.message);
-        return;
-      }
+    if (!email) {
+      alert('이메일을 입력하세요');
+      return;
+    }
+    if (!password) {
+      alert('비밀번호를 입력하세요');
+      return;
     }
 
     try {
-      await setPersistence(auth, browserSessionPersistence);
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate('/');
-    } catch {
-      alert('이메일 또는 비밀번호가 일치하지 않습니다.');
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      const { operationType } = response;
+      // 로그인에 성공하면 fireBaseAuth의 currentUser에 정보가 담긴다
+      if (operationType === 'signIn') {
+        navigate('/'); // 로그인 성공시 메인 페이지 이동
+      }
+    } catch (error) {
+      console.warn(error);
+      alert('이메일 또는 비밀번호가 일치하지 않습니다');
     }
   };
 
-  const handleClick = async () => {
+  // 구글 OAuth
+  const goSignGoogle = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      await setPersistence(auth, browserSessionPersistence);
-      await signInWithPopup(auth, provider);
-      navigate('/');
-    } catch {
-      alert('구글 로그인에 실패했습니다.');
-      navigate('/login');
+      const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+      const response = await signInWithPopup(auth, provider); // popup을 이용한 signup
+      // 유저 정보의 이메일까지 있으면 통과
+      if (response.user.email) {
+        navigate('/');
+      }
+    } catch (e) {
+      console.warn(e);
     }
   };
 
@@ -69,13 +78,13 @@ const LoginPage = () => {
             <em>다양한 서비스를 이용하세요.</em>
           </div>
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onLogin}>
           <label htmlFor="inpEmail">이메일</label>
           <input
             type="text"
             name="email"
             value={email}
-            onChange={handleChange}
+            onChange={onInputChange}
             placeholder="이메일을 입력해주세요."
             id="inpEmail"
           />
@@ -86,7 +95,7 @@ const LoginPage = () => {
             type="password"
             name="password"
             value={password}
-            onChange={handleChange}
+            onChange={onInputChange}
             placeholder="비밀번호를 입력해주세요."
           />
           <button type="submit" className="submit_btn">
@@ -95,9 +104,23 @@ const LoginPage = () => {
         </form>
         <div className="oauth_box">
           <p>SNS 계정으로 로그인하기</p>
-          <button className="google" onClick={handleClick}>
-            <span className="hide">구글 아이디로 로그인하기</span>
-          </button>
+          <ul>
+            <li>
+              <button className="naver">
+                <span className="hide">네이버 아이디로 로그인하기</span>
+              </button>
+            </li>
+            <li>
+              <button className="kakao">
+                <span className="hide">카카오 아이디로 로그인하기</span>
+              </button>
+            </li>
+            <li>
+              <button className="google" onClick={goSignGoogle}>
+                <span className="hide">구글 아이디로 로그인하기</span>
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </main>

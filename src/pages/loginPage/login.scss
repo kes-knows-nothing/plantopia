@@ -17,7 +17,6 @@
       font-size: 2.4rem;
       font-weight: 900;
       text-align: center;
-
       span {
         display: flex;
         align-items: center;
@@ -34,7 +33,6 @@
       padding: 5rem 0 3.8rem;
       font-size: 1.8rem;
       color: #22264c;
-
       em {
         display: inline-block;
         padding-top: 0.6rem;
@@ -69,36 +67,45 @@
     }
 
     .oauth_box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       margin-top: 3.2rem;
-      gap: 2.4rem;
-
+      text-align: center;
       p {
         font-size: 1.2rem;
         color: #4d4d4d;
       }
+      ul {
+        display: flex;
+        justify-content: center;
+        padding-top: 3.3rem;
+        gap: 2.4rem;
+        button {
+          width: 3.8rem;
+          height: 3.8rem;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
 
-      button {
-        width: 3.8rem;
-        height: 3.8rem;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-
-        &.google {
-          background-image: url('../../assets/images/icons/oauth_google.png');
+          &.naver {
+            background-image: url('../../assets/images/icons/oauth_naver.png');
+          }
+          &.kakao {
+            background-image: url('../../assets/images/icons/oauth_kakao.png');
+          }
+          &.google {
+            background-image: url('../../assets/images/icons/oauth_google.png');
+          }
         }
       }
     }
   }
 }
 
+/* margin */
 .mar_top32 {
   margin-top: 3.2rem;
 }
 
+/* 인풋 자동완성(크롬 하늘색 배경 방지용) */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

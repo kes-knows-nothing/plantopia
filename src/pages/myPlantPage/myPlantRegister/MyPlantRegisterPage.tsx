@@ -10,7 +10,7 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { dateToTimestamp } from '@/utils/myPlantUtil';
+import { dateToTimestamp, waterCodeToNumber } from '@/utils/myPlantUtil';
 import 'firebase/storage';
 
 const MyPlantRegisterPage = () => {
@@ -18,6 +18,7 @@ const MyPlantRegisterPage = () => {
   const location = useLocation();
   const name = location.state?.name;
   const image = location.state?.image;
+  const waterCode = location.state?.waterCode;
   const [searchInputValue, setSearchInputValue] = useState(name);
   const [plantName, setPlantName] = useState<string>('');
   const [purchasedDay, setPurchasedDay] = useState<string>('');
@@ -86,7 +87,7 @@ const MyPlantRegisterPage = () => {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newPlantData = {
-      frequency: 7,
+      frequency: waterCodeToNumber(waterCode),
       imgUrl: imgUrl || image,
       isMain: false,
       nickname: plantName,
@@ -162,7 +163,9 @@ const MyPlantRegisterPage = () => {
             />
             <p className="watering_frequency">물 주는 날</p>
             <div className="watering_frequency_input_box">
-              <p className="watering_frequency_input">7</p>
+              <p className="watering_frequency_input">
+                {waterCodeToNumber(waterCode)}
+              </p>
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
             <p className="my_plant_register_small_title">마지막 물준 날</p>

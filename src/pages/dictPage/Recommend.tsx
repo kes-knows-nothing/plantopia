@@ -15,7 +15,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 import { mockData } from '@/mock/dictMock';
 import { targetQuery, targetClassName } from '@/constants/dictionary';
 import { RecommendProps, PlantType } from '@/@types/dictionary';
-import './Recommend.scss';
+import './recommend.scss';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
 import 'swiper/scss/pagination';

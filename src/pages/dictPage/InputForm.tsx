@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InputFormProps } from '@/@types/dictionary';
 import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
-import './InputForm.scss';
+import './inputForm.scss';
 
 const InputForm = ({
   nextPath,

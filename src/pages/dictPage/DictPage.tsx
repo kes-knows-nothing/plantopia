@@ -4,8 +4,8 @@ import Recommend from './Recommend';
 import InputForm from './InputForm';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-import './DictPage.scss';
 import { useAuth } from '@/hooks';
+import './dictPage.scss';
 
 const DictPage = () => {
   const user = useAuth();

@@ -5,6 +5,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/utils/firebaseApp';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
+import Profile from '@/assets/images/profile.png';
 import './my.scss';
 
 const customerService = [
@@ -35,7 +36,7 @@ const MyPage = () => {
             <br /> 슬기로운 식집사 생활을 시작하세요!
           </h2>
           <div className="my_profile">
-            <img src={user?.photoURL} alt="profile" />
+            <img src={user?.photoURL || Profile} alt="profile" />
             <div className="my_info">
               <strong>{user?.displayName}</strong>
               <p>{user?.email}</p>

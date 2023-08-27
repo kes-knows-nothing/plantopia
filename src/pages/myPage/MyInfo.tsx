@@ -1,5 +1,5 @@
 import profile from '@/assets/images/profile.png';
-import './my.scss';
+import './myInfo.scss';
 
 const MyInfo = () => {
   return (
@@ -24,12 +24,7 @@ const MyInfo = () => {
           <ul>
             <li>
               <label>이메일</label>
-              <input
-                type="text"
-                className="calc_width"
-                placeholder="test@test.com"
-              />
-              <button>인증 받기</button>
+              <input type="text" placeholder="test@test.com" />
             </li>
             <li>
               <label>닉네임</label>
@@ -43,13 +38,10 @@ const MyInfo = () => {
               <label>비밀번호 확인</label>
               <input type="password" placeholder="test1234" />
             </li>
-            <li>
-              <label>생년월일</label>
-              <input type="date" placeholder="test1234" />
-            </li>
           </ul>
         </section>
       </main>
+      <button className="info_post">저장</button>
     </div>
   );
 };

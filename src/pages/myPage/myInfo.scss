@@ -1,0 +1,70 @@
+.sub_header {
+  .back_btn {
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url('../../assets/images/icons/icon_back.png') no-repeat center /
+      contain;
+  }
+}
+
+.my_info_page {
+  .profile_section {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 0;
+
+    .profile {
+      position: relative;
+
+      > img {
+        width: 6rem;
+        height: 6rem;
+      }
+
+      .edit_btn {
+        position: absolute;
+        right: -0.4rem;
+        bottom: 0;
+        width: 2.4rem;
+        height: 2.4rem;
+        background: url('../../assets/images/icons/icon_edit.png') no-repeat
+          center / contain;
+        filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
+      }
+    }
+  }
+
+  .input_section {
+    li {
+      padding-bottom: 3.1rem;
+
+      > label {
+        display: block;
+        font-size: 1.2rem;
+        color: #22264c;
+      }
+
+      input {
+        height: 4rem;
+        border-bottom: 1px solid #d6d6d6;
+        width: 100%;
+      }
+    }
+  }
+
+  .info_post {
+    position: fixed;
+    bottom: 0;
+    padding: 0;
+    width: 36rem;
+    max-width: 500px;
+    height: 5rem;
+    font-size: 1.4rem;
+    color: #ffffff;
+    background-color: #1fb0ad;
+  }
+}

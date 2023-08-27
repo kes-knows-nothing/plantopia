@@ -1,5 +1,4 @@
 .main_plant_info_box {
-  height: 72.2rem;
   width: 36rem;
   padding: 0 2rem;
 }
@@ -23,7 +22,6 @@
   margin-top: 3rem;
   width: 32rem;
   height: 22.2rem;
-  
 
   > .main_plant_img {
     width: 12.8rem;
@@ -33,14 +31,20 @@
   }
 
   > .main_plant_name {
-    
-    height: 1.8rem;
+    color: #b8b8b8;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0 auto;
+    margin-top: 1rem;
+  }
 
+  > .main_plant_nickname {
+    height: 1.8rem;
     font-size: 1.5rem;
     font-weight: 700;
     color: #22264c;
     margin: 0 auto;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 }
 
@@ -65,7 +69,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
   font-weight: 700;
   font-size: 1.4rem;
   color: #ffffff;

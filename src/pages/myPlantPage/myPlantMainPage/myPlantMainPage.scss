@@ -1,0 +1,82 @@
+.main_plant_info_box {
+  width: 36rem;
+  padding: 0 2rem;
+}
+
+.my_plant_info_message {
+  height: 1.9rem;
+  width: 32rem;
+
+  font-weight: 400;
+  font-size: 1.6rem;
+  margin-top: 2.7rem;
+  padding: 0 2rem;
+  > span {
+    font-weight: 700;
+  }
+}
+
+.main_plant_main_data {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  width: 32rem;
+  height: 22.2rem;
+
+  > .main_plant_img {
+    width: 12.8rem;
+    height: 12.8rem;
+    margin: 0 auto;
+    margin-top: 0.6rem;
+  }
+
+  > .main_plant_name {
+    color: #b8b8b8;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0 auto;
+    margin-top: 1rem;
+  }
+
+  > .main_plant_nickname {
+    height: 1.8rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #22264c;
+    margin: 0 auto;
+    margin-top: 1rem;
+  }
+}
+
+.main_plant_head {
+  height: 3rem;
+  width: 7rem;
+  background-color: #edc27e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.plant_plus_btn {
+  width: 9.8rem;
+  height: 3.2rem;
+  border-radius: 1.6rem;
+  background-color: #1fb0ad;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-left: auto;
+  margin-top: 3.7rem;
+  > img {
+    width: 1.4rem;
+    margin-right: 0.3rem;
+  }
+}

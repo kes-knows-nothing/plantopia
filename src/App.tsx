@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/mainPage/MainPage';
-import LoginPage from './pages/loginPage/LoginPage';
+import LoginPage from './pages/loginPage/LoginPage';z
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
 import DiaryDetailPage from './pages/diaryPage/diaryDetailPage/DiaryDetailPage';
-// import MyPage from './pages/myPage/MyPage';
+import MyPage from './pages/myPage/MyPage';
 import MyInfo from './pages/myPage/MyInfo';
 import MyPlantMainPage from './pages/myPlantPage/myPlantMainPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/myPlantDetailPage/MyPlantDetailPage';
@@ -33,7 +33,7 @@ const App = () => {
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/diary/Detail" element={<DiaryDetailPage />} />
-      {/* <Route path="/mypage" element={<MyPage />} /> */}
+      <Route path="/mypage" element={<MyPage />} />
       <Route path="/mypage/info" element={<MyInfo />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
       <Route path="/myplant/:docId" element={<MyPlantDetailPage />} />

@@ -88,15 +88,17 @@
     z-index: 1;
     align-items: center;
     margin-top: 1.3rem;
-    > img {
-      position: absolute;
-      z-index: 2;
-      width: 1.8rem;
-      height: 1.8rem;
-      right: 1.1rem;
-    }
   }
+  > .input_glass {
+  position: absolute;
+  z-index: 2;
+  width: 1.8rem;
+  height: 1.8rem;
+  right: 1.1rem;
 }
+}
+
+
 
 .my_plant_input {
   width: 32rem;

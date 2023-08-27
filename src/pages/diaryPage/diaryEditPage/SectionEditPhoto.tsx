@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { storage } from '@/utils/firebaseApp';
+import { storage } from '@/firebaseApp';
 import {
   ref,
   uploadBytes,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import { addDoc, collection } from 'firebase/firestore';
 
 import SectionPhoto from './SectionPhoto';

@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import './diaryDetailPage.scss';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import { doc, getDoc } from 'firebase/firestore';
 
 const DiaryDetailPage = () => {

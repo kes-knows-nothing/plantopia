@@ -14,7 +14,7 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 
 const MainPagePlantList = () => {
   const [myPlantData, setMyPlantData] = useState<MyPlant[]>([]);

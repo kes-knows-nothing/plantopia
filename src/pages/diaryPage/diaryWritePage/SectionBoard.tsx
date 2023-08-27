@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, Children } from 'react';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';

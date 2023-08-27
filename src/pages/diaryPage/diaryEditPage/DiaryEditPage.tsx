@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import SectionEditPhoto from './SectionEditPhoto';
 import SectionEditBoard from './SectionEditBoard';

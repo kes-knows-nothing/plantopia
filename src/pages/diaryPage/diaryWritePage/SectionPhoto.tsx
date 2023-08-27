@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { storage } from '@/utils/firebaseApp';
+import { storage } from '@/firebaseApp';
 import {
   ref,
   uploadBytes,
@@ -9,7 +9,7 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
-import './sectionPhoto.scss'
+import './sectionPhoto.scss';
 
 const SectionPhoto: React.FC<{
   userId: string;

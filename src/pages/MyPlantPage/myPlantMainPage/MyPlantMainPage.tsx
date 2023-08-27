@@ -5,7 +5,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import ellipseImage from './img/Ellipse_200.png';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
-import MyPlantList from '@/pages/myPlantPage/components/SubPlantList';
+import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList'
 
 import {
   getDocs,
@@ -84,7 +84,7 @@ const MyPlantMainPage = () => {
                 식물 등록
               </p>
             </Link>
-            <MyPlantList />
+            <MainPagePlantList />
           </div>
         </>
       ) : (

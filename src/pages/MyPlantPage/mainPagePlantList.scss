@@ -1,0 +1,52 @@
+.subplant_container {
+  width: 32rem;
+  border-top: 1px solid #f8f8fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.8rem;
+  :last-child {
+    border-bottom: none;
+  }
+}
+
+.subplant_list_box {
+  border-bottom: 1px solid #f8f8fa;
+  width: 32rem;
+  height: 8.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subplant_main_data {
+  display: flex;
+  width: 15rem;
+  align-items: center;
+  > img {
+    width: 6rem;
+    height: 6rem;
+    margin-right: 1.4rem;
+  }
+  > p {
+    width: 7rem;
+    height: 1.7rem;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+}
+
+.main_check_and_edit {
+  display: flex;
+  width: 4.75rem;
+  align-items: center;
+  justify-content: space-between;
+  :first-child {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  :last-child {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

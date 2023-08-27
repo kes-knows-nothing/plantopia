@@ -24,3 +24,14 @@ export const dateToTimestamp = (dateString: string) => {
   const date = new Date(`${year}-${month}-${day}T00:00:00`);
   return Timestamp.fromDate(date);
 };
+
+export const waterCodeToNumber = (waterCode: string) => {
+  switch (waterCode) {
+    case 'wc03':
+      return 14;
+    case 'wc02':
+      return 11;
+    case 'wc01':
+      return 7;
+  }
+};

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from 'react';
 import { db } from '@/utils/firebaseApp';
+=======
+import { useState, useEffect, useRef, Children } from 'react';
+import { db } from '@/firebaseApp';
+>>>>>>> 77f3a2b0e040038cb0a916042d2237e3def92ca6
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';

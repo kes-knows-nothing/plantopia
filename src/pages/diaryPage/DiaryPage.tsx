@@ -6,7 +6,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import { BsList, BsFillGridFill } from 'react-icons/bs';
 import './diaryPage.scss';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp.ts';
 import {
   collection,
   getDocs,

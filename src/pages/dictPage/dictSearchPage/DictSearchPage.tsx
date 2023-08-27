@@ -1,6 +1,6 @@
 import { useState, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import {
   collection,
   getDocs,

@@ -20,7 +20,7 @@ import {
   deleteDoc,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 
 interface MyPlantProps {
   id: string;

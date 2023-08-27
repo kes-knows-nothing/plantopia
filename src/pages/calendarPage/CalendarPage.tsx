@@ -18,7 +18,7 @@ import sticker04 from '@/assets/images/icons/calendar_sticker04.png';
 import sticker05 from '@/assets/images/icons/calendar_sticker05.png';
 import sticker06 from '@/assets/images/icons/calendar_sticker06.png';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db, auth } from '@/utils/firebaseApp';
+import { db, auth } from '@/firebaseApp';
 import { onAuthStateChanged } from 'firebase/auth';
 import 'react-calendar/dist/Calendar.css';
 import './calendar.scss';

@@ -46,23 +46,23 @@ const DiaryEditPage = () => {
       }
       return;
     }
-
-    setSaving(true);
-
+    
+    setSaving(true); 
+    
     const dataToUpdate = {
       content: content,
       tags: chosenPlants,
       title: title,
       imgUrls: imgUrls,
     };
-
+  
     const docRef = doc(db, 'diary', docId);
     await updateDoc(docRef, dataToUpdate);
-
+  
     setSaving(false);
     navigate('/diary');
   };
-
+  
   return (
     <>
       <header className="sub_header">
@@ -72,7 +72,10 @@ const DiaryEditPage = () => {
         </Link>
       </header>
       <main className="diary_write_wrap">
-        <SectionEditPhoto imgUrls={imgUrls} setImgUrls={setImgUrls} />
+        <SectionEditPhoto
+          imgUrls={imgUrls}
+          setImgUrls={setImgUrls}
+        />
         <SectionEditBoard
           title={title}
           setTitle={setTitle}

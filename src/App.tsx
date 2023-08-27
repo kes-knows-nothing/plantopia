@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/mainPage/MainPage';
-import LoginPage from './pages/loginPage/LoginPage';z
+import LoginPage from './pages/loginPage/LoginPage';
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
 import DiaryEditPage from './pages/diaryPage/diaryEditPage/DiaryEditPage';
@@ -12,7 +12,6 @@ import MyPlantMainPage from './pages/myPlantPage/myPlantMainPage/MyPlantMainPage
 import MyPlantDetailPage from './pages/myPlantPage/myPlantDetailPage/MyPlantDetailPage';
 import MyPlantRegisterPage from './pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
 import MyPlantEditPage from './pages/myPlantPage/myPlantEditPage/MyPlantEditPage';
-import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/dictSearchPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/dictDetailPage/DictDetailPage';
@@ -30,7 +29,6 @@ const App = () => {
       <Route path="/" element={<MainPage />} />
       <Route path="/calendar" element={<CalendarPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/write" element={<DiaryWritePage />} />
       <Route path="/diary/:docId/edit" element={<DiaryEditPage />} />

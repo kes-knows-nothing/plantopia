@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import './myPlantDetailPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
-import ellipseImage from './img/Ellipse_200.png';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
-import { PlantType } from '../dictPage/Recommend';
+import { PlantType } from '@/@types/dictionary';
 import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import {
@@ -18,46 +17,59 @@ import {
   collection,
   where,
   query,
+  deleteDoc,
+  Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 
 interface MyPlantProps {
+  id: string;
   frequency: number;
   imgUrl: string;
   isMain: boolean;
   nickname: string;
   plantName: string;
-  purchasedDay: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  purchasedDay: InstanceType<typeof Timestamp>;
   userEmail: string;
-  wateredDays: [
-    {
-      seconds: number;
-      nanoseconds: number;
-    },
-  ];
+  wateredDays: InstanceType<typeof Timestamp>[];
 }
 
 const MyPlantDetailPage = () => {
+  const navigate = useNavigate();
   const { docId } = useParams();
-  const [plantDetail, setPlantDetail] = useState<MyPlantProps>();
+  const [plantDetail, setPlantDetail] = useState<MyPlantProps>({
+    plantName: '헬로우',
+    purchasedDay: Timestamp.fromDate(new Date()),
+    wateredDays: [Timestamp.fromDate(new Date())],
+  });
   const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
 
-  function formatSeconds(seconds: number) {
+  const formatSeconds = (seconds: number) => {
     const date = new Date(seconds * 1000);
-    const formattedDate = format(date, 'yyyy/MM/dd');
+    const formattedDate = format(date, 'yyyy-MM-dd');
     return formattedDate;
-  }
+  };
 
-  function calculateMonthDifference(seconds: number) {
+  const calculateMonthDifference = (seconds: number) => {
     const monthsDifference = differenceInMonths(
       new Date(),
       new Date(seconds * 1000),
     );
     return monthsDifference;
-  }
+  };
+
+  const deletePlant = async () => {
+    if (plantDetail) {
+      const docRef = doc(db, 'plant', docId);
+      navigate('/myplant');
+      try {
+        await deleteDoc(docRef);
+        console.log('Document successfully deleted!');
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      }
+    }
+  };
 
   useEffect(() => {
     const getPlantDetailData = async () => {
@@ -73,7 +85,7 @@ const MyPlantDetailPage = () => {
 
     const q = query(
       collection(db, 'dictionary'),
-      where('name', '==', '몬스테라'),
+      where('name', '==', plantDetail?.plantName),
     );
 
     const getDictDetailData = async () => {
@@ -85,14 +97,17 @@ const MyPlantDetailPage = () => {
       setPlantDictDetail(plantData);
     };
     getPlantDetailData();
-    console.log(plantDetail);
     getDictDetailData();
+    console.log(plantDetail);
   }, [docId]);
 
   return (
     <>
       <div className="my_plant_detail_header">
-        <img src={previousPageIcon} alt="goToPreviousPage" />
+        <Link to={'/myplant'}>
+          <img src={previousPageIcon} alt="goToPreviousPage" />
+        </Link>
+
         <p>식물 상세</p>
       </div>
       <div className="my_plant_detail_upper_container">
@@ -103,13 +118,25 @@ const MyPlantDetailPage = () => {
             src={plantDetail?.imgUrl}
             alt="mainPlantImg"
           />
-          <p className="main_plant_name">{plantDetail?.nickname}</p>
+          <p className="main_plant_name">{plantDetail?.plantName}</p>
+          <p className="main_plant_nickname">{plantDetail?.nickname}</p>
         </div>
         <div className="my_plant_detail_edit_btn">
-          <div className="my_plant_detail_edit_btn_inner_contents">
-            <img src={editIcon} alt="editIcon" />
-            <p>식물 정보 수정하기</p>
-          </div>
+          <Link
+            to={`/myplant/${docId}/edit`}
+            state={{
+              imgUrlFromDetail: plantDetail.imgUrl,
+              nicknameFromDetail: plantDetail.nickname,
+              plantNameFromDetail: plantDetail.plantName,
+              purchasedDayFromDetail: plantDetail.purchasedDay,
+              wateredDayFromDetail: plantDetail.wateredDays.at(-1),
+            }}
+          >
+            <div className="my_plant_detail_edit_btn_inner_contents">
+              <img src={editIcon} alt="editIcon" />
+              <p>식물 정보 수정하기</p>
+            </div>
+          </Link>
         </div>
       </div>
       <div className="my_plant_detail_lower_container">
@@ -242,6 +269,10 @@ const MyPlantDetailPage = () => {
         </div>
         <p className="more_info_btn">식물 도감에서 이 식물 정보 더 알아보기!</p>
       </div>
+
+      <button className="delete_my_plant" onClick={deletePlant}>
+        내 식물 삭제하기
+      </button>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { storage } from '@/utils/firebaseApp';
 import {
   ref,
@@ -9,10 +9,9 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
-import './sectionPhoto.scss'
+import './sectionEditPhoto.scss';
 
-const SectionPhoto: React.FC<{
-  userId: string;
+const SectionEditPhoto: React.FC<{
   imgUrls: string[];
   setImgUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }> = ({ imgUrls, setImgUrls }) => {
@@ -20,6 +19,11 @@ const SectionPhoto: React.FC<{
     [],
   );
   const [currentCount, setCurrentCount] = useState(0);
+
+  useEffect(() => {
+    setPreviewImgs(imgUrls.map(url => ({ backgroundImage: `url(${url})` })));
+    setCurrentCount(imgUrls.length);
+  }, [imgUrls]);
 
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -140,4 +144,4 @@ const SectionPhoto: React.FC<{
   );
 };
 
-export default SectionPhoto;
+export default SectionEditPhoto;

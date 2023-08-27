@@ -1,30 +1,30 @@
-import { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useRef } from 'react';
 
 const GalleryView = ({ diaryData }) => {
+  console.log(diaryData);
+
   const cardRefs = useRef([]);
 
   const getMainImage = imgUrls => {
     return `url(${imgUrls[0]})`;
   };
 
-  useEffect(() => {
-    cardRefs.current.forEach(cardRef => {
-      const width = cardRef.offsetWidth;
-      cardRef.style.height = `${width}px`;
-    });
-  }, []);
-
   return (
     <div className="gallery_view">
       {diaryData.map((diary, index) => (
-        <div
+        <Link
+          to={`/diary/${diary.id}`}
+          key={index}
+          style={{ backgroundImage: getMainImage(diary.imgUrls) }}
           className={`card ${diary.imgUrls.length === 0 ? 'hide' : 'show'} ${
             diary.imgUrls.length > 1 ? 'many' : ''
           }`}
-          key={index}
-          ref={cardElement => (cardRefs.current[index] = cardElement)}
-          style={{ backgroundImage: getMainImage(diary.imgUrls) }}
-        ></div>
+        >
+          <div
+            ref={cardElement => (cardRefs.current[index] = cardElement)}
+          ></div>
+        </Link>
       ))}
     </div>
   );

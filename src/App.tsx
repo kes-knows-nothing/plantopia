@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/mainPage/MainPage';
-import LoginPage from './pages/loginPage/LoginPage';
+import LoginPage from './pages/loginPage/LoginPage';z
 import DiaryPage from './pages/diaryPage/DiaryPage';
 import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
 import DiaryEditPage from './pages/diaryPage/diaryEditPage/DiaryEditPage';
@@ -10,7 +10,7 @@ import MyPage from './pages/myPage/MyPage';
 import MyInfo from './pages/myPage/MyInfo';
 import MyPlantMainPage from './pages/myPlantPage/myPlantMainPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/myPlantDetailPage/MyPlantDetailPage';
-import MyPlantRegisterPage from '@/pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
+import MyPlantRegisterPage from './pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
 import MyPlantEditPage from './pages/myPlantPage/myPlantEditPage/MyPlantEditPage';
 import RegisterPage from './pages/RegisterPage';
 import DictPage from './pages/dictPage/DictPage';

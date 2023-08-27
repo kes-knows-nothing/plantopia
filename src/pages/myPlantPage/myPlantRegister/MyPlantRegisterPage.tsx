@@ -6,63 +6,46 @@ import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/utils/firebaseApp';
-import {
-  collection,
-  addDoc,
-  getDocs,
-  where,
-  query,
-  Timestamp,
-} from 'firebase/firestore';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '@/utils/firebaseApp';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { PlantType } from '@/pages/dictPage/Recommend';
+import { dateToTimestamp, waterCodeToNumber } from '@/utils/myPlantUtil';
 import 'firebase/storage';
-
-interface MyPlantProps {
-  frequency: number;
-  imgUrl: string;
-  isMain: boolean;
-  nickname: string;
-  plantName: string;
-  purchasedDay: InstanceType<typeof Timestamp>;
-  userEmail: string;
-  wateredDays: InstanceType<typeof Timestamp>[];
-}
 
 const MyPlantRegisterPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const { plantNameFromDict, image } = location.state;
-  // 기존 검색값으로 데이터 찾는대신 dict에서 데이터 받아서 처리
-  const [searchInputValue, setSearchInputValue] = useState('');
-  const [searchResult, setSearchResult] = useState<PlantType>();
+  const name = location.state?.name;
+  const image = location.state?.image;
+  const waterCode = location.state?.waterCode;
+  const [searchInputValue, setSearchInputValue] = useState(name);
   const [plantName, setPlantName] = useState<string>('');
-  const [purchasedDay, setPurchasedDay] = useState<Timestamp>();
-  const [wateredDays, setWateredDays] = useState<Timestamp[]>([]);
+  const [purchasedDay, setPurchasedDay] = useState<string>('');
+  const [wateredDays, setWateredDays] = useState<string>('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
-  const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
+  };
+
+  const navigateSearchInput = () => {
+    navigate('/dict/search', {
+      state: { inputValue: searchInputValue },
+    });
   };
 
   const plantNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlantName(e.target.value);
-    console.log(plantName);
   };
 
   const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPurchasedDay(e.target.value);
   };
   const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWateredDays([...wateredDays, e.target.value]);
+    setWateredDays(e.target.value);
   };
-  const q = query(
-    collection(db, 'dictionary'),
-    where('name', '==', searchInputValue),
-  );
 
   // 이미지 저장 로직
   const cleanFileName = (fileName: string) => {
@@ -101,35 +84,21 @@ const MyPlantRegisterPage = () => {
 
   // 이미지 저장 로직
 
-  const moveToSearch = () => {
-    navigate('/myplant/search');
-  };
-
-  const getSearchResult = async () => {
-    const querySnapshot = await getDocs(q);
-    let plantData;
-    querySnapshot.forEach(doc => {
-      plantData = doc.data();
-    });
-    setSearchResult(plantData);
-  };
-
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const defaultImageUrl =
-      'https://firebasestorage.googleapis.com/v0/b/plantopia-8452c.appspot.com/o/sub_plant_3.png?alt=media&token=8bba9cbc-4f54-4cbc-9c4f-1b8e097bd060';
     const newPlantData = {
-      frequency: 7,
-      imgUrl: imgUrl || defaultImageUrl,
+      frequency: waterCodeToNumber(waterCode),
+      imgUrl: imgUrl || image,
       isMain: false,
       nickname: plantName,
       plantName: searchInputValue,
-      purchasedDay: purchasedDay,
+      purchasedDay: dateToTimestamp(purchasedDay),
       userEmail: 'test@test.com',
-      wateredDays: wateredDays,
+      wateredDays: [dateToTimestamp(wateredDays)],
     };
     const docRef = await addDoc(collection(db, 'plant'), newPlantData);
     console.log('Document written with ID: ', docRef.id);
+    navigate('/myplant');
   };
   return (
     <>
@@ -145,7 +114,7 @@ const MyPlantRegisterPage = () => {
             <div className="img_wrapper">
               <img
                 className="main_img"
-                src={previewImg || samplePlant1}
+                src={previewImg || image || samplePlant1}
                 alt="samplePlant1"
               />
               <div className="edit_icon_wrapper">
@@ -174,10 +143,15 @@ const MyPlantRegisterPage = () => {
                 type="text"
                 placeholder="식물 이름으로 검색해보세요."
                 value={searchInputValue}
-                onChange={searchInputHandler}
-                onClick={moveToSearch}
+                onChange={handleSearchInput}
               />
-              <img src={inputGlass} alt="inputGlass" />
+
+              <img
+                className="input_glass"
+                src={inputGlass}
+                alt="inputGlass"
+                onClick={navigateSearchInput}
+              />
             </div>
           </div>
           <div className="my_plant_info_form">
@@ -187,11 +161,10 @@ const MyPlantRegisterPage = () => {
               value={plantName}
               onChange={plantNameHandler}
             />
-
             <p className="watering_frequency">물 주는 날</p>
             <div className="watering_frequency_input_box">
               <p className="watering_frequency_input">
-                {searchResult?.waterCode}
+                {waterCodeToNumber(waterCode)}
               </p>
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
@@ -217,9 +190,8 @@ const MyPlantRegisterPage = () => {
             </div>
           </div>
         </div>
-        <Link to={'/myplant'}>
-          <button className="my_plant_register_btn">등록</button>
-        </Link>
+
+        <button className="my_plant_register_btn">등록</button>
       </form>
     </>
   );

@@ -1,3 +1,5 @@
+@use '@/styles/mixins';
+
 .main_page {
   background-color: #ffffff;
   min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
@@ -85,24 +87,18 @@
   width: 26rem;
   height: 26rem;
   background: #ffffff;
-  border-radius: 26rem;
+  border-radius: 50%;
   box-shadow: 0 1rem 1.6rem 0 rgba(0, 0, 0, 0.1);
 
   > .inner_circle {
+    @include mixins.avatar(50%);
+
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
     background-color: #dfe9e4;
-    border-radius: 26rem;
-    overflow: hidden;
-
-    > img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
   }
 
   > .watering_btn {
@@ -232,21 +228,15 @@
         padding: 0.3rem;
 
         > .avatar {
+          @include mixins.avatar(50%);
+
           display: flex;
           justify-content: center;
           align-items: center;
           width: 100%;
           height: 100%;
           background: #ffffff;
-          border-radius: 50%;
-          overflow: hidden;
           filter: drop-shadow(0 0.4rem 0.8rem rgba(0, 0, 0, 0.1));
-
-          > img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
         }
 
         > .name {

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
+import { useAuth } from '@/hooks';
+import { UserPlant } from '@/@types/plant.type';
 import { db } from '@/firebaseApp';
 import {
   collection,
@@ -17,18 +19,6 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
-
-export interface UserPlant {
-  id: string;
-  frequency: number;
-  imgUrl: string;
-  isMain: boolean;
-  nickname: string;
-  plantName: string;
-  purchasedDay: InstanceType<typeof Timestamp>;
-  userEmail: string;
-  wateredDays: InstanceType<typeof Timestamp>[];
-}
 
 interface PlantListProps {
   plants: UserPlant[];
@@ -57,6 +47,7 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 const MainPage = () => {
   const [mainPlant, setMainPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const user = useAuth();
 
   const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -73,12 +64,6 @@ const MainPage = () => {
 
       alert('물을 잘 먹었어요!');
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error(error);
-      }
-
       alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
     }
   };
@@ -88,63 +73,53 @@ const MainPage = () => {
   };
 
   const getUserPlant = async () => {
-    // dummy
-    const email = 'test@test.com';
+    if (!user) return;
 
     const emailRef = collection(db, 'plant');
-    const q = query(emailRef, where('userEmail', '==', email));
+    const q = query(emailRef, where('userEmail', '==', user.email));
 
     try {
       const userPlantList: UserPlant[] = [];
 
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
-        const plantData: UserPlant = {
-          id: doc.id,
-          ...(doc.data() as Omit<UserPlant, 'id'>),
-        };
+        const plantData = doc.data() as Omit<UserPlant, 'id'>;
 
-        userPlantList.push(plantData);
+        userPlantList.push({
+          id: doc.id,
+          ...plantData,
+        });
       });
 
-      let mainPlantData: UserPlant | undefined;
+      const mainPlantData = userPlantList.find(plant => plant.isMain);
 
-      if (mainPlant) {
-        mainPlantData = userPlantList.find(plant => plant.id === mainPlant.id);
-      } else {
-        mainPlantData =
-          userPlantList.find(plant => plant.isMain) || userPlantList[0];
-      }
-
-      setMainPlant(mainPlantData);
+      setMainPlant(mainPlantData || userPlantList[0]);
       setPlantList(userPlantList);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error(error);
-      }
-
       alert('에러가 발생하였습니다. 새로고침을 해주세요!');
     }
   };
 
   useEffect(() => {
     getUserPlant();
-  }, []);
+  }, [user]);
+
+  const hasUserPlant = !!(mainPlant && plantList.length > 0);
 
   return (
     <>
       <Header isMainPage />
       <main className="main_page">
         <section>
-          <div className="inner">
-            <WeatherSection />
-            {mainPlant && (
-              <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
-            )}
-          </div>
-          <PlantList plants={plantList} onClickItem={switchMainPlant} />
+          <WeatherSection />
+          {hasUserPlant && (
+            <>
+              <div className="inner">
+                <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
+              </div>
+              <PlantList plants={plantList} onClickItem={switchMainPlant} />
+            </>
+          )}
         </section>
       </main>
       <Footer />

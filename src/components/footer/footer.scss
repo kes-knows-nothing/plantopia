@@ -1,3 +1,5 @@
+@use '@/styles/colors';
+
 .footer {
   position: fixed;
   bottom: 0;
@@ -8,7 +10,8 @@
   align-items: center;
   height: 5.6rem;
   background: #fff;
-  border-top: 1px solid #e4e6ef;
+  border: 1px solid colors.$main-border-color;
+  border-bottom: none;
   z-index: 10;
 
   > .home_btn {

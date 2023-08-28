@@ -58,7 +58,7 @@ const MyInfo = () => {
       <main className="my_info_container inner">
         <section className="profile_section">
           <div className="profile">
-            <img src={user?.photoURL || uploadedImg || Profile} alt="profile" />
+            <img src={uploadedImg || user?.photoURL || Profile} alt="profile" />
             <label htmlFor="profile" className="edit_btn" />
             <input
               onChange={handleChange}
@@ -79,7 +79,7 @@ const MyInfo = () => {
               <input
                 onChange={e => setNickname(e.target.value)}
                 type="text"
-                placeholder={user?.displayName || ''}
+                defaultValue={user?.displayName || ''}
               />
             </li>
             <li>

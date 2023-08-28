@@ -97,6 +97,7 @@
     height: 100%;
     background-color: #dfe9e4;
     border-radius: 26rem;
+    overflow: hidden;
 
     > img {
       width: 100%;
@@ -240,6 +241,7 @@
           height: 100%;
           background: #ffffff;
           border-radius: 50%;
+          overflow: hidden;
           filter: drop-shadow(0 0.4rem 0.8rem rgba(0, 0, 0, 0.1));
 
           > img {

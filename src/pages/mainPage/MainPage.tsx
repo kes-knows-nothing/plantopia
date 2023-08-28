@@ -73,12 +73,6 @@ const MainPage = () => {
 
       alert('물을 잘 먹었어요!');
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error(error);
-      }
-
       alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
     }
   };
@@ -119,12 +113,6 @@ const MainPage = () => {
       setMainPlant(mainPlantData);
       setPlantList(userPlantList);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error(error);
-      }
-
       alert('에러가 발생하였습니다. 새로고침을 해주세요!');
     }
   };

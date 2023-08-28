@@ -110,7 +110,6 @@ const MainPagePlantList = () => {
               src={plant.isMain ? mainPlantTrueIcon : mainPlantFalseIcon}
               alt="mainPlantOrNotImg"
             />
-
             <img
               src={myPlantEditIcon}
               alt="EditPlantImg"

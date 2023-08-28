@@ -1,4 +1,5 @@
 import 'firebase/firestore';
+import { toast, Slide } from 'react-toastify';
 import { Timestamp } from 'firebase/firestore';
 import format from 'date-fns/format';
 
@@ -34,4 +35,46 @@ export const waterCodeToNumber = (waterCode: string) => {
     case 'WC01':
       return 7;
   }
+};
+
+export const successNoti = (content: string) => {
+  toast.success(content, {
+    transition: Slide,
+    position: 'top-center',
+    autoClose: 1000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
+};
+
+export const errorNoti = (content: string) => {
+  toast.error(content, {
+    transition: Slide,
+    position: 'top-center',
+    autoClose: 1000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
+};
+
+export const infoNoti = (content: string) => {
+  toast.info(content, {
+    transition: Slide,
+    position: 'top-center',
+    autoClose: 1000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
 };

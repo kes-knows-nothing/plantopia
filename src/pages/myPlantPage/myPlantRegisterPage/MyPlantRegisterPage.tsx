@@ -1,4 +1,5 @@
 import './myPlantRegisterPage.scss';
+import { ToastContainer } from 'react-toastify';
 import { useAuth } from '@/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';

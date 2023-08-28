@@ -43,7 +43,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
 
   return (
     <>
-      <Link to="/myplant/detail" state={id} className="main_plant">
+      <Link to={`/myplant/${id}`} className="main_plant">
         <div className="inner_circle">
           <img src={imgUrl} alt="plant" />
         </div>

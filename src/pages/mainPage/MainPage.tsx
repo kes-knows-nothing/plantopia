@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import {
   collection,
   getDocs,

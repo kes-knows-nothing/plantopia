@@ -1,4 +1,4 @@
-import { auth } from '@/utils/firebaseApp';
+import { auth } from '@/firebaseApp';
 import { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

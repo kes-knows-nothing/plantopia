@@ -1,12 +1,11 @@
 import './myPlantEditPage.scss';
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/utils/firebaseApp';
+import { storage, db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
-import { db } from '@/utils/firebaseApp';
 import { useState, useEffect } from 'react';
 import { MyPlant } from '@/@types/myPlant.type';
 import 'firebase/storage';
@@ -16,25 +15,38 @@ const MyPlantEditPage = () => {
   const location = useLocation();
   const { docId } = useParams();
 
-  const {
-    nicknameFromDetail,
-    plantNameFromDetail,
-    purchasedDayFromDetail,
-    wateredDayFromDetail,
-    imgUrlFromDetail,
-  } = location.state;
+  const nicknameFromDetail = location.state?.nicknameFromDetail;
+  const plantNameFromDetail = location.state?.plantNameFromDetail;
+  const purchasedDayFromDetail = location.state?.purchasedDayFromDetail;
+  const wateredDayFromDetail = location.state?.wateredDayFromDetail;
+  const imgUrlFromDetail = location.state?.imgUrlFromDetail;
+  const frequencyFromDetail = location.state?.frequencyFromDetail;
 
-  const [myPlantData, setMyPlantData] = useState<MyPlant[]>([]);
-  const [plantNickname, setPlantNickname] =
-    useState<string>(nicknameFromDetail);
-  const [plantName, setPlantName] = useState<string>(plantNameFromDetail);
+  const imgUrlFromList = location.state?.imgUrlFromList;
+  const plantNameFromList = location.state?.plantNameFromList;
+  const purchasedDayFromList = location.state?.purchasedDayFromList;
+  const nicknameFromList = location.state?.nicknameFromList;
+  const wateredDayFromList = location.state?.wateredDayFromList;
+  const frequencyFromList = location.state?.frequencyFromList;
+
+  const [myPlantData, setMyPlantData] = useState<MyPlant>();
+  const [plantNickname, setPlantNickname] = useState<string>(
+    nicknameFromDetail || nicknameFromList,
+  );
+  const [plantName, setPlantName] = useState<string>(
+    plantNameFromDetail || plantNameFromList,
+  );
   const [purchasedDay, setPurchasedDay] = useState<string>(
-    secondsToDate(purchasedDayFromDetail.seconds),
+    secondsToDate(
+      purchasedDayFromDetail?.seconds || purchasedDayFromList?.seconds,
+    ),
   );
   const [wateredDay, setWateredDay] = useState<string>(
-    secondsToDate(wateredDayFromDetail.seconds),
+    secondsToDate(wateredDayFromDetail?.seconds || wateredDayFromList?.seconds),
   );
-  const [imgUrl, setImgUrl] = useState<string>(imgUrlFromDetail);
+  const [imgUrl, setImgUrl] = useState<string>(
+    imgUrlFromDetail || imgUrlFromList,
+  );
   const [previewImg, setPreviewImg] = useState<string>();
 
   const handlePlantNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +57,10 @@ const MyPlantEditPage = () => {
   };
   const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWateredDay(e.target.value);
+  };
+
+  const handleGoBack = () => {
+    window.history.back();
   };
 
   // 이미지 저장 로직
@@ -81,17 +97,17 @@ const MyPlantEditPage = () => {
     }
     event.target.value = null;
   };
-
   // 이미지 저장 로직
 
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const documentRef = doc(db, 'plant', docId);
+    myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
     const updatedFields = {
       imgUrl: imgUrl,
       nickname: plantNickname,
       purchasedDay: dateToTimestamp(purchasedDay),
-      wateredDays: [...myPlantData[0].wateredDays, dateToTimestamp(wateredDay)],
+      wateredDays: myPlantData?.wateredDays,
     };
 
     try {
@@ -120,8 +136,8 @@ const MyPlantEditPage = () => {
     };
     getMyPlantData();
     if (myPlantData) {
-      setPlantName(myPlantData[0]?.plantName);
-      setPlantNickname(myPlantData[0]?.nickname);
+      setPlantName(myPlantData?.plantName);
+      setPlantNickname(myPlantData?.nickname);
     }
   }, []);
 
@@ -129,9 +145,7 @@ const MyPlantEditPage = () => {
     <>
       <div className="plant_register_head">
         <p>식물 수정</p>
-        <Link to={'/myplant'}>
-          <img src={xIcon} alt="xIcon" />
-        </Link>
+        <img src={xIcon} alt="xIcon" onClick={handleGoBack} />
       </div>
       <div className="my_plant_registeration_container">
         <div className="my_plant_register_img_box">
@@ -172,7 +186,7 @@ const MyPlantEditPage = () => {
           <p className="watering_frequency">물 주는 날</p>
           <div className="watering_frequency_input_box">
             <p className="watering_frequency_input">
-              {myPlantData[0]?.frequency}
+              {frequencyFromDetail || frequencyFromList}
             </p>
             <p className="watering_frequency_info">일에 한 번</p>
           </div>

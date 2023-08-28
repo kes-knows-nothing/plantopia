@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import './header.scss';
 import MAIN_LOGO from '@/assets/images/icons/main_logo.png';
-import ALERT from '@/assets/images/icons/alert.png';
-import EMPTY_ALERT from '@/assets/images/icons/empty_alert.png';
 import CALENDAR from '@/assets/images/icons/calendar.png';
 
 interface HeaderProps {
@@ -21,10 +19,6 @@ const Header = ({ isMainPage }: HeaderProps) => {
           <Link to="/calendar" className="calendar_btn">
             <img src={CALENDAR} alt="calendar" />
           </Link>
-          <button className="noti_btn">
-            {/* 조건부 alert처리 src={ALERT} */}
-            <img src={EMPTY_ALERT} alt="alert" />
-          </button>
         </div>
       )}
     </header>

@@ -14,7 +14,25 @@
 
 .diary_detail_page {
   width: 100%;
+  height: 100vh;
+  overflow: auto;
   position: relative;
+
+  // 임시로 작성
+  &::-webkit-scrollbar {
+    width: 0.3rem;
+    height: 0.3rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #f2f2f2;
+    border-radius: 5rem;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #e5e5e5;
+    border-radius: 5rem;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
 
   .diary_detail_container {
     display: flex;
@@ -42,12 +60,19 @@
         height: 2.4rem;
 
         &.back {
-          left: 2rem;
+          left: 0;
         }
+      }
 
-        &.more {
-          right: 2rem;
-        }
+      .more {
+        position: absolute;
+        right: 0;
+        width: 3rem;
+        height: 3rem;
+        color: #979797;
+        opacity: 0.8;
+        background: url('@/assets/images/icons/diary_more.png') no-repeat center /
+          0.35rem;
       }
     }
 
@@ -88,7 +113,8 @@
 
           .slide_img {
             display: block;
-            width: 100%;
+            width: 36rem;
+            height: 36rem;
             object-fit: cover;
             margin: 0 auto;
           }
@@ -105,6 +131,7 @@
         z-index: 999;
         opacity: 0;
         transition: 0.4s;
+        display: none; //css 추후 수정 필요
 
         .nav_btn {
           position: absolute;

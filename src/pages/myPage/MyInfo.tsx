@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
-import { auth, storage } from '@/utils/firebaseApp';
+import { auth, storage } from '@/firebaseApp';
 import Profile from '@/assets/images/profile.png';
 import './myInfo.scss';
 

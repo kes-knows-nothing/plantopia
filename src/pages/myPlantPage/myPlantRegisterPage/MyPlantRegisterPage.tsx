@@ -14,6 +14,7 @@ import { dateToTimestamp, waterCodeToNumber } from '@/utils/myPlantUtil';
 import 'firebase/storage';
 
 const MyPlantRegisterPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const name = location.state?.name;

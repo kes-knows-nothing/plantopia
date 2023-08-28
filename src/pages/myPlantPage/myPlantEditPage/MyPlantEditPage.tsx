@@ -11,6 +11,7 @@ import { MyPlant } from '@/@types/myPlant.type';
 import 'firebase/storage';
 
 const MyPlantEditPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { docId } = useParams();

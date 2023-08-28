@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks';
 import { Link } from 'react-router-dom';
 import './myPlantMainPage.scss';
 import Header from '@/components/header/Header';
@@ -28,6 +29,7 @@ interface MyPlantProps {
 }
 
 const MyPlantMainPage = () => {
+  const user = useAuth();
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
   const [myMainPlant, setMyMainPlant] = useState<MyPlantProps[]>([]);
   const userId = 'test@test.com';
@@ -59,8 +61,8 @@ const MyPlantMainPage = () => {
       {myMainPlant[0] ? (
         <>
           <p className="my_plant_info_message">
-            <span className="username">{myMainPlant[0].nickname}</span>님의
-            식물을 한눈에 보기!
+            <span className="username">{user?.displayName}</span> 님의 식물을
+            한눈에 보기!
           </p>
           <div className="main_plant_info_box">
             <div className="main_plant_main_data">

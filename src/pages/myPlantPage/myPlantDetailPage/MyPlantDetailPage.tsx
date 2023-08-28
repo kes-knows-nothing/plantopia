@@ -35,6 +35,7 @@ interface MyPlantProps {
 }
 
 const MyPlantDetailPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
   const [plantDetail, setPlantDetail] = useState<MyPlantProps>({

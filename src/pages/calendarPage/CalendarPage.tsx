@@ -1,12 +1,11 @@
-import { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db, auth } from '@/firebaseApp';
-import { onAuthStateChanged } from 'firebase/auth';
 import { nanoid } from 'nanoid';
-import 'react-calendar/dist/Calendar.css';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import ThreeDotsLoading from '@/components/loading/ThreeDots';
+import { useAuth } from '@/hooks';
+import 'react-calendar/dist/Calendar.css';
 import './calendarPage.scss';
 import {
   dateFormat,
@@ -15,115 +14,117 @@ import {
   reactCalendarDayFormat,
 } from '@/utils/calendarUtil';
 
-import sticker01 from '@/assets/images/icons/calendar_sticker01.png';
-import sticker02 from '@/assets/images/icons/calendar_sticker02.png';
-import sticker03 from '@/assets/images/icons/calendar_sticker03.png';
-import sticker04 from '@/assets/images/icons/calendar_sticker04.png';
-import sticker05 from '@/assets/images/icons/calendar_sticker05.png';
-import sticker06 from '@/assets/images/icons/calendar_sticker06.png';
-
-type ValuePiece = Date | null;
-type CalendarType = ValuePiece | [ValuePiece, ValuePiece];
-interface TileContentsProps {
-  date: Date;
-}
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import { CALENDAR_ICONS } from '@/constants/calendar';
+import { UserPlant } from '@/@types/plant.type';
+import { format } from 'date-fns';
 
 /**
  * firebase에서 받아온걸로 변경해야함
  * 샘플 데이터 START
  */
-// const waterValue = [
-//   {
-//     date: '2023-08-01',
-//     list: [
-//       { time: '09:00', plant: '쑥쑥이' },
-//       { time: '10:00', plant: '유나의 스투시' },
-//       { time: '11:00', plant: '랩몬스테라' },
-//       { time: '12:00', plant: '식물 이름이 나오는 영역 입니다 입니다' },
-//       { time: '13:00', plant: '식물 이름이 나오는 영역 입니다 입니다2' },
-//       { time: '15:00', plant: '뀨뀨까까' },
-//     ],
-//   },
-//   {
-//     date: '2023-08-10',
-//     list: [
-//       { time: '10:00', plant: '유나의 스투시' },
-//       { time: '11:00', plant: '랩몬스테라' },
-//       { time: '12:00', plant: '식물 이름이 나오는 영역 입니다 입니다' },
-//       { time: '13:00', plant: '식물 이름이 나오는 영역 입니다 입니다2' },
-//       { time: '15:00', plant: '뀨뀨까까' },
-//       { time: '15:00', plant: '뀨뀨까까' },
-//       { time: '15:00', plant: '뀨뀨까까' },
-//       { time: '15:00', plant: '뀨뀨까까' },
-//     ],
-//   },
-//   {
-//     date: '2023-08-16',
-//     list: [
-//       { time: '10:00', plant: '쑥쑥이' },
-//       { time: '10:00', plant: '유나의 스투시' },
-//       { time: '11:00', plant: '랩몬스테라' },
-//       { time: '15:00', plant: '뀨뀨까까' },
-//     ],
-//   },
-//   {
-//     date: '2023-08-19',
-//     list: [
-//       { time: '09:00', plant: '쑥쑥이' },
-//       { time: '10:00', plant: '쑥쑥이' },
-//     ],
-//   },
-//   {
-//     date: '2023-08-21',
-//     list: [
-//       { time: '19:00', plant: '쑥쑥이' },
-//       { time: '20:00', plant: '쑥쑥이' },
-//     ],
-//   },
-//   {
-//     date: '2023-08-30',
-//     list: [
-//       { time: '10:00', plant: '쑥쑥이' },
-//       { time: '15:00', plant: '쑥쑥이' },
-//     ],
-//   },
-//   {
-//     date: '2023-08-31',
-//     list: [
-//       { time: '10:00', plant: '쑥쑥이' },
-//       { time: '15:00', plant: '쑥쑥이' },
-//     ],
-//   },
-// ];
+const mockWaterValue: WaterRecordType[] = [
+  {
+    date: '2023-08-01',
+    icon: CALENDAR_ICONS[0],
+    list: [
+      { time: '09:00', plant: '쑥쑥이' },
+      { time: '10:00', plant: '유나의 스투시' },
+      { time: '11:00', plant: '랩몬스테라' },
+      { time: '12:00', plant: '식물 이름이 나오는 영역 입니다 입니다' },
+      { time: '13:00', plant: '식물 이름이 나오는 영역 입니다 입니다2' },
+      { time: '15:00', plant: '뀨뀨까까' },
+    ],
+  },
+  {
+    date: '2023-08-10',
+    icon: CALENDAR_ICONS[1],
+    list: [
+      { time: '10:00', plant: '유나의 스투시' },
+      { time: '11:00', plant: '랩몬스테라' },
+      { time: '12:00', plant: '식물 이름이 나오는 영역 입니다 입니다' },
+      { time: '13:00', plant: '식물 이름이 나오는 영역 입니다 입니다2' },
+      { time: '15:00', plant: '뀨뀨까까' },
+      { time: '15:00', plant: '뀨뀨까까' },
+      { time: '15:00', plant: '뀨뀨까까' },
+      { time: '15:00', plant: '뀨뀨까까' },
+    ],
+  },
+  {
+    date: '2023-08-16',
+    icon: CALENDAR_ICONS[2],
+    list: [
+      { time: '10:00', plant: '쑥쑥이' },
+      { time: '10:00', plant: '유나의 스투시' },
+      { time: '11:00', plant: '랩몬스테라' },
+      { time: '15:00', plant: '뀨뀨까까' },
+    ],
+  },
+  {
+    date: '2023-08-19',
+    icon: CALENDAR_ICONS[3],
+    list: [
+      { time: '09:00', plant: '쑥쑥이' },
+      { time: '10:00', plant: '쑥쑥이' },
+    ],
+  },
+  {
+    date: '2023-08-21',
+    icon: CALENDAR_ICONS[4],
+    list: [
+      { time: '19:00', plant: '쑥쑥이' },
+      { time: '20:00', plant: '쑥쑥이' },
+    ],
+  },
+  {
+    date: '2023-08-30',
+    icon: CALENDAR_ICONS[5],
+    list: [
+      { time: '10:00', plant: '쑥쑥이' },
+      { time: '15:00', plant: '쑥쑥이' },
+    ],
+  },
+  {
+    date: '2023-08-31',
+    icon: CALENDAR_ICONS[6],
+    list: [
+      { time: '10:00', plant: '쑥쑥이' },
+      { time: '15:00', plant: '쑥쑥이' },
+    ],
+  },
+];
+
+type ValuePiece = Date | null;
+
+type CalendarType = ValuePiece | [ValuePiece, ValuePiece];
+interface TileContentsProps {
+  date: Date;
+}
 
 interface RecordType {
   time: string;
   plant: string;
 }
 interface WaterRecordType {
-  date: string;
   icon: string;
+  date: string;
   list: RecordType[];
 }
 
-const stickerArr = [
-  sticker01,
-  sticker02,
-  sticker03,
-  sticker04,
-  sticker05,
-  sticker06,
-];
 /** 샘플 데이터 END */
 
 const CalendarPage = () => {
-  const navigator = useNavigate();
-  const iconIdxRef = useRef(0);
+  const user = useAuth();
   const [loading, setLoading] = useState(false);
-  const [waterValue, setWaterValue] = useState<WaterRecordType[]>([]);
-  const [selectDate, setSelectDate] = useState<CalendarType>(new Date());
-  const dateList = waterValue.find(arr => {
-    const date = selectDate instanceof Date ? dateFormat(selectDate) : '';
+
+  // 캘린더 데이터 => waterRecords 로 변경
+  const [calendarData, setCalendarData] =
+    useState<WaterRecordType[]>(mockWaterValue);
+  // 유저가 선택한 날짜
+  const [selectedDate, setSelectedDate] = useState<CalendarType>(new Date());
+
+  const dateList = calendarData.find(arr => {
+    const date = selectedDate instanceof Date ? dateFormat(selectedDate) : '';
     return arr.date === date;
   });
 
@@ -134,7 +135,7 @@ const CalendarPage = () => {
    * @returns
    */
   const tileContent = ({ date }: TileContentsProps) => {
-    const findItem = waterValue.find(data => data.date === dateFormat(date));
+    const findItem = calendarData.find(data => data.date === dateFormat(date));
     if (findItem) {
       return <img src={findItem.icon} />;
     }
@@ -145,73 +146,80 @@ const CalendarPage = () => {
    * collection name : wateringRecord
    * @param userId
    */
-  const getWatering = async (userId: string) => {
-    const waterRef = collection(db, 'wateringRecord');
-    const q = query(waterRef, where('userId', '==', userId));
-    const querySnapshot = await getDocs(q);
-    const data: WaterRecordType[] = [];
-    querySnapshot.forEach(doc => {
-      const { wateringTime, plantName } = doc.data();
-      const strDate = dateFormat(wateringTime.toDate());
-      const hhmm = hhmmFormat(wateringTime.toDate());
-      const isDate = data.find(d => d.date === strDate);
-      if (isDate) {
-        // 물준 기록이 있으면 기존 배열에 추가
-        isDate.list.push({ time: hhmm, plant: plantName });
-      } else {
-        // 처음 준 날짜면 새로 추가
-        data.push({
-          date: strDate,
-          icon: stickerArr[iconIdxRef.current++ % stickerArr.length],
-          list: [{ time: hhmm, plant: plantName }],
+  const getWatering = async (userEmail?: string | null) => {
+    if (!userEmail) return;
+
+    const waterRef = collection(db, 'plant');
+    const q = query(waterRef, where('userEmail', '==', userEmail));
+
+    try {
+      const querySnapshot = await getDocs(q);
+
+      const data: { [date: string]: RecordType[] } = {};
+
+      querySnapshot.forEach(doc => {
+        const plantData = doc.data() as Omit<UserPlant, 'id'>;
+        /* 형식 변환 필요 */
+
+        const plantName = plantData.nickname;
+
+        plantData.wateredDays.forEach(d => {
+          const time = format(d.toDate(), 'HH:mm');
+          const fullDate = format(d.toDate(), 'yyyy-MM-dd');
+
+          const waterData: RecordType = { time, plant: plantName };
+
+          if (!data[fullDate]) {
+            data[fullDate] = [];
+          }
+
+          data[fullDate].push(waterData);
         });
+      });
+
+      const result: WaterRecordType[] = [];
+
+      for (const [date, info] of Object.entries(data)) {
+        // 아이콘 랜덤으로 변경 필요
+        result.push({ date, list: info, icon: CALENDAR_ICONS[0] });
       }
-    });
-    setWaterValue(data);
-    setLoading(true);
+
+      setCalendarData(result);
+    } catch (error) {
+      throw new Error('데이터를 받아오지 못했어요!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    // 관련 정보 https://firebase.google.com/docs/auth/web/manage-users?hl=ko
-    /* firebase 로그인 및 유저정보 체크 */
-    // console.log('이건 한번만 탄다');
-    onAuthStateChanged(auth, user => {
-      if (user && user.email) {
-        getWatering(user.email);
-      } else {
-        alert('로그인이 필요한 서비스입니다');
-        navigator('/login');
-      }
-    });
-  }, []);
+    getWatering(user?.email);
+  }, [user]);
 
   return (
     <div className="calendar_page">
-      <header className="sub_header">
-        <strong>물주기 기록</strong>
-        <button className="close_btn">
-          <span className="hide">닫기</span>
-        </button>
-      </header>
+      <HeaderBefore ex={true} title="물주기 기록" />
       <main className="calendar_container">
         {loading ? (
+          <ThreeDotsLoading />
+        ) : (
           <>
             <section className="calendar_wrap inner">
               <Calendar
-                onChange={setSelectDate}
-                value={selectDate}
+                value={selectedDate}
                 formatDay={reactCalendarDayFormat}
                 calendarType="hebrew"
                 nextLabel=""
                 prevLabel=""
                 tileContent={tileContent}
+                onChange={setSelectedDate}
               />
             </section>
 
             <section className="date_list_wrap inner">
               <strong className="date_title">
-                {selectDate instanceof Date
-                  ? dateWeekFormatter(selectDate)
+                {selectedDate instanceof Date
+                  ? dateWeekFormatter(selectedDate)
                   : ''}
               </strong>
               {dateList ? (
@@ -236,8 +244,6 @@ const CalendarPage = () => {
               )}
             </section>
           </>
-        ) : (
-          <ThreeDotsLoading />
         )}
       </main>
     </div>

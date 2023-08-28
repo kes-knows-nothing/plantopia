@@ -35,6 +35,7 @@ interface MyPlantProps {
 }
 
 const MyPlantDetailPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
   const [plantDetail, setPlantDetail] = useState<MyPlantProps>({
@@ -130,7 +131,7 @@ const MyPlantDetailPage = () => {
               plantNameFromDetail: plantDetail.plantName,
               purchasedDayFromDetail: plantDetail.purchasedDay,
               wateredDayFromDetail: plantDetail.wateredDays.at(-1),
-              frequencyFromDetail: plantDetail.frequency
+              frequencyFromDetail: plantDetail.frequency,
             }}
           >
             <div className="my_plant_detail_edit_btn_inner_contents">

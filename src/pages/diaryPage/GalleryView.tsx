@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
+import './galleryView.scss';
 
 const GalleryView = ({ diaryData }) => {
   const cardRefs = useRef([]);

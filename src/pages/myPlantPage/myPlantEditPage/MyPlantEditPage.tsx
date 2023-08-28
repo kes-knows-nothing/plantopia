@@ -1,4 +1,5 @@
 import './myPlantEditPage.scss';
+import { useAuth } from '@/hooks';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';

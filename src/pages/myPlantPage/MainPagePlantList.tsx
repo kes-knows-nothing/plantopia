@@ -5,7 +5,7 @@ import '@/pages/myPlantPage/mainPagePlantList.scss';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png';
 import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
-import { MyPlant } from '@/@types/myPlant.type';
+import { UserPlant } from '@/@types/plant.type';
 import {
   getDocs,
   collection,
@@ -18,8 +18,8 @@ import { db } from '@/firebaseApp';
 
 const MainPagePlantList = () => {
   const navigate = useNavigate();
-  const [myPlantData, setMyPlantData] = useState<MyPlant[]>([]);
-  const handleIsMain = async (clickedPlant: MyPlant) => {
+  const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
+  const handleIsMain = async (clickedPlant: UserPlant) => {
     console.log(clickedPlant);
     if (clickedPlant.isMain === false) {
       const previousMain = myPlantData.filter(item => (item.isMain = true));
@@ -52,7 +52,7 @@ const MainPagePlantList = () => {
     window.location.reload();
   };
 
-  const handleEditData = (clickedPlant: MyPlant) => {
+  const handleEditData = (clickedPlant: UserPlant) => {
     const dataFromList = {
       imgUrlFromList: clickedPlant.imgUrl,
       nicknameFromList: clickedPlant.nickname,
@@ -68,7 +68,7 @@ const MainPagePlantList = () => {
 
   useEffect(() => {
     const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
-    const compare = (a: MyPlant, b: MyPlant): number => {
+    const compare = (a: UserPlant, b: UserPlant): number => {
       if (a.isMain === b.isMain) {
         return 0;
       } else if (a.isMain) {
@@ -79,7 +79,7 @@ const MainPagePlantList = () => {
     };
     const getNotMainPlants = async () => {
       const querySnapshot = await getDocs(q);
-      const plantData: Array<MyPlant> = [];
+      const plantData: Array<UserPlant> = [];
       querySnapshot.forEach(doc => {
         plantData.push({ ...doc.data(), id: doc.id });
         plantData.sort(compare);

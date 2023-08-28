@@ -11,7 +11,6 @@ import MyInfo from './pages/myPage/MyInfo';
 import MyPlantMainPage from './pages/myPlantPage/myPlantMainPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/myPlantDetailPage/MyPlantDetailPage';
 import MyPlantRegisterPage from './pages/myPlantPage/myPlantRegister/MyPlantRegisterPage';
-import MyPlantEditPage from './pages/myPlantPage/myPlantEditPage/MyPlantEditPage';
 import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/dictSearchPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/dictDetailPage/DictDetailPage';
@@ -37,7 +36,6 @@ const App = () => {
       <Route path="/mypage/info" element={<MyInfo />} />
       <Route path="/myplant" element={<MyPlantMainPage />} />
       <Route path="/myplant/:docId" element={<MyPlantDetailPage />} />
-      <Route path="/myplant/:docId/edit" element={<MyPlantEditPage />} />
       <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
       <Route path="/myplant/search" element={<MyPlantSearchResultPage />} />
       <Route path="/dict" element={<DictPage />} />

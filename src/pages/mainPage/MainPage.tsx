@@ -93,24 +93,17 @@ const MainPage = () => {
 
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
-        const plantData: UserPlant = {
-          id: doc.id,
-          ...(doc.data() as Omit<UserPlant, 'id'>),
-        };
+        const plantData = doc.data() as Omit<UserPlant, 'id'>;
 
-        userPlantList.push(plantData);
+        userPlantList.push({
+          id: doc.id,
+          ...plantData,
+        });
       });
 
-      let mainPlantData: UserPlant | undefined;
+      const mainPlantData = userPlantList.find(plant => plant.isMain);
 
-      if (mainPlant) {
-        mainPlantData = userPlantList.find(plant => plant.id === mainPlant.id);
-      } else {
-        mainPlantData =
-          userPlantList.find(plant => plant.isMain) || userPlantList[0];
-      }
-
-      setMainPlant(mainPlantData);
+      setMainPlant(mainPlantData || userPlantList[0]);
       setPlantList(userPlantList);
     } catch (error) {
       alert('에러가 발생하였습니다. 새로고침을 해주세요!');

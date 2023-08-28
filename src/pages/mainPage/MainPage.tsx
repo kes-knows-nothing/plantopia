@@ -105,22 +105,24 @@ const MainPage = () => {
     getUserPlant();
   }, []);
 
+  const hasUserPlant = !!(mainPlant && plantList.length > 0);
+
   return (
     <>
       <Header isMainPage />
-      {user && (
-        <main className="main_page">
-          <section>
-            <div className="inner">
-              <WeatherSection />
-              {mainPlant && (
+      <main className="main_page">
+        <section>
+          <WeatherSection />
+          {hasUserPlant && (
+            <>
+              <div className="inner">
                 <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
-              )}
-            </div>
-            <PlantList plants={plantList} onClickItem={switchMainPlant} />
-          </section>
-        </main>
-      )}
+              </div>
+              <PlantList plants={plantList} onClickItem={switchMainPlant} />
+            </>
+          )}
+        </section>
+      </main>
       <Footer />
     </>
   );

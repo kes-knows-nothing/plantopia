@@ -12,6 +12,10 @@
 }
 
 .my_info_page {
+  .my_info_container {
+    min-height: 85vh;
+  }
+
   .profile_section {
     display: flex;
     justify-content: center;

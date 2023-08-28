@@ -73,11 +73,10 @@ const MainPage = () => {
   };
 
   const getUserPlant = async () => {
-    // dummy
-    const email = 'test@test.com';
+    if (!user) return;
 
     const emailRef = collection(db, 'plant');
-    const q = query(emailRef, where('userEmail', '==', email));
+    const q = query(emailRef, where('userEmail', '==', user.email));
 
     try {
       const userPlantList: UserPlant[] = [];
@@ -103,7 +102,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getUserPlant();
-  }, []);
+  }, [user]);
 
   const hasUserPlant = !!(mainPlant && plantList.length > 0);
 

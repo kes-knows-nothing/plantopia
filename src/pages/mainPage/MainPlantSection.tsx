@@ -1,6 +1,6 @@
 import { differenceInDays, format, addDays } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { UserPlant } from './MainPage';
+import { UserPlant } from '@/@types/plant.type';
 
 import WATERING from '@/assets/images/icons/watering.png';
 
@@ -34,7 +34,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
       return 'D-day';
     }
 
-    return `D${diffDays}`;
+    return diffDays === 0 ? `D-${diffDays}` : `D${diffDays}`;
   };
 
   const lastWateringDate = (wateredDays.at(-1)?.seconds || 0) * 1000;
@@ -43,7 +43,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
 
   return (
     <>
-      <Link to="/myplant/detail" state={id} className="main_plant">
+      <Link to={`/myplant/${id}`} className="main_plant">
         <div className="inner_circle">
           <img src={imgUrl} alt="plant" />
         </div>

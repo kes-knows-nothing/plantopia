@@ -51,7 +51,7 @@ const WeatherSection = () => {
   );
 
   return (
-    <div className="weather_wrapper">
+    <div className="weather_wrapper inner">
       <div className="text_wrapper">
         <div className="location_wrapper">
           <img src={LOCATION} className="weather_icon" alt="location" />

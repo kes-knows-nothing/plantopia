@@ -1,4 +1,5 @@
 import './myPlantEditPage.scss';
+import { useAuth } from '@/hooks';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
@@ -11,6 +12,7 @@ import { MyPlant } from '@/@types/myPlant.type';
 import 'firebase/storage';
 
 const MyPlantEditPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { docId } = useParams();
@@ -44,6 +46,10 @@ const MyPlantEditPage = () => {
   const [wateredDay, setWateredDay] = useState<string>(
     secondsToDate(wateredDayFromDetail?.seconds || wateredDayFromList?.seconds),
   );
+  const [frequency, setFrequency] = useState<number>(
+    frequencyFromDetail || frequencyFromList,
+  );
+
   const [imgUrl, setImgUrl] = useState<string>(
     imgUrlFromDetail || imgUrlFromList,
   );
@@ -57,6 +63,10 @@ const MyPlantEditPage = () => {
   };
   const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWateredDay(e.target.value);
+  };
+
+  const handleFrequency = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFrequency(Number(e.target.value));
   };
 
   const handleGoBack = () => {
@@ -108,6 +118,7 @@ const MyPlantEditPage = () => {
       nickname: plantNickname,
       purchasedDay: dateToTimestamp(purchasedDay),
       wateredDays: myPlantData?.wateredDays,
+      frequency: frequency,
     };
 
     try {
@@ -185,9 +196,11 @@ const MyPlantEditPage = () => {
 
           <p className="watering_frequency">물 주는 날</p>
           <div className="watering_frequency_input_box">
-            <p className="watering_frequency_input">
-              {frequencyFromDetail || frequencyFromList}
-            </p>
+            <input
+              className="watering_frequency_input"
+              onChange={handleFrequency}
+              defaultValue={frequencyFromDetail || frequencyFromList}
+            />
             <p className="watering_frequency_info">일에 한 번</p>
           </div>
           <p className="my_plant_register_small_title">마지막 물준 날</p>

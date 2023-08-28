@@ -16,7 +16,6 @@ import {
 import { db } from '@/firebaseApp';
 
 const MainPagePlantList = (useremail: string) => {
-  console.log(useremail);
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
   const handleIsMain = async (clickedPlant: UserPlant) => {

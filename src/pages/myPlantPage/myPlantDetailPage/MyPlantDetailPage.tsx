@@ -130,7 +130,7 @@ const MyPlantDetailPage = () => {
               plantNameFromDetail: plantDetail.plantName,
               purchasedDayFromDetail: plantDetail.purchasedDay,
               wateredDayFromDetail: plantDetail.wateredDays.at(-1),
-              frequencyFromDetail: plantDetail.frequency
+              frequencyFromDetail: plantDetail.frequency,
             }}
           >
             <div className="my_plant_detail_edit_btn_inner_contents">

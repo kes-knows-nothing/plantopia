@@ -159,14 +159,17 @@ const MyPlantRegisterPage = () => {
             <p className="my_plant_name_title">식물이름</p>
             <input
               className="my_plant_name"
+              maxLength={5}
               value={plantName}
               onChange={plantNameHandler}
+              placeholder="5글자 이내로 설정해주세요"
             />
             <p className="watering_frequency">물 주는 날</p>
             <div className="watering_frequency_input_box">
               <input
                 className="watering_frequency_input"
                 defaultValue={waterCodeToNumber(waterCode)}
+                placeholder="주변 환경에 따라 적절하게 변경해주세요"
               />
 
               <p className="watering_frequency_info">일에 한 번</p>

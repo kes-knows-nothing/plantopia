@@ -53,7 +53,7 @@ const MyInfo = () => {
 
   return (
     <div className="my_info_page">
-      <HeaderBefore ex={false} title="내 정보" />
+      <HeaderBefore title="내 정보" />
       <main className="my_info_container inner">
         <section className="profile_section">
           <div className="profile">

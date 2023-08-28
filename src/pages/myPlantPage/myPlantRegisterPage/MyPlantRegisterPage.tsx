@@ -1,4 +1,6 @@
 import './myPlantRegisterPage.scss';
+import { ToastContainer } from 'react-toastify';
+import { useAuth } from '@/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
@@ -14,6 +16,7 @@ import { dateToTimestamp, waterCodeToNumber } from '@/utils/myPlantUtil';
 import 'firebase/storage';
 
 const MyPlantRegisterPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const name = location.state?.name;
@@ -25,6 +28,7 @@ const MyPlantRegisterPage = () => {
   const [wateredDays, setWateredDays] = useState<string>('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
+  console.log(waterCodeToNumber(waterCode));
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
@@ -158,14 +162,19 @@ const MyPlantRegisterPage = () => {
             <p className="my_plant_name_title">식물이름</p>
             <input
               className="my_plant_name"
+              maxLength={5}
               value={plantName}
               onChange={plantNameHandler}
+              placeholder="5글자 이내로 설정해주세요"
             />
             <p className="watering_frequency">물 주는 날</p>
             <div className="watering_frequency_input_box">
-              <p className="watering_frequency_input">
-                {waterCodeToNumber(waterCode)}
-              </p>
+              <input
+                className="watering_frequency_input"
+                defaultValue={waterCodeToNumber(waterCode)}
+                placeholder="주변 환경에 따라 적절하게 변경해주세요"
+              />
+
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
             <p className="my_plant_register_small_title">마지막 물준 날</p>

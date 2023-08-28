@@ -1,5 +1,6 @@
 @use 'reset';
 @use 'fonts';
+@use 'colors';
 
 body {
   font-family: 'Pretendard', Arial, sans-serif;
@@ -36,6 +37,12 @@ button {
 
 html {
   font-size: 5px;
+}
+
+header,
+main {
+  border-left: 1px solid colors.$main-border-color;
+  border-right: 1px solid colors.$main-border-color;
 }
 
 @media screen and (min-width: 216px) {

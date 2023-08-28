@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
+import './galleryView.scss';
 
 const GalleryView = ({ diaryData }) => {
-  console.log(diaryData);
-
   const cardRefs = useRef([]);
 
   const getMainImage = imgUrls => {

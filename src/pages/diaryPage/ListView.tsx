@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './listView.scss'
 
 const ListView = ({ diaryData, handleDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -40,7 +40,6 @@ const DiaryPage = () => {
   const user = useAuth();
   const [currentTab, setCurrentTab] = useState('list_tab');
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
-  console.log(user)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,15 +65,19 @@ const DiaryPage = () => {
   }, [user]);
 
   const handleDelete = async (index: number) => {
-    try {
-      const diaryIdToDelete = diaryData[index].id;
+    const confirmed = window.confirm('글을 삭제하시겠습니까?');
 
-      await deleteDoc(doc(db, 'diary', diaryIdToDelete));
+    if (confirmed) {
+      try {
+        const diaryIdToDelete = diaryData[index].id;
 
-      const updatedDiaryData = diaryData.filter((_, i) => i !== index);
-      setDiaryData(updatedDiaryData);
-    } catch (error) {
-      console.error('일기 삭제 중 오류:', error);
+        await deleteDoc(doc(db, 'diary', diaryIdToDelete));
+
+        const updatedDiaryData = diaryData.filter((_, i) => i !== index);
+        setDiaryData(updatedDiaryData);
+      } catch (error) {
+        console.error('일기 삭제 중 오류:', error);
+      }
     }
   };
 

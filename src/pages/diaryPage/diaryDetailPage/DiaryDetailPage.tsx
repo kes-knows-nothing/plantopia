@@ -48,8 +48,9 @@ const DiaryDetailPage = () => {
           <strong>다이어리</strong>
           <button className="header_btn more"></button>
         </div>
-        <section className="slide_section">
-          {diaryData && (
+
+        {diaryData?.imgUrls.length > 0 && (
+          <section className="slide_section">
             <Swiper
               className="diary_img_swiper swiper "
               modules={[Pagination, Navigation]}
@@ -92,8 +93,9 @@ const DiaryDetailPage = () => {
                 </div>
               </div>
             </Swiper>
-          )}
-        </section>
+          </section>
+        )}
+
         <section className="content_section inner">
           <h5 className="diary_title">{diaryData?.title}</h5>
           <div className="plant_list">

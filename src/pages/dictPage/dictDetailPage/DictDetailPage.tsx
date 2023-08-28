@@ -1,7 +1,8 @@
 import { Children } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { codeInfo } from '@/constants/dictionary';
 import { PlantType } from '@/@types/dictionary.type';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import './dictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
@@ -67,12 +68,7 @@ const DictDetailPage = () => {
 
   return (
     <div>
-      <header>
-        <Link to="/dict">
-          <span className="back_button">←</span>
-        </Link>
-        <span className="detail_header">식물 상세(임시 헤더)</span>
-      </header>
+      <HeaderBefore ex={false} title="식물 상세" />
       <main className="detail_container">
         <section className="thumbnail_wrapper">
           <img src={plantData.imageUrl} alt="plant image" />

@@ -1,15 +1,6 @@
 .search_container {
-  margin-left: 2rem;
-
-  header {
-    .back_button {
-      font-size: 3rem;
-    }
-
-    .search_header {
-      font-size: 2rem;
-      padding-left: 6rem;
-    }
+  > main {
+    min-height: 100vh;
   }
 
   .plant_container {

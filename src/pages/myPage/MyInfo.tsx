@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Profile from '@/assets/images/profile.png';
 import './myInfo.scss';
 
@@ -37,7 +38,8 @@ const MyInfo = () => {
     e.preventDefault();
     try {
       if (!user?.email || !auth.currentUser) throw Error();
-      await signInWithEmailAndPassword(auth, user.email, password);
+      user.emailVerified ||
+        (await signInWithEmailAndPassword(auth, user.email, password));
       await updateProfile(auth.currentUser, {
         displayName: nickname,
         photoURL: imgUrl,
@@ -51,10 +53,7 @@ const MyInfo = () => {
 
   return (
     <div className="my_info_page">
-      <header className="sub_header">
-        <Link to="/mypage" className="back_btn" />
-        <strong>내 정보</strong>
-      </header>
+      <HeaderBefore title="내 정보" />
       <main className="my_info_container inner">
         <section className="profile_section">
           <div className="profile">
@@ -82,13 +81,15 @@ const MyInfo = () => {
                 defaultValue={user?.displayName || ''}
               />
             </li>
-            <li>
-              <label>비밀번호 확인</label>
-              <input
-                onChange={e => setPassword(e.target.value)}
-                type="password"
-              />
-            </li>
+            {user?.emailVerified || (
+              <li>
+                <label>비밀번호 확인</label>
+                <input
+                  onChange={e => setPassword(e.target.value)}
+                  type="password"
+                />
+              </li>
+            )}
           </ul>
         </section>
       </main>

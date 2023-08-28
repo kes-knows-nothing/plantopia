@@ -3,16 +3,11 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
+import { customerService } from '@/constants/myPage';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Profile from '@/assets/images/profile.png';
 import './myPage.scss';
-
-const customerService = [
-  { title: '공지사항', url: '' },
-  { title: '자주 묻는 질문', url: '' },
-  { title: '식물 추가 요청', url: 'https://forms.gle/g4AjkNKqVDP48Xnc7' },
-];
 
 const MyPage = () => {
   const user = useAuth();

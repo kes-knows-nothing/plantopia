@@ -25,6 +25,7 @@ const MyPlantRegisterPage = () => {
   const [wateredDays, setWateredDays] = useState<string>('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
+  console.log(waterCodeToNumber(waterCode));
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
@@ -163,9 +164,11 @@ const MyPlantRegisterPage = () => {
             />
             <p className="watering_frequency">물 주는 날</p>
             <div className="watering_frequency_input_box">
-              <p className="watering_frequency_input">
-                {waterCodeToNumber(waterCode)}
-              </p>
+              <input
+                className="watering_frequency_input"
+                defaultValue={waterCodeToNumber(waterCode)}
+              />
+
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
             <p className="my_plant_register_small_title">마지막 물준 날</p>

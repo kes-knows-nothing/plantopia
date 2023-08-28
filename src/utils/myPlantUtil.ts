@@ -27,11 +27,11 @@ export const dateToTimestamp = (dateString: string) => {
 
 export const waterCodeToNumber = (waterCode: string) => {
   switch (waterCode) {
-    case 'wc03':
+    case 'WC03':
       return 14;
-    case 'wc02':
+    case 'WC02':
       return 11;
-    case 'wc01':
+    case 'WC01':
       return 7;
   }
 };

@@ -17,6 +17,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
+import { useAuth } from '@/hooks';
 
 export interface UserPlant {
   id: string;
@@ -57,6 +58,7 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 const MainPage = () => {
   const [mainPlant, setMainPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const user = useAuth();
 
   const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -117,17 +119,19 @@ const MainPage = () => {
   return (
     <>
       <Header isMainPage />
-      <main className="main_page">
-        <section>
-          <div className="inner">
-            <WeatherSection />
-            {mainPlant && (
-              <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
-            )}
-          </div>
-          <PlantList plants={plantList} onClickItem={switchMainPlant} />
-        </section>
-      </main>
+      {user && (
+        <main className="main_page">
+          <section>
+            <div className="inner">
+              <WeatherSection />
+              {mainPlant && (
+                <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
+              )}
+            </div>
+            <PlantList plants={plantList} onClickItem={switchMainPlant} />
+          </section>
+        </main>
+      )}
       <Footer />
     </>
   );

@@ -16,6 +16,7 @@ import {
   doc,
   Timestamp,
 } from 'firebase/firestore';
+import { useAuth } from '@/hooks';
 
 interface DiaryProps {
   userEmail: string;
@@ -36,30 +37,33 @@ const Tab = ({ icon, tabName, currentTab, handleTabChange }) => (
 );
 
 const DiaryPage = () => {
+  const user = useAuth();
   const [currentTab, setCurrentTab] = useState('list_tab');
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
+  console.log(user)
 
   useEffect(() => {
     const fetchData = async () => {
-      const userEmail = 'test@test.com';
-      const q = query(
-        collection(db, 'diary'),
-        where('userEmail', '==', userEmail),
-      );
-      const querySnapshot = await getDocs(q);
-      const data: DiaryProps[] = [];
-      querySnapshot.forEach(doc => {
-        data.push({ id: doc.id, ...doc.data() });
-      });
+      if (user) {
+        const q = query(
+          collection(db, 'diary'),
+          where('userEmail', '==', user?.email),
+        );
+        const querySnapshot = await getDocs(q);
+        const data: DiaryProps[] = [];
+        querySnapshot.forEach(doc => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
 
-      const sortedData = data.sort(
-        (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
-      );
-      setDiaryData(sortedData);
+        const sortedData = data.sort(
+          (a, b) => b.postedAt.toDate() - a.postedAt.toDate(),
+        );
+        setDiaryData(sortedData);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   const handleDelete = async (index: number) => {
     try {
@@ -90,7 +94,8 @@ const DiaryPage = () => {
       <div className="diary_container">
         <Header />
         <h2 className="title inner">
-          <span>{'Joy'}</span>님, 식물의 성장 기록을 남겨보세요
+          <span>{user?.displayName ?? '사용자'}</span>님, 식물의 성장 기록을
+          남겨보세요
           <span className="plant_icon"></span>
         </h2>
         <section className="view_section">

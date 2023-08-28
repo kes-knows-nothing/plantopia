@@ -2,7 +2,7 @@ import { Children } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
-import { auth } from '@/utils/firebaseApp';
+import { auth } from '@/firebaseApp';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Profile from '@/assets/images/profile.png';

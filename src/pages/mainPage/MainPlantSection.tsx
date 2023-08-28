@@ -34,7 +34,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
       return 'D-day';
     }
 
-    return `D${diffDays}`;
+    return diffDays === 0 ? `D-${diffDays}` : `D${diffDays}`;
   };
 
   const lastWateringDate = (wateredDays.at(-1)?.seconds || 0) * 1000;

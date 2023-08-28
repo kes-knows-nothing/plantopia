@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { db } from '@/firebaseApp';
 import { addDoc, collection } from 'firebase/firestore';
+import { useAuth } from '@/hooks';
 
 import SectionPhoto from './SectionPhoto';
 import SectionBoard from './SectionBoard';
@@ -9,7 +10,8 @@ import SectionBoard from './SectionBoard';
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
-  const userId = 'test@test.com';
+  const user = useAuth();
+  const userId = user?.email;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);

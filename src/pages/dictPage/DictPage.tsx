@@ -13,7 +13,7 @@ const DictPage = () => {
   return (
     <div className="dict_conatiner">
       <Header />
-      <main className="dict_wrapper">
+      <main className="dict_wrapper inner">
         <h2 className="search_title">
           <span>{user?.displayName}</span>님, 어떤 식물을 찾고있나요?
         </h2>

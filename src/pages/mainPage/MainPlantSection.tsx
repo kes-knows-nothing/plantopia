@@ -1,6 +1,6 @@
 import { differenceInDays, format, addDays } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { UserPlant } from './MainPage';
+import { UserPlant } from '@/@types/plant.type';
 
 import WATERING from '@/assets/images/icons/watering.png';
 

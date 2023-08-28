@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase/firestore';
 
-export interface MyPlant {
+export interface UserPlant {
   id: string;
   frequency: number;
   imgUrl: string;

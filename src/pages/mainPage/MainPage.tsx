@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
+import { useAuth } from '@/hooks';
+import { UserPlant } from '@/@types/plant.type';
 import { db } from '@/firebaseApp';
 import {
   collection,
@@ -17,19 +19,6 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
-import { useAuth } from '@/hooks';
-
-export interface UserPlant {
-  id: string;
-  frequency: number;
-  imgUrl: string;
-  isMain: boolean;
-  nickname: string;
-  plantName: string;
-  purchasedDay: InstanceType<typeof Timestamp>;
-  userEmail: string;
-  wateredDays: InstanceType<typeof Timestamp>[];
-}
 
 interface PlantListProps {
   plants: UserPlant[];

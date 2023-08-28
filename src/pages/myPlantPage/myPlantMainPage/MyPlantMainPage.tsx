@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks';
 import { Link } from 'react-router-dom';
 import './myPlantMainPage.scss';
 import Header from '@/components/header/Header';
@@ -9,7 +8,7 @@ import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
-
+import { useAuth } from '@/hooks';
 import {
   getDocs,
   collection,
@@ -56,8 +55,6 @@ const MyPlantMainPage = () => {
     };
     getQuerySnapshot();
   }, []);
-  console.log(myMainPlant);
-  console.log(myPlantData);
   return (
     <>
       <Header />
@@ -90,7 +87,7 @@ const MyPlantMainPage = () => {
               </p>
             </Link>
 
-            <MainPagePlantList />
+            <MainPagePlantList email={user?.email} />
           </div>
         </>
       ) : (

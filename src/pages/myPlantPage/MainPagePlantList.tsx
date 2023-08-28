@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { nanoid } from 'nanoid';
 import '@/pages/myPlantPage/mainPagePlantList.scss';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png';
@@ -16,7 +15,8 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 
-const MainPagePlantList = () => {
+const MainPagePlantList = (useremail: string) => {
+  console.log(useremail);
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
   const handleIsMain = async (clickedPlant: UserPlant) => {
@@ -63,36 +63,38 @@ const MainPagePlantList = () => {
     };
     navigate(`/myplant/${clickedPlant.id}/edit`, { state: dataFromList });
   };
-
-  const userId = 'test@test.com';
+  const compare = (a: UserPlant, b: UserPlant): number => {
+    if (a.isMain === b.isMain) {
+      return 0;
+    } else if (a.isMain) {
+      return -1;
+    } else {
+      return 1;
+    }
+  };
 
   useEffect(() => {
-    const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
-    const compare = (a: UserPlant, b: UserPlant): number => {
-      if (a.isMain === b.isMain) {
-        return 0;
-      } else if (a.isMain) {
-        return -1;
-      } else {
-        return 1;
-      }
-    };
+    const q = query(
+      collection(db, 'plant'),
+      where('userEmail', '==', useremail.email),
+    );
     const getNotMainPlants = async () => {
       const querySnapshot = await getDocs(q);
       const plantData: Array<UserPlant> = [];
       querySnapshot.forEach(doc => {
         plantData.push({ ...doc.data(), id: doc.id });
         plantData.sort(compare);
+        console.log(plantData);
         setMyPlantData(plantData);
       });
     };
     getNotMainPlants();
-  }, []);
+  }, [useremail]);
 
   return (
     <div className="subplant_container">
       {myPlantData.map(plant => (
-        <div key={nanoid()} className="subplant_list_box">
+        <div key={plant.id} className="subplant_list_box">
           <div className="subplant_main_data">
             <img
               className="subplant_img"

@@ -1,11 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db, auth } from '@/firebaseApp';
+import { onAuthStateChanged } from 'firebase/auth';
 import { nanoid } from 'nanoid';
-import { CalendarType, TileContentsProps } from './type/type';
+import 'react-calendar/dist/Calendar.css';
+import ThreeDotsLoading from '@/components/loading/ThreeDots';
+import './calendarPage.scss';
 import {
   dateFormat,
-  dateFormatter,
-  dateFullFormat,
   dateWeekFormatter,
   hhmmFormat,
   reactCalendarDayFormat,
@@ -17,13 +21,12 @@ import sticker03 from '@/assets/images/icons/calendar_sticker03.png';
 import sticker04 from '@/assets/images/icons/calendar_sticker04.png';
 import sticker05 from '@/assets/images/icons/calendar_sticker05.png';
 import sticker06 from '@/assets/images/icons/calendar_sticker06.png';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db, auth } from '@/firebaseApp';
-import { onAuthStateChanged } from 'firebase/auth';
-import 'react-calendar/dist/Calendar.css';
-import './calendar.scss';
-import { useNavigate } from 'react-router-dom';
-import ThreeDotsLoading from '@/components/loading/ThreeDots';
+
+type ValuePiece = Date | null;
+type CalendarType = ValuePiece | [ValuePiece, ValuePiece];
+interface TileContentsProps {
+  date: Date;
+}
 
 /**
  * firebase에서 받아온걸로 변경해야함
@@ -171,7 +174,7 @@ const CalendarPage = () => {
   useEffect(() => {
     // 관련 정보 https://firebase.google.com/docs/auth/web/manage-users?hl=ko
     /* firebase 로그인 및 유저정보 체크 */
-    console.log('이건 한번만 탄다');
+    // console.log('이건 한번만 탄다');
     onAuthStateChanged(auth, user => {
       if (user && user.email) {
         getWatering(user.email);

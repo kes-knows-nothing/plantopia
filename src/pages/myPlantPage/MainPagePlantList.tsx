@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import '@/pages/myPlantPage/mainPagePlantList.scss';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
@@ -17,14 +17,14 @@ import {
 import { db } from '@/firebaseApp';
 
 const MainPagePlantList = () => {
+  const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<MyPlant[]>([]);
-
-  const isMainHandler = async (clickedPlant: MyPlant) => {
+  const handleIsMain = async (clickedPlant: MyPlant) => {
+    console.log(clickedPlant);
     if (clickedPlant.isMain === false) {
       const previousMain = myPlantData.filter(item => (item.isMain = true));
       previousMain[0].isMain = false;
       clickedPlant.isMain = true;
-
       const documentTrueRef = doc(db, 'plant', clickedPlant.id);
       const updatedTrueFields = {
         isMain: true,
@@ -52,19 +52,31 @@ const MainPagePlantList = () => {
     window.location.reload();
   };
 
-  const compare = (a: MyPlant, b: MyPlant): number => {
-    if (a.isMain === b.isMain) {
-      return 0;
-    } else if (a.isMain) {
-      return -1;
-    } else {
-      return 1;
-    }
+  const handleEditData = (clickedPlant: MyPlant) => {
+    const dataFromList = {
+      imgUrlFromList: clickedPlant.imgUrl,
+      nicknameFromList: clickedPlant.nickname,
+      plantNameFromList: clickedPlant.plantName,
+      purchasedDayFromList: clickedPlant.purchasedDay,
+      wateredDayFromList: clickedPlant.wateredDays.at(-1),
+      frequencyFromList: clickedPlant.frequency,
+    };
+    navigate(`/myplant/${clickedPlant.id}/edit`, { state: dataFromList });
   };
+
   const userId = 'test@test.com';
+
   useEffect(() => {
     const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
-
+    const compare = (a: MyPlant, b: MyPlant): number => {
+      if (a.isMain === b.isMain) {
+        return 0;
+      } else if (a.isMain) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
     const getNotMainPlants = async () => {
       const querySnapshot = await getDocs(q);
       const plantData: Array<MyPlant> = [];
@@ -93,14 +105,17 @@ const MainPagePlantList = () => {
           </div>
           <div className="main_check_and_edit">
             <img
-              onClick={() => isMainHandler(plant)}
+              onClick={() => handleIsMain(plant)}
               className="mainPlantOrNot"
               src={plant.isMain ? mainPlantTrueIcon : mainPlantFalseIcon}
               alt="mainPlantOrNotImg"
             />
-            <Link to={`/myplant/${plant.id}/edit`}>
-              <img src={myPlantEditIcon} alt="EditPlantImg" />
-            </Link>
+
+            <img
+              src={myPlantEditIcon}
+              alt="EditPlantImg"
+              onClick={() => handleEditData(plant)}
+            />
           </div>
         </div>
       ))}

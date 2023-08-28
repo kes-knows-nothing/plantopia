@@ -57,7 +57,11 @@ const DictDetailPage = () => {
     e.preventDefault();
 
     navigate('/myplant/register', {
-      state: { name: plantData.name, image: plantData.imageUrl },
+      state: {
+        name: plantData.name,
+        image: plantData.imageUrl,
+        waterCode: plantData.waterCode,
+      },
     });
   };
 

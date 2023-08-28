@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Children } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { db } from '@/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
@@ -47,6 +47,23 @@ const SectionEditBoard: React.FC<SectionBoardProps> = ({
     getPlantsFromFirestore();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const toggleSelect = () => {
     setIsVisible(prevVisible => !prevVisible);
   };
@@ -68,23 +85,6 @@ const SectionEditBoard: React.FC<SectionBoardProps> = ({
       prevChosenPlants.filter(p => p !== plant),
     );
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
     <section className="board_section">
@@ -126,24 +126,21 @@ const SectionEditBoard: React.FC<SectionBoardProps> = ({
             )}
           </div>
         </div>
-
         {isVisible && (
           <ul className="plant_list">
-            {Children.toArray(
-              plantTag.map(plant => (
-                <li key={plant.nickname}>
-                  <input
-                    type="checkbox"
-                    name={plant.nickname}
-                    id={plant.nickname}
-                    value={plant.nickname}
-                    onChange={handlePlantSelection}
-                    checked={chosenPlants.includes(plant.nickname)}
-                  />
-                  <label htmlFor={plant.nickname}>{plant.nickname}</label>
-                </li>
-              )),
-            )}
+            {plantTag.map(plant => (
+              <li key={plant.nickname}>
+                <input
+                  type="checkbox"
+                  name={plant.nickname}
+                  id={plant.nickname}
+                  value={plant.nickname}
+                  onChange={handlePlantSelection}
+                  checked={chosenPlants.includes(plant.nickname)}
+                />
+                <label htmlFor={plant.nickname}>{plant.nickname}</label>
+              </li>
+            ))}
           </ul>
         )}
       </div>

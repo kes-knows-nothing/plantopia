@@ -14,12 +14,15 @@ import './sectionEditPhoto.scss';
 interface EditPhotoProps {
   imgUrls: string[];
   setImgUrls: React.Dispatch<React.SetStateAction<string[]>>;
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const SectionEditPhoto: React.FC<EditPhotoProps> = ({
   imgUrls,
   setImgUrls,
-  setFiles,
+  isLoading,
+  setIsLoading,
 }) => {
   const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
     [],
@@ -34,25 +37,34 @@ const SectionEditPhoto: React.FC<EditPhotoProps> = ({
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    setIsLoading(true);
     const file = event.target.files[0];
     if (!file) return;
 
     try {
-      const previewUrl = await readFileAsDataURL(file);
-      setFiles(prevFiles => [...prevFiles, file]);
-      setPreviewImgs([
-        ...previewImgs,
-        { backgroundImage: `url(${previewUrl})` },
-      ]);
       setCurrentCount(currentCount + 1);
+
+      const storagePath = `diary_images/${cleanFileName(file.name)}`;
+      const imageRef = ref(storage, storagePath);
+      const snapshot = await uploadBytes(imageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+
+      setImgUrls(prevImgUrls => [...prevImgUrls, url]);
     } catch (error) {
       console.error('파일 업로드 에러:', error);
     }
 
     event.target.value = null;
+    setIsLoading(false);
+  };
+
+  const cleanFileName = (fileName: string) => {
+    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
+    return cleanedName;
   };
 
   const handleDeleteFile = async (index: number) => {
+    setIsLoading(true);
     const imageUrlToDelete = imgUrls[index];
     const fileName = getImageFileName(imageUrlToDelete);
     const imageRef = ref(storage, fileName);
@@ -68,21 +80,13 @@ const SectionEditPhoto: React.FC<EditPhotoProps> = ({
     } catch (error) {
       console.error('파일 삭제 에러:', error);
     }
+    setIsLoading(false);
   };
 
   const getImageFileName = (imageUrl: string) => {
     const urlParts = imageUrl.split('/');
     const fileName = urlParts[urlParts.length - 1].split('?')[0];
     return decodeURIComponent(fileName);
-  };
-
-  const readFileAsDataURL = (file: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   };
 
   return (

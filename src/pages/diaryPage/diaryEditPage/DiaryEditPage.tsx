@@ -4,12 +4,6 @@ import { db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import SectionEditPhoto from './SectionEditPhoto';
 import SectionEditBoard from './SectionEditBoard';
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from 'firebase/storage';
-import { storage } from '@/firebaseApp';
 
 import './diaryEditPage.scss';
 
@@ -19,11 +13,8 @@ const DiaryEditPage = () => {
   const [content, setContent] = useState('');
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-  const [saving, setSaving] = useState(false);
-  const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  console.log(files);
 
   useEffect(() => {
     const fetchDiaryData = async () => {
@@ -45,6 +36,7 @@ const DiaryEditPage = () => {
   }, [docId]);
 
   const handleSaveClick = async () => {
+
     if (!title || chosenPlants.length === 0 || !content) {
       if (!title) {
         alert('제목을 작성해주세요.');
@@ -55,38 +47,23 @@ const DiaryEditPage = () => {
       }
       return;
     }
-
-    const cleanFileName = (fileName: string) => {
-      const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
-      return cleanedName;
-    };
-
-    const urls = [];
-
-    for (const file of files) {
-      const storagePath = `diary_images/${cleanFileName(file.name)}`;
-      const imageRef = ref(storage, storagePath);
-      const snapshot = await uploadBytes(imageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      urls.push(url)
-    }
-
-    setSaving(true);
-
+    
+    setIsLoading(true); 
+    
     const dataToUpdate = {
       content: content,
       tags: chosenPlants,
       title: title,
-      imgUrls: [...imgUrls, ...urls],
+      imgUrls: imgUrls,
     };
-
+  
     const docRef = doc(db, 'diary', docId);
     await updateDoc(docRef, dataToUpdate);
-
-    setSaving(false);
+  
+    setIsLoading(false);
     navigate('/diary');
   };
-
+  
   return (
     <>
       <header className="sub_header">
@@ -99,7 +76,8 @@ const DiaryEditPage = () => {
         <SectionEditPhoto
           imgUrls={imgUrls}
           setImgUrls={setImgUrls}
-          setFiles={setFiles}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
         <SectionEditBoard
           title={title}
@@ -112,9 +90,9 @@ const DiaryEditPage = () => {
         <button
           className="save_button"
           onClick={handleSaveClick}
-          disabled={saving}
+          disabled={isLoading}
         >
-          {saving ? '저장 중...' : '저장'}
+          {isLoading ? '저장 중...' : '저장'}
         </button>
       </main>
     </>

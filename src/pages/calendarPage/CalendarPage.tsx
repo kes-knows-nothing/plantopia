@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import { db } from '@/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 import { format } from 'date-fns';
+import { db } from '@/firebaseApp';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useAuth } from '@/hooks';
-import { dateFormat, dateWeekFormatter } from '@/utils/calendarUtil';
 
 import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
@@ -13,16 +12,13 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import 'react-calendar/dist/Calendar.css';
 import './calendarPage.scss';
 
-import { CALENDAR_ICONS, WEEKDAYS_KR } from '@/constants/calendar';
+import { CALENDAR_ICONS, DAY_OF_WEEK_KR } from '@/constants/calendar';
 import { UserPlant } from '@/@types/plant.type';
 import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
 
-// 테스팅 중
-import { mockWaterValue } from '@/mock/calendarMock';
-
 type ValuePiece = Date | null;
 
-type CalendarType = ValuePiece | [ValuePiece, ValuePiece];
+type CalendarValueType = ValuePiece | [ValuePiece, ValuePiece];
 
 interface RecordDataType {
   time: string;
@@ -34,41 +30,39 @@ export interface WaterRecordType {
   list: RecordDataType[];
 }
 
-/** 샘플 데이터 END */
-
 const CalendarPage = () => {
   const user = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [waterRecords, setWaterRecords] = useState<WaterRecordType[]>([]);
+  const [selectedDate, setSelectedDate] = useState<CalendarValueType>(
+    new Date(),
+  );
 
-  // calendarData => waterRecords 로 변경 예정
-  const [calendarData, setCalendarData] =
-    useState<WaterRecordType[]>(mockWaterValue);
-  // 유저가 선택한 날짜
-  const [selectedDate, setSelectedDate] = useState<CalendarType>(new Date());
+  // [date: string]: {icon: string, items: RecordDataType[]};
+  const [mockData, setMockData] = useState<{
+    [date: string]: any;
+  }>({});
 
-  const dateList = calendarData.find(arr => {
-    const date = selectedDate instanceof Date ? dateFormat(selectedDate) : '';
+  // 해당 날짜의 데이터를 찾는다.
+  const dateList = waterRecords.find(arr => {
+    const date =
+      selectedDate instanceof Date ? format(selectedDate, 'yyyy-MM-dd') : '';
     return arr.date === date;
   });
 
-  /**
-   * 물준날짜와 일치하는 달력에 스티커를 반복해서 출력
-   * stict모드때문에 2개씩 인덱스가 증가하여 배포후에는 문제 없을 것으로 확인
-   * @param param0
-   * @returns
-   */
-  const tileContent = ({ date }: TileArgs) => {
-    const findItem = calendarData.find(data => data.date === dateFormat(date));
-    if (findItem) {
-      return <img src={findItem.icon} />;
+  const setIconOnTile = ({ date: calendarDates }: TileArgs) => {
+    // console.log(calendarDates);
+
+    const dateMatchedItem = waterRecords.find(
+      ({ date }) => date === format(calendarDates, 'yyyy-MM-dd'),
+    );
+
+    if (dateMatchedItem) {
+      return <img src={dateMatchedItem?.icon || CALENDAR_ICONS[0]} />;
     }
   };
 
-  /**
-   * firebase에서 물준 기록 가져오기
-   * collection name : wateringRecord
-   * @param userId
-   */
+  // 함수 분리 필요 (fetch 로직, calendar용 데이터로 변경하는 함수)
   const getWatering = async (userEmail?: string | null) => {
     if (!userEmail) return;
 
@@ -83,13 +77,11 @@ const CalendarPage = () => {
       querySnapshot.forEach(doc => {
         const plantData = doc.data() as Omit<UserPlant, 'id'>;
 
-        const plantName = plantData.nickname;
-
         plantData.wateredDays.forEach(d => {
           const time = format(d.toDate(), 'HH:mm');
           const fullDate = format(d.toDate(), 'yyyy-MM-dd');
 
-          const waterData: RecordDataType = { time, plant: plantName };
+          const waterData: RecordDataType = { time, plant: plantData.nickname };
 
           if (!data[fullDate]) {
             data[fullDate] = [];
@@ -102,11 +94,13 @@ const CalendarPage = () => {
       const result: WaterRecordType[] = [];
 
       for (const [date, info] of Object.entries(data)) {
-        // 아이콘 랜덤으로 변경 필요
-        result.push({ date, list: info, icon: CALENDAR_ICONS[0] });
+        const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
+        const randomIcon = CALENDAR_ICONS[Math.floor(randomIndex)];
+        result.push({ date, list: info, icon: randomIcon });
       }
 
-      setCalendarData(result);
+      setMockData(data);
+      setWaterRecords(result);
     } catch (error) {
       throw new Error('데이터를 받아오지 못했어요!');
     } finally {
@@ -118,16 +112,17 @@ const CalendarPage = () => {
     getWatering(user?.email);
   }, [user]);
 
-  const generateTitleDate = (dateStr: CalendarType): string => {
-    if (!dateStr || !(dateStr instanceof Date)) return '';
+  const getTitleOfDay = (dateStr: CalendarValueType): string => {
+    if (dateStr instanceof Date) {
+      const date = new Date(dateStr);
 
-    const date = new Date(dateStr);
+      const [month, days] = format(date, 'M-d').split('-');
+      const dayOfWeek = DAY_OF_WEEK_KR[date.getDay()];
 
-    const month = format(date, 'M');
-    const days = format(date, 'd');
-    const dayOfWeek = WEEKDAYS_KR[date.getDay()];
+      return `${month}월 ${days}일 ${dayOfWeek}요일`;
+    }
 
-    return `${month}월 ${days}일 ${dayOfWeek}`;
+    return '';
   };
 
   return (
@@ -137,18 +132,16 @@ const CalendarPage = () => {
         <section className="calendar_wrap inner">
           <Calendar
             value={selectedDate}
-            formatDay={(_, date) => date.getDate().toString()}
+            formatDay={(_, date) => format(date, 'd')}
             calendarType="hebrew"
             nextLabel=""
             prevLabel=""
-            tileContent={tileContent}
+            tileContent={setIconOnTile}
             onChange={setSelectedDate}
           />
         </section>
         <section className="date_list_wrap inner">
-          <strong className="date_title">
-            {generateTitleDate(selectedDate)}
-          </strong>
+          <strong className="date_title">{getTitleOfDay(selectedDate)}</strong>
           {/* 하단 데이터 영역 */}
           {dateList ? (
             <div className="date_list">

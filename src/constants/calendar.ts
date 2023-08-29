@@ -14,12 +14,4 @@ export const CALENDAR_ICONS = [
   sticker06,
 ];
 
-export const WEEKDAYS_KR = [
-  '일요일',
-  '월요일',
-  '화요일',
-  '수요일',
-  '목요일',
-  '금요일',
-  '토요일',
-];
+export const DAY_OF_WEEK_KR = ['일', '월', '화', '수', '목', '금', '토'];

@@ -23,44 +23,10 @@
 }
 
 .list_view {
-  /*
-   추가기능 구현 예정
-   > .date_wrap {
-      width: 100%;
-      height: 5.7rem;
-      display: flex;
-      align-items: center;
-
-      > .date_picker {
-        flex-grow: 1;
-        height: 100%;
-
-        > span {
-          font-family: 'Pretendard', Arial, sans-serif;
-          font-size: 1.6rem;
-          font-weight: 700;
-        }
-      }
-
-      > .date_btn {
-        padding: 0;
-        width: 5rem;
-        height: 100%;
-      }
-
-      > .prev_btn {
-        background: url('@/assets/images/icons/calendar_prev.png') no-repeat
-          left center / 1.8rem 1.8rem;
-      }
-
-      > .next_btn {
-        background: url('@/assets/images/icons/calendar_next.png') no-repeat
-          right center / 1.8rem 1.8rem;
-      }
-    } */
-
+  width: 100%;
+  
   > .diary_list_wrap {
-    margin-bottom: 5.6rem;
+    padding-bottom: 8rem;
 
     .diary_list {
       padding: 0 2rem;

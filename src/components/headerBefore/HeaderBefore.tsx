@@ -4,7 +4,7 @@ import BACK_ICON from '@/assets/images/icons/back_icon.png';
 import EX_ICON from '@/assets/images/icons/ex_icon.png';
 
 interface HeaderBeforeProps {
-  ex: boolean;
+  ex?: boolean;
   title: string;
 }
 

@@ -12,8 +12,11 @@ import { UserPlant } from '@/@types/plant.type';
 import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import { useAuth } from '@/hooks';
+<<<<<<< HEAD
 import { showAlert } from '@/utils/myPlantUtil';
 
+=======
+>>>>>>> develop
 import {
   doc,
   getDoc,

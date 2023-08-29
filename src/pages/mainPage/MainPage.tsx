@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
 import { useAuth } from '@/hooks';
 import { UserPlant } from '@/@types/plant.type';
 import { db } from '@/firebaseApp';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import {
   collection,
   getDocs,
@@ -17,8 +17,11 @@ import {
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
+import Progress from '@/components/progress/Progress';
+import Toast from '@/components/notification/ToastContainer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
+import './mainPage.scss';
 
 interface PlantListProps {
   plants: UserPlant[];
@@ -45,31 +48,33 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 };
 
 const MainPage = () => {
-  const [mainPlant, setMainPlant] = useState<UserPlant>();
+  const [focusPlant, setFocusPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const user = useAuth();
 
-  const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const onWaterPlant = async (plantId: string) => {
+    if (!focusPlant) return;
 
-    if (!mainPlant) return;
-
-    const plantRef = doc(db, 'plant', mainPlant.id);
+    const plantRef = doc(db, 'plant', plantId);
 
     try {
+      setIsLoading(true);
+
       await updateDoc(plantRef, {
-        wateredDays: [...mainPlant.wateredDays, Timestamp.fromDate(new Date())],
+        wateredDays: [
+          ...focusPlant.wateredDays,
+          Timestamp.fromDate(new Date()),
+        ],
       });
       await getUserPlant();
 
-      alert('물을 잘 먹었어요!');
+      successNoti('물을 잘 먹었어요!');
     } catch (error) {
-      alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
+      errorNoti('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const switchMainPlant = (plant: UserPlant) => {
-    setMainPlant(plant);
   };
 
   const getUserPlant = async () => {
@@ -79,6 +84,8 @@ const MainPage = () => {
     const q = query(emailRef, where('userEmail', '==', user.email));
 
     try {
+      setIsLoading(true);
+
       const userPlantList: UserPlant[] = [];
 
       const querySnapshot = await getDocs(q);
@@ -91,12 +98,16 @@ const MainPage = () => {
         });
       });
 
-      const mainPlantData = userPlantList.find(plant => plant.isMain);
+      const mainPlantData = userPlantList.find(({ id, isMain }) => {
+        return focusPlant ? focusPlant.id === id : isMain;
+      });
 
-      setMainPlant(mainPlantData || userPlantList[0]);
+      setFocusPlant(mainPlantData || userPlantList[0]);
       setPlantList(userPlantList);
     } catch (error) {
-      alert('에러가 발생하였습니다. 새로고침을 해주세요!');
+      errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,25 +115,28 @@ const MainPage = () => {
     getUserPlant();
   }, [user]);
 
-  const hasUserPlant = !!(mainPlant && plantList.length > 0);
+  const hasPlant = !!(focusPlant && plantList.length > 0);
 
   return (
     <>
+      <Toast />
       <Header isMainPage />
       <main className="main_page">
         <section>
           <WeatherSection />
-          {hasUserPlant && (
-            <>
-              <div className="inner">
-                <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
-              </div>
-              <PlantList plants={plantList} onClickItem={switchMainPlant} />
-            </>
+          <div className="inner">
+            <MainPlant plant={focusPlant} onWaterPlant={onWaterPlant} />
+          </div>
+          {hasPlant && (
+            <PlantList
+              plants={plantList}
+              onClickItem={(plant: UserPlant) => setFocusPlant(plant)}
+            />
           )}
         </section>
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </>
   );
 };

@@ -12,17 +12,17 @@
 
 .diary_page {
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-bottom: 5.7rem;
 
   > .diary_container {
     width: 100%;
+    min-height: calc(100vh - 11.2rem);
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1 auto;
 
     > .title {
       width: 100%;
@@ -30,7 +30,6 @@
       padding-bottom: 2rem;
       font-size: 1.6rem;
       font-weight: 400;
-      line-height: 1.5;
 
       > span {
         font-size: 1.8rem;
@@ -43,7 +42,7 @@
       }
     }
 
-    > .view_section {
+    > .tab_section {
       width: 100%;
       height: 5rem;
       display: flex;
@@ -76,19 +75,8 @@
       }
     }
 
-    .top_btn {
-      display: none; // 스크롤 추가 구현 예정
-      position: fixed;
-      left: 50%;
-      bottom: 2rem;
-      margin-bottom: 5.7rem;
-      transform: translateX(-50%);
-
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
-        no-repeat center / 0.8rem 0.5rem;
+    > .content_section {
+      width: 100%;
     }
   }
 

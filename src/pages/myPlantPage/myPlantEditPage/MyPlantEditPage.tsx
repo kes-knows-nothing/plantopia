@@ -8,8 +8,12 @@ import { storage, db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
 import { useState, useEffect } from 'react';
-import { MyPlant } from '@/@types/myPlant.type';
+import { UserPlant } from '@/@types/plant.type';
 import 'firebase/storage';
+import Toast from '@/components/notification/ToastContainer';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/custom-toast-styles.scss';
+import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {
   const user = useAuth();
@@ -31,7 +35,7 @@ const MyPlantEditPage = () => {
   const wateredDayFromList = location.state?.wateredDayFromList;
   const frequencyFromList = location.state?.frequencyFromList;
 
-  const [myPlantData, setMyPlantData] = useState<MyPlant>();
+  const [myPlantData, setMyPlantData] = useState<UserPlant>();
   const [plantNickname, setPlantNickname] = useState<string>(
     nicknameFromDetail || nicknameFromList,
   );
@@ -123,7 +127,9 @@ const MyPlantEditPage = () => {
 
     try {
       await updateDoc(documentRef, updatedFields);
-      console.log('Document successfully updated!');
+      setTimeout(() => {
+        successNoti('식물 정보를 수정하였습니다!');
+      }, 500);
       navigate('/myplant');
     } catch (error) {
       console.error('Error updating document: ', error);
@@ -154,6 +160,7 @@ const MyPlantEditPage = () => {
 
   return (
     <>
+      <Toast />
       <div className="plant_register_head">
         <p>식물 수정</p>
         <img src={xIcon} alt="xIcon" onClick={handleGoBack} />

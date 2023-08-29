@@ -38,8 +38,6 @@ const MyPlantRegisterPage = () => {
   const [wateredDays, setWateredDays] = useState<string>('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
-  console.log(waterCodeToNumber(waterCode));
-
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
   };
@@ -113,11 +111,11 @@ const MyPlantRegisterPage = () => {
       userEmail: 'test@test.com',
       wateredDays: [dateToTimestamp(wateredDays)],
     };
-    successNoti('새 식물을 등록하였습니다!');
     await addDoc(collection(db, 'plant'), newPlantData);
+    navigate('/myplant');
     setTimeout(() => {
-      navigate('/myplant');
-    }, 1500);
+      successNoti('새 식물을 등록하였습니다!');
+    }, 500);
   };
   return (
     <>

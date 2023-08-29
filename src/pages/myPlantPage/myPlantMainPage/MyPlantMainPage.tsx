@@ -41,6 +41,7 @@ const MyPlantMainPage = () => {
   return (
     <>
       <main>
+        <Toast />
         <Header />
         <p className="my_plant_info_message">
           <span className="username">{user?.displayName}</span> 님의 식물을

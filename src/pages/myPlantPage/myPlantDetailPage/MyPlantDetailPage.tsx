@@ -7,7 +7,6 @@ import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
-import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import { PlantType } from '@/@types/dictionary.type';
 import { UserPlant } from '@/@types/plant.type';
 import format from 'date-fns/format';
@@ -71,12 +70,17 @@ const MyPlantDetailPage = () => {
           isMain: true,
         };
         await updateDoc(documentRef, updatedFields);
-        successNoti('내 식물이 삭제 되었습니다.');
+        setTimeout(() => {
+          successNoti('내 식물을 삭제 하였습니다.');
+        }, 500);
         navigate('/myplant');
       } else {
         try {
           await deleteDoc(docRef);
           successNoti('내 식물이 삭제 되었습니다.');
+          setTimeout(() => {
+            successNoti('내 식물을 삭제 하였습니다.');
+          }, 1000);
           navigate('/myplant');
         } catch (error) {
           console.error('Error deleting document: ', error);

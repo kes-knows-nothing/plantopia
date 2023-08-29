@@ -22,7 +22,7 @@ import 'swiper/scss/pagination';
 
 const orderDirection: OrderByDirection[] = ['asc', 'desc'];
 
-const Recommend = ({ icon, title, target }: RecommendProps) => {
+const Recommend = ({ icon, title, target, setIsLoading }: RecommendProps) => {
   const [plant, setPlant] = useState<PlantType[]>([]);
 
   const getDouments = async (target: keyof typeof targetQuery) => {
@@ -42,6 +42,7 @@ const Recommend = ({ icon, title, target }: RecommendProps) => {
       queriedData.push(doc.data() as PlantType);
     });
     setPlant(prev => [...prev, ...shuffleArray(queriedData)]);
+    target === 'dark' && setIsLoading(false);
   };
 
   const getMockData = async () => {

@@ -21,12 +21,7 @@ interface RecommendProps {
   icon: string;
   title: string;
   target: keyof typeof targetQuery;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface InputFormProps {
-  nextPath: string;
-  initialInput?: string;
-  updateInputValue?: (input: string | undefined) => void;
-}
-
-export type { PlantType, RecommendProps, InputFormProps };
+export type { PlantType, RecommendProps };

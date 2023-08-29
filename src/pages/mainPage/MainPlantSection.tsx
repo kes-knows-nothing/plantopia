@@ -5,13 +5,41 @@ import { showAlert } from '@/utils/myPlantUtil';
 
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import WATERING from '@/assets/images/icons/watering.png';
-
+import MAIN_PLANT from '@/assets/images/plants/main_plant.png';
+import EDIT_ICON from '@/assets/images/icons/my_plant_detail_edit_icon.png';
+import { useAuth } from '@/hooks';
 interface MainPlantProps {
-  mainPlant: UserPlant;
+  mainPlant?: UserPlant;
   onWaterPlant: (plantId: string) => void;
 }
 
+// username
+const EmptyPlant = () => {
+  const user = useAuth();
+  const userName = user?.displayName || '회원';
+
+  return (
+    <>
+      <div className="main_plant">
+        <div className="inner_circle">
+          <img src={MAIN_PLANT} alt="plant" />
+        </div>
+      </div>
+      <p className="welcome_text">
+        <strong>{userName}</strong>님, 플랜토피아와 함께 슬기로운 식집사 생활을
+        시작하세요!
+      </p>
+      <Link to="/myplant/register" className="register_btn">
+        <img src={EDIT_ICON} alt="edit" />
+        <p>내 식물 등록하기</p>
+      </Link>
+    </>
+  );
+};
+
 const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
+  if (!mainPlant) return <EmptyPlant />;
+
   const {
     id,
     frequency,

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
 import { useAuth } from '@/hooks';
 import { UserPlant } from '@/@types/plant.type';
 import { db } from '@/firebaseApp';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import {
   collection,
   getDocs,
@@ -17,9 +17,12 @@ import {
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
+import Progress from '@/components/progress/Progress';
+import Toast from '@/components/notification/ToastContainer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
-import Progress from '@/components/progress/Progress';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import './mainPage.scss';
 
 interface PlantListProps {
   plants: UserPlant[];
@@ -66,9 +69,10 @@ const MainPage = () => {
       });
       await getUserPlant();
 
-      alert('물을 잘 먹었어요!');
+      // 컨펌추가
+      successNoti('물을 잘 먹었어요!');
     } catch (error) {
-      alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
+      errorNoti('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +110,7 @@ const MainPage = () => {
       setMainPlant(mainPlantData || userPlantList[0]);
       setPlantList(userPlantList);
     } catch (error) {
-      alert('에러가 발생하였습니다. 새로고침을 해주세요!');
+      errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
     } finally {
       setIsLoading(false);
     }
@@ -120,6 +124,7 @@ const MainPage = () => {
 
   return (
     <>
+      <Toast />
       <Header isMainPage />
       <main className="main_page">
         <section>

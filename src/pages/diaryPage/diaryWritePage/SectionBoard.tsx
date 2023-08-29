@@ -66,15 +66,17 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
         : [...prevChosenPlants, selectedPlant];
     });
   };
-  
-const handleChosenPlantClick = (plant: string) => {
-  setChosenPlants((prevChosenPlants: string[]) =>
-    prevChosenPlants.filter(p => p !== plant),
-  );
-};
+
+  const handleChosenPlantClick = (plant: string) => {
+    setChosenPlants((prevChosenPlants: string[]) =>
+      prevChosenPlants.filter(p => p !== plant),
+    );
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (event.target === null) return;
+
       if (isVisible && !event.target.closest('.plant_select_wrapper')) {
         setIsVisible(false);
       }
@@ -88,7 +90,7 @@ const handleChosenPlantClick = (plant: string) => {
   }, [isVisible]);
 
   return (
-    <section className="board_section">
+    <section className="board">
       <div className="title_wrapper">
         <input
           type="text"

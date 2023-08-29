@@ -1,5 +1,5 @@
 /* BOARD SECTION - 게시글 입력 */
-.board_section {
+.board {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -102,6 +102,7 @@
     /* 식물 목록 */
     > .plant_list {
       width: 100%;
+      max-width: 498px;
       max-height: 21rem;
       overflow: auto;
       padding: 1rem 2rem;
@@ -151,10 +152,10 @@
   /* CONTENT - 내용 입력 */
   > textarea {
     width: 100%;
-    flex-grow: 1;
     font-family: 'pretendard';
     font-size: 1.4rem;
     padding: 2rem;
+    flex-grow: 1;
     resize: none;
 
     &::placeholder {

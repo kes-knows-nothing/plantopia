@@ -1,12 +1,14 @@
 import { differenceInDays, format, addDays } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { UserPlant } from '@/@types/plant.type';
+import { showAlert } from '@/utils/myPlantUtil';
 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import WATERING from '@/assets/images/icons/watering.png';
 
 interface MainPlantProps {
   mainPlant: UserPlant;
-  onWaterPlant: (event: React.MouseEvent<HTMLElement>) => void;
+  onWaterPlant: (plantId: string) => void;
 }
 
 const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
@@ -38,6 +40,16 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
     return diffDays === 0 ? `D-${diffDays}` : `D${diffDays}`;
   };
 
+  const onWatering = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    showAlert(
+      '식물에 물을 주시겠습니까?',
+      '물을 주려면 확인을 눌러주세요!',
+      () => onWaterPlant(id),
+    );
+  };
+
   const lastWateringDate = (wateredDays.at(-1)?.seconds || 0) * 1000;
 
   const registerDate = purchasedDay.seconds * 1000;
@@ -48,7 +60,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
         <div className="inner_circle">
           <img src={imgUrl} alt="plant" />
         </div>
-        <button className="watering_btn" onClick={onWaterPlant}>
+        <button className="watering_btn" onClick={onWatering}>
           <img src={WATERING} alt="watering" />
           <div className="watering_label">물주기</div>
         </button>

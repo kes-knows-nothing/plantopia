@@ -21,7 +21,6 @@ import Progress from '@/components/progress/Progress';
 import Toast from '@/components/notification/ToastContainer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import './mainPage.scss';
 
 interface PlantListProps {
@@ -54,12 +53,10 @@ const MainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const user = useAuth();
 
-  const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-
+  const onWaterPlant = async (plantId: string) => {
     if (!mainPlant) return;
 
-    const plantRef = doc(db, 'plant', mainPlant.id);
+    const plantRef = doc(db, 'plant', plantId);
 
     try {
       setIsLoading(true);
@@ -69,7 +66,6 @@ const MainPage = () => {
       });
       await getUserPlant();
 
-      // 컨펌추가
       successNoti('물을 잘 먹었어요!');
     } catch (error) {
       errorNoti('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');

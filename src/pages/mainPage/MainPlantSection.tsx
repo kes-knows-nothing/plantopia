@@ -24,11 +24,9 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
   } = mainPlant;
 
   const getWateringDday = (
-    lastWateringDate: number | null,
+    lastWateringDate: number,
     frequency: number,
   ): string => {
-    if (!lastWateringDate) return '정보 없음';
-
     const nextWateringDate = addDays(lastWateringDate, frequency);
     const diffDays = differenceInDays(Date.now(), nextWateringDate);
 
@@ -40,7 +38,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
     return diffDays === 0 ? `D-${diffDays}` : `D${diffDays}`;
   };
 
-  const onWatering = (event: React.MouseEvent<HTMLElement>) => {
+  const onClickWatering = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
 
     showAlert(
@@ -60,7 +58,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
         <div className="inner_circle">
           <img src={imgUrl} alt="plant" />
         </div>
-        <button className="watering_btn" onClick={onWatering}>
+        <button className="watering_btn" onClick={onClickWatering}>
           <img src={WATERING} alt="watering" />
           <div className="watering_label">물주기</div>
         </button>
@@ -75,21 +73,21 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
           <div className="plant_info">
             <span className="title">물주기</span>
             <div className="content cotent_label">
-              <span>{getWateringDday(lastWateringDate, frequency)}</span>
+              <span>
+                {getWateringDday(lastWateringDate || registerDate, frequency)}
+              </span>
             </div>
           </div>
           <div className="plant_info">
             <span className="title">마지막 물준 날</span>
             <span className="content">
-              {lastWateringDate
-                ? format(lastWateringDate, 'yyyy-MM-dd')
-                : '정보 없음'}
+              {lastWateringDate ? format(lastWateringDate, 'yyyy-MM-dd') : '-'}
             </span>
           </div>
           <div className="plant_info">
             <span className="title">처음 함께한 날</span>
             <span className="content">
-              {registerDate ? format(registerDate, 'yyyy-MM-dd') : '정보 없음'}
+              {format(registerDate, 'yyyy-MM-dd')}
             </span>
           </div>
         </div>

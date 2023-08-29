@@ -12,7 +12,7 @@ import 'swiper/css';
 import './sectionPhoto.scss';
 
 const SectionPhoto: React.FC<{
-  userId: string;
+  userEmail: string | null | undefined;
   imgUrls: string[];
   setImgUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }> = ({ imgUrls, setImgUrls }) => {
@@ -24,7 +24,7 @@ const SectionPhoto: React.FC<{
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     if (!file) return;
 
     try {
@@ -45,7 +45,7 @@ const SectionPhoto: React.FC<{
       console.error('파일 업로드 에러:', error);
     }
 
-    event.target.value = null;
+    event.target.value = '';
   };
 
   const cleanFileName = (fileName: string) => {
@@ -80,7 +80,13 @@ const SectionPhoto: React.FC<{
   const readFileAsDataURL = (file: File) => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result as string);
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target && typeof e.target.result === 'string') {
+          resolve(e.target.result);
+        } else {
+          reject(new Error('Invalid file format'));
+        }
+      };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });

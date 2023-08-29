@@ -4,6 +4,8 @@ import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
+import Toast from '@/components/notification/ToastContainer';
+import { errorNoti } from '@/utils/myPlantUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Profile from '@/assets/images/profile.png';
 import './myInfo.scss';
@@ -44,15 +46,17 @@ const MyInfo = () => {
         displayName: nickname,
         photoURL: imgUrl,
       });
-      alert('회원정보 수정에 성공했습니다.');
-      navigate('/mypage');
+      navigate('/mypage', {
+        state: { message: '회원정보 수정에 성공했습니다.' },
+      });
     } catch {
-      alert('회원정보 수정에 실패했습니다.');
+      errorNoti('회원정보 수정에 실패했습니다.');
     }
   };
 
   return (
     <div className="my_info_page">
+      <Toast />
       <HeaderBefore title="내 정보" />
       <main className="my_info_container inner">
         <section className="profile_section">

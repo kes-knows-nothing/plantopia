@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import { useState, Children } from 'react';
 import { recommend } from '@/constants/dictionary';
 import Recommend from './Recommend';
 import InputForm from './InputForm';
@@ -6,9 +6,11 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import { useAuth } from '@/hooks';
 import './dictPage.scss';
+import Progress from '@/components/progress/Progress';
 
 const DictPage = () => {
   const user = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div className="dict_conatiner">
@@ -20,11 +22,17 @@ const DictPage = () => {
         <InputForm nextPath={'/dict/search'} />
         {Children.toArray(
           recommend.map(({ icon, title, target }) => (
-            <Recommend icon={icon} title={title} target={target} />
+            <Recommend
+              icon={icon}
+              title={title}
+              target={target}
+              setIsLoading={setIsLoading}
+            />
           )),
         )}
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </div>
   );
 };

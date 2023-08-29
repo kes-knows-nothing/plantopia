@@ -1,0 +1,23 @@
+.no_content {
+  width: 100%;
+  height: calc(100vh - 23rem);
+  display: flex;
+  align-items: center;
+
+  > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > img {
+      width: 5rem;
+      height: 5rem;
+    }
+    > p {
+      color: #9b9fb1;
+      margin-top: 2rem;
+      font-size: 1.3rem;
+    }
+  }
+}

@@ -11,10 +11,16 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import './sectionEditPhoto.scss';
 
-const SectionEditPhoto: React.FC<{
+interface EditPhotoProps {
   imgUrls: string[];
   setImgUrls: React.Dispatch<React.SetStateAction<string[]>>;
-}> = ({ imgUrls, setImgUrls }) => {
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+}
+const SectionEditPhoto: React.FC<EditPhotoProps> = ({
+  imgUrls,
+  setImgUrls,
+  setFiles,
+}) => {
   const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
     [],
   );
@@ -33,28 +39,17 @@ const SectionEditPhoto: React.FC<{
 
     try {
       const previewUrl = await readFileAsDataURL(file);
+      setFiles(prevFiles => [...prevFiles, file]);
       setPreviewImgs([
         ...previewImgs,
         { backgroundImage: `url(${previewUrl})` },
       ]);
       setCurrentCount(currentCount + 1);
-
-      const storagePath = `diary_images/${cleanFileName(file.name)}`;
-      const imageRef = ref(storage, storagePath);
-      const snapshot = await uploadBytes(imageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-
-      setImgUrls(prevImgUrls => [...prevImgUrls, url]);
     } catch (error) {
       console.error('파일 업로드 에러:', error);
     }
 
     event.target.value = null;
-  };
-
-  const cleanFileName = (fileName: string) => {
-    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
-    return cleanedName;
   };
 
   const handleDeleteFile = async (index: number) => {

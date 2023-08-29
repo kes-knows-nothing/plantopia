@@ -4,6 +4,12 @@ import { db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import SectionEditPhoto from './SectionEditPhoto';
 import SectionEditBoard from './SectionEditBoard';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from 'firebase/storage';
+import { storage } from '@/firebaseApp';
 
 import './diaryEditPage.scss';
 
@@ -14,7 +20,10 @@ const DiaryEditPage = () => {
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
   const navigate = useNavigate();
+
+  console.log(files);
 
   useEffect(() => {
     const fetchDiaryData = async () => {
@@ -36,8 +45,6 @@ const DiaryEditPage = () => {
   }, [docId]);
 
   const handleSaveClick = async () => {
-// 로딩이 되면 - if loading true 바로 return 해서 함수가 실행안되게
-
     if (!title || chosenPlants.length === 0 || !content) {
       if (!title) {
         alert('제목을 작성해주세요.');
@@ -48,23 +55,38 @@ const DiaryEditPage = () => {
       }
       return;
     }
-    
-    setSaving(true); 
-    
+
+    const cleanFileName = (fileName: string) => {
+      const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
+      return cleanedName;
+    };
+
+    const urls = [];
+
+    for (const file of files) {
+      const storagePath = `diary_images/${cleanFileName(file.name)}`;
+      const imageRef = ref(storage, storagePath);
+      const snapshot = await uploadBytes(imageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      urls.push(url)
+    }
+
+    setSaving(true);
+
     const dataToUpdate = {
       content: content,
       tags: chosenPlants,
       title: title,
-      imgUrls: imgUrls,
+      imgUrls: [...imgUrls, ...urls],
     };
-  
+
     const docRef = doc(db, 'diary', docId);
     await updateDoc(docRef, dataToUpdate);
-  
+
     setSaving(false);
     navigate('/diary');
   };
-  
+
   return (
     <>
       <header className="sub_header">
@@ -77,6 +99,7 @@ const DiaryEditPage = () => {
         <SectionEditPhoto
           imgUrls={imgUrls}
           setImgUrls={setImgUrls}
+          setFiles={setFiles}
         />
         <SectionEditBoard
           title={title}

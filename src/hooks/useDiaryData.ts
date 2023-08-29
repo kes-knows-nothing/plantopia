@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import { db } from '@/firebaseApp.ts';
-import { DiaryProps, Plant } from '@/constants/diary';
-import {
-  getDocs,
-  query,
-  where,
-  collection,
-  deleteDoc,
-  doc,
-} from 'firebase/firestore';
+import { getDocs, query, where, collection, deleteDoc, doc, addDoc } from 'firebase/firestore';
 import { useAuth } from '@/hooks';
+import { DiaryProps, Plant } from '@/constants/diary';
 
-// 데이터 불러오기
 const useDiaryData = () => {
   const user = useAuth();
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
@@ -20,20 +12,14 @@ const useDiaryData = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
-        const q = query(
-          collection(db, 'diary'),
-          where('userEmail', '==', user?.email),
-        );
+        const q = query(collection(db, 'diary'), where('userEmail', '==', user?.email));
         const querySnapshot = await getDocs(q);
         const data: DiaryProps[] = [];
         querySnapshot.forEach(doc => {
           data.push({ id: doc.id, ...doc.data() } as DiaryProps);
         });
 
-        const sortedData = data.sort(
-          (a, b) =>
-            b.postedAt.toDate().getTime() - a.postedAt.toDate().getTime(),
-        );
+        const sortedData = data.sort((a, b) => b.postedAt.toDate().getTime() - a.postedAt.toDate().getTime());
         setDiaryData(sortedData);
       }
     };
@@ -41,7 +27,6 @@ const useDiaryData = () => {
     fetchData();
   }, [user]);
 
-  // 데이터 삭제
   const handleDelete = async (index: number) => {
     const confirmed = window.confirm('글을 삭제하시겠습니까?');
 
@@ -59,14 +44,9 @@ const useDiaryData = () => {
     }
   };
 
-  // 식물등록여부 확인
   const checkPlantExistence = async () => {
     if (user) {
-      const plantQuery = query(
-        collection(db, 'plant'),
-        where('userEmail', '==', user?.email),
-      );
-
+      const plantQuery = query(collection(db, 'plant'), where('userEmail', '==', user?.email));
       const plantSnapshot = await getDocs(plantQuery);
       const plantDataExist = !plantSnapshot.empty;
       return plantDataExist;
@@ -74,7 +54,12 @@ const useDiaryData = () => {
     return false;
   };
 
-  // 글쓰기 페이지 - 선택한 식물Tag의 state 변경
+  const saveDiaryData = async (dataToSave: any) => {
+    if (user) {
+      await addDoc(collection(db, 'diary'), dataToSave);
+    }
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -82,15 +67,19 @@ const useDiaryData = () => {
       const plantRef = collection(db, 'plant');
       const q = query(plantRef, where('userEmail', '==', user?.email));
       const querySnapshot = await getDocs(q);
-      const plants: Plant[] = querySnapshot.docs.map(
-        doc => doc.data() as Plant,
-      );
+      const plants: Plant[] = querySnapshot.docs.map(doc => doc.data() as Plant);
       setPlantTag(plants);
     };
     getPlantsFromFirestore();
   }, [user]);
 
-  return { diaryData, handleDelete, checkPlantExistence, plantTag }; 
+  return {
+    diaryData,
+    handleDelete,
+    checkPlantExistence,
+    saveDiaryData,
+    plantTag,
+  };
 };
 
 export default useDiaryData;

@@ -25,6 +25,7 @@
     align-items: center;
 
     > .title {
+      color: #22264c;
       width: 100%;
       padding-top: 2rem;
       padding-bottom: 2rem;
@@ -82,9 +83,11 @@
 
   .write_btn_wrap {
     position: fixed;
-    right: calc(50% - 15.7rem);
-    bottom: 7rem;
+    right: calc(50% - 18rem);
+    bottom: 5rem;
     display: flex;
+    padding: 2rem;
+    border-radius: 50%;
 
     .write_btn {
       width: 5.5rem;

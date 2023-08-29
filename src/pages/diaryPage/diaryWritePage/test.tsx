@@ -1,50 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Timestamp } from 'firebase/firestore';
-import { ArrowImages } from '@/constants/diary';
-import { useAuth } from '@/hooks';
-import useDiaryData from '@/hooks/useDiaryData';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import SectionPhoto from './SectionPhoto';
+import { ArrowImages } from '@/constants/diary';
+import useDiaryData from '@/hooks/useDiaryData';
+import { useAuth } from '@/hooks';
+
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
-  const user = useAuth();
-  const userEmail = user?.email;
   const { saveDiaryData, plantTag } = useDiaryData();
   const navigate = useNavigate();
+  const user = useAuth();
+  const userEmail = user?.email;
 
-  const [state, setState] = useState({
+  const initialState = {
     title: '',
     content: '',
     saving: false,
     isVisible: false,
-  });
-  
+  };
+
+  const [state, setState] = useState(initialState);
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
-  const toggleSelect = () =>
+  const toggleSelect = () => {
     setState(prevState => ({ ...prevState, isVisible: !prevState.isVisible }));
+  };
 
-  const handleChosenPlantClick = (plant: string) =>
-    setChosenPlants(prev => prev.filter(p => p !== plant));
+  const handleChosenPlantClick = (plant: string) => {
+    setChosenPlants(prevChosenPlants =>
+      prevChosenPlants.filter(p => p !== plant),
+    );
+  };
 
   const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedPlant = event.target.value;
 
-    setChosenPlants(prev =>
-      prev.includes(selectedPlant)
-        ? prev.filter(p => p !== selectedPlant)
-        : [...prev, selectedPlant],
-    );
+    setChosenPlants(prevChosenPlants => {
+      const isSelected = prevChosenPlants.includes(selectedPlant);
+
+      return isSelected
+        ? prevChosenPlants.filter(plant => plant !== selectedPlant)
+        : [...prevChosenPlants, selectedPlant];
+    });
   };
 
-  const showAlert = (message: string) => alert(message);
+  const showAlert = (message: string) => {
+    alert(message);
+  };
 
   const handleSaveClick = async () => {
     const { title, content } = state;
-
     if (!title || chosenPlants.length === 0 || !content) {
       showAlert(
         !title
@@ -56,12 +64,13 @@ const DiaryWritePage = () => {
       return;
     }
 
-    setState(prev => ({ ...prev, saving: true }));
+    setState(prevState => ({ ...prevState, saving: true }));
+    const timestamp = new Date();
 
     const dataToSave = {
       userEmail,
       content,
-      postedAt: Timestamp.now(),
+      postedAt: timestamp,
       tags: chosenPlants,
       title,
       imgUrls,
@@ -69,25 +78,11 @@ const DiaryWritePage = () => {
 
     await saveDiaryData(dataToSave);
 
-    setState({ title: '', content: '', saving: false, isVisible: false });
+    setState(initialState);
     setChosenPlants([]);
 
     navigate('/diary');
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const targetElement = event.target as HTMLElement;
-
-      if (state.isVisible && !targetElement.closest('.plant_select_wrapper')) {
-        setState(prev => ({ ...prev, isVisible: false }));
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [state.isVisible]);
 
   return (
     <>
@@ -108,24 +103,21 @@ const DiaryWritePage = () => {
               className="title"
               value={state.title}
               onChange={e =>
-                setState(prev => ({ ...prev, title: e.target.value }))
+                setState(prevState => ({ ...prevState, title: e.target.value }))
               }
             />
           </div>
 
           <div className="plant_select_wrapper">
             <div className="plant_select">
-              {chosenPlants.length === 0 && (
-                <div
-                  className={`choose_text ${
-                    chosenPlants.length === 0 ? '' : 'hide'
-                  }`}
-                  onClick={toggleSelect}
-                >
-                  식물을 선택하세요.
-                </div>
-              )}
-
+              <div
+                className={`choose_text ${
+                  chosenPlants.length === 0 ? '' : 'hide'
+                }`}
+                onClick={toggleSelect}
+              >
+                식물을 선택하세요.
+              </div>
               {chosenPlants.length > 0 && (
                 <div className="chosen_wrap">
                   {chosenPlants.map(plant => (
@@ -175,19 +167,19 @@ const DiaryWritePage = () => {
             placeholder="내용을 작성하세요."
             value={state.content}
             onChange={e =>
-              setState(prev => ({ ...prev, content: e.target.value }))
+              setState(prevState => ({ ...prevState, content: e.target.value }))
             }
             className="content"
           />
         </section>
+        <button
+          className="save_button"
+          onClick={handleSaveClick}
+          disabled={state.saving}
+        >
+          {state.saving ? '저장 중...' : '저장'}
+        </button>
       </main>
-      <button
-        className="save_button"
-        onClick={handleSaveClick}
-        disabled={state.saving}
-      >
-        {state.saving ? '저장 중...' : '저장'}
-      </button>
     </>
   );
 };

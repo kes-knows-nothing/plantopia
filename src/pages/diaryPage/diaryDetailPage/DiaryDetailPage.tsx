@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -40,13 +41,7 @@ const DiaryDetailPage = () => {
 
   return (
     <>
-      <header className="sub_header">
-        <button className="header_btn back" onClick={goBack}>
-          <HiOutlineArrowLeft />
-        </button>
-        <strong>다이어리</strong>
-        <button className="header_btn more"></button>
-      </header>
+      <HeaderBefore ex={false} title="다이어리" />
       <main className="diary_detail_page">
         <div className="diary_detail_container">
           {diaryData?.imgUrls.length > 0 && (

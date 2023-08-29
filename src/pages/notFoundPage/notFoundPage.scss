@@ -1,0 +1,46 @@
+.not_found_container {
+  > main {
+    height: 100vh;
+    background: #f6f6f6 url('../../assets/images/bg_login.png') no-repeat center /
+      100%;
+
+    > .not_found_wrapper {
+      padding-top: 45rem;
+      height: 50rem;
+      background: url('@/assets/images/404_cat.svg') no-repeat center;
+      text-align: center;
+
+      > h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+
+        > strong {
+          font-size: 2rem;
+          font-weight: 900;
+          color: rgb(50, 199, 37);
+        }
+      }
+
+      > p {
+        padding: 1rem 0 4rem 0;
+        font-size: 1.4rem;
+        font-weight: 500;
+      }
+
+      > a {
+        margin-top: 5rem;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgb(1, 112, 6);
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: white;
+        background-color: rgb(12, 136, 41);
+
+        &:hover {
+          background-color: rgb(18, 192, 58);
+        }
+      }
+    }
+  }
+}

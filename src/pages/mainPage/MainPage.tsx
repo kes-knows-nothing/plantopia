@@ -48,13 +48,13 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 };
 
 const MainPage = () => {
-  const [mainPlant, setMainPlant] = useState<UserPlant>();
+  const [focusPlant, setFocusPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const user = useAuth();
 
   const onWaterPlant = async (plantId: string) => {
-    if (!mainPlant) return;
+    if (!focusPlant) return;
 
     const plantRef = doc(db, 'plant', plantId);
 
@@ -62,7 +62,10 @@ const MainPage = () => {
       setIsLoading(true);
 
       await updateDoc(plantRef, {
-        wateredDays: [...mainPlant.wateredDays, Timestamp.fromDate(new Date())],
+        wateredDays: [
+          ...focusPlant.wateredDays,
+          Timestamp.fromDate(new Date()),
+        ],
       });
       await getUserPlant();
 
@@ -72,10 +75,6 @@ const MainPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const switchMainPlant = (plant: UserPlant) => {
-    setMainPlant(plant);
   };
 
   const getUserPlant = async () => {
@@ -100,10 +99,10 @@ const MainPage = () => {
       });
 
       const mainPlantData = userPlantList.find(({ id, isMain }) => {
-        return mainPlant ? mainPlant.id === id : isMain;
+        return focusPlant ? focusPlant.id === id : isMain;
       });
 
-      setMainPlant(mainPlantData || userPlantList[0]);
+      setFocusPlant(mainPlantData || userPlantList[0]);
       setPlantList(userPlantList);
     } catch (error) {
       errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
@@ -116,7 +115,7 @@ const MainPage = () => {
     getUserPlant();
   }, [user]);
 
-  const hasPlant = !!(mainPlant && plantList.length > 0);
+  const hasPlant = !!(focusPlant && plantList.length > 0);
 
   return (
     <>
@@ -126,10 +125,13 @@ const MainPage = () => {
         <section>
           <WeatherSection />
           <div className="inner">
-            <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
+            <MainPlant plant={focusPlant} onWaterPlant={onWaterPlant} />
           </div>
           {hasPlant && (
-            <PlantList plants={plantList} onClickItem={switchMainPlant} />
+            <PlantList
+              plants={plantList}
+              onClickItem={(plant: UserPlant) => setFocusPlant(plant)}
+            />
           )}
         </section>
       </main>

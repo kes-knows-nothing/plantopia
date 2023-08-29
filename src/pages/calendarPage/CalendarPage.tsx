@@ -133,45 +133,42 @@ const CalendarPage = () => {
   return (
     <>
       <HeaderBefore ex={true} title="물주기 기록" />
-      <div className="calendar_page">
-        <main className="calendar_container">
-          <section className="calendar_wrap inner">
-            <Calendar
-              value={selectedDate}
-              formatDay={(_, date) => date.getDate().toString()}
-              calendarType="hebrew"
-              nextLabel=""
-              prevLabel=""
-              tileContent={tileContent}
-              onChange={setSelectedDate}
-            />
-          </section>
-          <section className="date_list_wrap inner">
-            <strong className="date_title">
-              {generateTitleDate(selectedDate)}
-            </strong>
-            {/* 하단 데이터 영역 */}
-            {dateList ? (
-              <div className="date_list">
-                <div className="list_line"></div>
-                <ul>
-                  {dateList.list.map(({ time, plant }, i) => (
-                    // 유니한 키로 사용할 값이 없어서 라이브러리 `nanoid` 적용하여 해결
-                    <li key={nanoid()}>
-                      <em>{time}</em>
-                      <div className={`list_card color${i % 4}`}>{plant}</div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <div className="no_data">
-                <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
-              </div>
-            )}
-          </section>
-        </main>
-      </div>
+      <main className="calendar_page">
+        <section className="calendar_wrap inner">
+          <Calendar
+            value={selectedDate}
+            formatDay={(_, date) => date.getDate().toString()}
+            calendarType="hebrew"
+            nextLabel=""
+            prevLabel=""
+            tileContent={tileContent}
+            onChange={setSelectedDate}
+          />
+        </section>
+        <section className="date_list_wrap inner">
+          <strong className="date_title">
+            {generateTitleDate(selectedDate)}
+          </strong>
+          {/* 하단 데이터 영역 */}
+          {dateList ? (
+            <div className="date_list">
+              <div className="list_line"></div>
+              <ul>
+                {dateList.list.map(({ time, plant }, i) => (
+                  <li key={nanoid()}>
+                    <em>{time}</em>
+                    <div className={`list_card color${i % 4}`}>{plant}</div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="no_data">
+              <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
+            </div>
+          )}
+        </section>
+      </main>
       {isLoading && <Progress />}
     </>
   );

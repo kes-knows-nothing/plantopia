@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { db } from '@/firebaseApp.ts';
-import { DiaryProps } from '@/constants/diary';
+import { DiaryProps, Plant } from '@/constants/diary';
 import {
   getDocs,
   query,
@@ -15,6 +15,7 @@ import { useAuth } from '@/hooks';
 const useDiaryData = () => {
   const user = useAuth();
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
+  const [plantTag, setPlantTag] = useState<Plant[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +74,23 @@ const useDiaryData = () => {
     return false;
   };
 
-  return { diaryData, handleDelete, checkPlantExistence };
+  // 글쓰기 페이지 - 선택한 식물Tag의 state 변경
+  useEffect(() => {
+    if (!user) return;
+
+    const getPlantsFromFirestore = async () => {
+      const plantRef = collection(db, 'plant');
+      const q = query(plantRef, where('userEmail', '==', user?.email));
+      const querySnapshot = await getDocs(q);
+      const plants: Plant[] = querySnapshot.docs.map(
+        doc => doc.data() as Plant,
+      );
+      setPlantTag(plants);
+    };
+    getPlantsFromFirestore();
+  }, [user]);
+
+  return { diaryData, handleDelete, checkPlantExistence, plantTag }; 
 };
 
 export default useDiaryData;

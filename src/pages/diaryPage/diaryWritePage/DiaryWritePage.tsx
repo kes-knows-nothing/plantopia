@@ -1,10 +1,12 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '@/firebaseApp';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
+import { ArrowImages } from '@/constants/diary';
 import { useAuth } from '@/hooks';
+import useDiaryData from '@/hooks/useDiaryData';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import { Plant, ArrowImages } from '@/constants/diary';
+
 import './diaryWritePage.scss';
 import SectionPhoto from './SectionPhoto';
 
@@ -22,9 +24,9 @@ const DiaryWritePage = () => {
   const [state, setState] = useState(initialState);
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-  const [plantTag, setPlantTag] = useState<Plant[]>([]);
 
   const navigate = useNavigate();
+  const { plantTag } = useDiaryData();
 
   const showAlert = (message: string) => {
     alert(message);
@@ -69,21 +71,6 @@ const DiaryWritePage = () => {
 
     navigate('/diary');
   };
-
-  useEffect(() => {
-    if (!user) return;
-
-    const getPlantsFromFirestore = async () => {
-      const plantRef = collection(db, 'plant');
-      const q = query(plantRef, where('userEmail', '==', user?.email));
-      const querySnapshot = await getDocs(q);
-      const plants: Plant[] = querySnapshot.docs.map(
-        doc => doc.data() as Plant,
-      );
-      setPlantTag(plants);
-    };
-    getPlantsFromFirestore();
-  }, [user]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

@@ -1,70 +1,109 @@
 .search_container {
   > main {
     min-height: 100vh;
-  }
 
-  .plant_container {
-    .plant_wrapper {
-      display: flex;
-      padding: 1rem 0;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
+    .search_wrapper {
+      padding: 2rem 0;
 
-      &:hover {
-        transform: translateX(1rem);
-        transition: all 0.3s ease;
-      }
+      .input_wrapper {
+        position: relative;
+        width: 100%;
+        height: 4rem;
+        border: solid 1px #d6d6d6;
+        border-radius: 2.6rem;
+        background-color: #f8f8fa;
+        line-height: 4rem;
 
-      img {
-        width: 7rem;
-        height: 7rem;
-        border-radius: 50%;
-        box-shadow: 0.1rem 0.1rem 0.3rem rgba(1, 1, 1, 0.15);
-        background-color: lightgoldenrodyellow;
-      }
+        input {
+          width: 100%;
+          padding: 0 4rem 0.2rem 1.4rem;
+          font-size: 1.4rem;
+          color: black;
+          background-color: transparent;
 
-      .name_wrapper {
-        padding: 1.7rem 0 0 2rem;
-        width: 0;
-
-        .korean_name {
-          font-size: 1.5rem;
-          font-weight: 500;
-          color: #22264c;
+          &::placeholder {
+            color: #b8b8b8;
+          }
         }
 
-        .english_name {
-          padding-top: 1rem;
-          font-size: 1.3rem;
-          font-weight: 400;
-          color: #9b9fb1;
+        button {
+          position: absolute;
+          right: 0.5rem;
+          width: 3.5rem;
+          height: 3.5rem;
+          margin: 0.1rem 0 0 1rem;
+
+          .search_img {
+            width: 1.8rem;
+            height: 1.8rem;
+          }
         }
       }
     }
 
-    hr {
-      margin: 0;
-      border: none;
-      height: 1px;
-      background-color: #f7f8f7;
+    .plant_container {
+      .plant_wrapper {
+        display: flex;
+        padding: 1rem 0;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &:hover {
+          transform: translateX(1rem);
+          transition: all 0.3s ease;
+        }
+
+        img {
+          width: 7rem;
+          height: 7rem;
+          border-radius: 50%;
+          box-shadow: 0.1rem 0.1rem 0.3rem rgba(1, 1, 1, 0.15);
+          background-color: lightgoldenrodyellow;
+        }
+
+        .name_wrapper {
+          padding: 1.7rem 0 0 2rem;
+          width: 0;
+
+          .korean_name {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #22264c;
+          }
+
+          .english_name {
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #9b9fb1;
+          }
+        }
+      }
+
+      hr {
+        margin: 0;
+        border: none;
+        height: 1px;
+        background-color: #f7f8f7;
+      }
     }
-  }
 
-  .no_search {
-    padding-top: 2rem;
-    text-align: center;
-    font-weight: 400;
+    .no_search {
+      padding-top: 2rem;
+      text-align: center;
+      font-weight: 400;
 
-    p {
-      padding-bottom: 4rem;
-      font-size: 1.5rem;
-    }
+      p {
+        padding-bottom: 4rem;
+        font-size: 1.5rem;
+      }
 
-    a {
-      font-size: 1.2rem;
-      color: #9b9fb1;
-      text-decoration: underline;
+      a {
+        font-size: 1.2rem;
+        color: #9b9fb1;
+        text-decoration: underline;
+      }
     }
   }
 }

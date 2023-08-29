@@ -84,6 +84,7 @@ const DictSearchPage = () => {
                       <h3 className="english_name">{item.scientificName}</h3>
                     </div>
                   </div>
+                  <hr />
                 </Link>
               )),
             )

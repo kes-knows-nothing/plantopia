@@ -4,14 +4,12 @@
   }
 
   .plant_container {
-    padding-right: 2rem;
-
     .plant_wrapper {
       display: flex;
+      padding: 1rem 0;
       width: 100%;
-      margin-bottom: 2rem;
-      border-radius: 0 0 0 4rem;
-      box-shadow: rgba(0, 0, 0, 0.1) 0rem 0.1rem 0.1rem;
+      white-space: nowrap;
+      overflow: hidden;
 
       &:hover {
         transform: translateX(1rem);
@@ -28,6 +26,7 @@
 
       .name_wrapper {
         padding: 1.7rem 0 0 2rem;
+        width: 0;
 
         .korean_name {
           font-size: 1.5rem;
@@ -43,9 +42,17 @@
         }
       }
     }
+
+    hr {
+      margin: 0;
+      border: none;
+      height: 1px;
+      background-color: #f7f8f7;
+    }
   }
 
   .no_search {
+    padding-top: 2rem;
     text-align: center;
     font-weight: 400;
 

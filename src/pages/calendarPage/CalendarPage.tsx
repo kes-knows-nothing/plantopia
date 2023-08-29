@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { useAuth } from '@/hooks';
 import { dateFormat, dateWeekFormatter } from '@/utils/calendarUtil';
 
-import ThreeDotsLoading from '@/components/loading/ThreeDots';
+import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 import 'react-calendar/dist/Calendar.css';
@@ -172,6 +172,7 @@ const CalendarPage = () => {
           </section>
         </main>
       </div>
+      {isLoading && <Progress />}
     </>
   );
 };

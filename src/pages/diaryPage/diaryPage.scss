@@ -78,21 +78,6 @@
     > .content_section {
       width: 100%;
     }
-
-    .top_btn {
-      display: none; // 스크롤 추가 구현 예정
-      position: fixed;
-      left: 50%;
-      bottom: 2rem;
-      margin-bottom: 5.6rem;
-      transform: translateX(-50%);
-
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
-        no-repeat center / 0.8rem 0.5rem;
-    }
   }
 
   .write_btn_wrap {

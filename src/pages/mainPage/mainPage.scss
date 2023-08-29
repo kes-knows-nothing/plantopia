@@ -1,4 +1,5 @@
 @use '@/styles/mixins';
+// import MAIN_PLANT_ICON from '@/assets/images/icons/main_plant_true_icon.png';
 
 .main_page {
   background-color: #ffffff;
@@ -153,6 +154,24 @@
     color: #22264c;
     font-size: 2.2rem;
     font-weight: 700;
+
+    > .main-plant {
+      position: relative;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        margin: auto 0;
+        width: 1.8rem;
+        height: 1.8rem;
+        background: url('@/assets/images/icons/main_plant_true_icon.png')
+          no-repeat center center/cover;
+        top: 0;
+        bottom: 0;
+        left: -2.5rem;
+      }
+    }
   }
 
   > .plant_info_wrapper {
@@ -246,6 +265,44 @@
           font-weight: 700;
         }
       }
+    }
+  }
+}
+
+.main_page > section > div {
+  > .welcome_text {
+    margin: 4.6rem auto 0 auto;
+    width: 22.4rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    word-break: keep-all;
+
+    > strong {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+  }
+
+  > .register_btn {
+    margin: 3.9rem auto 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 29rem;
+    height: 5.2rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 2.6rem;
+    background-color: #ffffff;
+
+    > img {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    > p {
+      margin-left: 1.6rem;
+      font-size: 1.3rem;
+      color: #000000;
     }
   }
 }

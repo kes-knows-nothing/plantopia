@@ -33,7 +33,9 @@ interface MyPlantProps {
 
 const MyPlantMainPage = () => {
   const user = useAuth();
+  console.log(user);
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
+  console.log(myPlantData);
   const [myMainPlant, setMyMainPlant] = useState<MyPlantProps[]>([]);
   useEffect(() => {
     const getQuerySnapshot = async () => {
@@ -41,19 +43,26 @@ const MyPlantMainPage = () => {
         collection(db, 'plant'),
         where('userEmail', '==', user?.email),
       );
+      console.log(q);
       const querySnapshot = await getDocs(q);
       const plantData: Array<MyPlantProps> = [];
       querySnapshot.forEach(doc => {
         plantData.push(doc.data());
       });
-      const mainPlant: Array<MyPlantProps> = plantData.filter(
-        plant => plant.isMain === true,
-      );
-      const notMainPlant: Array<MyPlantProps> = plantData.filter(
-        plant => plant.isMain === false,
-      );
-      setMyMainPlant(mainPlant);
-      setMyPlantData(notMainPlant);
+      if (plantData.length === 1) {
+        setMyMainPlant(plantData);
+        myMainPlant[0].isMain = true;
+        console.log(myMainPlant);
+      } else {
+        const mainPlant: Array<MyPlantProps> = plantData.filter(
+          plant => plant.isMain === true,
+        );
+        const notMainPlant: Array<MyPlantProps> = plantData.filter(
+          plant => plant.isMain === false,
+        );
+        setMyMainPlant(mainPlant);
+        setMyPlantData(notMainPlant);
+      }
     };
     getQuerySnapshot();
   }, [user]);

@@ -8,7 +8,13 @@ import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseApp';
-import { collection, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  query,
+  getDocs,
+  QuerySnapshot,
+} from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -90,10 +96,13 @@ const MyPlantRegisterPage = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const isPlant = query(collection(db, 'plant'));
+    const isEmpty = (await getDocs(isPlant)).empty;
+
     const newPlantData = {
       frequency: waterCodeToNumber(waterCode),
       imgUrl: imgUrl || image,
-      isMain: false,
+      isMain: isEmpty ? true : false,
       nickname: plantName,
       plantName: searchInputValue,
       purchasedDay: dateToTimestamp(purchasedDay),

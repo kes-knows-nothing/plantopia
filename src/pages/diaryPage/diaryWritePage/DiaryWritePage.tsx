@@ -1,37 +1,30 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { db } from '@/firebaseApp';
+import { addDoc, collection } from 'firebase/firestore';
+import { useAuth } from '@/hooks';
+
 import SectionPhoto from './SectionPhoto';
 import SectionBoard from './SectionBoard';
-import { db } from '@/utils/firebaseApp';
-import { addDoc, collection } from 'firebase/firestore';
 
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
-  const userId = 'test@test.com';
-  const titleRef = useRef(null);
-  const contentRef = useRef(null);
+  const user = useAuth();
+  const userId = user?.email;
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
   const handleSaveClick = async () => {
-    const title = titleRef.current.value;
-    const content = contentRef.current.value;
-
-    if (!title) {
-      alert('제목을 작성해주세요.');
-      return;
-    }
-
-    if (chosenPlants.length === 0) {
-      alert('관련 식물을 1가지 이상 선택해주세요.');
-      return;
-    }
-
-    if (!content) {
-      alert('내용을 작성해주세요.');
+    if (!title || chosenPlants.length === 0 || !content) {
+      if (!title) alert('제목을 작성해주세요.');
+      else if (chosenPlants.length === 0)
+        alert('관련 식물을 1가지 이상 선택해주세요.');
+      else if (!content) alert('내용을 작성해주세요.');
       return;
     }
 
@@ -50,8 +43,8 @@ const DiaryWritePage = () => {
     await addDoc(collection(db, 'diary'), dataToSave);
 
     setChosenPlants([]);
-    titleRef.current.value = '';
-    contentRef.current.value = '';
+    setTitle('');
+    setContent('');
     setImgUrls([]);
     setSaving(false);
 
@@ -73,8 +66,10 @@ const DiaryWritePage = () => {
           setImgUrls={setImgUrls}
         />
         <SectionBoard
-          titleRef={titleRef}
-          contentRef={contentRef}
+          title={title}
+          setTitle={setTitle}
+          content={content}
+          setContent={setContent}
           chosenPlants={chosenPlants}
           setChosenPlants={setChosenPlants}
         />

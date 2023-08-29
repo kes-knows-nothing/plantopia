@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import './myPlantDetailPage.scss';
 import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
@@ -7,9 +7,10 @@ import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
-import { PlantType } from '@/@types/dictionary';
+import { PlantType } from '@/@types/dictionary.type';
 import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
+import { useAuth } from '@/hooks';
 import {
   doc,
   getDoc,
@@ -20,7 +21,7 @@ import {
   deleteDoc,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 
 interface MyPlantProps {
   id: string;
@@ -35,6 +36,7 @@ interface MyPlantProps {
 }
 
 const MyPlantDetailPage = () => {
+  const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
   const [plantDetail, setPlantDetail] = useState<MyPlantProps>({
@@ -130,6 +132,7 @@ const MyPlantDetailPage = () => {
               plantNameFromDetail: plantDetail.plantName,
               purchasedDayFromDetail: plantDetail.purchasedDay,
               wateredDayFromDetail: plantDetail.wateredDays.at(-1),
+              frequencyFromDetail: plantDetail.frequency,
             }}
           >
             <div className="my_plant_detail_edit_btn_inner_contents">

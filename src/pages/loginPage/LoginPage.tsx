@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '../../utils/firebaseApp';
+import { auth } from '../../firebaseApp';
 import './login.scss';
 
 const LoginPage = () => {

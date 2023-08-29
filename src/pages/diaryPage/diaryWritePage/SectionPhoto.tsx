@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { storage } from '@/utils/firebaseApp';
+import { useState } from 'react';
+import { storage } from '@/firebaseApp';
 import {
   ref,
   uploadBytes,
@@ -9,12 +9,13 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
+import './sectionPhoto.scss';
 
 const SectionPhoto: React.FC<{
   userId: string;
   imgUrls: string[];
   setImgUrls: React.Dispatch<React.SetStateAction<string[]>>;
-}> = ({ userId, imgUrls, setImgUrls }) => {
+}> = ({ imgUrls, setImgUrls }) => {
   const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
     [],
   );

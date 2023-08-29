@@ -1,19 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
-import { db } from '@/utils/firebaseApp';
+import { useState, useEffect, useRef, Children } from 'react';
+import { db } from '@/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { nanoid } from 'nanoid';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
 import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
+import './sectionBoard.scss';
 
 interface Plant {
   nickname: string;
   userEmail: string;
 }
 
-const SectionBoard = ({
-  titleRef,
-  contentRef,
+interface SectionBoardProps {
+  title: string;
+  setTitle: (title: string) => void;
+  content: string;
+  setContent: (content: string) => void;
+  chosenPlants: string[];
+  setChosenPlants: (plants: string[]) => void;
+}
+
+const SectionBoard: React.FC<SectionBoardProps> = ({
+  title,
+  setTitle,
+  content,
+  setContent,
   chosenPlants,
   setChosenPlants,
 }) => {
@@ -75,8 +86,6 @@ const SectionBoard = ({
     };
   }, []);
 
-  SectionBoard.getChosenPlants = () => chosenPlants;
-
   return (
     <section className="board_section">
       <div className="title_wrapper">
@@ -84,7 +93,8 @@ const SectionBoard = ({
           type="text"
           placeholder="제목을 작성하세요."
           className="title"
-          ref={titleRef}
+          value={title}
+          onChange={e => setTitle(e.target.value)}
         />
       </div>
 
@@ -119,26 +129,29 @@ const SectionBoard = ({
 
         {isVisible && (
           <ul className="plant_list">
-            {plantTag.map(plant => (
-              <li key={nanoid()}>
-                <input
-                  type="checkbox"
-                  name={plant.nickname}
-                  id={plant.nickname}
-                  value={plant.nickname}
-                  onChange={handlePlantSelection}
-                  checked={chosenPlants.includes(plant.nickname)}
-                />
-                <label htmlFor={plant.nickname}>{plant.nickname}</label>
-              </li>
-            ))}
+            {Children.toArray(
+              plantTag.map(plant => (
+                <li key={plant.nickname}>
+                  <input
+                    type="checkbox"
+                    name={plant.nickname}
+                    id={plant.nickname}
+                    value={plant.nickname}
+                    onChange={handlePlantSelection}
+                    checked={chosenPlants.includes(plant.nickname)}
+                  />
+                  <label htmlFor={plant.nickname}>{plant.nickname}</label>
+                </li>
+              )),
+            )}
           </ul>
         )}
       </div>
 
       <textarea
         placeholder="내용을 작성하세요."
-        ref={contentRef}
+        value={content}
+        onChange={e => setContent(e.target.value)}
         className="content"
       />
     </section>

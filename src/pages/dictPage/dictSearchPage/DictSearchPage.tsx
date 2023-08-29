@@ -1,6 +1,6 @@
 import { useState, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { db } from '@/utils/firebaseApp';
+import { db } from '@/firebaseApp';
 import {
   collection,
   getDocs,
@@ -12,6 +12,7 @@ import {
 import { PlantType } from '@/@types/dictionary.type';
 import { mockData } from '@/mock/dictMock';
 import InputForm from '../InputForm';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import './dictSearchPage.scss';
 
 const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
@@ -63,13 +64,8 @@ const DictSearchPage = () => {
 
   return (
     <div className="search_container">
-      <header>
-        <Link to="/dict">
-          <span className="back_button">←</span>
-        </Link>
-        <span className="search_header">검색 결과(임시 헤더)</span>
-      </header>
-      <main>
+      <HeaderBefore ex={false} title="검색 결과" />
+      <main className="inner">
         <input />
         <InputForm
           nextPath={'/dict/search'}

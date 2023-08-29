@@ -5,7 +5,10 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
 import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
-
+import Toast from '@/components/notification/ToastContainer';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/custom-toast-styles.scss';
+import { useAuth } from '@/hooks';
 import {
   getDocs,
   collection,
@@ -13,8 +16,9 @@ import {
   query,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from '@/utils/firebaseApp';
-
+import { db } from '@/firebaseApp';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { showAlert } from '@/utils/myPlantUtil';
 interface MyPlantProps {
   id: string;
   frequency: number;
@@ -28,13 +32,15 @@ interface MyPlantProps {
 }
 
 const MyPlantMainPage = () => {
+  const user = useAuth();
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
   const [myMainPlant, setMyMainPlant] = useState<MyPlantProps[]>([]);
-  const userId = 'test@test.com';
-
   useEffect(() => {
-    const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
     const getQuerySnapshot = async () => {
+      const q = query(
+        collection(db, 'plant'),
+        where('userEmail', '==', user?.email),
+      );
       const querySnapshot = await getDocs(q);
       const plantData: Array<MyPlantProps> = [];
       querySnapshot.forEach(doc => {
@@ -50,17 +56,15 @@ const MyPlantMainPage = () => {
       setMyPlantData(notMainPlant);
     };
     getQuerySnapshot();
-  }, []);
-  console.log(myMainPlant);
-  console.log(myPlantData);
+  }, [user]);
   return (
     <>
       <Header />
       {myMainPlant[0] ? (
         <>
           <p className="my_plant_info_message">
-            <span className="username">{myMainPlant[0].nickname}</span>님의
-            식물을 한눈에 보기!
+            <span className="username">{user?.displayName}</span> 님의 식물을
+            한눈에 보기!
           </p>
           <div className="main_plant_info_box">
             <div className="main_plant_main_data">
@@ -84,7 +88,7 @@ const MyPlantMainPage = () => {
                 식물 등록
               </p>
             </Link>
-            <MainPagePlantList />
+            <MainPagePlantList email={user?.email} />
           </div>
         </>
       ) : (

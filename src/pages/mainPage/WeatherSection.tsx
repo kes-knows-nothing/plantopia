@@ -1,74 +1,32 @@
 import { useState, useEffect } from 'react';
-import { WeatherResponse } from '@/@types/weather.types';
-import { mockWeather } from '@/mock/weatherMock';
+import { WeatherResponse } from '@/@types/weather.type';
 import { fetchWeatherInfo } from '@/api/weatherApi';
+import { weatherContents } from '@/constants/weather';
 
-import weather from '@/assets/images/weather';
+import { mockWeather } from '@/mock/weatherMock';
 import LOCATION from '@/assets/images/icons/location.png';
-
-interface WeatherContentType {
-  imgSrc: string;
-  title: string;
-  content: string;
-}
-
-const weatherContents: { [code: string]: WeatherContentType } = {
-  200: {
-    imgSrc: weather.THUNDER,
-    title: '천둥번개',
-    content: '집에서 영화나 책을 보는 건 어떨까요?',
-  },
-  300: {
-    imgSrc: weather.RAIN,
-    title: '한때 비',
-    content: '오늘은 창밖으로 빗소리가 들리겠어요.',
-  },
-  500: {
-    imgSrc: weather.SHOWER,
-    title: '비',
-    content: '실내에서 빗소리를 감상해보세요.',
-  },
-  600: {
-    imgSrc: weather.SNOW,
-    title: '눈',
-    content: '눈사람을 만들어보는건 어떨까요?',
-  },
-  800: {
-    imgSrc: weather.SUN,
-    title: '맑음',
-    content: '맑은 날, 기분 좋은 하루를 보내세요.',
-  },
-  801: {
-    imgSrc: weather.SUN_CLOUD,
-    title: '구름 조금',
-    content: '가볍게 산책하며 시간을 보내보세요.',
-  },
-  802: {
-    imgSrc: weather.SUN_CLOUD,
-    title: '구름 조금',
-    content: '가볍게 산책하며 시간을 보내보세요.',
-  },
-  803: {
-    imgSrc: weather.CLOUD,
-    title: '흐림',
-    content: '음악을 들으며 여유를 느껴보세요.',
-  },
-  804: {
-    imgSrc: weather.CLOUD,
-    title: '흐림',
-    content: '음악을 들으며 여유를 느껴보세요.',
-  },
-};
 
 const WeatherSection = () => {
   const [weatherInfo, setWeatherInfo] = useState<WeatherResponse>(mockWeather);
+
+  const generateTempFormat = (temp: number) => `${Math.floor(temp)}°`;
+
+  const getWeatherContent = (code: number) => {
+    if (weatherContents[code]) {
+      return weatherContents[code];
+    }
+
+    const commonCode = code - (code % 100);
+    return weatherContents[commonCode];
+  };
 
   const getUserLocation = () => {
     if ('geolocation' in navigator) {
       // 위치 정보 서비스를 지원하는 경우
       navigator.geolocation.getCurrentPosition(
-        ({ coords }) => {
-          fetchWeatherInfo(coords);
+        async ({ coords }) => {
+          const { data: weatherData } = await fetchWeatherInfo(coords);
+          setWeatherInfo(weatherData);
         },
         ({ code }) => {
           if (code === 1) {
@@ -84,16 +42,16 @@ const WeatherSection = () => {
     }
   };
 
-  const generateTempFormat = (temp: number) => `${Math.floor(temp)}°`;
-
   useEffect(() => {
     getUserLocation();
   }, []);
 
-  const { imgSrc, title, content } = weatherContents[weatherInfo.weather[0].id];
+  const { imgSrc, title, content } = getWeatherContent(
+    weatherInfo.weather[0].id,
+  );
 
   return (
-    <div className="weather_wrapper">
+    <div className="weather_wrapper inner">
       <div className="text_wrapper">
         <div className="location_wrapper">
           <img src={LOCATION} className="weather_icon" alt="location" />

@@ -19,6 +19,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import MainPlant from './MainPlantSection';
 import WeatherSection from './WeatherSection';
+import Progress from '@/components/progress/Progress';
 
 interface PlantListProps {
   plants: UserPlant[];
@@ -47,6 +48,7 @@ const PlantList = ({ plants, onClickItem }: PlantListProps) => {
 const MainPage = () => {
   const [mainPlant, setMainPlant] = useState<UserPlant>();
   const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const user = useAuth();
 
   const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
@@ -57,6 +59,8 @@ const MainPage = () => {
     const plantRef = doc(db, 'plant', mainPlant.id);
 
     try {
+      setIsLoading(true);
+
       await updateDoc(plantRef, {
         wateredDays: [...mainPlant.wateredDays, Timestamp.fromDate(new Date())],
       });
@@ -65,6 +69,8 @@ const MainPage = () => {
       alert('물을 잘 먹었어요!');
     } catch (error) {
       alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,6 +85,8 @@ const MainPage = () => {
     const q = query(emailRef, where('userEmail', '==', user.email));
 
     try {
+      setIsLoading(true);
+
       const userPlantList: UserPlant[] = [];
 
       const querySnapshot = await getDocs(q);
@@ -99,6 +107,8 @@ const MainPage = () => {
       setPlantList(userPlantList);
     } catch (error) {
       alert('에러가 발생하였습니다. 새로고침을 해주세요!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,6 +135,7 @@ const MainPage = () => {
         </section>
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </>
   );
 };

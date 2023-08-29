@@ -8,6 +8,8 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { auth } from '../../firebaseApp';
+import { errorNoti } from '@/utils/myPlantUtil';
+import Toast from '@/components/notification/ToastContainer';
 import './login.scss';
 
 const LoginPage = () => {
@@ -38,7 +40,7 @@ const LoginPage = () => {
 
     for (const { key, message, re } of targets) {
       if (!re.test(key)) {
-        alert(message);
+        errorNoti(message);
         return;
       }
     }
@@ -66,6 +68,7 @@ const LoginPage = () => {
 
   return (
     <main className="login_page">
+      <Toast />
       <div className="login_box inner">
         <h1>
           <span>Plantopia</span>

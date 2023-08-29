@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import { nanoid } from 'nanoid';
 import { db } from '@/firebaseApp';
-import { format } from 'date-fns';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { nanoid } from 'nanoid';
+import { format } from 'date-fns';
 import { useAuth } from '@/hooks';
 import { dateFormat, dateWeekFormatter } from '@/utils/calendarUtil';
 
@@ -13,8 +13,9 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import 'react-calendar/dist/Calendar.css';
 import './calendarPage.scss';
 
-import { CALENDAR_ICONS } from '@/constants/calendar';
+import { CALENDAR_ICONS, WEEKDAYS_KR } from '@/constants/calendar';
 import { UserPlant } from '@/@types/plant.type';
+import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
 
 // 테스팅 중
 import { mockWaterValue } from '@/mock/calendarMock';
@@ -22,25 +23,22 @@ import { mockWaterValue } from '@/mock/calendarMock';
 type ValuePiece = Date | null;
 
 type CalendarType = ValuePiece | [ValuePiece, ValuePiece];
-interface TileContentsProps {
-  date: Date;
-}
 
-interface RecordType {
+interface RecordDataType {
   time: string;
   plant: string;
 }
 export interface WaterRecordType {
   icon: string;
   date: string;
-  list: RecordType[];
+  list: RecordDataType[];
 }
 
 /** 샘플 데이터 END */
 
 const CalendarPage = () => {
   const user = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // calendarData => waterRecords 로 변경 예정
   const [calendarData, setCalendarData] =
@@ -59,7 +57,7 @@ const CalendarPage = () => {
    * @param param0
    * @returns
    */
-  const tileContent = ({ date }: TileContentsProps) => {
+  const tileContent = ({ date }: TileArgs) => {
     const findItem = calendarData.find(data => data.date === dateFormat(date));
     if (findItem) {
       return <img src={findItem.icon} />;
@@ -80,7 +78,7 @@ const CalendarPage = () => {
     try {
       const querySnapshot = await getDocs(q);
 
-      const data: { [date: string]: RecordType[] } = {};
+      const data: { [date: string]: RecordDataType[] } = {};
 
       querySnapshot.forEach(doc => {
         const plantData = doc.data() as Omit<UserPlant, 'id'>;
@@ -91,7 +89,7 @@ const CalendarPage = () => {
           const time = format(d.toDate(), 'HH:mm');
           const fullDate = format(d.toDate(), 'yyyy-MM-dd');
 
-          const waterData: RecordType = { time, plant: plantName };
+          const waterData: RecordDataType = { time, plant: plantName };
 
           if (!data[fullDate]) {
             data[fullDate] = [];
@@ -112,7 +110,7 @@ const CalendarPage = () => {
     } catch (error) {
       throw new Error('데이터를 받아오지 못했어요!');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -120,56 +118,61 @@ const CalendarPage = () => {
     getWatering(user?.email);
   }, [user]);
 
+  const generateTitleDate = (dateStr: CalendarType): string => {
+    if (!dateStr || !(dateStr instanceof Date)) return '';
+
+    const date = new Date(dateStr);
+
+    const month = format(date, 'M');
+    const days = format(date, 'd');
+    const dayOfWeek = WEEKDAYS_KR[date.getDay()];
+
+    return `${month}월 ${days}일 ${dayOfWeek}`;
+  };
+
   return (
-    <div className="calendar_page">
+    <>
       <HeaderBefore ex={true} title="물주기 기록" />
-      <main className="calendar_container">
-        {loading ? (
-          <ThreeDotsLoading />
-        ) : (
-          <>
-            <section className="calendar_wrap inner">
-              <Calendar
-                value={selectedDate}
-                formatDay={(_, date) => date.getDate().toString()}
-                calendarType="hebrew"
-                nextLabel=""
-                prevLabel=""
-                tileContent={tileContent}
-                onChange={setSelectedDate}
-              />
-            </section>
-            <section className="date_list_wrap inner">
-              <strong className="date_title">
-                {selectedDate instanceof Date
-                  ? dateWeekFormatter(selectedDate)
-                  : ''}
-              </strong>
-              {dateList ? (
-                <div className="date_list">
-                  <div className="list_line"></div>
-                  <ul>
-                    {dateList.list.map((v, i) => (
-                      // 유니한 키로 사용할 값이 없어서 라이브러리 `nanoid` 적용하여 해결
-                      <li key={nanoid()}>
-                        <em>{v.time}</em>
-                        <div className={`list_card color${i % 4}`}>
-                          {v.plant}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <div className="no_data">
-                  <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
-                </div>
-              )}
-            </section>
-          </>
-        )}
-      </main>
-    </div>
+      <div className="calendar_page">
+        <main className="calendar_container">
+          <section className="calendar_wrap inner">
+            <Calendar
+              value={selectedDate}
+              formatDay={(_, date) => date.getDate().toString()}
+              calendarType="hebrew"
+              nextLabel=""
+              prevLabel=""
+              tileContent={tileContent}
+              onChange={setSelectedDate}
+            />
+          </section>
+          <section className="date_list_wrap inner">
+            <strong className="date_title">
+              {generateTitleDate(selectedDate)}
+            </strong>
+            {/* 하단 데이터 영역 */}
+            {dateList ? (
+              <div className="date_list">
+                <div className="list_line"></div>
+                <ul>
+                  {dateList.list.map(({ time, plant }, i) => (
+                    // 유니한 키로 사용할 값이 없어서 라이브러리 `nanoid` 적용하여 해결
+                    <li key={nanoid()}>
+                      <em>{time}</em>
+                      <div className={`list_card color${i % 4}`}>{plant}</div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div className="no_data">
+                <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
+    </>
   );
 };
 

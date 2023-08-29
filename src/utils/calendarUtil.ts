@@ -24,20 +24,6 @@ export const dateWeekFormatter = (date: Date, sep = '-') => {
 };
 
 /**
- * react-calendar에서 각 달력마다 날짜를 출력하는 함수
- * 단순하게 숫자만 나오도록 한다
- * @param locale
- * @param date
- * @returns
- */
-export const reactCalendarDayFormat = (
-  locale: string | undefined,
-  date: Date,
-) => {
-  return `${date.getDate()}`;
-};
-
-/**
  * 자리수 2자리로 맞출때 사용
  * @param n
  * @returns
@@ -48,10 +34,4 @@ export const zeroTen = (n: number) => {
 
 export const dateFormat = (date: Date, sep = '-'): string => {
   return format(date, `yyyy${sep}MM${sep}dd`);
-};
-export const dateFullFormat = (date: Date, sep = '-'): string => {
-  return format(date, `yyyy${sep}MM${sep}dd HH:mm:ss`);
-};
-export const hhmmFormat = (date: Date, sep = ':'): string => {
-  return format(date, `HH:mm`);
 };

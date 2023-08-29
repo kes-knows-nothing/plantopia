@@ -13,13 +13,13 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
+
 import { db } from '@/firebaseApp';
 
-const MainPagePlantList = (useremail: string) => {
+const MainPagePlantList = ({ userEmail }) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
   const handleIsMain = async (clickedPlant: UserPlant) => {
-    console.log(clickedPlant);
     if (clickedPlant.isMain === false) {
       const previousMain = myPlantData.filter(item => (item.isMain = true));
       previousMain[0].isMain = false;
@@ -75,7 +75,7 @@ const MainPagePlantList = (useremail: string) => {
   useEffect(() => {
     const q = query(
       collection(db, 'plant'),
-      where('userEmail', '==', useremail.email),
+      where('userEmail', '==', userEmail),
     );
     const getNotMainPlants = async () => {
       const querySnapshot = await getDocs(q);
@@ -83,12 +83,11 @@ const MainPagePlantList = (useremail: string) => {
       querySnapshot.forEach(doc => {
         plantData.push({ ...doc.data(), id: doc.id });
         plantData.sort(compare);
-        console.log(plantData);
         setMyPlantData(plantData);
       });
     };
     getNotMainPlants();
-  }, [useremail]);
+  }, []);
 
   return (
     <div className="subplant_container">

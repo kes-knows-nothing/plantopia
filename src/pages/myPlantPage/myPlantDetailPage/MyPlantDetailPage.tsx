@@ -7,10 +7,13 @@ import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
+import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import { PlantType } from '@/@types/dictionary.type';
+import { UserPlant } from '@/@types/plant.type';
 import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import { useAuth } from '@/hooks';
+import { showAlert } from '@/utils/myPlantUtil';
 
 import {
   doc,
@@ -24,24 +27,16 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-
-interface MyPlantProps {
-  id: string;
-  frequency: number;
-  imgUrl: string;
-  isMain: boolean;
-  nickname: string;
-  plantName: string;
-  purchasedDay: InstanceType<typeof Timestamp>;
-  userEmail: string;
-  wateredDays: InstanceType<typeof Timestamp>[];
-}
+import Toast from '@/components/notification/ToastContainer';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/custom-toast-styles.scss';
+import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantDetailPage = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
-  const [plantDetail, setPlantDetail] = useState<MyPlantProps>({
+  const [plantDetail, setPlantDetail] = useState<UserPlant>({
     plantName: '헬로우',
     purchasedDay: Timestamp.fromDate(new Date()),
     wateredDays: [Timestamp.fromDate(new Date())],
@@ -76,11 +71,12 @@ const MyPlantDetailPage = () => {
           isMain: true,
         };
         await updateDoc(documentRef, updatedFields);
-        console.log('Document successfully updated!');
+        successNoti('내 식물이 삭제 되었습니다.');
         navigate('/myplant');
       } else {
         try {
           await deleteDoc(docRef);
+          successNoti('내 식물이 삭제 되었습니다.');
           navigate('/myplant');
         } catch (error) {
           console.error('Error deleting document: ', error);
@@ -121,24 +117,25 @@ const MyPlantDetailPage = () => {
 
   return (
     <>
+      <Toast />
       <div className="my_plant_detail_header">
         <Link to={'/myplant'}>
           <img src={previousPageIcon} alt="goToPreviousPage" />
         </Link>
-
         <p>식물 상세</p>
       </div>
       <div className="my_plant_detail_upper_container">
-        <div className="main_plant_main_data">
-          <p className="main_plant_head">메인 식물</p>
-          <img
-            className="main_plant_img"
-            src={plantDetail?.imgUrl}
-            alt="mainPlantImg"
-          />
-          <p className="main_plant_name">{plantDetail?.plantName}</p>
-          <p className="main_plant_nickname">{plantDetail?.nickname}</p>
+        <img
+          className="detail_plant_img"
+          src={plantDetail?.imgUrl}
+          alt="mainPlantImg"
+        />
+
+        <p className="detail_plant_name">{plantDetail?.plantName}</p>
+        <div className="detail_nickname_box">
+          <p className="detail_plant_nickname">{plantDetail?.nickname}</p>
         </div>
+
         <div className="my_plant_detail_edit_btn">
           <Link
             to={`/myplant/${docId}/edit`}
@@ -289,7 +286,12 @@ const MyPlantDetailPage = () => {
         <p className="more_info_btn">식물 도감에서 이 식물 정보 더 알아보기!</p>
       </div>
 
-      <button className="delete_my_plant" onClick={deletePlant}>
+      <button
+        className="delete_my_plant"
+        onClick={() =>
+          showAlert('삭제 확인', '정말로 삭제 하시겠습니까?', deletePlant)
+        }
+      >
         내 식물 삭제하기
       </button>
     </>

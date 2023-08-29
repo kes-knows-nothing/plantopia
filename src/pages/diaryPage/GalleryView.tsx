@@ -1,32 +1,44 @@
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useRef } from 'react';
+import { DiaryProps } from '@/constants/diary';
+import NoContent from './NoContent.tsx';
+import './galleryView.scss';
 
-const GalleryView = ({ diaryData }) => {
-  console.log(diaryData);
+interface GalleryViewProps {
+  diaryData: DiaryProps[];
+}
 
-  const cardRefs = useRef([]);
+const GalleryView: React.FC<GalleryViewProps> = ({ diaryData }) => {
+  const cardRefs = useRef<HTMLDivElement[]>([]);
 
-  const getMainImage = imgUrls => {
+  const getMainImage = (imgUrls: string[]) => {
     return `url(${imgUrls[0]})`;
   };
 
   return (
-    <div className="gallery_view">
-      {diaryData.map((diary, index) => (
-        <Link
-          to={`/diary/${diary.id}`}
-          key={index}
-          style={{ backgroundImage: getMainImage(diary.imgUrls) }}
-          className={`card ${diary.imgUrls.length === 0 ? 'hide' : 'show'} ${
-            diary.imgUrls.length > 1 ? 'many' : ''
-          }`}
-        >
-          <div
-            ref={cardElement => (cardRefs.current[index] = cardElement)}
-          ></div>
-        </Link>
-      ))}
-    </div>
+    <>
+      {diaryData.length === 0 ||
+      diaryData.every(diary => diary.imgUrls.length === 0) ? (
+        <NoContent />
+      ) : (
+        <div className="gallery_view">
+          {diaryData.map((diary, index) => (
+            <Link
+              to={`/diary/${diary.id}`}
+              key={index}
+              style={{ backgroundImage: getMainImage(diary.imgUrls) }}
+              className={`card ${
+                diary.imgUrls.length === 0 ? 'hide' : 'show'
+              } ${diary.imgUrls.length > 1 ? 'many' : ''}`}
+            >
+              <div
+                ref={cardElement => (cardRefs.current[index] = cardElement!)}
+              ></div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks';
 import { Link } from 'react-router-dom';
 import './myPlantMainPage.scss';
 import Header from '@/components/header/Header';
@@ -9,7 +8,7 @@ import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
-
+import { useAuth } from '@/hooks';
 import {
   getDocs,
   collection,
@@ -18,7 +17,8 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { showAlert } from '@/utils/myPlantUtil';
 interface MyPlantProps {
   id: string;
   frequency: number;
@@ -35,11 +35,12 @@ const MyPlantMainPage = () => {
   const user = useAuth();
   const [myPlantData, setMyPlantData] = useState<MyPlantProps[]>([]);
   const [myMainPlant, setMyMainPlant] = useState<MyPlantProps[]>([]);
-  const userId = 'test@test.com';
-
   useEffect(() => {
-    const q = query(collection(db, 'plant'), where('userEmail', '==', userId));
     const getQuerySnapshot = async () => {
+      const q = query(
+        collection(db, 'plant'),
+        where('userEmail', '==', user?.email),
+      );
       const querySnapshot = await getDocs(q);
       const plantData: Array<MyPlantProps> = [];
       querySnapshot.forEach(doc => {
@@ -55,9 +56,7 @@ const MyPlantMainPage = () => {
       setMyPlantData(notMainPlant);
     };
     getQuerySnapshot();
-  }, []);
-  console.log(myMainPlant);
-  console.log(myPlantData);
+  }, [user]);
   return (
     <>
       <Header />
@@ -89,8 +88,7 @@ const MyPlantMainPage = () => {
                 식물 등록
               </p>
             </Link>
-
-            <MainPagePlantList />
+            <MainPagePlantList email={user?.email} />
           </div>
         </>
       ) : (

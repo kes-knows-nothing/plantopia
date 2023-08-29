@@ -1,0 +1,42 @@
+@mixin diary-stack-icon($top: 0.2rem, $right: 0.2rem, $size: 1rem) {
+  &.many::before {
+    content: '';
+    display: block;
+    background: url('@/assets/images/icons/diary_stack.png') no-repeat center /
+      contain;
+    position: absolute;
+    right: $right;
+    top: $top;
+    width: $size;
+    height: $size;
+    opacity: 0.9;
+  }
+}
+
+.gallery_view {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  grid-column-gap: 0.6rem;
+  grid-row-gap: 0.6rem;
+  padding: 2rem 2rem 4rem 2rem;
+
+  > a {
+    width: 100%;
+    min-height: 10.267rem;
+    border-radius: 0.3rem;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  > .card {
+    position: relative;
+    @include diary-stack-icon(0.5rem, 0.5rem, 1.5rem);
+
+    &.hide {
+      display: none;
+    }
+  }
+}

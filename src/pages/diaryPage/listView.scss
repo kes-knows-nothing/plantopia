@@ -1,0 +1,134 @@
+@mixin ellipsis($line-cnt, $line-height) {
+  overflow: hidden;
+  line-height: $line-height;
+  max-height: $line-height * $line-cnt;
+  display: -webkit-box;
+  -webkit-line-clamp: $line-cnt;
+  -webkit-box-orient: vertical;
+}
+
+@mixin diary-stack-icon($top: 0.2rem, $right: 0.2rem, $size: 1rem) {
+  &.many::before {
+    content: '';
+    display: block;
+    background: url('@/assets/images/icons/diary_stack.png') no-repeat center /
+      contain;
+    position: absolute;
+    right: $right;
+    top: $top;
+    width: $size;
+    height: $size;
+    opacity: 0.9;
+  }
+}
+
+.list_view {
+  width: 100%;
+  
+  > .diary_list_wrap {
+    padding-bottom: 8rem;
+
+    .diary_list {
+      padding: 0 2rem;
+      border-bottom: 1px solid #f7f8f7;
+      position: relative;
+
+      > a {
+        width: 100%;
+        height: 12rem;
+        padding: 1.3rem 0;
+        display: flex;
+
+        > .left_box {
+          width: calc(100% - 6rem);
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          padding-right: 1.8rem;
+
+          > .title {
+            height: 3rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #22264c;
+
+            @include ellipsis(1, 3rem);
+          }
+
+          > .content {
+            margin-top: 0.5rem;
+            @include ellipsis(2, 1.6rem);
+
+            font-size: 1.3rem;
+            color: #979797;
+          }
+
+          > .date {
+            margin-top: auto;
+            color: #979797;
+          }
+        }
+
+        > .main_img {
+          margin-top: 3.5rem;
+          min-width: 6rem;
+          min-height: 6rem;
+          border-radius: 0.5rem;
+          background: no-repeat center / cover;
+          position: relative;
+          @include diary-stack-icon(0.2rem, 0.2rem, 1rem);
+        }
+      }
+
+      > .more {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        width: 3rem;
+        height: 3rem;
+        transform: translateX(0.2rem);
+        color: #979797;
+        opacity: 0.8;
+        background: url('@/assets/images/icons/diary_more.png') no-repeat center /
+          0.35rem;
+      }
+
+      .more_modal {
+        width: 11.5rem;
+        height: 7.5rem;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 2rem;
+        top: 4rem;
+        font-size: 1.3rem;
+        background: #fff;
+        overflow: hidden;
+        z-index: 2;
+
+        border-radius: 0.4rem;
+        box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
+
+        > .btn {
+          padding: 1rem;
+          height: 50%;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          &:hover {
+            background: #f7f8f7;
+          }
+        }
+
+        > .modify {
+          color: #22274c;
+        }
+
+        > .delete {
+          color: red;
+        }
+      }
+    }
+  }
+}

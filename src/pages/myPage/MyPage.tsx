@@ -1,33 +1,33 @@
 import { Children } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
+import { customerService } from '@/constants/myPage';
+import Toast from '@/components/notification/ToastContainer';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Profile from '@/assets/images/profile.png';
 import './myPage.scss';
-
-const customerService = [
-  { title: '공지사항', url: '' },
-  { title: '자주 묻는 질문', url: '' },
-  { title: '식물 추가 요청', url: 'https://forms.gle/g4AjkNKqVDP48Xnc7' },
-];
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 
 const MyPage = () => {
   const user = useAuth();
+  const location = useLocation();
+  location.state?.message && successNoti(location.state.message);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await signOut(auth);
     } catch {
-      alert('로그아웃에 실패했습니다.');
+      errorNoti('로그아웃에 실패했습니다.');
     }
   };
 
   return (
     <div className="my_page">
+      <Toast />
       <Header />
       <main className="my_container">
         <section className="my_info_box inner">

@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, Children } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { db } from '@/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useAuth } from '@/hooks';
 
 import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
 import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
@@ -31,11 +32,14 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const user = useAuth();
 
   useEffect(() => {
+    if (!user) return;
+
     const getPlantsFromFirestore = async () => {
       const plantRef = collection(db, 'plant');
-      const q = query(plantRef, where('userEmail', '==', 'test@test.com'));
+      const q = query(plantRef, where('userEmail', '==', user?.email));
       const querySnapshot = await getDocs(q);
       const plants: Plant[] = [];
       querySnapshot.forEach(doc => {
@@ -45,7 +49,7 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
       setPlantTag(plants);
     };
     getPlantsFromFirestore();
-  }, []);
+  }, [user]);
 
   const toggleSelect = () => {
     setIsVisible(prevVisible => !prevVisible);
@@ -62,19 +66,16 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
         : [...prevChosenPlants, selectedPlant];
     });
   };
-
-  const handleChosenPlantClick = (plant: string) => {
-    setChosenPlants(prevChosenPlants =>
-      prevChosenPlants.filter(p => p !== plant),
-    );
-  };
+  
+const handleChosenPlantClick = (plant: string) => {
+  setChosenPlants((prevChosenPlants: string[]) =>
+    prevChosenPlants.filter(p => p !== plant),
+  );
+};
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
+      if (isVisible && !event.target.closest('.plant_select_wrapper')) {
         setIsVisible(false);
       }
     };
@@ -84,7 +85,7 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [isVisible]);
 
   return (
     <section className="board_section">
@@ -129,21 +130,19 @@ const SectionBoard: React.FC<SectionBoardProps> = ({
 
         {isVisible && (
           <ul className="plant_list">
-            {Children.toArray(
-              plantTag.map(plant => (
-                <li key={plant.nickname}>
-                  <input
-                    type="checkbox"
-                    name={plant.nickname}
-                    id={plant.nickname}
-                    value={plant.nickname}
-                    onChange={handlePlantSelection}
-                    checked={chosenPlants.includes(plant.nickname)}
-                  />
-                  <label htmlFor={plant.nickname}>{plant.nickname}</label>
-                </li>
-              )),
-            )}
+            {plantTag.map(plant => (
+              <li key={plant.nickname}>
+                <input
+                  type="checkbox"
+                  name={plant.nickname}
+                  id={plant.nickname}
+                  value={plant.nickname}
+                  onChange={handlePlantSelection}
+                  checked={chosenPlants.includes(plant.nickname)}
+                />
+                <label htmlFor={plant.nickname}>{plant.nickname}</label>
+              </li>
+            ))}
           </ul>
         )}
       </div>

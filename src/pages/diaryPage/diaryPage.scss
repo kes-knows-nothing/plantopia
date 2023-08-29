@@ -8,65 +8,21 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
-@mixin ellipsis($line-cnt, $line-height) {
-  overflow: hidden;
-  line-height: $line-height;
-  max-height: $line-height * $line-cnt;
-  display: -webkit-box;
-  -webkit-line-clamp: $line-cnt;
-  -webkit-box-orient: vertical;
-}
-
-@mixin diary-stack-icon($top: 0.2rem, $right: 0.2rem, $size: 1rem) {
-  &.many::before {
-    content: '';
-    display: block;
-    background: url('@/assets/images/icons/diary_stack.png') no-repeat center /
-      contain;
-    position: absolute;
-    right: $right;
-    top: $top;
-    width: $size;
-    height: $size;
-    opacity: 0.9;
-  }
-}
-
 /* DIARY 메인 페이지 */
 
 .diary_page {
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: auto;
-  position: relative;
-  padding-left: 0.3rem;
-
-  // 임시로 작성
-  &::-webkit-scrollbar {
-    width: 0.3rem;
-    height: 0.3rem;
-    display: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #f2f2f2;
-    border-radius: 5rem;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: #e5e5e5;
-    border-radius: 5rem;
-    background-clip: padding-box;
-    border: 3px solid transparent;
-  }
+  margin-bottom: 5.7rem;
 
   > .diary_container {
     width: 100%;
+    min-height: calc(100vh - 11.2rem);
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1 auto;
 
     > .title {
       width: 100%;
@@ -74,7 +30,6 @@
       padding-bottom: 2rem;
       font-size: 1.6rem;
       font-weight: 400;
-      line-height: 1.5;
 
       > span {
         font-size: 1.8rem;
@@ -87,7 +42,7 @@
       }
     }
 
-    > .view_section {
+    > .tab_section {
       width: 100%;
       height: 5rem;
       display: flex;
@@ -122,191 +77,6 @@
 
     > .content_section {
       width: 100%;
-
-      > .list_view {
-        /*
-       추가기능 구현 예정
-       > .date_wrap {
-          width: 100%;
-          height: 5.7rem;
-          display: flex;
-          align-items: center;
-
-          > .date_picker {
-            flex-grow: 1;
-            height: 100%;
-
-            > span {
-              font-family: 'Pretendard', Arial, sans-serif;
-              font-size: 1.6rem;
-              font-weight: 700;
-            }
-          }
-
-          > .date_btn {
-            padding: 0;
-            width: 5rem;
-            height: 100%;
-          }
-
-          > .prev_btn {
-            background: url('@/assets/images/icons/calendar_prev.png') no-repeat
-              left center / 1.8rem 1.8rem;
-          }
-
-          > .next_btn {
-            background: url('@/assets/images/icons/calendar_next.png') no-repeat
-              right center / 1.8rem 1.8rem;
-          }
-        } */
-
-        > .diary_list_wrap {
-          margin-bottom: 5.6rem;
-
-          .diary_list {
-            padding: 0 2rem;
-            border-bottom: 1px solid #f7f8f7;
-            position: relative;
-
-            > a {
-              width: 100%;
-              height: 12rem;
-              padding: 1.3rem 0;
-              display: flex;
-
-              > .left_box {
-                width: calc(100% - 6rem);
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                padding-right: 1.8rem;
-
-                > .title {
-                  height: 3rem;
-                  font-size: 1.6rem;
-                  font-weight: 700;
-                  color: #22264c;
-
-                  @include ellipsis(1, 3rem);
-                }
-
-                > .content {
-                  margin-top: 0.5rem;
-                  @include ellipsis(2, 1.6rem);
-
-                  font-size: 1.3rem;
-                  color: #979797;
-                }
-
-                > .date {
-                  margin-top: auto;
-                  color: #979797;
-                }
-              }
-
-              > .main_img {
-                margin-top: 3.5rem;
-                min-width: 6rem;
-                min-height: 6rem;
-                border-radius: 0.5rem;
-                background: no-repeat center / cover;
-                position: relative;
-                @include diary-stack-icon(0.2rem, 0.2rem, 1rem);
-              }
-            }
-
-            > .more {
-              position: absolute;
-              right: 1rem;
-              top: 1rem;
-              width: 3rem;
-              height: 3rem;
-              transform: translateX(0.2rem);
-              color: #979797;
-              opacity: 0.8;
-              background: url('@/assets/images/icons/diary_more.png') no-repeat
-                center / 0.35rem;
-            }
-
-            .more_modal {
-              width: 11.5rem;
-              height: 7.5rem;
-              display: flex;
-              flex-direction: column;
-              position: absolute;
-              right: 2rem;
-              top: 4rem;
-              font-size: 1.3rem;
-              background: #fff;
-              overflow: hidden;
-              z-index: 2;
-
-              border-radius: 0.4rem;
-              box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
-
-              > .btn {
-                padding: 1rem;
-                height: 50%;
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-
-                &:hover {
-                  background: #f7f8f7;
-                }
-              }
-
-              > .modify {
-                color: #22274c;
-              }
-
-              > .delete {
-                color: red;
-              }
-            }
-          }
-        }
-      }
-
-      > .gallery_view {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: auto;
-        grid-column-gap: 0.6rem;
-        grid-row-gap: 0.6rem;
-        padding: 2rem 2rem 7rem 2rem;
-        margin-bottom: 6rem;
-
-        > a {
-          width: 100%;
-          min-height: 10.267rem;
-          border-radius: 0.3rem;
-
-          background-repeat: no-repeat;
-          background-size: cover;
-          background-position: center;
-        }
-        > .card {
-          position: relative;
-          @include diary-stack-icon(0.5rem, 0.5rem, 1.5rem);
-        }
-      }
-    }
-
-    .top_btn {
-      display: none; // 스크롤 추가 구현 예정
-      position: fixed;
-      left: 50%;
-      bottom: 2rem;
-      margin-bottom: 5.7rem;
-      transform: translateX(-50%);
-
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.1) url('@/assets/images/icons/top.png')
-        no-repeat center / 0.8rem 0.5rem;
     }
   }
 

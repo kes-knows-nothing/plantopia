@@ -39,77 +39,80 @@ const DiaryDetailPage = () => {
   }, [docId]);
 
   return (
-    <main className="diary_detail_page">
-      <div className="diary_detail_container">
-        <div className="sub_header">
-          <button className="header_btn back" onClick={goBack}>
-            <HiOutlineArrowLeft />
-          </button>
-          <strong>다이어리</strong>
-          <button className="header_btn more"></button>
-        </div>
-        <section className="slide_section">
-          {diaryData && (
-            <Swiper
-              className="diary_img_swiper swiper "
-              modules={[Pagination, Navigation]}
-              slidesPerView={1}
-              spaceBetween={0}
-              loop={true}
-              pagination={{
-                clickable: true,
-              }}
-              onInit={swiper => {
-                swiper.params.navigation.prevEl = slideSectionPrevBtn.current;
-                swiper.params.navigation.nextEl = slideSectionNextBtn.current;
-                swiper.navigation.init();
-                swiper.navigation.update();
-              }}
-            >
-              {diaryData.imgUrls.map((imgUrl, index) => (
-                <SwiperSlide key={index}>
-                  <div className="slide_container">
-                    <img
-                      src={imgUrl}
-                      className="slide_img"
-                      alt="슬라이드 이미지"
-                    />
+    <>
+      <header className="sub_header">
+        <button className="header_btn back" onClick={goBack}>
+          <HiOutlineArrowLeft />
+        </button>
+        <strong>다이어리</strong>
+        <button className="header_btn more"></button>
+      </header>
+      <main className="diary_detail_page">
+        <div className="diary_detail_container">
+          {diaryData?.imgUrls.length > 0 && (
+            <section className="slide_section">
+              <Swiper
+                className="diary_img_swiper swiper "
+                modules={[Pagination, Navigation]}
+                slidesPerView={1}
+                spaceBetween={0}
+                loop={true}
+                pagination={{
+                  clickable: true,
+                }}
+                onInit={swiper => {
+                  swiper.params.navigation.prevEl = slideSectionPrevBtn.current;
+                  swiper.params.navigation.nextEl = slideSectionNextBtn.current;
+                  swiper.navigation.init();
+                  swiper.navigation.update();
+                }}
+              >
+                {diaryData.imgUrls.map((imgUrl, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="slide_container">
+                      <img
+                        src={imgUrl}
+                        className="slide_img"
+                        alt="슬라이드 이미지"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+                <div className="swiper_nav">
+                  <div
+                    ref={slideSectionPrevBtn}
+                    className="swiper_nav_prev nav_btn"
+                  >
+                    <div className="prev_btn"></div>
                   </div>
-                </SwiperSlide>
-              ))}
-              <div className="swiper_nav">
-                <div
-                  ref={slideSectionPrevBtn}
-                  className="swiper_nav_prev nav_btn"
-                >
-                  <div className="prev_btn"></div>
+                  <div
+                    ref={slideSectionNextBtn}
+                    className="swiper_nav_next nav_btn"
+                  >
+                    <div className="next_btn"></div>
+                  </div>
                 </div>
-                <div
-                  ref={slideSectionNextBtn}
-                  className="swiper_nav_next nav_btn"
-                >
-                  <div className="next_btn"></div>
-                </div>
-              </div>
-            </Swiper>
+              </Swiper>
+            </section>
           )}
-        </section>
-        <section className="content_section inner">
-          <h5 className="diary_title">{diaryData?.title}</h5>
-          <div className="plant_list">
-            {diaryData?.tags.map((tag, index) => (
-              <span key={index}>{tag}</span>
-            ))}
-          </div>
-          <div className="text_wrap">
-            <p className="diary_text">{diaryData?.content}</p>
-            <p className="diary_date">
-              {diaryData?.postedAt?.toDate().toLocaleDateString()}
-            </p>
-          </div>
-        </section>
-      </div>
-    </main>
+
+          <section className="content_section inner">
+            <h5 className="diary_title">{diaryData?.title}</h5>
+            <div className="plant_list">
+              {diaryData?.tags.map((tag, index) => (
+                <span key={index}>{tag}</span>
+              ))}
+            </div>
+            <div className="text_wrap">
+              <p className="diary_text">{diaryData?.content}</p>
+              <p className="diary_date">
+                {diaryData?.postedAt?.toDate().toLocaleDateString()}
+              </p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
   );
 };
 

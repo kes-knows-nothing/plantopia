@@ -36,6 +36,8 @@ const DiaryEditPage = () => {
   }, [docId]);
 
   const handleSaveClick = async () => {
+// 로딩이 되면 - if loading true 바로 return 해서 함수가 실행안되게
+
     if (!title || chosenPlants.length === 0 || !content) {
       if (!title) {
         alert('제목을 작성해주세요.');

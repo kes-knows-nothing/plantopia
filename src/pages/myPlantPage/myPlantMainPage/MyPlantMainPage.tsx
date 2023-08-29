@@ -5,6 +5,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
 import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
+import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
@@ -84,8 +85,19 @@ const MyPlantMainPage = () => {
                 src={myMainPlant[0].imgUrl}
                 alt="mainPlantImg"
               />
-              <p className="main_plant_name">{myMainPlant[0].plantName}</p>
-              <p className="main_plant_nickname">{myMainPlant[0].nickname}</p>
+              {myMainPlant ? (
+                <>
+                  <p className="main_plant_name">{myMainPlant[0].plantName}</p>
+                  <p className="main_plant_nickname">
+                    {myMainPlant[0].nickname}
+                  </p>
+                </>
+              ) : (
+                <div className="my_plant_detail_edit_btn_inner_contents">
+                  <img src={editIcon} alt="editIcon" />
+                  <p>식물 정보 추가하기</p>
+                </div>
+              )}
             </div>
             <Link to={'/myplant/register'}>
               <p className="plant_plus_btn">

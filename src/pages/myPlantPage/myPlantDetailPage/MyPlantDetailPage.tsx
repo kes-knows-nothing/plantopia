@@ -21,6 +21,7 @@ import {
   query,
   deleteDoc,
   Timestamp,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 
@@ -64,12 +65,26 @@ const MyPlantDetailPage = () => {
   const deletePlant = async () => {
     if (plantDetail) {
       const docRef = doc(db, 'plant', docId);
-      navigate('/myplant');
-      try {
+      const documentSnapshot = await getDoc(docRef);
+      const dataBeforeDeletion = documentSnapshot.data();
+      if (dataBeforeDeletion?.isMain) {
         await deleteDoc(docRef);
-        console.log('Document successfully deleted!');
-      } catch (error) {
-        console.error('Error deleting document: ', error);
+        const querySnapshot = await getDocs(collection(db, 'plant'));
+        const firstDocumentid = querySnapshot.docs[0].id;
+        const documentRef = doc(db, 'plant', firstDocumentid);
+        const updatedFields = {
+          isMain: true,
+        };
+        await updateDoc(documentRef, updatedFields);
+        console.log('Document successfully updated!');
+        navigate('/myplant');
+      } else {
+        try {
+          await deleteDoc(docRef);
+          navigate('/myplant');
+        } catch (error) {
+          console.error('Error deleting document: ', error);
+        }
       }
     }
   };

@@ -127,9 +127,7 @@ const MyPlantEditPage = () => {
 
     try {
       await updateDoc(documentRef, updatedFields);
-      setTimeout(() => {
-        successNoti('식물 정보를 수정하였습니다!');
-      }, 500);
+      successNoti('식물 정보를 수정하였습니다!');
       navigate('/myplant');
     } catch (error) {
       console.error('Error updating document: ', error);

@@ -16,46 +16,55 @@ import {
   query,
   doc,
   updateDoc,
+  getDoc,
 } from 'firebase/firestore';
 
 import { db } from '@/firebaseApp';
 
-const MainPagePlantList = ({ userEmail }) => {
+const MainPagePlantList = ({ userEmail, setMyMainPlant }) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
 
-  const handleIsMain = async (clickedPlant: UserPlant) => {
+  const getUserPlants = async () => {
+    const q = query(
+      collection(db, 'plant'),
+      where('userEmail', '==', userEmail),
+    );
+    const querySnapshot = await getDocs(q);
+    const plantData: Array<UserPlant> = [];
+    querySnapshot.forEach(doc => {
+      plantData.push({ ...doc.data(), id: doc.id });
+      plantData.sort(compare);
+      setMyPlantData(plantData);
+    });
+  };
+
+  const handleClickIsMain = async (clickedPlant: UserPlant) => {
     if (clickedPlant.isMain === false) {
-      const previousMain = myPlantData.filter(item => (item.isMain = true));
-      previousMain[0].isMain = false;
-      clickedPlant.isMain = true;
+      const previousMain = myPlantData.find(item => (item.isMain = true));
+      if (!previousMain) {
+        return;
+      }
       const documentTrueRef = doc(db, 'plant', clickedPlant.id);
+      const documentFalseRef = doc(db, 'plant', previousMain.id);
       const updatedTrueFields = {
         isMain: true,
       };
-
-      try {
-        await updateDoc(documentTrueRef, updatedTrueFields);
-        console.log('Document successfully updated!');
-      } catch (error) {
-        console.error('Error updating document: ', error);
-      }
-
-      const documentFalseRef = doc(db, 'plant', previousMain[0].id);
       const updatedFalseFields = {
         isMain: false,
       };
-
       try {
+        await updateDoc(documentTrueRef, updatedTrueFields);
         await updateDoc(documentFalseRef, updatedFalseFields);
+        const updatedDocSnapshot = await getDoc(documentTrueRef);
+        const updatedData = updatedDocSnapshot.data();
+        setMyMainPlant(updatedData);
+        await getUserPlants();
+        successNoti('메인 식물을 변경하였습니다.');
       } catch (error) {
         console.error('Error updating document: ', error);
       }
     }
-    setTimeout(() => {
-      successNoti('메인 식물을 변경하였습니다.');
-    }, 1000);
-    window.location.reload();
   };
 
   const handleEditData = (clickedPlant: UserPlant) => {
@@ -80,20 +89,7 @@ const MainPagePlantList = ({ userEmail }) => {
   };
 
   useEffect(() => {
-    const q = query(
-      collection(db, 'plant'),
-      where('userEmail', '==', userEmail),
-    );
-    const getNotMainPlants = async () => {
-      const querySnapshot = await getDocs(q);
-      const plantData: Array<UserPlant> = [];
-      querySnapshot.forEach(doc => {
-        plantData.push({ ...doc.data(), id: doc.id });
-        plantData.sort(compare);
-        setMyPlantData(plantData);
-      });
-    };
-    getNotMainPlants();
+    getUserPlants();
   }, []);
 
   return (
@@ -114,7 +110,7 @@ const MainPagePlantList = ({ userEmail }) => {
             </div>
             <div className="main_check_and_edit">
               <img
-                onClick={() => handleIsMain(plant)}
+                onClick={() => handleClickIsMain(plant)}
                 className="mainPlantOrNot"
                 src={plant.isMain ? mainPlantTrueIcon : mainPlantFalseIcon}
                 alt="mainPlantOrNotImg"

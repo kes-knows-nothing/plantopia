@@ -86,7 +86,12 @@ const MyPlantMainPage = () => {
               </div>
             </div>
           )}
-          {user && <MainPagePlantList userEmail={user?.email} />}
+          {user && (
+            <MainPagePlantList
+              userEmail={user?.email}
+              setMyMainPlant={setMyMainPlant}
+            />
+          )}
         </div>
         <Footer />
       </main>

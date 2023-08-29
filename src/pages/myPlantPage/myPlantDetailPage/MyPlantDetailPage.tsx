@@ -70,17 +70,12 @@ const MyPlantDetailPage = () => {
           isMain: true,
         };
         await updateDoc(documentRef, updatedFields);
-        setTimeout(() => {
-          successNoti('내 식물을 삭제 하였습니다.');
-        }, 500);
+        successNoti('내 식물을 삭제 하였습니다.');
         navigate('/myplant');
       } else {
         try {
           await deleteDoc(docRef);
           successNoti('내 식물이 삭제 되었습니다.');
-          setTimeout(() => {
-            successNoti('내 식물을 삭제 하였습니다.');
-          }, 1000);
           navigate('/myplant');
         } catch (error) {
           console.error('Error deleting document: ', error);

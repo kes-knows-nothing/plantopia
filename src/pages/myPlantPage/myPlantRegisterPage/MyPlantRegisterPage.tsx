@@ -112,10 +112,8 @@ const MyPlantRegisterPage = () => {
       wateredDays: [dateToTimestamp(wateredDays)],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
+    successNoti('새 식물을 등록하였습니다!');
     navigate('/myplant');
-    setTimeout(() => {
-      successNoti('새 식물을 등록하였습니다!');
-    }, 500);
   };
   return (
     <>

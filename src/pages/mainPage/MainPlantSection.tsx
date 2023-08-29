@@ -9,7 +9,7 @@ import MAIN_PLANT from '@/assets/images/plants/main_plant.png';
 import EDIT_ICON from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import { useAuth } from '@/hooks';
 interface MainPlantProps {
-  mainPlant?: UserPlant;
+  plant?: UserPlant;
   onWaterPlant: (plantId: string) => void;
 }
 
@@ -37,19 +37,8 @@ const EmptyPlant = () => {
   );
 };
 
-const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
-  if (!mainPlant) return <EmptyPlant />;
-
-  const {
-    id,
-    frequency,
-    imgUrl,
-    nickname,
-    plantName,
-    purchasedDay,
-    wateredDays,
-    isMain,
-  } = mainPlant;
+const MainPlant = ({ plant, onWaterPlant }: MainPlantProps) => {
+  if (!plant) return <EmptyPlant />;
 
   const getWateringDday = (
     lastWateringDate: number,
@@ -72,19 +61,18 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
     showAlert(
       '식물에 물을 주시겠습니까?',
       '물을 주려면 확인을 눌러주세요!',
-      () => onWaterPlant(id),
+      () => onWaterPlant(plant.id),
     );
   };
 
-  const lastWateringDate = (wateredDays.at(-1)?.seconds || 0) * 1000;
-
-  const registerDate = purchasedDay.seconds * 1000;
+  const lastWateringDate = (plant.wateredDays.at(-1)?.seconds || 0) * 1000;
+  const registerDate = plant.purchasedDay.seconds * 1000;
 
   return (
     <>
-      <Link to={`/myplant/${id}`} className="main_plant">
+      <Link to={`/myplant/${plant.id}`} className="main_plant">
         <div className="inner_circle">
-          <img src={imgUrl} alt="plant" />
+          <img src={plant.imgUrl} alt="plant" />
         </div>
         <button className="watering_btn" onClick={onClickWatering}>
           <img src={WATERING} alt="watering" />
@@ -93,16 +81,21 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
       </Link>
       {/* main_plant_info */}
       <div className="main_plant_info">
-        <div className="eng_name_label">{plantName}</div>
+        <div className="eng_name_label">{plant.plantName}</div>
         <h2 className="nickname">
-          <span className={`${isMain && 'main-plant'}`}>{nickname}</span>
+          <span className={`${plant.isMain && 'main-plant'}`}>
+            {plant.nickname}
+          </span>
         </h2>
         <div className="plant_info_wrapper">
           <div className="plant_info">
             <span className="title">물주기</span>
             <div className="content cotent_label">
               <span>
-                {getWateringDday(lastWateringDate || registerDate, frequency)}
+                {getWateringDday(
+                  lastWateringDate || registerDate,
+                  plant.frequency,
+                )}
               </span>
             </div>
           </div>

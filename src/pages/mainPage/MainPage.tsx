@@ -91,7 +91,9 @@ const MainPage = () => {
         });
       });
 
-      const mainPlantData = userPlantList.find(plant => plant.isMain);
+      const mainPlantData = userPlantList.find(({ id, isMain }) => {
+        return mainPlant ? mainPlant.id === id : isMain;
+      });
 
       setMainPlant(mainPlantData || userPlantList[0]);
       setPlantList(userPlantList);

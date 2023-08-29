@@ -1,26 +1,5 @@
-import { ArrowImages } from '@/constants/diary';
-
-interface Props {
-  state: {
-    title: string;
-    content: string;
-    saving: boolean;
-    isVisible: boolean;
-  };
-  setState: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      content: string;
-      saving: boolean;
-      isVisible: boolean;
-    }>
-  >;
-  chosenPlants: string[];
-  toggleSelect(): void;
-  handleChosenPlantClick(plant: string): void;
-  handlePlantSelection(event: React.ChangeEvent<HTMLInputElement>): void;
-  plantTag: any[];
-}
+import { ArrowImages, SectionBoardProps } from '@/constants/diary';
+import './sectionBoard.scss';
 
 const SectionBoard = ({
   state,
@@ -30,7 +9,7 @@ const SectionBoard = ({
   handleChosenPlantClick,
   handlePlantSelection,
   plantTag,
-}: Props) => {
+}: SectionBoardProps) => {
   return (
     <section className="board">
       <div className="title_wrapper">

@@ -21,8 +21,8 @@ const GalleryView: React.FC<GalleryViewProps> = ({ diaryData }) => {
       diaryData.every(diary => diary.imgUrls.length === 0) ? (
         <NoContent />
       ) : (
-        diaryData.map((diary, index) => (
-          <div className="gallery_view">
+        <div className="gallery_view">
+          {diaryData.map((diary, index) => (
             <Link
               to={`/diary/${diary.id}`}
               key={index}
@@ -35,8 +35,8 @@ const GalleryView: React.FC<GalleryViewProps> = ({ diaryData }) => {
                 ref={cardElement => (cardRefs.current[index] = cardElement!)}
               ></div>
             </Link>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </>
   );

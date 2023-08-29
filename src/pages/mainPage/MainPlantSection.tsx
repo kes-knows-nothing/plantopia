@@ -18,6 +18,7 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
     plantName,
     purchasedDay,
     wateredDays,
+    isMain,
   } = mainPlant;
 
   const getWateringDday = (
@@ -55,7 +56,9 @@ const MainPlant = ({ mainPlant, onWaterPlant }: MainPlantProps) => {
       {/* main_plant_info */}
       <div className="main_plant_info">
         <div className="eng_name_label">{plantName}</div>
-        <h2 className="nickname">{nickname}</h2>
+        <h2 className="nickname">
+          <span className={`${isMain && 'main-plant'}`}>{nickname}</span>
+        </h2>
         <div className="plant_info_wrapper">
           <div className="plant_info">
             <span className="title">물주기</span>

@@ -274,14 +274,16 @@ const MyPlantDetailPage = () => {
             </div>
           </div>
         </div>
-        <div className="my_plant_detail_info_box">
-          <div className="my_plant_detail_info_head">
-            <p>📌 관리 Tip</p>
+        {plantDictDetail?.adviseInfo == null ? null : (
+          <div className="my_plant_detail_info_box">
+            <div className="my_plant_detail_info_head">
+              <p>📌 관리 Tip</p>
+            </div>
+            <div className="my_plant_detail_info_metadata management_tip_box">
+              <p className="management_tip">{plantDictDetail?.adviseInfo}</p>
+            </div>
           </div>
-          <div className="my_plant_detail_info_metadata management_tip_box">
-            <p className="management_tip">{plantDictDetail?.adviseInfo}</p>
-          </div>
-        </div>
+        )}
         <p className="more_info_btn">식물 도감에서 이 식물 정보 더 알아보기!</p>
       </div>
 

@@ -40,13 +40,13 @@ const MyPlantMainPage = () => {
   }, [user]);
   return (
     <>
+      <Toast />
+      <Header />
       <main>
-        <Toast />
-        <Header />
-        <p className="my_plant_info_message">
+        <div className="my_plant_info_message">
           <span className="username">{user?.displayName}</span> 님의 식물을
           한눈에 보기!
-        </p>
+        </div>
         <div className="main_plant_info_box">
           {myMainPlant ? (
             <div className="main_plant_main_data">
@@ -93,8 +93,8 @@ const MyPlantMainPage = () => {
             />
           )}
         </div>
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 };

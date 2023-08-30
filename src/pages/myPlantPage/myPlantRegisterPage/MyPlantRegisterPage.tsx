@@ -1,5 +1,4 @@
 import './myPlantRegisterPage.scss';
-import { ToastContainer } from 'react-toastify';
 import { useAuth } from '@/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
@@ -8,13 +7,7 @@ import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseApp';
-import {
-  collection,
-  addDoc,
-  query,
-  getDocs,
-  QuerySnapshot,
-} from 'firebase/firestore';
+import { collection, addDoc, query, getDocs } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -42,9 +35,9 @@ const MyPlantRegisterPage = () => {
     setSearchInputValue(e.target.value);
   };
 
-  const navigateSearchInput = () => {
+  const navigateSearch = () => {
     navigate('/dict/search', {
-      state: { inputValue: searchInputValue },
+      state: { inputValue: null },
     });
   };
 
@@ -154,38 +147,41 @@ const MyPlantRegisterPage = () => {
             </div>
             <div className="my_plant_input_box">
               <p className="my_plant_input_title">식물선택</p>
-              <div className="my_plant_input_wrapper">
+              <div className="my_plant_input_wrapper" onClick={navigateSearch}>
                 <input
                   className="my_plant_input"
                   type="text"
                   placeholder="식물 이름으로 검색해보세요."
                   value={searchInputValue}
                   onChange={handleSearchInput}
+                  onClick={navigateSearch}
+                  readOnly
                 />
 
                 <img
                   className="input_glass"
                   src={inputGlass}
                   alt="inputGlass"
-                  onClick={navigateSearchInput}
                 />
               </div>
             </div>
             <div className="my_plant_info_form">
-              <p className="my_plant_name_title">식물이름</p>
+              <p className="my_plant_name_title">
+                식물이름<p>* 5글자 이내로 설정해주세요.</p>
+              </p>
               <input
                 className="my_plant_name"
                 maxLength={5}
                 value={plantName}
                 onChange={plantNameHandler}
-                placeholder="5글자 이내로 설정해주세요"
               />
-              <p className="watering_frequency">물 주는 날</p>
+              <p className="watering_frequency">
+                물 주는 날<p>* 주변 환경에 맞게 조절해주세요.</p>
+              </p>
               <div className="watering_frequency_input_box">
                 <input
                   className="watering_frequency_input"
                   defaultValue={waterCodeToNumber(waterCode)}
-                  placeholder="주변 환경에 따라 적절하게 변경해주세요"
                 />
 
                 <p className="watering_frequency_info">일에 한 번</p>

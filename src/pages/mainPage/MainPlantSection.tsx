@@ -13,7 +13,6 @@ interface MainPlantProps {
   onWaterPlant: (plantId: string) => void;
 }
 
-// username
 const EmptyPlant = () => {
   const user = useAuth();
   const userName = user?.displayName || '회원';
@@ -40,19 +39,14 @@ const EmptyPlant = () => {
 const MainPlant = ({ plant, onWaterPlant }: MainPlantProps) => {
   if (!plant) return <EmptyPlant />;
 
-  const getWateringDday = (
+  const calcWateringDday = (
     lastWateringDate: number,
     frequency: number,
-  ): string => {
+  ): number => {
     const nextWateringDate = addDays(lastWateringDate, frequency);
     const diffDays = differenceInDays(Date.now(), nextWateringDate);
 
-    /* 물을 주어야할 날이 지났다면 모두 D-day로 표시 */
-    if (diffDays > 0) {
-      return 'D-day';
-    }
-
-    return diffDays === 0 ? `D-${diffDays}` : `D${diffDays}`;
+    return diffDays >= 0 ? 0 : Math.abs(diffDays);
   };
 
   const onClickWatering = (event: React.MouseEvent<HTMLElement>) => {
@@ -67,6 +61,12 @@ const MainPlant = ({ plant, onWaterPlant }: MainPlantProps) => {
 
   const lastWateringDate = (plant.wateredDays.at(-1)?.seconds || 0) * 1000;
   const registerDate = plant.purchasedDay.seconds * 1000;
+  const wateringDday = calcWateringDday(
+    lastWateringDate || registerDate,
+    plant.frequency,
+  );
+  const dDayLabelClass =
+    wateringDday === 0 ? 'urgent' : wateringDday <= 3 ? 'upcoming' : '';
 
   return (
     <>
@@ -90,13 +90,8 @@ const MainPlant = ({ plant, onWaterPlant }: MainPlantProps) => {
         <div className="plant_info_wrapper">
           <div className="plant_info">
             <span className="title">물주기</span>
-            <div className="content cotent_label">
-              <span>
-                {getWateringDday(
-                  lastWateringDate || registerDate,
-                  plant.frequency,
-                )}
-              </span>
+            <div className={`content cotent_label ${dDayLabelClass}`}>
+              <span>{wateringDday === 0 ? 'D-day' : `D-${wateringDday}`}</span>
             </div>
           </div>
           <div className="plant_info">

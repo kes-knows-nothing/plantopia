@@ -225,8 +225,16 @@
           display: flex;
           padding: 0.55rem 1.1rem;
           border-radius: 3rem;
-          background: #edc27e;
+          background: #66a85e;
           color: #ffffff;
+
+          &.upcoming {
+            background: #edc27e;
+          }
+
+          &.urgent {
+            background: #e74c3c;
+          }
         }
       }
     }

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { db } from '@/firebaseApp';
+import { PlantType } from '@/@types/dictionary.type';
+import { koreanRe } from '@/constants/RegularExpression';
 import {
   collection,
   getDocs,
@@ -9,14 +11,10 @@ import {
   endAt,
   orderBy,
 } from 'firebase/firestore';
-import { PlantType } from '@/@types/dictionary.type';
 import Progress from '@/components/progress/Progress';
-import { mockData } from '@/mock/dictMock';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
 import './dictSearchPage.scss';
-
-const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
 
 const DictSearchPage = () => {
   const location = useLocation();
@@ -58,17 +56,9 @@ const DictSearchPage = () => {
     setisLoading(false);
   };
 
-  const getMockData = async () => {
-    mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
-  };
-
   useEffect(() => {
     setPlant([]);
-    // Mock Data 사용시 getDouments 주석 처리
     getDouments(inputValue);
-
-    // Mock Data 사용시 getMockData 주석 해제
-    // getMockData();
   }, [inputValue]);
 
   return (

@@ -73,14 +73,12 @@ const DiaryEditPage = () => {
 
     setIsLoading(true);
 
-    const dataToUpdate = {
+    await updateDiaryData(docId, {
       content: content,
       tags: chosenPlants,
       title: title,
       imgUrls: imgUrls,
-    };
-
-    await updateDiaryData(docId, dataToUpdate);
+    });
 
     setIsLoading(false);
     navigate('/diary');

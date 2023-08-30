@@ -19,6 +19,7 @@ const useDiaryData = () => {
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  /* 다이어리 메인 데이터 불러오기 */
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -43,6 +44,7 @@ const useDiaryData = () => {
     fetchData();
   }, [user]);
 
+  /* 삭제하기 */
   const handleDelete = async (index: number) => {
     const confirmed = window.confirm('글을 삭제하시겠습니까?');
 
@@ -60,6 +62,7 @@ const useDiaryData = () => {
     }
   };
 
+  /* 등록한 식물이 있는지 확인하기 => 없을 경우 등록페이지로 */
   const checkPlantExistence = async () => {
     if (user) {
       const plantQuery = query(
@@ -73,7 +76,8 @@ const useDiaryData = () => {
     return false;
   };
 
-  const saveDiaryData = async (dataToSave) => {
+  /* 저장하기 */
+  const saveDiaryData = async (dataToSave: Partial<DiaryProps>) => {
     if (user) {
       setIsLoading(true);
       await addDoc(collection(db, 'diary'), dataToSave);
@@ -81,7 +85,11 @@ const useDiaryData = () => {
     }
   };
 
-  const updateDiaryData = async (diaryId: string, updatedData) => {
+  /* 수정하기 */
+  const updateDiaryData = async (
+    diaryId: string,
+    updatedData: Partial<DiaryProps>,
+  ) => {
     try {
       const diaryRef = doc(db, 'diary', diaryId);
       setIsLoading(true);
@@ -98,6 +106,7 @@ const useDiaryData = () => {
     }
   };
 
+  /* 내 식물 목록 불러오기 */
   useEffect(() => {
     if (!user) return;
 

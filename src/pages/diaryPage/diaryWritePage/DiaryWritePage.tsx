@@ -10,7 +10,7 @@ import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
   const user = useAuth();
-  const userEmail = user?.email;
+  const userEmail = user?.email || '';
   const { saveDiaryData, plantTag } = useDiaryData();
   const navigate = useNavigate();
 
@@ -58,16 +58,14 @@ const DiaryWritePage = () => {
 
     setState(prev => ({ ...prev, saving: true }));
 
-    const dataToSave = {
+    await saveDiaryData({
       userEmail,
       content,
       postedAt: Timestamp.now(),
       tags: chosenPlants,
       title,
       imgUrls,
-    };
-
-    await saveDiaryData(dataToSave);
+    });
 
     setState({ title: '', content: '', saving: false, isVisible: false });
     setChosenPlants([]);

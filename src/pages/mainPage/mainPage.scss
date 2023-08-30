@@ -1,11 +1,9 @@
 @use '@/styles/mixins';
-// import MAIN_PLANT_ICON from '@/assets/images/icons/main_plant_true_icon.png';
 
 .main_page {
-  background-color: #ffffff;
   min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
   margin-bottom: 5.6rem;
-  padding-bottom: 2rem;
+  background-color: #ffffff;
 
   > section {
     min-height: inherit;
@@ -27,7 +25,9 @@
 .main_page > section > .weather_wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-top: 0.4rem;
+  min-height: 10.7rem;
 
   > .text_wrapper {
     display: flex;
@@ -71,6 +71,13 @@
         }
       }
     }
+  }
+
+  > .info_text {
+    margin: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #9b9fb1;
   }
 
   .weather_icon {
@@ -217,8 +224,16 @@
           display: flex;
           padding: 0.55rem 1.1rem;
           border-radius: 3rem;
-          background: #edc27e;
+          background: #66a85e;
           color: #ffffff;
+
+          &.upcoming {
+            background: #edc27e;
+          }
+
+          &.urgent {
+            background: #e74c3c;
+          }
         }
       }
     }
@@ -228,15 +243,13 @@
 /* 서브 식물 리스트 슬라이드*/
 .main_page > section > .slide_wrapper {
   margin-top: 3.3rem;
-  padding-left: 2rem;
+  padding: 0 0 2rem 2rem;
   min-height: 10.9rem;
 
   > .swiper {
     min-height: inherit;
 
     > .swiper-wrapper > .swiper-slide {
-      margin-right: 2rem;
-
       > .slide {
         padding: 0;
         width: 8rem;

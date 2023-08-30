@@ -132,7 +132,7 @@ const MyPlantRegisterPage = () => {
       plantName: searchInputValue,
       purchasedDay: dateToTimestamp(purchasedDay),
       userEmail: 'test@test.com',
-      wateredDays: [dateToTimestamp(wateredDays)],
+      wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
     successNoti('새 식물을 등록하였습니다!');

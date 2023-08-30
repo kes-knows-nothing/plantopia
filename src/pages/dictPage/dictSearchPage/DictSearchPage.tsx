@@ -26,12 +26,13 @@ const DictSearchPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputRef?.current?.value) return;
+    setPlant([]);
+    setisLoading(true);
     getDouments(inputRef?.current?.value);
+    setisLoading(false);
   };
 
   const getDouments = async (plantName: string) => {
-    setisLoading(true);
-    setPlant([]);
     let fieldName = 'name';
     if (!koreanRe.test(plantName)) {
       fieldName = 'scientificName';
@@ -53,12 +54,13 @@ const DictSearchPage = () => {
         return [...prev, data] as PlantType[];
       });
     });
-    setisLoading(false);
   };
 
   useEffect(() => {
     setPlant([]);
+    setisLoading(true);
     getDouments(inputValue);
+    setisLoading(false);
   }, [inputValue]);
 
   return (

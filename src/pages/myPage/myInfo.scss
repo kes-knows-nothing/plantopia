@@ -56,6 +56,11 @@
         display: block;
         font-size: 1.2rem;
         color: #22264c;
+
+        > small {
+          font-size: 0.8rem;
+          color: #a0a0a0;
+        }
       }
 
       input {
@@ -70,7 +75,7 @@
     position: fixed;
     bottom: 0;
     padding: 0;
-    width: 36rem;
+    width: 100%;
     max-width: 500px;
     height: 5rem;
     font-size: 1.4rem;

@@ -42,7 +42,7 @@ const MyPlantRegisterPage = () => {
 
   const navigateSearch = () => {
     navigate('/dict/search', {
-      state: { inputValue: null },
+      state: { inputValue: '' },
     });
   };
 

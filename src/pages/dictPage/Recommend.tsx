@@ -92,24 +92,26 @@ const Recommend = ({ icon, title, target, setIsLoading }: RecommendProps) => {
                   src={item.imageUrl}
                   alt="plant image"
                 />
-                <p
-                  className={
-                    target === 'beginner'
-                      ? 'english_name_two'
-                      : 'english_name_three'
-                  }
-                >
-                  {item.scientificName}
-                </p>
-                <p
-                  className={
-                    target === 'beginner'
-                      ? 'korean_name_two'
-                      : 'korean_name_three'
-                  }
-                >
-                  {item.name}
-                </p>
+                <div className="name_wrapper">
+                  <p
+                    className={
+                      target === 'beginner'
+                        ? 'english_name_two'
+                        : 'english_name_three'
+                    }
+                  >
+                    {item.scientificName}
+                  </p>
+                  <p
+                    className={
+                      target === 'beginner'
+                        ? 'korean_name_two'
+                        : 'korean_name_three'
+                    }
+                  >
+                    {item.name}
+                  </p>
+                </div>
               </Link>
             </SwiperSlide>
           )),

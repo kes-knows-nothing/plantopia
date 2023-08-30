@@ -13,7 +13,7 @@ const DiaryEditPage = () => {
   const [content, setContent] = useState('');
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-  const [saving, setSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +36,6 @@ const DiaryEditPage = () => {
   }, [docId]);
 
   const handleSaveClick = async () => {
-// 로딩이 되면 - if loading true 바로 return 해서 함수가 실행안되게
 
     if (!title || chosenPlants.length === 0 || !content) {
       if (!title) {
@@ -49,7 +48,7 @@ const DiaryEditPage = () => {
       return;
     }
     
-    setSaving(true); 
+    setIsLoading(true); 
     
     const dataToUpdate = {
       content: content,
@@ -61,7 +60,7 @@ const DiaryEditPage = () => {
     const docRef = doc(db, 'diary', docId);
     await updateDoc(docRef, dataToUpdate);
   
-    setSaving(false);
+    setIsLoading(false);
     navigate('/diary');
   };
   
@@ -77,6 +76,8 @@ const DiaryEditPage = () => {
         <SectionEditPhoto
           imgUrls={imgUrls}
           setImgUrls={setImgUrls}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
         <SectionEditBoard
           title={title}
@@ -89,9 +90,9 @@ const DiaryEditPage = () => {
         <button
           className="save_button"
           onClick={handleSaveClick}
-          disabled={saving}
+          disabled={isLoading}
         >
-          {saving ? '저장 중...' : '저장'}
+          {isLoading ? '저장 중...' : '저장'}
         </button>
       </main>
     </>

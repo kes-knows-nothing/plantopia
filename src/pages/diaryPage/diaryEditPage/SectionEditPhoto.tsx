@@ -11,10 +11,19 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import './sectionEditPhoto.scss';
 
-const SectionEditPhoto: React.FC<{
+interface EditPhotoProps {
   imgUrls: string[];
   setImgUrls: React.Dispatch<React.SetStateAction<string[]>>;
-}> = ({ imgUrls, setImgUrls }) => {
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SectionEditPhoto: React.FC<EditPhotoProps> = ({
+  imgUrls,
+  setImgUrls,
+  isLoading,
+  setIsLoading,
+}) => {
   const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
     [],
   );
@@ -28,15 +37,11 @@ const SectionEditPhoto: React.FC<{
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    setIsLoading(true);
     const file = event.target.files[0];
     if (!file) return;
 
     try {
-      const previewUrl = await readFileAsDataURL(file);
-      setPreviewImgs([
-        ...previewImgs,
-        { backgroundImage: `url(${previewUrl})` },
-      ]);
       setCurrentCount(currentCount + 1);
 
       const storagePath = `diary_images/${cleanFileName(file.name)}`;
@@ -50,6 +55,7 @@ const SectionEditPhoto: React.FC<{
     }
 
     event.target.value = null;
+    setIsLoading(false);
   };
 
   const cleanFileName = (fileName: string) => {
@@ -58,6 +64,7 @@ const SectionEditPhoto: React.FC<{
   };
 
   const handleDeleteFile = async (index: number) => {
+    setIsLoading(true);
     const imageUrlToDelete = imgUrls[index];
     const fileName = getImageFileName(imageUrlToDelete);
     const imageRef = ref(storage, fileName);
@@ -73,21 +80,13 @@ const SectionEditPhoto: React.FC<{
     } catch (error) {
       console.error('파일 삭제 에러:', error);
     }
+    setIsLoading(false);
   };
 
   const getImageFileName = (imageUrl: string) => {
     const urlParts = imageUrl.split('/');
     const fileName = urlParts[urlParts.length - 1].split('?')[0];
     return decodeURIComponent(fileName);
-  };
-
-  const readFileAsDataURL = (file: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   };
 
   return (

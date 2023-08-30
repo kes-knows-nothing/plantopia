@@ -1,72 +1,75 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '@/firebaseApp';
-import { addDoc, collection } from 'firebase/firestore';
-import { ArrowImages } from '@/constants/diary';
+import { Timestamp } from 'firebase/firestore';
 import { useAuth } from '@/hooks';
 import useDiaryData from '@/hooks/useDiaryData';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-
-import './diaryWritePage.scss';
 import SectionPhoto from './SectionPhoto';
+import SectionBoard from './SectionBoard';
+import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
   const user = useAuth();
   const userEmail = user?.email;
+  const { saveDiaryData, plantTag } = useDiaryData();
+  const navigate = useNavigate();
 
-  const initialState = {
+  const [state, setState] = useState({
     title: '',
     content: '',
     saving: false,
     isVisible: false,
-  };
+  });
 
-  const [state, setState] = useState(initialState);
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
-  const navigate = useNavigate();
-  const { plantTag } = useDiaryData();
-
-  const showAlert = (message: string) => {
-    alert(message);
-  };
-
-  const toggleSelect = () => {
+  const toggleSelect = () =>
     setState(prevState => ({ ...prevState, isVisible: !prevState.isVisible }));
-  };
 
-  const handleChosenPlantClick = (plant: string) => {
-    setChosenPlants(prevChosenPlants =>
-      prevChosenPlants.filter(p => p !== plant),
+  const handleChosenPlantClick = (plant: string) =>
+    setChosenPlants(prev => prev.filter(p => p !== plant));
+
+  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedPlant = event.target.value;
+
+    setChosenPlants(prev =>
+      prev.includes(selectedPlant)
+        ? prev.filter(p => p !== selectedPlant)
+        : [...prev, selectedPlant],
     );
   };
 
+  const showAlert = (message: string) => alert(message);
+
   const handleSaveClick = async () => {
     const { title, content } = state;
+
     if (!title || chosenPlants.length === 0 || !content) {
-      if (!title) showAlert('제목을 작성해주세요.');
-      else if (chosenPlants.length === 0)
-        showAlert('관련 식물을 1가지 이상 선택해주세요.');
-      else if (!content) showAlert('내용을 작성해주세요.');
+      showAlert(
+        !title
+          ? '제목을 작성해주세요.'
+          : chosenPlants.length === 0
+          ? '관련 식물을 1가지 이상 선택해주세요.'
+          : '내용을 작성해주세요.',
+      );
       return;
     }
 
-    setState(prevState => ({ ...prevState, saving: true }));
-    const timestamp = new Date();
+    setState(prev => ({ ...prev, saving: true }));
 
     const dataToSave = {
       userEmail,
       content,
-      postedAt: timestamp,
+      postedAt: Timestamp.now(),
       tags: chosenPlants,
       title,
       imgUrls,
     };
 
-    await addDoc(collection(db, 'diary'), dataToSave);
+    await saveDiaryData(dataToSave);
 
-    setState(initialState);
+    setState({ title: '', content: '', saving: false, isVisible: false });
     setChosenPlants([]);
 
     navigate('/diary');
@@ -77,28 +80,14 @@ const DiaryWritePage = () => {
       const targetElement = event.target as HTMLElement;
 
       if (state.isVisible && !targetElement.closest('.plant_select_wrapper')) {
-        setState(prevState => ({ ...prevState, isVisible: false }));
+        setState(prev => ({ ...prev, isVisible: false }));
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [state.isVisible]);
-
-  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedPlant = event.target.value;
-
-    setChosenPlants(prevChosenPlants => {
-      const isSelected = prevChosenPlants.includes(selectedPlant);
-
-      return isSelected
-        ? prevChosenPlants.filter(plant => plant !== selectedPlant)
-        : [...prevChosenPlants, selectedPlant];
-    });
-  };
 
   return (
     <>
@@ -111,84 +100,23 @@ const DiaryWritePage = () => {
             setImgUrls={setImgUrls}
           />
         </div>
-        <section className="board">
-          <div className="title_wrapper">
-            <input
-              type="text"
-              placeholder="제목을 작성하세요."
-              className="title"
-              value={state.title}
-              onChange={e =>
-                setState(prevState => ({ ...prevState, title: e.target.value }))
-              }
-            />
-          </div>
-
-          <div className="plant_select_wrapper">
-            <div className="plant_select">
-              {chosenPlants.length === 0 ? (
-                <div className="choose_text" onClick={toggleSelect}>
-                  식물을 선택하세요.
-                </div>
-              ) : (
-                <div className="chosen_wrap">
-                  {chosenPlants.map(plant => (
-                    <div
-                      key={plant}
-                      className="chosen_plant"
-                      onClick={() => handleChosenPlantClick(plant)}
-                    >
-                      {plant}
-                      <span className="cancel"></span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="arrow_icon" onClick={toggleSelect}>
-                {state.isVisible ? (
-                  <img src={ArrowImages.ARROW_UP} alt="Up" />
-                ) : (
-                  <img src={ArrowImages.ARROW_DOWN} alt="Down" />
-                )}
-              </div>
-            </div>
-
-            {state.isVisible && (
-              <ul className="plant_list">
-                {plantTag.map(plant => (
-                  <li key={plant.nickname}>
-                    <input
-                      type="checkbox"
-                      name={plant.nickname}
-                      id={plant.nickname}
-                      value={plant.nickname}
-                      onChange={handlePlantSelection}
-                      checked={chosenPlants.includes(plant.nickname)}
-                    />
-                    <label htmlFor={plant.nickname}>{plant.nickname}</label>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <textarea
-            placeholder="내용을 작성하세요."
-            value={state.content}
-            onChange={e =>
-              setState(prevState => ({ ...prevState, content: e.target.value }))
-            }
-            className="content"
-          />
-        </section>
-        <button
-          className="save_button"
-          onClick={handleSaveClick}
-          disabled={state.saving}
-        >
-          {state.saving ? '저장 중...' : '저장'}
-        </button>
+        <SectionBoard
+          state={state}
+          setState={setState}
+          chosenPlants={chosenPlants}
+          toggleSelect={toggleSelect}
+          handleChosenPlantClick={handleChosenPlantClick}
+          handlePlantSelection={handlePlantSelection}
+          plantTag={plantTag}
+        />
       </main>
+      <button
+        className="save_button"
+        onClick={handleSaveClick}
+        disabled={state.saving}
+      >
+        {state.saving ? '저장 중...' : '저장'}
+      </button>
     </>
   );
 };

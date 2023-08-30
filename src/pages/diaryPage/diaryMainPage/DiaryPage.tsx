@@ -86,9 +86,9 @@ const DiaryPage = () => {
           </section>
           <div className="top_btn"></div>
         </div>
-        <div className="write_btn_wrap">
-          <button onClick={redirectToPage} className="write_btn"></button>
-        </div>
+        <button onClick={redirectToPage} className="write_btn_wrap">
+          <div className="write_btn"></div>
+        </button>
       </main>
       <Footer />
     </>

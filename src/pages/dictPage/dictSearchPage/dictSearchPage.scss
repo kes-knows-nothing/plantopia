@@ -1,6 +1,6 @@
 .search_container {
   > main {
-    min-height: 100vh;
+    min-height: calc(100vh - 5.6rem);
 
     .search_wrapper {
       padding: 2rem 0;

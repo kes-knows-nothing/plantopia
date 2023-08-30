@@ -1,8 +1,8 @@
 import { useState, useRef, Children } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { recommend } from '@/constants/dictionary';
-import Recommend from './Recommend';
 import { useAuth } from '@/hooks';
+import Recommend from './Recommend';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import Progress from '@/components/progress/Progress';

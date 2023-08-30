@@ -4,10 +4,11 @@ import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
+import { nicknameRe } from '@/constants/regEx';
 import Toast from '@/components/notification/ToastContainer';
 import { errorNoti } from '@/utils/myPlantUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import Profile from '@/assets/images/profile.png';
+import PROFILE from '@/assets/images/icons/default_profile.png';
 import './myInfo.scss';
 
 const MyInfo = () => {
@@ -36,14 +37,25 @@ const MyInfo = () => {
     setImgUrl(await getDownloadURL(stoageSnapshot.ref));
   };
 
+  const nicknameValidation = (nickname: string | null | undefined) => {
+    if (!nickname) return true;
+    if (!nicknameRe.test(nickname)) {
+      errorNoti('닉네임을 확인해 주세요.');
+      return false;
+    }
+    return true;
+  };
+
+  console.log(nickname);
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (!nicknameValidation(nickname)) return;
     try {
       if (!user?.email || !auth.currentUser) throw Error();
       user.emailVerified ||
         (await signInWithEmailAndPassword(auth, user.email, password));
       await updateProfile(auth.currentUser, {
-        displayName: nickname,
+        displayName: nickname?.trim(),
         photoURL: imgUrl,
       });
       navigate('/mypage', {
@@ -61,7 +73,7 @@ const MyInfo = () => {
       <main className="my_info_container inner">
         <section className="profile_section">
           <div className="profile">
-            <img src={uploadedImg || user?.photoURL || Profile} alt="profile" />
+            <img src={uploadedImg || user?.photoURL || PROFILE} alt="profile" />
             <label htmlFor="profile" className="edit_btn" />
             <input
               onChange={handleChange}
@@ -78,7 +90,9 @@ const MyInfo = () => {
               <input type="text" placeholder={user?.email || ''} readOnly />
             </li>
             <li>
-              <label>닉네임</label>
+              <label>
+                닉네임<small> (2~8글자, 특수문자 불가)</small>
+              </label>
               <input
                 onChange={e => setNickname(e.target.value)}
                 type="text"

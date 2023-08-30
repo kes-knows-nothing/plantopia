@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { db } from '@/firebaseApp';
+import { PlantType } from '@/@types/dictionary.type';
+import { koreanRe } from '@/constants/regEx';
 import {
   collection,
   getDocs,
@@ -9,20 +11,16 @@ import {
   endAt,
   orderBy,
 } from 'firebase/firestore';
-import { PlantType } from '@/@types/dictionary.type';
 import Progress from '@/components/progress/Progress';
-import { mockData } from '@/mock/dictMock';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import SEARCH_ICON from '@/assets/images/icons/dict_search.png';
 import './dictSearchPage.scss';
-
-const koreanRe = /[ㄱ-ㅎ|가-힣|]/;
 
 const DictSearchPage = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue;
   const [plant, setPlant] = useState<PlantType[]>([]);
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,8 +30,8 @@ const DictSearchPage = () => {
   };
 
   const getDouments = async (plantName: string) => {
-    setisLoading(true);
     setPlant([]);
+    setIsLoading(true);
     let fieldName = 'name';
     if (!koreanRe.test(plantName)) {
       fieldName = 'scientificName';
@@ -55,20 +53,11 @@ const DictSearchPage = () => {
         return [...prev, data] as PlantType[];
       });
     });
-    setisLoading(false);
-  };
-
-  const getMockData = async () => {
-    mockData.map(item => setPlant(prev => [...prev, item] as PlantType[]));
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    setPlant([]);
-    // Mock Data 사용시 getDouments 주석 처리
     getDouments(inputValue);
-
-    // Mock Data 사용시 getMockData 주석 해제
-    // getMockData();
   }, [inputValue]);
 
   return (
@@ -78,7 +67,11 @@ const DictSearchPage = () => {
         <section className="search_wrapper">
           <form onSubmit={handleSubmit}>
             <div className="input_wrapper">
-              <input ref={inputRef} placeholder="식물 이름으로 검색하기" />
+              <input
+                ref={inputRef}
+                defaultValue={inputValue}
+                placeholder="식물 이름으로 검색하기"
+              />
               <button>
                 <img
                   className="search_img"

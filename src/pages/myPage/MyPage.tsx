@@ -1,20 +1,26 @@
-import { Children } from 'react';
+import { useState, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
 import { customerService } from '@/constants/myPage';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import Toast from '@/components/notification/ToastContainer';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
-import Profile from '@/assets/images/profile.png';
+import Progress from '@/components/progress/Progress';
+import PROFILE from '@/assets/images/icons/default_profile.png';
 import './myPage.scss';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 
 const MyPage = () => {
   const user = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   location.state?.message && successNoti(location.state.message);
+
+  useEffect(() => {
+    user && setIsLoading(false);
+  }, [user]);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -36,7 +42,7 @@ const MyPage = () => {
             <br /> 슬기로운 식집사 생활을 시작하세요!
           </h2>
           <div className="my_profile">
-            <img src={user?.photoURL || Profile} alt="profile" />
+            <img src={user?.photoURL || PROFILE} alt="profile" />
             <div className="my_info">
               <strong>{user?.displayName}</strong>
               <p>{user?.email}</p>
@@ -63,12 +69,15 @@ const MyPage = () => {
               )),
             )}
           </ul>
+          <div className="logout_wrapper">
+            <button onClick={handleClick} className="logout_btn">
+              로그아웃
+            </button>
+          </div>
         </section>
-        <button onClick={handleClick} className="logout_btn">
-          로그아웃
-        </button>
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </div>
   );
 };

@@ -67,11 +67,11 @@
     position: relative;
 
     .plant_wrapper {
+      display: flex;
+      justify-content: center;
       border-radius: 1rem;
       text-align: center;
       box-shadow: 0.1rem 0.1rem 0.5rem rgba(1, 1, 1, 0.08);
-      white-space: nowrap;
-      overflow: hidden;
 
       &:hover {
         transform: scale(1.05);
@@ -92,35 +92,51 @@
         border-radius: 1rem;
       }
 
-      .english_name_two {
-        margin-top: 0.5rem;
-        height: 1.7rem;
-        font-size: 1rem;
-        font-weight: 300;
-        color: #b8b8b8;
-        line-height: 0.9rem;
-      }
+      .name_wrapper {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
 
-      .korean_name_two {
-        padding-top: 0.2rem;
-        height: 2.7rem;
-        font-size: 1.2rem;
-        font-weight: 700;
-      }
+        p {
+          white-space: nowrap;
+          overflow: hidden;
 
-      .english_name_three {
-        margin-top: 0.5rem;
-        height: 1.7rem;
-        font-size: 0.8rem;
-        font-weight: 300;
-        color: #b8b8b8;
-        line-height: 0.9rem;
-      }
+          &.english_name_two {
+            margin-top: 0.5rem;
+            max-width: 13.143rem;
+            height: 1.7rem;
+            font-size: 1rem;
+            font-weight: 300;
+            color: #b8b8b8;
+            line-height: 0.9rem;
+          }
 
-      .korean_name_three {
-        height: 2rem;
-        font-size: 1rem;
-        font-weight: 700;
+          &.korean_name_two {
+            padding-top: 0.2rem;
+            max-width: 13.143rem;
+            height: 2.7rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            max-width: 13.143rem;
+          }
+
+          &.english_name_three {
+            margin-top: 0.5rem;
+            max-width: 8.318rem;
+            height: 1.7rem;
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: #b8b8b8;
+            line-height: 0.9rem;
+          }
+
+          &.korean_name_three {
+            max-width: 8.318rem;
+            height: 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+          }
+        }
       }
     }
 

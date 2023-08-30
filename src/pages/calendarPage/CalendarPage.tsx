@@ -19,7 +19,7 @@ import './calendarPage.scss';
 type ValuePiece = Date | null;
 interface RecordDataType {
   time: string;
-  plant: string;
+  plantName: string;
 }
 
 interface CalendarDataType {
@@ -51,10 +51,10 @@ const ContentSection = ({ contents, selectedDate }: ContentSectionProps) => {
         <div className="date_list">
           <div className="list_line"></div>
           <ul>
-            {contents.map(({ time, plant }, i) => (
+            {contents.map(({ time, plantName }, i) => (
               <li key={nanoid()}>
                 <em>{time}</em>
-                <div className={`list_card color${i % 4}`}>{plant}</div>
+                <div className={`list_card color${i % 4}`}>{plantName}</div>
               </li>
             ))}
           </ul>
@@ -80,8 +80,7 @@ const CalendarPage = () => {
     if (dateMatchedItem) return <img src={dateMatchedItem.icon} />;
   };
 
-  // 함수 분리 필요 (fetch 로직, calendar용 데이터로 변경하는 함수)
-  const getWatering = async (userEmail?: string | null) => {
+  const getUserPlant = async (userEmail?: string | null) => {
     if (!userEmail) return;
 
     const waterRef = collection(db, 'plant');
@@ -89,51 +88,42 @@ const CalendarPage = () => {
 
     try {
       const querySnapshot = await getDocs(q);
-
-      const data: { [date: string]: RecordDataType[] } = {};
+      const newData: CalendarDataType = {};
 
       querySnapshot.forEach(doc => {
         const calendarData = doc.data() as Omit<UserPlant, 'id'>;
 
-        calendarData.wateredDays.forEach(d => {
-          const time = format(d.toDate(), 'HH:mm');
-          const fullDate = format(d.toDate(), 'yyyy-MM-dd');
+        calendarData.wateredDays.forEach(date => {
+          const time = format(date.toDate(), 'HH:mm');
+          const fullDate = format(date.toDate(), 'yyyy-MM-dd');
 
-          const waterData: RecordDataType = {
-            time,
-            plant: calendarData.nickname,
-          };
+          if (!newData[fullDate]) {
+            const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
+            const randomIcon = CALENDAR_ICONS[Math.floor(randomIndex)];
 
-          if (!data[fullDate]) {
-            data[fullDate] = [];
+            newData[fullDate] = {
+              icon: randomIcon,
+              items: [],
+            };
           }
 
-          data[fullDate].push(waterData);
+          newData[fullDate].items.push({
+            time,
+            plantName: calendarData.nickname,
+          });
         });
       });
 
-      const newData: CalendarDataType = {};
-
-      for (const [date, info] of Object.entries(data)) {
-        const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
-        const randomIcon = CALENDAR_ICONS[Math.floor(randomIndex)];
-
-        newData[date] = {
-          icon: randomIcon,
-          items: info,
-        };
-      }
-
       setCalendarData(newData);
     } catch (error) {
-      errorNoti('데이터를 받아오지 못했어요!');
+      errorNoti('데이터를 받아오지 못했습니다! 잠시 후 다시 시도해주세요!');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getWatering(user?.email);
+    getUserPlant(user?.email);
   }, [user]);
 
   const visibleContent = selectedDate

@@ -11,8 +11,6 @@ import { useState, useEffect } from 'react';
 import { UserPlant } from '@/@types/plant.type';
 import 'firebase/storage';
 import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {

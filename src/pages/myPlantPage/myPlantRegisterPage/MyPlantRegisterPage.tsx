@@ -8,8 +8,6 @@ import { storage } from '@/firebaseApp';
 import { collection, addDoc, query, getDocs } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import {
   dateToTimestamp,
   errorNoti,

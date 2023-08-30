@@ -10,8 +10,6 @@ import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import { useAuth } from '@/hooks';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/firebaseApp';

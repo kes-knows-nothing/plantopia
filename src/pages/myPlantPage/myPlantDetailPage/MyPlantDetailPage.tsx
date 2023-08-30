@@ -26,8 +26,6 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantDetailPage = () => {

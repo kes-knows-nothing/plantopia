@@ -16,12 +16,19 @@ import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { UserPlant } from '@/@types/plant.type';
+import { infoNoti } from '@/utils/myPlantUtil';
 
 const MyPlantMainPage = () => {
   const user = useAuth();
   const [myMainPlant, setMyMainPlant] = useState<UserPlant>();
+  const [plantCount, setPlantCount] = useState<number>(0);
   const navigate = useNavigate();
   const navigateRegi = () => {
+    console.log(plantCount);
+    if (plantCount >= 10) {
+      infoNoti('식물 등록은 10개까지 가능합니다.');
+      return;
+    }
     navigate('/myplant/register');
   };
 
@@ -91,6 +98,7 @@ const MyPlantMainPage = () => {
             <MainPagePlantList
               userEmail={user?.email}
               setMyMainPlant={setMyMainPlant}
+              setPlantCount={setPlantCount}
             />
           )}
         </div>

@@ -181,7 +181,6 @@ const MyPlantRegisterPage = () => {
                   onChange={handleSearchInput}
                   readOnly
                 />
-
                 <img
                   className="input_glass"
                   src={inputGlass}

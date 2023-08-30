@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Calendar from 'react-calendar';
 import { nanoid } from 'nanoid';
 import { format, getDay } from 'date-fns';
@@ -8,6 +8,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { CALENDAR_ICONS, DAY_OF_WEEK_KR } from '@/constants/calendar';
 import { UserPlant } from '@/@types/plant.type';
 import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
+import { errorNoti } from '@/utils/myPlantUtil';
 
 import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
@@ -34,18 +35,18 @@ interface ContentSectionProps {
 }
 
 const ContentSection = ({ contents, selectedDate }: ContentSectionProps) => {
-  const getContentTitle = (date: ValuePiece): string => {
+  const formatContentTitle = useCallback((date: ValuePiece): string => {
     if (!(date instanceof Date)) return '';
 
     const [month, days] = format(date, 'M-d').split('-');
     const day = DAY_OF_WEEK_KR[getDay(date)];
 
     return `${month}월 ${days}일 ${day}요일`;
-  };
+  }, []);
 
   return (
     <section className="date_list_wrap inner">
-      <strong className="date_title">{getContentTitle(selectedDate)}</strong>
+      <strong className="date_title">{formatContentTitle(selectedDate)}</strong>
       {contents ? (
         <div className="date_list">
           <div className="list_line"></div>
@@ -125,7 +126,7 @@ const CalendarPage = () => {
 
       setCalendarData(newData);
     } catch (error) {
-      throw new Error('데이터를 받아오지 못했어요!'); // noti로 교체
+      errorNoti('데이터를 받아오지 못했어요!');
     } finally {
       setIsLoading(false);
     }

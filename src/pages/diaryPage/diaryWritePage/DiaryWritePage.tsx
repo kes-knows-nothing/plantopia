@@ -93,13 +93,11 @@ const DiaryWritePage = () => {
     <>
       <HeaderBefore ex={true} title="글쓰기" />
       <main className="diary_main">
-        <div className="section_photo">
-          <SectionPhoto
-            userEmail={userEmail}
-            imgUrls={imgUrls}
-            setImgUrls={setImgUrls}
-          />
-        </div>
+        <SectionPhoto
+          userEmail={userEmail}
+          imgUrls={imgUrls}
+          setImgUrls={setImgUrls}
+        />
         <SectionBoard
           state={state}
           setState={setState}

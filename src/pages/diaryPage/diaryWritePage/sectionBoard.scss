@@ -1,165 +1,167 @@
-.board {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+.section_board {
+  > .board {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 
-  /* SUBJECT - 제목 입력 */
-  > .title_wrapper {
-    width: 100%;
-    border-bottom: 1px solid #f7f8f7;
-
-    > .title {
+    /* SUBJECT - 제목 입력 */
+    > .title_wrapper {
       width: 100%;
-      height: 6rem;
-      padding: 0 2rem;
-      font-size: 1.8rem;
-      font-weight: 700;
+      border-bottom: 1px solid #f7f8f7;
 
-      &::placeholder {
-        color: #9b9fb1;
+      > .title {
+        width: 100%;
+        height: 6rem;
+        padding: 0 2rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+
+        &::placeholder {
+          color: #9b9fb1;
+        }
       }
     }
-  }
 
-  /* PLANT SELECT - 식물 선택 */
-  > .plant_select_wrapper {
-    width: 100%;
-    min-height: 6rem;
-
-    color: #9b9fb1;
-    border-bottom: 1px solid #f7f8f7;
-    background-color: #f8f8fa;
-    position: relative;
-
-    > .plant_select {
+    /* PLANT SELECT - 식물 선택 */
+    > .plant_select_wrapper {
+      width: 100%;
       min-height: 6rem;
-      padding: 0 2rem;
+
+      color: #9b9fb1;
+      border-bottom: 1px solid #f7f8f7;
+      background-color: #f8f8fa;
       position: relative;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      position: relative;
-      cursor: pointer;
-
-      > .choose_text {
-        font-size: 1.4rem;
-        width: 100%;
-        padding: 2rem 0;
-      }
-
-      > .chosen_wrap {
+      > .plant_select {
         min-height: 6rem;
+        padding: 0 2rem;
+        position: relative;
+
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
-        font-size: 1.4rem;
+        justify-content: space-between;
 
-        > .chosen_plant {
-          height: 3rem;
+        position: relative;
+        cursor: pointer;
+
+        > .choose_text {
+          font-size: 1.4rem;
+          width: 100%;
+          padding: 2rem 0;
+        }
+
+        > .chosen_wrap {
+          min-height: 6rem;
           display: flex;
           align-items: center;
-          margin: 1rem 0;
-          margin-right: 1rem;
-          padding: 0 1rem;
-          border-radius: 5rem;
-          background: #1fb0ad;
-          color: #fff;
+          flex-wrap: wrap;
+          font-size: 1.4rem;
 
-          > .cancel {
-            display: inline-block;
-            width: 0.8rem;
-            height: 0.8rem;
-            margin-left: 1rem;
-            background: url('@/assets/images/icons/diary_close_w.png') no-repeat
-              center / contain;
-          }
+          > .chosen_plant {
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            margin-right: 1rem;
+            padding: 0 1rem;
+            border-radius: 5rem;
+            background: #1fb0ad;
+            color: #fff;
 
-          &:hover {
-            background: rgb(51, 142, 142);
-          }
-        }
-      }
+            > .cancel {
+              display: inline-block;
+              width: 0.8rem;
+              height: 0.8rem;
+              margin-left: 1rem;
+              background: url('@/assets/images/icons/diary_close_w.png')
+                no-repeat center / contain;
+            }
 
-      > .arrow_icon {
-        height: 6rem;
-        font-size: 1.6rem;
-
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        flex-grow: 1;
-
-        > img {
-          width: 1rem;
-          height: 0.6rem;
-        }
-      }
-    }
-
-    /* 식물 목록 */
-    > .plant_list {
-      width: 100%;
-      max-width: 498px;
-      max-height: 16rem;
-      overflow: auto;
-      padding: 1rem 2rem;
-      position: absolute;
-      left: 0;
-      border-top: 1px solid #efefef;
-      background-color: #f8f8fa;
-      font-size: 1.4rem;
-
-      > li {
-        display: flex;
-        align-items: center;
-
-        > input[type='checkbox'] {
-          appearance: none;
-          width: 2rem;
-          height: 2rem;
-          border: 1px solid #ccc;
-          border-radius: 0.5rem;
-          position: relative;
-          cursor: pointer;
-
-          &:checked {
-            background-color: #1fb0ad;
-            border-color: #1fb0ad;
-
-            &::before {
-              content: '✓';
-              font-size: 1.1rem;
-              color: white;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
+            &:hover {
+              background: rgb(51, 142, 142);
             }
           }
         }
 
-        > label {
-          width: 100%;
-          padding: 1.7rem 0.8rem;
-          cursor: pointer;
+        > .arrow_icon {
+          height: 6rem;
+          font-size: 1.6rem;
+
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          flex-grow: 1;
+
+          > img {
+            width: 1rem;
+            height: 0.6rem;
+          }
+        }
+      }
+
+      /* 식물 목록 */
+      > .plant_list {
+        width: 100%;
+        max-width: 498px;
+        max-height: 16rem;
+        overflow: auto;
+        padding: 1rem 2rem;
+        position: absolute;
+        left: 0;
+        border-top: 1px solid #efefef;
+        background-color: #f8f8fa;
+        font-size: 1.4rem;
+
+        > li {
+          display: flex;
+          align-items: center;
+
+          > input[type='checkbox'] {
+            appearance: none;
+            width: 2rem;
+            height: 2rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            position: relative;
+            cursor: pointer;
+
+            &:checked {
+              background-color: #1fb0ad;
+              border-color: #1fb0ad;
+
+              &::before {
+                content: '✓';
+                font-size: 1.1rem;
+                color: white;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              }
+            }
+          }
+
+          > label {
+            width: 100%;
+            padding: 1.7rem 0.8rem;
+            cursor: pointer;
+          }
         }
       }
     }
-  }
 
-  /* CONTENT - 내용 입력 */
-  > textarea {
-    width: 100%;
-    font-family: 'pretendard';
-    font-size: 1.4rem;
-    padding: 2rem;
-    flex-grow: 1;
-    resize: none;
+    /* CONTENT - 내용 입력 */
+    > textarea {
+      width: 100%;
+      font-family: 'pretendard';
+      font-size: 1.4rem;
+      padding: 2rem;
+      flex-grow: 1;
+      resize: none;
 
-    &::placeholder {
-      color: #9b9fb1;
+      &::placeholder {
+        color: #9b9fb1;
+      }
     }
   }
 }

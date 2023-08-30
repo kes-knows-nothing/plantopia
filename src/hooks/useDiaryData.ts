@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
 import { db } from '@/firebaseApp.ts';
-import { getDocs, query, where, collection, deleteDoc, doc, addDoc } from 'firebase/firestore';
+import {
+  getDocs,
+  query,
+  where,
+  collection,
+  deleteDoc,
+  doc,
+  addDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { useAuth } from '@/hooks';
 import { DiaryProps, Plant } from '@/constants/diary';
 
@@ -8,18 +17,25 @@ const useDiaryData = () => {
   const user = useAuth();
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
-        const q = query(collection(db, 'diary'), where('userEmail', '==', user?.email));
+        const q = query(
+          collection(db, 'diary'),
+          where('userEmail', '==', user?.email),
+        );
         const querySnapshot = await getDocs(q);
         const data: DiaryProps[] = [];
         querySnapshot.forEach(doc => {
           data.push({ id: doc.id, ...doc.data() } as DiaryProps);
         });
 
-        const sortedData = data.sort((a, b) => b.postedAt.toDate().getTime() - a.postedAt.toDate().getTime());
+        const sortedData = data.sort(
+          (a, b) =>
+            b.postedAt.toDate().getTime() - a.postedAt.toDate().getTime(),
+        );
         setDiaryData(sortedData);
       }
     };
@@ -46,7 +62,10 @@ const useDiaryData = () => {
 
   const checkPlantExistence = async () => {
     if (user) {
-      const plantQuery = query(collection(db, 'plant'), where('userEmail', '==', user?.email));
+      const plantQuery = query(
+        collection(db, 'plant'),
+        where('userEmail', '==', user?.email),
+      );
       const plantSnapshot = await getDocs(plantQuery);
       const plantDataExist = !plantSnapshot.empty;
       return plantDataExist;
@@ -54,9 +73,28 @@ const useDiaryData = () => {
     return false;
   };
 
-  const saveDiaryData = async (dataToSave: any) => {
+  const saveDiaryData = async (dataToSave) => {
     if (user) {
+      setIsLoading(true);
       await addDoc(collection(db, 'diary'), dataToSave);
+      setIsLoading(false);
+    }
+  };
+
+  const updateDiaryData = async (diaryId: string, updatedData) => {
+    try {
+      const diaryRef = doc(db, 'diary', diaryId);
+      setIsLoading(true);
+      await updateDoc(diaryRef, updatedData);
+      setIsLoading(false);
+      setDiaryData(prevData =>
+        prevData.map(item =>
+          item.id === diaryId ? { ...item, ...updatedData } : item,
+        ),
+      );
+    } catch (error) {
+      console.error('일기 업데이트 중 오류:', error);
+      setIsLoading(false);
     }
   };
 
@@ -67,7 +105,9 @@ const useDiaryData = () => {
       const plantRef = collection(db, 'plant');
       const q = query(plantRef, where('userEmail', '==', user?.email));
       const querySnapshot = await getDocs(q);
-      const plants: Plant[] = querySnapshot.docs.map(doc => doc.data() as Plant);
+      const plants: Plant[] = querySnapshot.docs.map(
+        doc => doc.data() as Plant,
+      );
       setPlantTag(plants);
     };
     getPlantsFromFirestore();
@@ -78,7 +118,10 @@ const useDiaryData = () => {
     handleDelete,
     checkPlantExistence,
     saveDiaryData,
+    updateDiaryData,
     plantTag,
+    isLoading,
+    setIsLoading,
   };
 };
 

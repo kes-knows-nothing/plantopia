@@ -8,7 +8,7 @@ import { nicknameRe } from '@/constants/RegularExpression';
 import Toast from '@/components/notification/ToastContainer';
 import { errorNoti } from '@/utils/myPlantUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import Profile from '@/assets/images/profile.png';
+import PROFILE from '@/assets/images/icons/default_profile.png';
 import './myInfo.scss';
 
 const MyInfo = () => {
@@ -73,7 +73,7 @@ const MyInfo = () => {
       <main className="my_info_container inner">
         <section className="profile_section">
           <div className="profile">
-            <img src={uploadedImg || user?.photoURL || Profile} alt="profile" />
+            <img src={uploadedImg || user?.photoURL || PROFILE} alt="profile" />
             <label htmlFor="profile" className="edit_btn" />
             <input
               onChange={handleChange}

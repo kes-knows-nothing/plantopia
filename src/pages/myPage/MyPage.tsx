@@ -7,7 +7,7 @@ import { customerService } from '@/constants/myPage';
 import Toast from '@/components/notification/ToastContainer';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
-import Profile from '@/assets/images/profile.png';
+import PROFILE from '@/assets/images/icons/default_profile.png';
 import './myPage.scss';
 import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 
@@ -36,7 +36,7 @@ const MyPage = () => {
             <br /> 슬기로운 식집사 생활을 시작하세요!
           </h2>
           <div className="my_profile">
-            <img src={user?.photoURL || Profile} alt="profile" />
+            <img src={user?.photoURL || PROFILE} alt="profile" />
             <div className="my_info">
               <strong>{user?.displayName}</strong>
               <p>{user?.email}</p>
@@ -63,10 +63,12 @@ const MyPage = () => {
               )),
             )}
           </ul>
+          <div className="logout_wrapper">
+            <button onClick={handleClick} className="logout_btn">
+              로그아웃
+            </button>
+          </div>
         </section>
-        <button onClick={handleClick} className="logout_btn">
-          로그아웃
-        </button>
       </main>
       <Footer />
     </div>

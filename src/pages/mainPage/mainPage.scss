@@ -1,5 +1,4 @@
 @use '@/styles/mixins';
-// import MAIN_PLANT_ICON from '@/assets/images/icons/main_plant_true_icon.png';
 
 .main_page {
   background-color: #ffffff;
@@ -27,7 +26,9 @@
 .main_page > section > .weather_wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-top: 0.4rem;
+  min-height: 10.7rem;
 
   > .text_wrapper {
     display: flex;
@@ -71,6 +72,13 @@
         }
       }
     }
+  }
+
+  > .info_text {
+    margin: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #9b9fb1;
   }
 
   .weather_icon {

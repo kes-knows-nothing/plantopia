@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { WeatherResponse } from '@/@types/weather.type';
+import { Coordinates } from '@/utils/getGeolocation';
 
 const fetchWeatherInfo = ({
   latitude,
   longitude,
-}: GeolocationCoordinates): Promise<AxiosResponse<WeatherResponse>> => {
+}: Coordinates): Promise<AxiosResponse<WeatherResponse>> => {
   const instance = axios.create({
     baseURL: 'https://api.openweathermap.org/data/2.5',
     params: {

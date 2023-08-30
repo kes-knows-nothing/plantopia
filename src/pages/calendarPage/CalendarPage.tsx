@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import { nanoid } from 'nanoid';
-import { format } from 'date-fns';
+import { format, getDay } from 'date-fns';
+import { useAuth } from '@/hooks';
 import { db } from '@/firebaseApp';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useAuth } from '@/hooks';
+import { CALENDAR_ICONS, DAY_OF_WEEK_KR } from '@/constants/calendar';
+import { UserPlant } from '@/@types/plant.type';
+import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
 
 import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
@@ -12,37 +15,66 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import 'react-calendar/dist/Calendar.css';
 import './calendarPage.scss';
 
-import { CALENDAR_ICONS, DAY_OF_WEEK_KR } from '@/constants/calendar';
-import { UserPlant } from '@/@types/plant.type';
-import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
-
 type ValuePiece = Date | null;
 interface RecordDataType {
   time: string;
   plant: string;
 }
-export interface WaterRecordType {
-  icon: string;
-  date: string;
-  list: RecordDataType[];
-}
 
-// test
-interface WaterRecordMock {
+interface CalendarDataType {
   [date: string]: {
     icon: string;
     items: Array<RecordDataType>;
   };
 }
 
+interface ContentSectionProps {
+  contents?: RecordDataType[];
+  selectedDate: ValuePiece;
+}
+
+const ContentSection = ({ contents, selectedDate }: ContentSectionProps) => {
+  const getContentTitle = (date: ValuePiece): string => {
+    if (!(date instanceof Date)) return '';
+
+    const [month, days] = format(date, 'M-d').split('-');
+    const day = DAY_OF_WEEK_KR[getDay(date)];
+
+    return `${month}월 ${days}일 ${day}요일`;
+  };
+
+  return (
+    <section className="date_list_wrap inner">
+      <strong className="date_title">{getContentTitle(selectedDate)}</strong>
+      {contents ? (
+        <div className="date_list">
+          <div className="list_line"></div>
+          <ul>
+            {contents.map(({ time, plant }, i) => (
+              <li key={nanoid()}>
+                <em>{time}</em>
+                <div className={`list_card color${i % 4}`}>{plant}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="no_data">
+          <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
+        </div>
+      )}
+    </section>
+  );
+};
+
 const CalendarPage = () => {
   const user = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState<ValuePiece>(new Date());
-  const [calendarData, setCalendarData] = useState<WaterRecordMock>({});
+  const [calendarData, setCalendarData] = useState<CalendarDataType>({});
 
-  const setIconOnTile = ({ date: calendarDates }: TileArgs) => {
-    const dateMatchedItem = calendarData[format(calendarDates, 'yyyy-MM-dd')];
+  const setIconOnTile = ({ date }: TileArgs) => {
+    const dateMatchedItem = calendarData[format(date, 'yyyy-MM-dd')];
 
     if (dateMatchedItem) return <img src={dateMatchedItem.icon} />;
   };
@@ -79,7 +111,7 @@ const CalendarPage = () => {
         });
       });
 
-      const newData: WaterRecordMock = {};
+      const newData: CalendarDataType = {};
 
       for (const [date, info] of Object.entries(data)) {
         const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
@@ -103,26 +135,9 @@ const CalendarPage = () => {
     getWatering(user?.email);
   }, [user]);
 
-  const getTitleOfDay = (dateStr: ValuePiece): string => {
-    if (dateStr instanceof Date) {
-      const date = new Date(dateStr);
-
-      const [month, days] = format(date, 'M-d').split('-');
-      const dayOfWeek = DAY_OF_WEEK_KR[date.getDay()];
-
-      return `${month}월 ${days}일 ${dayOfWeek}요일`;
-    }
-
-    return '';
-  };
-
-  const visibleDate = () => {
-    const targetDate = selectedDate || new Date();
-
-    return format(targetDate, 'yyyy-MM-dd');
-  };
-
-  const visibleData = calendarData[visibleDate()];
+  const visibleContent = selectedDate
+    ? calendarData[format(selectedDate, 'yyyy-MM-dd')]
+    : null;
 
   return (
     <>
@@ -136,32 +151,15 @@ const CalendarPage = () => {
             nextLabel=""
             prevLabel=""
             tileContent={setIconOnTile}
-            onChange={value => {
-              if (value instanceof Date) setSelectedDate(value);
+            onChange={clickedDate => {
+              if (clickedDate instanceof Date) setSelectedDate(clickedDate);
             }}
           />
         </section>
-        <section className="date_list_wrap inner">
-          <strong className="date_title">{getTitleOfDay(selectedDate)}</strong>
-          {/* 하단 데이터 영역 */}
-          {visibleData ? (
-            <div className="date_list">
-              <div className="list_line"></div>
-              <ul>
-                {visibleData.items.map(({ time, plant }, i) => (
-                  <li key={nanoid()}>
-                    <em>{time}</em>
-                    <div className={`list_card color${i % 4}`}>{plant}</div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <div className="no_data">
-              <span>물주기 기록이 없네요, 내 식물에게 물을 주세요</span>
-            </div>
-          )}
-        </section>
+        <ContentSection
+          contents={visibleContent?.items}
+          selectedDate={selectedDate}
+        />
       </main>
       {isLoading && <Progress />}
     </>

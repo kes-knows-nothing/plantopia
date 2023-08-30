@@ -17,9 +17,6 @@ import { UserPlant } from '@/@types/plant.type';
 import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
 
 type ValuePiece = Date | null;
-
-type CalendarValueType = ValuePiece | [ValuePiece, ValuePiece];
-
 interface RecordDataType {
   time: string;
   plant: string;
@@ -30,36 +27,24 @@ export interface WaterRecordType {
   list: RecordDataType[];
 }
 
+// test
+interface WaterRecordMock {
+  [date: string]: {
+    icon: string;
+    items: Array<RecordDataType>;
+  };
+}
+
 const CalendarPage = () => {
   const user = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [waterRecords, setWaterRecords] = useState<WaterRecordType[]>([]);
-  const [selectedDate, setSelectedDate] = useState<CalendarValueType>(
-    new Date(),
-  );
-
-  // [date: string]: {icon: string, items: RecordDataType[]};
-  const [mockData, setMockData] = useState<{
-    [date: string]: any;
-  }>({});
-
-  // 해당 날짜의 데이터를 찾는다.
-  const dateList = waterRecords.find(arr => {
-    const date =
-      selectedDate instanceof Date ? format(selectedDate, 'yyyy-MM-dd') : '';
-    return arr.date === date;
-  });
+  const [selectedDate, setSelectedDate] = useState<ValuePiece>(new Date());
+  const [calendarData, setCalendarData] = useState<WaterRecordMock>({});
 
   const setIconOnTile = ({ date: calendarDates }: TileArgs) => {
-    // console.log(calendarDates);
+    const dateMatchedItem = calendarData[format(calendarDates, 'yyyy-MM-dd')];
 
-    const dateMatchedItem = waterRecords.find(
-      ({ date }) => date === format(calendarDates, 'yyyy-MM-dd'),
-    );
-
-    if (dateMatchedItem) {
-      return <img src={dateMatchedItem?.icon || CALENDAR_ICONS[0]} />;
-    }
+    if (dateMatchedItem) return <img src={dateMatchedItem.icon} />;
   };
 
   // 함수 분리 필요 (fetch 로직, calendar용 데이터로 변경하는 함수)
@@ -75,13 +60,16 @@ const CalendarPage = () => {
       const data: { [date: string]: RecordDataType[] } = {};
 
       querySnapshot.forEach(doc => {
-        const plantData = doc.data() as Omit<UserPlant, 'id'>;
+        const calendarData = doc.data() as Omit<UserPlant, 'id'>;
 
-        plantData.wateredDays.forEach(d => {
+        calendarData.wateredDays.forEach(d => {
           const time = format(d.toDate(), 'HH:mm');
           const fullDate = format(d.toDate(), 'yyyy-MM-dd');
 
-          const waterData: RecordDataType = { time, plant: plantData.nickname };
+          const waterData: RecordDataType = {
+            time,
+            plant: calendarData.nickname,
+          };
 
           if (!data[fullDate]) {
             data[fullDate] = [];
@@ -91,18 +79,21 @@ const CalendarPage = () => {
         });
       });
 
-      const result: WaterRecordType[] = [];
+      const newData: WaterRecordMock = {};
 
       for (const [date, info] of Object.entries(data)) {
         const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
         const randomIcon = CALENDAR_ICONS[Math.floor(randomIndex)];
-        result.push({ date, list: info, icon: randomIcon });
+
+        newData[date] = {
+          icon: randomIcon,
+          items: info,
+        };
       }
 
-      setMockData(data);
-      setWaterRecords(result);
+      setCalendarData(newData);
     } catch (error) {
-      throw new Error('데이터를 받아오지 못했어요!');
+      throw new Error('데이터를 받아오지 못했어요!'); // noti로 교체
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +103,7 @@ const CalendarPage = () => {
     getWatering(user?.email);
   }, [user]);
 
-  const getTitleOfDay = (dateStr: CalendarValueType): string => {
+  const getTitleOfDay = (dateStr: ValuePiece): string => {
     if (dateStr instanceof Date) {
       const date = new Date(dateStr);
 
@@ -124,6 +115,14 @@ const CalendarPage = () => {
 
     return '';
   };
+
+  const visibleDate = () => {
+    const targetDate = selectedDate || new Date();
+
+    return format(targetDate, 'yyyy-MM-dd');
+  };
+
+  const visibleData = calendarData[visibleDate()];
 
   return (
     <>
@@ -137,17 +136,19 @@ const CalendarPage = () => {
             nextLabel=""
             prevLabel=""
             tileContent={setIconOnTile}
-            onChange={setSelectedDate}
+            onChange={value => {
+              if (value instanceof Date) setSelectedDate(value);
+            }}
           />
         </section>
         <section className="date_list_wrap inner">
           <strong className="date_title">{getTitleOfDay(selectedDate)}</strong>
           {/* 하단 데이터 영역 */}
-          {dateList ? (
+          {visibleData ? (
             <div className="date_list">
               <div className="list_line"></div>
               <ul>
-                {dateList.list.map(({ time, plant }, i) => (
+                {visibleData.items.map(({ time, plant }, i) => (
                   <li key={nanoid()}>
                     <em>{time}</em>
                     <div className={`list_card color${i % 4}`}>{plant}</div>

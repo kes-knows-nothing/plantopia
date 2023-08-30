@@ -257,14 +257,11 @@
 .detail_plant_name {
   display: flex;
   align-items: center;
-  height: 2rem;
-  color: #79b09e;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 3rem;
-  border: 1px solid #79b09e;
+  height: 1.4rem;
+  color: #b8b8b8;
+  font-size: 1.2rem;
+  font-weight: 300;
   margin: 0 auto;
-  padding: 0 0.6rem;
   margin-top: 2.1rem;
 }
 
@@ -309,5 +306,5 @@
   height: 1.8rem;
   align-items: center;
   position: relative;
-  margin-top: 1rem;
+  margin-top: 0.6rem;
 }

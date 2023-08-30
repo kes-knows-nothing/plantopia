@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DiaryImages } from '@/constants/diary';
 import { useAuth } from '@/hooks';
+import useDiaryData from '@/hooks/useDiaryData';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-import useDiaryData from '@/hooks/useDiaryData';
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';
 import './diaryPage.scss';
@@ -86,9 +86,9 @@ const DiaryPage = () => {
           </section>
           <div className="top_btn"></div>
         </div>
-        <div className="write_btn_wrap">
-          <button onClick={redirectToPage} className="write_btn"></button>
-        </div>
+        <button onClick={redirectToPage} className="write_btn_wrap">
+          <div className="write_btn"></div>
+        </button>
       </main>
       <Footer />
     </>

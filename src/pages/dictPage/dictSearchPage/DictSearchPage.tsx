@@ -78,7 +78,11 @@ const DictSearchPage = () => {
         <section className="search_wrapper">
           <form onSubmit={handleSubmit}>
             <div className="input_wrapper">
-              <input ref={inputRef} placeholder="식물 이름으로 검색하기" />
+              <input
+                ref={inputRef}
+                defaultValue={inputValue}
+                placeholder="식물 이름으로 검색하기"
+              />
               <button>
                 <img
                   className="search_img"

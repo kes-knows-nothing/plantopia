@@ -30,7 +30,7 @@ export interface SectionBoardProps {
   toggleSelect(): void;
   handleChosenPlantClick(plant: string): void;
   handlePlantSelection(event: React.ChangeEvent<HTMLInputElement>): void;
-  plantTag: any[];
+  plantTag: Plant[];
 }
 
 // 탭 선택 이미지

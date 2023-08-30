@@ -14,8 +14,6 @@ import { db } from '@/firebaseApp';
 import {
   doc,
   getDoc,
-  DocumentSnapshot,
-  DocumentData,
 } from 'firebase/firestore';
 
 interface DiaryData {
@@ -39,7 +37,7 @@ const DiaryDetailPage = () => {
   useEffect(() => {
     const fetchDiaryData = async () => {
       const docRef = doc(db, 'diary', docId);
-      const docSnap: DocumentSnapshot<DocumentData> = await getDoc(docRef);
+      const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setDiaryData(docSnap.data() as DiaryData);
       } else {

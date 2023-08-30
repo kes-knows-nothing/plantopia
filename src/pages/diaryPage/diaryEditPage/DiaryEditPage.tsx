@@ -5,6 +5,7 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import { DiaryProps } from '@/constants/diary';
 import SectionEditPhoto from './SectionEditPhoto';
 import SectionEditBoard from './SectionEditBoard';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import './diaryEditPage.scss';
 import './sectionEditBoard.scss';
 
@@ -57,11 +58,9 @@ const DiaryEditPage = () => {
     );
   };
 
-  const showAlert = (message: string) => alert(message);
-
   const handleSaveClick = async () => {
     if (!title || chosenPlants.length === 0 || !content) {
-      showAlert(
+      errorNoti(
         !title
           ? '제목을 작성해주세요.'
           : chosenPlants.length === 0
@@ -81,6 +80,7 @@ const DiaryEditPage = () => {
     });
 
     setIsLoading(false);
+    successNoti('수정이 완료되었어요!');
     navigate('/diary');
   };
 

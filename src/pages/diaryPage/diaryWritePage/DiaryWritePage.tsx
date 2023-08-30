@@ -6,6 +6,7 @@ import useDiaryData from '@/hooks/useDiaryData';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import SectionPhoto from './SectionPhoto';
 import SectionBoard from './SectionBoard';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {
@@ -40,13 +41,11 @@ const DiaryWritePage = () => {
     );
   };
 
-  const showAlert = (message: string) => alert(message);
-
   const handleSaveClick = async () => {
     const { title, content } = state;
 
     if (!title || chosenPlants.length === 0 || !content) {
-      showAlert(
+      errorNoti(
         !title
           ? '제목을 작성해주세요.'
           : chosenPlants.length === 0
@@ -68,6 +67,7 @@ const DiaryWritePage = () => {
     });
 
     setState({ title: '', content: '', saving: false, isVisible: false });
+    successNoti('저장이 완료되었어요!');
     setChosenPlants([]);
 
     navigate('/diary');

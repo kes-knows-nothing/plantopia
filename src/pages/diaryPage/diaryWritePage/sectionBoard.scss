@@ -1,8 +1,10 @@
 .section_board {
+  flex-grow: 1;
+
   > .board {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
 
     /* SUBJECT - 제목 입력 */
     > .title_wrapper {

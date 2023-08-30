@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DiaryProps } from '@/constants/diary';
 import NoContent from './NoContent.tsx';
+import { showAlert } from '@/utils/myPlantUtil';
 import './listView.scss';
 
 interface ListViewProps {
@@ -74,8 +75,10 @@ const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {
                   <div
                     className="btn delete"
                     onClick={() => {
-                      handleDelete(index);
-                      closeModal();
+                      showAlert('글을 삭제하시겠습니까?', '', () => {
+                        handleDelete(index);
+                        closeModal();
+                      });
                     }}
                   >
                     삭제

@@ -48,19 +48,15 @@ const useDiaryData = () => {
 
   /* 삭제하기 */
   const handleDelete = async (index: number) => {
-    const confirmed = window.confirm('글을 삭제하시겠습니까?');
+    try {
+      const diaryIdToDelete = diaryData[index].id;
 
-    if (confirmed) {
-      try {
-        const diaryIdToDelete = diaryData[index].id;
+      await deleteDoc(doc(db, 'diary', diaryIdToDelete));
 
-        await deleteDoc(doc(db, 'diary', diaryIdToDelete));
-
-        const updatedDiaryData = diaryData.filter((_, i) => i !== index);
-        setDiaryData(updatedDiaryData);
-      } catch (error) {
-        console.error('일기 삭제 중 오류:', error);
-      }
+      const updatedDiaryData = diaryData.filter((_, i) => i !== index);
+      setDiaryData(updatedDiaryData);
+    } catch (error) {
+      console.error('일기 삭제 중 오류:', error);
     }
   };
 

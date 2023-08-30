@@ -1,10 +1,9 @@
 @use '@/styles/mixins';
 
 .main_page {
-  background-color: #ffffff;
   min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
   margin-bottom: 5.6rem;
-  padding-bottom: 2rem;
+  background-color: #ffffff;
 
   > section {
     min-height: inherit;
@@ -244,7 +243,7 @@
 /* 서브 식물 리스트 슬라이드*/
 .main_page > section > .slide_wrapper {
   margin-top: 3.3rem;
-  padding-left: 2rem;
+  padding: 0 0 2rem 2rem;
   min-height: 10.9rem;
 
   > .swiper {

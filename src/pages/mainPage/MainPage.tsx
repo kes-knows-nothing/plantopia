@@ -29,22 +29,24 @@ interface PlantListProps {
 }
 
 const PlantList = ({ plants, onClickItem }: PlantListProps) => {
-  return (
-    <div className="slide_wrapper">
-      <Swiper slidesPerView={3.5} className="swiper">
-        {plants.map(plant => (
-          <SwiperSlide key={nanoid()}>
-            <button className="slide" onClick={() => onClickItem(plant)}>
-              <div className="avatar">
-                <img src={plant.imgUrl} alt="plant" />
-              </div>
-              <span className="name">{plant.nickname}</span>
-            </button>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  );
+  if (plants.length > 0) {
+    return (
+      <div className="slide_wrapper">
+        <Swiper slidesPerView={3.5} className="swiper">
+          {plants.map(plant => (
+            <SwiperSlide key={nanoid()}>
+              <button className="slide" onClick={() => onClickItem(plant)}>
+                <div className="avatar">
+                  <img src={plant.imgUrl} alt="plant" />
+                </div>
+                <span className="name">{plant.nickname}</span>
+              </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    );
+  }
 };
 
 const MainPage = () => {

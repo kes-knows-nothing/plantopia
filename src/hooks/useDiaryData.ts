@@ -23,6 +23,7 @@ const useDiaryData = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
+        setIsLoading(true);
         const q = query(
           collection(db, 'diary'),
           where('userEmail', '==', user?.email),
@@ -38,6 +39,7 @@ const useDiaryData = () => {
             b.postedAt.toDate().getTime() - a.postedAt.toDate().getTime(),
         );
         setDiaryData(sortedData);
+        setIsLoading(false);
       }
     };
 

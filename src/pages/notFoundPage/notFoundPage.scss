@@ -1,10 +1,13 @@
 .not_found_container {
   > main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     height: 100vh;
-    background: #f6f6f6 url('../../assets/images/bg_login.png') no-repeat center /
-      100%;
+    background: #f6f6f6 url('../../assets/images/bg_login.png') no-repeat;
 
     > .not_found_wrapper {
+      transform: translateY(-10rem);
       padding-top: 45rem;
       height: 50rem;
       background: url('@/assets/images/404_cat.svg') no-repeat center;

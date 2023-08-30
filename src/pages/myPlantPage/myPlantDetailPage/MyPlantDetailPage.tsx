@@ -55,6 +55,12 @@ const MyPlantDetailPage = () => {
     );
     return monthsDifference;
   };
+  const navigateDictDetail = () => {
+    console.log(plantDictDetail?.name);
+    navigate(`/dict/detail?plantName=${plantDictDetail?.name}`, {
+      state: plantDictDetail,
+    });
+  };
 
   const deletePlant = async () => {
     if (plantDetail) {
@@ -87,33 +93,26 @@ const MyPlantDetailPage = () => {
   };
 
   useEffect(() => {
-    const getPlantDetailData = async () => {
+    const getData = async () => {
       const docRef = doc(db, 'plant', docId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         console.log(docSnap.data());
         setPlantDetail(docSnap.data());
+        const q = query(
+          collection(db, 'dictionary'),
+          where('name', '==', docSnap.data().plantName),
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(doc => {
+          console.log(doc.data());
+          setPlantDictDetail(doc.data());
+        });
       } else {
         console.log('문서가 존재하지 않습니다.');
       }
     };
-
-    const q = query(
-      collection(db, 'dictionary'),
-      where('name', '==', plantDetail?.plantName),
-    );
-
-    const getDictDetailData = async () => {
-      const querySnapshot = await getDocs(q);
-      let plantData;
-      querySnapshot.forEach(doc => {
-        plantData = doc.data();
-      });
-      setPlantDictDetail(plantData);
-    };
-    getPlantDetailData();
-    getDictDetailData();
-    console.log(plantDetail);
+    getData();
   }, [docId]);
 
   return (
@@ -128,7 +127,7 @@ const MyPlantDetailPage = () => {
             alt="mainPlantImg"
           />
 
-          <p className="detail_plant_name">{plantDetail?.plantName}</p>
+          <p className="detail_plant_name">{plantDictDetail?.scientificName}</p>
           <div className="detail_nickname_box">
             <p
               className={` ${
@@ -282,7 +281,7 @@ const MyPlantDetailPage = () => {
               </div>
             </div>
           </div>
-          {plantDictDetail?.adviseInfo == null ? null : (
+          {!plantDictDetail?.adviseInfo ? null : (
             <div className="my_plant_detail_info_box">
               <div className="my_plant_detail_info_head">
                 <p>📌 관리 Tip</p>
@@ -292,7 +291,7 @@ const MyPlantDetailPage = () => {
               </div>
             </div>
           )}
-          <p className="more_info_btn">
+          <p className="more_info_btn" onClick={navigateDictDetail}>
             식물 도감에서 이 식물 정보 더 알아보기!
           </p>
         </div>

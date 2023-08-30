@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import './myPlantDetailPage.scss';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
@@ -13,7 +13,6 @@ import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import { useAuth } from '@/hooks';
 import { showAlert } from '@/utils/myPlantUtil';
-
 import {
   doc,
   getDoc,
@@ -56,7 +55,6 @@ const MyPlantDetailPage = () => {
     return monthsDifference;
   };
   const navigateDictDetail = () => {
-    console.log(plantDictDetail?.name);
     navigate(`/dict/detail?plantName=${plantDictDetail?.name}`, {
       state: plantDictDetail,
     });
@@ -89,13 +87,11 @@ const MyPlantDetailPage = () => {
           isMain: true,
         };
         await updateDoc(documentRef, updatedFields);
-
         navigate('/myplant');
         successNoti('내 식물을 삭제 하였습니다.');
       } else {
         try {
           await deleteDoc(docRef);
-
           navigate('/myplant');
           successNoti('내 식물이 삭제 되었습니다.');
         } catch (error) {
@@ -110,7 +106,6 @@ const MyPlantDetailPage = () => {
       const docRef = doc(db, 'plant', docId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log(docSnap.data());
         setPlantDetail(docSnap.data());
         const q = query(
           collection(db, 'dictionary'),
@@ -118,7 +113,6 @@ const MyPlantDetailPage = () => {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(doc => {
-          console.log(doc.data());
           setPlantDictDetail(doc.data());
         });
       } else {

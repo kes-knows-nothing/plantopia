@@ -8,13 +8,13 @@ import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
 import { useAuth } from '@/hooks';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { UserPlant } from '@/@types/plant.type';
 import { infoNoti } from '@/utils/myPlantUtil';
 
@@ -24,7 +24,6 @@ const MyPlantMainPage = () => {
   const [plantCount, setPlantCount] = useState<number>(0);
   const navigate = useNavigate();
   const navigateRegi = () => {
-    console.log(plantCount);
     if (plantCount >= 10) {
       infoNoti('식물 등록은 10개까지 가능합니다.');
       return;

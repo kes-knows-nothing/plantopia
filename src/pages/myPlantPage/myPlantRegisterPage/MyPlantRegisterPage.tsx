@@ -11,7 +11,11 @@ import { collection, addDoc, query, getDocs } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { dateToTimestamp, waterCodeToNumber } from '@/utils/myPlantUtil';
+import {
+  dateToTimestamp,
+  errorNoti,
+  waterCodeToNumber,
+} from '@/utils/myPlantUtil';
 import 'firebase/storage';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +33,7 @@ const MyPlantRegisterPage = () => {
   const [plantName, setPlantName] = useState<string>('');
   const [purchasedDay, setPurchasedDay] = useState<string>('');
   const [wateredDays, setWateredDays] = useState<string>('');
+  const [frequency, setFrequency] = useState<number>();
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +48,10 @@ const MyPlantRegisterPage = () => {
 
   const plantNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlantName(e.target.value);
+  };
+
+  const handleFrequency = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFrequency(e.target.value);
   };
 
   const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +100,27 @@ const MyPlantRegisterPage = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (
+      plantName.trim() === '' ||
+      purchasedDay === '' ||
+      searchInputValue === '' ||
+      frequency === null
+    ) {
+      if (!searchInputValue) {
+        errorNoti('식물을 지정해주세요.');
+      }
+      if (!plantName) {
+        errorNoti('식물 닉네임을 설정해주세요.');
+      }
+      if (!frequency) {
+        errorNoti('식물의 물 주기를 설정해주세요.');
+      }
+      if (!purchasedDay) {
+        errorNoti('식물과 함께한 날을 지정해주세요.');
+      }
+      return;
+    }
+
     const isPlant = query(collection(db, 'plant'));
     const isEmpty = (await getDocs(isPlant)).empty;
 
@@ -181,7 +211,9 @@ const MyPlantRegisterPage = () => {
               <div className="watering_frequency_input_box">
                 <input
                   className="watering_frequency_input"
+                  value={frequency}
                   defaultValue={waterCodeToNumber(waterCode)}
+                  onChange={handleFrequency}
                 />
 
                 <p className="watering_frequency_info">일에 한 번</p>

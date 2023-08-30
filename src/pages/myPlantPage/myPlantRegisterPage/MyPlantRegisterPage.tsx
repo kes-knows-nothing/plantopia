@@ -1,7 +1,6 @@
 import './myPlantRegisterPage.scss';
 import { useAuth } from '@/hooks';
-import { Link, useNavigate } from 'react-router-dom';
-import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
+import { useNavigate } from 'react-router-dom';
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
@@ -21,6 +20,7 @@ import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
 import { successNoti } from '@/utils/myPlantUtil';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 const MyPlantRegisterPage = () => {
   const user = useAuth();
@@ -141,14 +141,9 @@ const MyPlantRegisterPage = () => {
   return (
     <>
       <Toast />
+      <HeaderBefore ex={true} title="식물 등록" />
       <main>
         <form action="" onSubmit={handleRegister}>
-          <div className="plant_register_head">
-            <p>식물 등록</p>
-            <Link to={'/myplant'}>
-              <img src={xIcon} alt="xIcon" />
-            </Link>
-          </div>
           <div className="my_plant_registeration_container">
             <div className="my_plant_register_img_box">
               <div className="img_wrapper">

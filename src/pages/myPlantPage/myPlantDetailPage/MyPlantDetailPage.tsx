@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import './myPlantDetailPage.scss';
-import previousPageIcon from '@/assets/images/icons/my_plant_detail_back_to_previous_page_icon.png';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import sunOn from '@/assets/images/icons/sun_on_icon.png';
 import sunOff from '@/assets/images/icons/sun_off_icon.png';
@@ -119,13 +119,8 @@ const MyPlantDetailPage = () => {
   return (
     <>
       <Toast />
+      <HeaderBefore ex={false} title="식물 상세" />
       <main>
-        <div className="my_plant_detail_header">
-          <Link to={'/myplant'}>
-            <img src={previousPageIcon} alt="goToPreviousPage" />
-          </Link>
-          <p>식물 상세</p>
-        </div>
         <div className="my_plant_detail_upper_container">
           <img
             className="detail_plant_img"

@@ -1,7 +1,7 @@
 import './myPlantEditPage.scss';
 import { useAuth } from '@/hooks';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import xIcon from '@/assets/images/icons/my_plant_regi_x_icon.png';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
@@ -159,11 +159,8 @@ const MyPlantEditPage = () => {
   return (
     <>
       <Toast />
+      <HeaderBefore ex={true} title="식물 수정" />
       <main>
-        <div className="plant_register_head">
-          <p>식물 수정</p>
-          <img src={xIcon} alt="xIcon" onClick={handleGoBack} />
-        </div>
         <div className="my_plant_registeration_container">
           <div className="my_plant_register_img_box">
             <div className="img_wrapper">

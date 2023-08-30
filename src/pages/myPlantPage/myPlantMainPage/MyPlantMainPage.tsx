@@ -15,7 +15,6 @@ import { useAuth } from '@/hooks';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { showAlert } from '@/utils/myPlantUtil';
 import { UserPlant } from '@/@types/plant.type';
 
 const MyPlantMainPage = () => {

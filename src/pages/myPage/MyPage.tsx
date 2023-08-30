@@ -1,20 +1,26 @@
-import { Children } from 'react';
+import { useState, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
 import { customerService } from '@/constants/myPage';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import Toast from '@/components/notification/ToastContainer';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
+import Progress from '@/components/progress/Progress';
 import PROFILE from '@/assets/images/icons/default_profile.png';
 import './myPage.scss';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 
 const MyPage = () => {
   const user = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   location.state?.message && successNoti(location.state.message);
+
+  useEffect(() => {
+    user && setIsLoading(false);
+  }, [user]);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -71,6 +77,7 @@ const MyPage = () => {
         </section>
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </div>
   );
 };

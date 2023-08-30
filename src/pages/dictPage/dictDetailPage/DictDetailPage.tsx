@@ -3,13 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { codeInfo } from '@/constants/dictionary';
 import { PlantType } from '@/@types/dictionary.type';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import './dictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
 import PLANT4_ICON from '@/assets/images/icons/dict_plant4.png';
 import WATER_ICON from '@/assets/images/icons/dict_water1.png';
 import WATERPOT_ICON from '@/assets/images/icons/dict_waterpot.png';
 import BUG_ICON from '@/assets/images/icons/dict_bug.png';
+import './dictDetailPage.scss';
 
 const DictDetailPage = () => {
   const navigate = useNavigate();
@@ -57,7 +57,6 @@ const DictDetailPage = () => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     navigate('/myplant/register', {
       state: {
         name: plantData.name,

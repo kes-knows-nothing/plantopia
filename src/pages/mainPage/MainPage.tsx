@@ -31,7 +31,7 @@ interface PlantListProps {
 const PlantList = ({ plants, onClickItem }: PlantListProps) => {
   return (
     <div className="slide_wrapper">
-      <Swiper slidesPerView={4} className="swiper">
+      <Swiper slidesPerView={3.5} className="swiper">
         {plants.map(plant => (
           <SwiperSlide key={nanoid()}>
             <button className="slide" onClick={() => onClickItem(plant)}>

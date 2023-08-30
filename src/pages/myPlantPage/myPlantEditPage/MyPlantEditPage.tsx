@@ -159,79 +159,83 @@ const MyPlantEditPage = () => {
   return (
     <>
       <Toast />
-      <div className="plant_register_head">
-        <p>식물 수정</p>
-        <img src={xIcon} alt="xIcon" onClick={handleGoBack} />
-      </div>
-      <div className="my_plant_registeration_container">
-        <div className="my_plant_register_img_box">
-          <div className="img_wrapper">
-            <img className="main_img" src={imgUrl} alt="samplePlant1" />
-            <div className="edit_icon_wrapper">
-              <label htmlFor="photoInput" className="photo_label">
-                <img
-                  className="edit_icon"
-                  src={myPlantImgEditIcon}
-                  alt="editIcon"
+      <main>
+        <div className="plant_register_head">
+          <p>식물 수정</p>
+          <img src={xIcon} alt="xIcon" onClick={handleGoBack} />
+        </div>
+        <div className="my_plant_registeration_container">
+          <div className="my_plant_register_img_box">
+            <div className="img_wrapper">
+              <img className="main_img" src={imgUrl} alt="samplePlant1" />
+              <div className="edit_icon_wrapper">
+                <label htmlFor="photoInput" className="photo_label">
+                  <img
+                    className="edit_icon"
+                    src={myPlantImgEditIcon}
+                    alt="editIcon"
+                  />
+                </label>
+                <input
+                  className="photo_input"
+                  id="photoInput"
+                  accept="image/*"
+                  type="file"
+                  onChange={handleFileSelect}
                 />
-              </label>
+              </div>
+            </div>
+          </div>
+          <div className="my_plant_input_box">
+            <p className="my_plant_input_title">식물 이름</p>
+            <div className="my_plant_input_wrapper">
+              <input className="my_plant_input" value={plantName} disabled />
+            </div>
+          </div>
+          <div className="my_plant_info_form">
+            <p className="my_plant_name_title">식물 별명</p>
+            <input
+              className="my_plant_name"
+              value={plantNickname}
+              onChange={handlePlantNickname}
+            />
+
+            <p className="watering_frequency">물 주는 날</p>
+            <div className="watering_frequency_input_box">
               <input
-                className="photo_input"
-                id="photoInput"
-                accept="image/*"
-                type="file"
-                onChange={handleFileSelect}
+                className="watering_frequency_input"
+                onChange={handleFrequency}
+                defaultValue={frequencyFromDetail || frequencyFromList}
+              />
+              <p className="watering_frequency_info">일에 한 번</p>
+            </div>
+            <p className="my_plant_register_small_title">마지막 물준 날</p>
+            <div className="my_plant_register_calender_value">
+              <input
+                type="date"
+                className="date_selector"
+                value={wateredDay}
+                onChange={wateredDaysHandler}
+              />
+            </div>
+            <p className="my_plant_register_small_title">
+              식물과 처음 함께한 날
+            </p>
+            <div className="my_plant_register_calender_value">
+              <input
+                className="date_selector"
+                type="date"
+                value={purchasedDay}
+                onChange={purchasedDayHandler}
               />
             </div>
           </div>
         </div>
-        <div className="my_plant_input_box">
-          <p className="my_plant_input_title">식물 이름</p>
-          <div className="my_plant_input_wrapper">
-            <input className="my_plant_input" value={plantName} disabled />
-          </div>
-        </div>
-        <div className="my_plant_info_form">
-          <p className="my_plant_name_title">식물 별명</p>
-          <input
-            className="my_plant_name"
-            value={plantNickname}
-            onChange={handlePlantNickname}
-          />
 
-          <p className="watering_frequency">물 주는 날</p>
-          <div className="watering_frequency_input_box">
-            <input
-              className="watering_frequency_input"
-              onChange={handleFrequency}
-              defaultValue={frequencyFromDetail || frequencyFromList}
-            />
-            <p className="watering_frequency_info">일에 한 번</p>
-          </div>
-          <p className="my_plant_register_small_title">마지막 물준 날</p>
-          <div className="my_plant_register_calender_value">
-            <input
-              type="date"
-              className="date_selector"
-              value={wateredDay}
-              onChange={wateredDaysHandler}
-            />
-          </div>
-          <p className="my_plant_register_small_title">식물과 처음 함께한 날</p>
-          <div className="my_plant_register_calender_value">
-            <input
-              className="date_selector"
-              type="date"
-              value={purchasedDay}
-              onChange={purchasedDayHandler}
-            />
-          </div>
-        </div>
-      </div>
-
-      <button className="my_plant_register_btn" onClick={handleUpdate}>
-        수정 완료
-      </button>
+        <button className="my_plant_register_btn" onClick={handleUpdate}>
+          수정 완료
+        </button>
+      </main>
     </>
   );
 };

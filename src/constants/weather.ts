@@ -18,12 +18,12 @@ export const weatherContents: { [code: string]: WeatherContentType } = {
   300: {
     imgSrc: weather.RAIN,
     title: '한때 비',
-    description: '오늘은 창밖으로 빗소리가 들리겠어요.',
+    description: '오늘은 창밖으로 빗소리가 들리겠어요',
   },
   500: {
     imgSrc: weather.SHOWER,
     title: '비',
-    description: '실내에서 빗소리를 감상해보세요.',
+    description: '실내에서 빗소리를 감상해보세요',
   },
   600: {
     imgSrc: weather.SNOW,
@@ -33,31 +33,31 @@ export const weatherContents: { [code: string]: WeatherContentType } = {
   700: {
     imgSrc: weather.FOG,
     title: '안개',
-    description: '차분하고 평온한 하루를 보내세요.',
+    description: '차분하고 평온한 하루를 보내세요',
   },
   800: {
     imgSrc: weather.SUN,
     title: '맑음',
-    description: '맑은 날, 기분 좋은 하루를 보내세요.',
+    description: '맑은 날, 기분 좋은 하루를 보내세요',
   },
   801: {
     imgSrc: weather.SUN_CLOUD,
     title: '구름 조금',
-    description: '가볍게 산책하며 시간을 보내보세요.',
+    description: '가볍게 산책하며 시간을 보내보세요',
   },
   802: {
     imgSrc: weather.SUN_CLOUD,
     title: '구름 조금',
-    description: '가볍게 산책하며 시간을 보내보세요.',
+    description: '가볍게 산책하며 시간을 보내보세요',
   },
   803: {
     imgSrc: weather.CLOUD,
     title: '흐림',
-    description: '음악을 들으며 여유를 느껴보세요.',
+    description: '음악을 들으며 여유를 느껴보세요',
   },
   804: {
     imgSrc: weather.CLOUD,
     title: '흐림',
-    description: '음악을 들으며 여유를 느껴보세요.',
+    description: '음악을 들으며 여유를 느껴보세요',
   },
 };

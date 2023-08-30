@@ -62,6 +62,19 @@ const MyPlantDetailPage = () => {
     });
   };
 
+  const navigateEdit = () => {
+    navigate(`/myplant/${docId}/edit`, {
+      state: {
+        imgUrlFromDetail: plantDetail.imgUrl,
+        nicknameFromDetail: plantDetail.nickname,
+        plantNameFromDetail: plantDetail.plantName,
+        purchasedDayFromDetail: plantDetail.purchasedDay,
+        wateredDayFromDetail: plantDetail.wateredDays.at(-1),
+        frequencyFromDetail: plantDetail.frequency,
+      },
+    });
+  };
+
   const deletePlant = async () => {
     if (plantDetail) {
       const docRef = doc(db, 'plant', docId);
@@ -139,24 +152,11 @@ const MyPlantDetailPage = () => {
               {plantDetail?.nickname}
             </p>
           </div>
-
-          <div className="my_plant_detail_edit_btn">
-            <Link
-              to={`/myplant/${docId}/edit`}
-              state={{
-                imgUrlFromDetail: plantDetail.imgUrl,
-                nicknameFromDetail: plantDetail.nickname,
-                plantNameFromDetail: plantDetail.plantName,
-                purchasedDayFromDetail: plantDetail.purchasedDay,
-                wateredDayFromDetail: plantDetail.wateredDays.at(-1),
-                frequencyFromDetail: plantDetail.frequency,
-              }}
-            >
-              <div className="my_plant_detail_edit_btn_inner_contents">
-                <img src={editIcon} alt="editIcon" />
-                <p>식물 정보 수정하기</p>
-              </div>
-            </Link>
+          <div className="my_plant_detail_edit_btn" onClick={navigateEdit}>
+            <div className="my_plant_detail_edit_btn_inner_contents">
+              <img src={editIcon} alt="editIcon" />
+              <p>식물 정보 수정하기</p>
+            </div>
           </div>
         </div>
         <div className="my_plant_detail_lower_container">

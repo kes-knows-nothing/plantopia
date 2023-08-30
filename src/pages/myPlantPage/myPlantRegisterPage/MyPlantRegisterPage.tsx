@@ -51,7 +51,7 @@ const MyPlantRegisterPage = () => {
   };
 
   const handleFrequency = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFrequency(e.target.value);
+    setFrequency(Number(e.target.value));
   };
 
   const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,8 +135,8 @@ const MyPlantRegisterPage = () => {
       wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
-    successNoti('새 식물을 등록하였습니다!');
     navigate('/myplant');
+    successNoti('새 식물을 등록하였습니다!');
   };
   return (
     <>
@@ -179,7 +179,6 @@ const MyPlantRegisterPage = () => {
                   placeholder="식물 이름으로 검색해보세요."
                   value={searchInputValue}
                   onChange={handleSearchInput}
-                  onClick={navigateSearch}
                   readOnly
                 />
 

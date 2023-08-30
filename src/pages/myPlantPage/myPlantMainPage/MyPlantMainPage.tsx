@@ -27,13 +27,15 @@ const MyPlantMainPage = () => {
 
   useEffect(() => {
     const getQuerySnapshot = async () => {
-      const q = query(
-        collection(db, 'plant'),
-        where('userEmail', '==', user?.email),
-        where('isMain', '==', true),
-      );
-      const mainData = (await getDocs(q)).docs[0].data();
-      setMyMainPlant(mainData);
+      if (user?.email) {
+        const q = query(
+          collection(db, 'plant'),
+          where('userEmail', '==', user?.email),
+          where('isMain', '==', true),
+        );
+        const mainData = (await getDocs(q)).docs[0]?.data();
+        setMyMainPlant(mainData);
+      }
     };
     getQuerySnapshot();
   }, [user]);

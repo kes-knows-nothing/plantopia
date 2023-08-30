@@ -1,4 +1,4 @@
-import { RecommendProps } from '@/@types/dictionary.type';
+import { OrderByDirection } from 'firebase/firestore';
 import { CodeToImg } from '@/components/codeToImg/CodeToImg';
 import SUN_ON_ICON from '@/assets/images/icons/dict_sun_on.png';
 import SUN_OFF_ICON from '@/assets/images/icons/dict_sun_off.png';
@@ -40,7 +40,11 @@ const targetQuery = {
   dark: ['lightCode', 'LC01'],
 };
 
-const recommend: RecommendProps[] = [
+const recommend: {
+  icon: string;
+  title: string;
+  target: keyof typeof targetQuery;
+}[] = [
   { icon: PLANT1_ICON, title: '식린이를 위한 추천 식물!', target: 'beginner' },
   {
     icon: PLANT2_ICON,
@@ -62,4 +66,6 @@ const targetClassName = {
   dark: 'img_wrapper_gray',
 };
 
-export { codeInfo, targetQuery, recommend, targetClassName };
+const orderDirection: OrderByDirection[] = ['asc', 'desc'];
+
+export { codeInfo, targetQuery, recommend, targetClassName, orderDirection };

@@ -130,7 +130,15 @@ const MyPlantDetailPage = () => {
 
           <p className="detail_plant_name">{plantDetail?.plantName}</p>
           <div className="detail_nickname_box">
-            <p className="detail_plant_nickname">{plantDetail?.nickname}</p>
+            <p
+              className={` ${
+                plantDetail?.isMain
+                  ? 'detail_plant_nickname_main'
+                  : 'detail_plant_nickname'
+              }`}
+            >
+              {plantDetail?.nickname}
+            </p>
           </div>
 
           <div className="my_plant_detail_edit_btn">

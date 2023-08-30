@@ -277,6 +277,17 @@
   display: flex;
   align-items: center;
   position: relative;
+}
+
+.detail_plant_nickname_main {
+  height: 1.8rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #22264c;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
   &::before {
     content: '';
     display: inline-block;

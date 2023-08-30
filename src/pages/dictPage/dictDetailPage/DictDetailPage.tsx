@@ -6,6 +6,7 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import './dictDetailPage.scss';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
+import PLANT4_ICON from '@/assets/images/icons/dict_plant4.png';
 import WATER_ICON from '@/assets/images/icons/dict_water1.png';
 import WATERPOT_ICON from '@/assets/images/icons/dict_waterpot.png';
 import BUG_ICON from '@/assets/images/icons/dict_bug.png';
@@ -17,7 +18,7 @@ const DictDetailPage = () => {
 
   const plantInfoForm = [
     {
-      image: PLANT3_ICON,
+      image: PLANT4_ICON,
       title: '종',
       content: plantData.speciesInfo,
     },

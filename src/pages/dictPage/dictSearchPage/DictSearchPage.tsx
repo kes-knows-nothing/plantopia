@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, Children } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { db } from '@/firebaseApp';
 import { PlantType } from '@/@types/dictionary.type';
-import { koreanRe } from '@/constants/RegularExpression';
+import { koreanRe } from '@/constants/regEx';
 import {
   collection,
   getDocs,

@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
-import { nicknameRe } from '@/constants/RegularExpression';
+import { nicknameRe } from '@/constants/regEx';
 import Toast from '@/components/notification/ToastContainer';
 import { errorNoti } from '@/utils/myPlantUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';

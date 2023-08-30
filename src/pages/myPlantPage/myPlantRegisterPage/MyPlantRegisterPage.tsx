@@ -241,7 +241,9 @@ const MyPlantRegisterPage = () => {
             </div>
           </div>
 
-          <button className="my_plant_register_btn">등록</button>
+          <button className="my_plant_register_btn" type="submit">
+            등록
+          </button>
         </form>
       </main>
     </>

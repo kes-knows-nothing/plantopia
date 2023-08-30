@@ -1,5 +1,4 @@
 import { codeInfo } from '@/constants/dictionary';
-import { targetQuery } from '@/constants/dictionary';
 
 interface PlantType {
   name: string;
@@ -17,11 +16,4 @@ interface PlantType {
   classificationInfo: string[];
 }
 
-interface RecommendProps {
-  icon: string;
-  title: string;
-  target: keyof typeof targetQuery;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export type { PlantType, RecommendProps };
+export type { PlantType };

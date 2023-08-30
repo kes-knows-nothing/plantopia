@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     flex: 1 auto;
-    margin-bottom: 5.8rem;
+    margin-bottom: 5.2rem;
 
     .my_info_box {
       position: relative;
@@ -72,42 +72,12 @@
           background-color: #e7e7e7;
         }
       }
-
-      .my_service_list {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        li {
-          padding-top: 4.8rem;
-          min-width: 4rem;
-          text-align: center;
-          font-size: 1.3rem;
-          background-repeat: no-repeat;
-          background-size: 4rem;
-          background-position: top center;
-          cursor: pointer;
-
-          &.info {
-            background-image: url('../../assets/images/icons/icon_my_service01.png');
-          }
-          &.badge {
-            background-image: url('../../assets/images/icons/icon_my_service02.png');
-          }
-          &.plant {
-            background-image: url('../../assets/images/icons/icon_my_service03.png');
-          }
-
-          em {
-            display: inline-block;
-            padding-left: 0.4rem;
-            color: #1fb0ad;
-            font-weight: 700;
-          }
-        }
-      }
     }
 
     .list_box {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
       margin-top: 1rem;
       padding-top: 1rem;
       background-color: #fff;
@@ -137,77 +107,30 @@
             background: url('../../assets/images/icons/icon_move.png') no-repeat
               right center / 16px;
           }
-
-          /* switch */
-          .switch {
-            position: relative;
-            display: inline-block;
-            width: 3.2rem;
-
-            input.switch_chk {
-              opacity: 0;
-              width: 0;
-              height: 0;
-            }
-
-            input.switch_chk:checked + .slider {
-              background-color: #ffffff;
-              border: 1px solid #f2f2f2;
-            }
-
-            input.switch_chk:checked + .slider:before {
-              -webkit-transform: translateX(18px);
-              -ms-transform: translateX(18px);
-              transform: translateX(18px);
-              background-color: #1fb0ad;
-            }
-
-            .slider {
-              position: absolute;
-              cursor: pointer;
-              top: -2px;
-              left: 0;
-              right: 2px;
-              bottom: 0;
-              background-color: #d6d6d6;
-              -webkit-transition: 0.4s;
-              transition: 0.4s;
-              border-radius: 2.4rem;
-
-              &:before {
-                position: absolute;
-                content: '';
-                height: 1.4rem;
-                width: 1.4rem;
-                left: 0px;
-                bottom: -0.2rem;
-                background-color: rgba(36, 46, 71, 0.25);
-                -webkit-transition: 0.4s;
-                transition: 0.4s;
-                border-radius: 50%;
-              }
-            }
-          }
         }
         li ~ li {
           border-top: 1px solid #f8f8fa;
         }
       }
-    }
 
-    .logout_btn {
-      position: absolute;
-      bottom: 1rem;
-      padding: 0;
-      margin: 0 2rem;
-      width: calc(100% - 4rem);
-      height: 4.8rem;
-      line-height: 4.8rem;
-      border: 1px solid #d6d6d6;
-      background-color: #ffffff;
-      border-radius: 0.6rem;
-      color: #acacac;
-      font-size: 1.4rem;
+      > .logout_wrapper {
+        display: flex;
+        flex: 1;
+        padding: 2rem;
+        background-color: #f8f8fa;
+
+        > .logout_btn {
+          margin-top: auto;
+          width: 100%;
+          height: 4.8rem;
+          line-height: 4.8rem;
+          border: 1px solid #d6d6d6;
+          background-color: #ffffff;
+          border-radius: 0.6rem;
+          font-size: 1.4rem;
+          color: #acacac;
+        }
+      }
     }
   }
 }

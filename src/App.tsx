@@ -16,9 +16,13 @@ import DictPage from './pages/dictPage/DictPage';
 import DictSearchPage from './pages/dictPage/dictSearchPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/dictDetailPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
-import { setBodyHeight } from './utils/setBodyHeight';
-import MyPlantSearchResultPage from './pages/myPlantPage/myPlantSearchResultPage/MyPlantSearchResultPage';
 import NotFoundPage from './pages/notFoundPage/NotFoundPage';
+
+import Toast from './components/notification/ToastContainer';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/custom-toast-styles.scss';
+
+import { setBodyHeight } from './utils/setBodyHeight';
 
 const App = () => {
   useEffect(() => {
@@ -26,26 +30,28 @@ const App = () => {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/calendar" element={<CalendarPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/diary" element={<DiaryPage />} />
-      <Route path="/diary/write" element={<DiaryWritePage />} />
-      <Route path="/diary/:docId/edit" element={<DiaryEditPage />} />
-      <Route path="/diary/:docId" element={<DiaryDetailPage />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/mypage/info" element={<MyInfo />} />
-      <Route path="/myplant" element={<MyPlantMainPage />} />
-      <Route path="/myplant/:docId" element={<MyPlantDetailPage />} />
-      <Route path="/myplant/:docId/edit" element={<MyPlantEditPage />} />
-      <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
-      <Route path="/myplant/search" element={<MyPlantSearchResultPage />} />
-      <Route path="/dict" element={<DictPage />} />
-      <Route path="/dict/search" element={<DictSearchPage />} />
-      <Route path="/dict/detail" element={<DictDetailPage />} />
-      <Route path="/*" element={<NotFoundPage />} />
-    </Routes>
+    <>
+      <Toast />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/calendar" element={<CalendarPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/diary" element={<DiaryPage />} />
+        <Route path="/diary/write" element={<DiaryWritePage />} />
+        <Route path="/diary/:docId/edit" element={<DiaryEditPage />} />
+        <Route path="/diary/:docId" element={<DiaryDetailPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/info" element={<MyInfo />} />
+        <Route path="/myplant" element={<MyPlantMainPage />} />
+        <Route path="/myplant/:docId" element={<MyPlantDetailPage />} />
+        <Route path="/myplant/:docId/edit" element={<MyPlantEditPage />} />
+        <Route path="/myplant/register" element={<MyPlantRegisterPage />} />
+        <Route path="/dict" element={<DictPage />} />
+        <Route path="/dict/search" element={<DictSearchPage />} />
+        <Route path="/dict/detail" element={<DictDetailPage />} />
+        <Route path="/*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 };
 

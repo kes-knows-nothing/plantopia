@@ -1,111 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
-import { db } from '@/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useAuth } from '@/hooks';
-
-import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
-import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
+import { ArrowImages, SectionBoardProps } from '@/constants/diary';
 import './sectionBoard.scss';
 
-interface Plant {
-  nickname: string;
-  userEmail: string;
-}
-
-interface SectionBoardProps {
-  title: string;
-  setTitle: (title: string) => void;
-  content: string;
-  setContent: (content: string) => void;
-  chosenPlants: string[];
-  setChosenPlants: (plants: string[]) => void;
-}
-
-const SectionBoard: React.FC<SectionBoardProps> = ({
-  title,
-  setTitle,
-  content,
-  setContent,
+const SectionBoard = ({
+  state,
+  setState,
   chosenPlants,
-  setChosenPlants,
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [plantTag, setPlantTag] = useState<Plant[]>([]);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const user = useAuth();
-
-  useEffect(() => {
-    if (!user) return;
-
-    const getPlantsFromFirestore = async () => {
-      const plantRef = collection(db, 'plant');
-      const q = query(plantRef, where('userEmail', '==', user?.email));
-      const querySnapshot = await getDocs(q);
-      const plants: Plant[] = [];
-      querySnapshot.forEach(doc => {
-        const { nickname, userEmail } = doc.data();
-        plants.push({ nickname, userEmail });
-      });
-      setPlantTag(plants);
-    };
-    getPlantsFromFirestore();
-  }, [user]);
-
-  const toggleSelect = () => {
-    setIsVisible(prevVisible => !prevVisible);
-  };
-
-  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedPlant = event.target.value;
-
-    setChosenPlants(prevChosenPlants => {
-      const isSelected = prevChosenPlants.includes(selectedPlant);
-
-      return isSelected
-        ? prevChosenPlants.filter(plant => plant !== selectedPlant)
-        : [...prevChosenPlants, selectedPlant];
-    });
-  };
-  
-const handleChosenPlantClick = (plant: string) => {
-  setChosenPlants((prevChosenPlants: string[]) =>
-    prevChosenPlants.filter(p => p !== plant),
-  );
-};
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isVisible && !event.target.closest('.plant_select_wrapper')) {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isVisible]);
-
+  toggleSelect,
+  handleChosenPlantClick,
+  handlePlantSelection,
+  plantTag,
+}: SectionBoardProps) => {
   return (
-    <section className="board_section">
+    <section className="board">
       <div className="title_wrapper">
         <input
           type="text"
           placeholder="제목을 작성하세요."
           className="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={state.title}
+          onChange={e => setState(prev => ({ ...prev, title: e.target.value }))}
         />
       </div>
 
-      <div className="plant_select_wrapper" ref={wrapperRef}>
+      <div className="plant_select_wrapper">
         <div className="plant_select">
-          {chosenPlants.length === 0 ? (
-            <div className="choose_text" onClick={toggleSelect}>
+          {chosenPlants.length === 0 && (
+            <div
+              className={`choose_text ${
+                chosenPlants.length === 0 ? '' : 'hide'
+              }`}
+              onClick={toggleSelect}
+            >
               식물을 선택하세요.
             </div>
-          ) : (
+          )}
+
+          {chosenPlants.length > 0 && (
             <div className="chosen_wrap">
               {chosenPlants.map(plant => (
                 <div
@@ -120,17 +50,18 @@ const handleChosenPlantClick = (plant: string) => {
             </div>
           )}
           <div className="arrow_icon" onClick={toggleSelect}>
-            {isVisible ? (
-              <img src={ARROW_UP} alt="Up" />
-            ) : (
-              <img src={ARROW_DOWN} alt="Down" />
-            )}
+            <img
+              src={
+                state.isVisible ? ArrowImages.ARROW_UP : ArrowImages.ARROW_DOWN
+              }
+              alt={state.isVisible ? 'Up' : 'Down'}
+            />
           </div>
         </div>
 
-        {isVisible && (
+        {state.isVisible && (
           <ul className="plant_list">
-            {plantTag.map(plant => (
+            {(plantTag || []).map(plant => (
               <li key={plant.nickname}>
                 <input
                   type="checkbox"
@@ -149,8 +80,8 @@ const handleChosenPlantClick = (plant: string) => {
 
       <textarea
         placeholder="내용을 작성하세요."
-        value={content}
-        onChange={e => setContent(e.target.value)}
+        value={state.content}
+        onChange={e => setState(prev => ({ ...prev, content: e.target.value }))}
         className="content"
       />
     </section>

@@ -1,5 +1,4 @@
-/* BOARD SECTION - 게시글 입력 */
-.board_section {
+.board {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -30,6 +29,7 @@
     color: #9b9fb1;
     border-bottom: 1px solid #f7f8f7;
     background-color: #f8f8fa;
+    position: relative;
 
     > .plant_select {
       min-height: 6rem;
@@ -51,7 +51,6 @@
 
       > .chosen_wrap {
         min-height: 6rem;
-
         display: flex;
         align-items: center;
         flex-wrap: wrap;
@@ -102,10 +101,12 @@
     /* 식물 목록 */
     > .plant_list {
       width: 100%;
-      max-height: 21rem;
+      max-width: 498px;
+      max-height: 16rem;
       overflow: auto;
       padding: 1rem 2rem;
       position: absolute;
+      left: 0;
       border-top: 1px solid #efefef;
       background-color: #f8f8fa;
       font-size: 1.4rem;
@@ -151,10 +152,10 @@
   /* CONTENT - 내용 입력 */
   > textarea {
     width: 100%;
-    flex-grow: 1;
     font-family: 'pretendard';
     font-size: 1.4rem;
     padding: 2rem;
+    flex-grow: 1;
     resize: none;
 
     &::placeholder {

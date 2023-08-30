@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import { Timestamp } from 'firebase/firestore';
 
-import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -10,26 +11,35 @@ import 'swiper/css/pagination';
 
 import './diaryDetailPage.scss';
 import { db } from '@/firebaseApp';
-import { doc, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+} from 'firebase/firestore';
+
+interface DiaryData {
+  imgUrls?: string[];
+  title: string;
+  tags: string[];
+  content: string;
+  postedAt: Timestamp;
+}
 
 const DiaryDetailPage = () => {
   const { docId } = useParams();
-  const navigate = useNavigate();
-  const slideSectionPrevBtn = useRef();
-  const slideSectionNextBtn = useRef();
+  if (!docId) {
+    return;
+  }
+  const slideSectionPrevBtn = useRef<HTMLDivElement>(null);
+  const slideSectionNextBtn = useRef<HTMLDivElement>(null);
 
-  const [diaryData, setDiaryData] = useState(null);
-
-  const goBack = () => {
-    navigate(-1);
-  };
+  const [diaryData, setDiaryData] = useState<DiaryData | null>(null);
 
   useEffect(() => {
     const fetchDiaryData = async () => {
       const docRef = doc(db, 'diary', docId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setDiaryData(docSnap.data());
+        setDiaryData(docSnap.data() as DiaryData);
       } else {
         console.log('Document does not exist');
       }
@@ -40,16 +50,10 @@ const DiaryDetailPage = () => {
 
   return (
     <>
-      <header className="sub_header">
-        <button className="header_btn back" onClick={goBack}>
-          <HiOutlineArrowLeft />
-        </button>
-        <strong>다이어리</strong>
-        <button className="header_btn more"></button>
-      </header>
+      <HeaderBefore ex={false} title="다이어리" />
       <main className="diary_detail_page">
         <div className="diary_detail_container">
-          {diaryData?.imgUrls.length > 0 && (
+          {diaryData && diaryData.imgUrls && diaryData.imgUrls.length > 0 && (
             <section className="slide_section">
               <Swiper
                 className="diary_img_swiper swiper "
@@ -61,8 +65,6 @@ const DiaryDetailPage = () => {
                   clickable: true,
                 }}
                 onInit={swiper => {
-                  swiper.params.navigation.prevEl = slideSectionPrevBtn.current;
-                  swiper.params.navigation.nextEl = slideSectionNextBtn.current;
                   swiper.navigation.init();
                   swiper.navigation.update();
                 }}

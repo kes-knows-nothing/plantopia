@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { DiaryProps, DiaryDetailProps } from '@/@types/diary.type';
+import { DiaryProps } from '@/@types/diary.type';
 import { showAlert } from '@/utils/myPlantUtil';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -14,7 +14,7 @@ import './diaryDetailPage.scss';
 import { db } from '@/firebaseApp';
 import { doc, getDoc } from 'firebase/firestore';
 
-const DiaryDetailPage: React.FC<DiaryDetailProps> = () => {
+const DiaryDetailPage = () => {
   const { docId } = useParams();
   if (!docId) {
     return null;

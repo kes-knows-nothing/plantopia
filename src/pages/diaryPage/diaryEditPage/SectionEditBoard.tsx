@@ -56,24 +56,28 @@ const SectionEditBoard = ({
           </div>
         </div>
         {isVisible && (
-          <ul className="plant_list">
-            {plantTag.map(plant => (
-              <li key={plant.nickname}>
-                <input
-                  type="checkbox"
-                  name={plant.nickname}
-                  id={plant.nickname}
-                  value={plant.nickname}
-                  onChange={handlePlantSelection}
-                  checked={chosenPlants.includes(plant.nickname)}
-                />
-                <label htmlFor={plant.nickname}>{plant.nickname}</label>
-              </li>
-            ))}
-            <li className="choose_complete" onClick={toggleSelect}>
-              선택 완료
-            </li>
-          </ul>
+          <>
+            <div className="plant_list">
+              <ul>
+                {(plantTag || []).map(plant => (
+                  <li key={plant.nickname}>
+                    <input
+                      type="checkbox"
+                      name={plant.nickname}
+                      id={plant.nickname}
+                      value={plant.nickname}
+                      onChange={handlePlantSelection}
+                      checked={chosenPlants.includes(plant.nickname)}
+                    />
+                    <label htmlFor={plant.nickname}>{plant.nickname}</label>
+                  </li>
+                ))}
+              </ul>
+              <button className="choose_complete" onClick={toggleSelect}>
+                선택 완료
+              </button>
+            </div>
+          </>
         )}
       </div>
 

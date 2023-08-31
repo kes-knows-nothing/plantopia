@@ -6,8 +6,12 @@
 @use 'fonts';
 @use 'colors';
 
+html,
 body {
   font-family: 'Pretendard', Arial, sans-serif;
+}
+
+body {
   margin: auto;
   min-width: 320px;
   max-width: 500px;

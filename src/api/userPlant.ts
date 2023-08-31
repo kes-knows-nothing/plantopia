@@ -1,7 +1,6 @@
 import { UserPlant } from '@/@types/plant.type';
 import { db } from '@/firebaseApp';
 import {
-  Timestamp,
   collection,
   doc,
   getDocs,
@@ -25,11 +24,9 @@ export const getPlantList = async (userEmail: string): Promise<UserPlant[]> => {
   return plantList;
 };
 
-// id만 받는게 아니라 플랜트에 대한 정보
-export const fetchWateringPlant = (plant: UserPlant) => {
-  const plantRef = doc(db, 'plant', plant.id);
+export const updatePlantInfo = (plant: UserPlant) => {
+  const { id, ...newData } = plant;
+  const plantRef = doc(db, 'plant', id);
 
-  return updateDoc(plantRef, {
-    wateredDays: [...plant.wateredDays, Timestamp.fromDate(new Date())],
-  });
+  return updateDoc(plantRef, newData);
 };

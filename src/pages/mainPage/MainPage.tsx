@@ -3,8 +3,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
 import { useAuth } from '@/hooks';
 import { UserPlant } from '@/@types/plant.type';
-import { getPlantList, fetchWateringPlant } from '@/api/userPlant';
+import { getPlantList, updatePlantInfo } from '@/api/userPlant';
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
+import { Timestamp } from 'firebase/firestore';
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
@@ -48,10 +49,16 @@ const MainPage = () => {
   const onWaterPlant = async () => {
     if (!(focusPlant && user?.email)) return;
 
+    const newData = { ...focusPlant };
+    newData.wateredDays = [
+      ...newData.wateredDays,
+      Timestamp.fromDate(new Date()),
+    ];
+
     try {
       setIsLoading(true);
 
-      await fetchWateringPlant(focusPlant);
+      await updatePlantInfo(newData);
       const userPlantList = await getPlantList(user.email);
       const mainVisiblePlant = userPlantList.find(
         ({ id }) => focusPlant.id === id,

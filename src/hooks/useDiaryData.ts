@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import { useAuth } from '@/hooks';
 import { DiaryProps, Plant } from '@/constants/diary';
+import { successNoti } from '@/utils/myPlantUtil';
 
 const useDiaryData = () => {
   const user = useAuth();
@@ -55,6 +56,7 @@ const useDiaryData = () => {
 
       const updatedDiaryData = diaryData.filter((_, i) => i !== index);
       setDiaryData(updatedDiaryData);
+      successNoti('삭제가 완료되었어요!');
     } catch (error) {
       console.error('일기 삭제 중 오류:', error);
     }

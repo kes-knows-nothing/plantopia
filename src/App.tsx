@@ -17,6 +17,9 @@ import DictSearchPage from './pages/dictPage/dictSearchPage/DictSearchPage';
 import DictDetailPage from './pages/dictPage/dictDetailPage/DictDetailPage';
 import CalendarPage from './pages/calendarPage/CalendarPage';
 import NotFoundPage from './pages/notFoundPage/NotFoundPage';
+import Toast from './components/notification/ToastContainer';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/custom-toast-styles.scss';
 
 import Toast from './components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';

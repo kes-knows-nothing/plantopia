@@ -8,38 +8,42 @@ import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
-import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useAuth } from '@/hooks';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { UserPlant } from '@/@types/plant.type';
+import { infoNoti } from '@/utils/myPlantUtil';
 
 const MyPlantMainPage = () => {
   const user = useAuth();
   const [myMainPlant, setMyMainPlant] = useState<UserPlant>();
+  const [plantCount, setPlantCount] = useState(0);
   const navigate = useNavigate();
   const navigateRegi = () => {
+    if (plantCount >= 10) {
+      infoNoti('식물 등록은 10개까지 가능합니다.');
+      return;
+    }
     navigate('/myplant/register');
   };
 
   useEffect(() => {
     const getQuerySnapshot = async () => {
-      const q = query(
-        collection(db, 'plant'),
-        where('userEmail', '==', user?.email),
-        where('isMain', '==', true),
-      );
-      const mainData = (await getDocs(q)).docs[0].data();
-      setMyMainPlant(mainData);
+      if (user?.email) {
+        const q = query(
+          collection(db, 'plant'),
+          where('userEmail', '==', user?.email),
+          where('isMain', '==', true),
+        );
+        const mainData = (await getDocs(q)).docs[0]?.data();
+        setMyMainPlant(mainData);
+      }
     };
     getQuerySnapshot();
   }, [user]);
   return (
     <>
-      <Toast />
       <Header />
       <main>
         <div className="my_plant_info_message">
@@ -89,6 +93,7 @@ const MyPlantMainPage = () => {
             <MainPagePlantList
               userEmail={user?.email}
               setMyMainPlant={setMyMainPlant}
+              setPlantCount={setPlantCount}
             />
           )}
         </div>

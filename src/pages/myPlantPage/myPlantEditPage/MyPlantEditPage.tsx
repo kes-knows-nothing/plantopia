@@ -10,9 +10,6 @@ import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
 import { useState, useEffect } from 'react';
 import { UserPlant } from '@/@types/plant.type';
 import 'firebase/storage';
-import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {
@@ -158,7 +155,6 @@ const MyPlantEditPage = () => {
 
   return (
     <>
-      <Toast />
       <HeaderBefore ex={true} title="식물 수정" />
       <main>
         <div className="my_plant_registeration_container">

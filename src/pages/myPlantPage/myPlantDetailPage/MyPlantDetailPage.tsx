@@ -21,7 +21,6 @@ import {
   where,
   query,
   deleteDoc,
-  Timestamp,
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
@@ -31,11 +30,7 @@ const MyPlantDetailPage = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
-  const [plantDetail, setPlantDetail] = useState<UserPlant>({
-    plantName: '헬로우',
-    purchasedDay: Timestamp.fromDate(new Date()),
-    wateredDays: [Timestamp.fromDate(new Date())],
-  });
+  const [plantDetail, setPlantDetail] = useState<UserPlant>();
   const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
 
   const formatSeconds = (seconds: number) => {
@@ -60,18 +55,19 @@ const MyPlantDetailPage = () => {
   const navigateEdit = () => {
     navigate(`/myplant/${docId}/edit`, {
       state: {
-        imgUrlFromDetail: plantDetail.imgUrl,
-        nicknameFromDetail: plantDetail.nickname,
-        plantNameFromDetail: plantDetail.plantName,
-        purchasedDayFromDetail: plantDetail.purchasedDay,
-        wateredDayFromDetail: plantDetail.wateredDays.at(-1),
-        frequencyFromDetail: plantDetail.frequency,
+        imgUrlFromDetail: plantDetail?.imgUrl,
+        nicknameFromDetail: plantDetail?.nickname,
+        plantNameFromDetail: plantDetail?.plantName,
+        purchasedDayFromDetail: plantDetail?.purchasedDay,
+        wateredDayFromDetail: plantDetail?.wateredDays.at(-1),
+        frequencyFromDetail: plantDetail?.frequency,
       },
     });
   };
 
   const deletePlant = async () => {
     if (plantDetail) {
+      if (!docId) return;
       const docRef = doc(db, 'plant', docId);
       const documentSnapshot = await getDoc(docRef);
       const dataBeforeDeletion = documentSnapshot.data();
@@ -104,17 +100,18 @@ const MyPlantDetailPage = () => {
 
   useEffect(() => {
     const getData = async () => {
+      if (!docId) return;
       const docRef = doc(db, 'plant', docId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setPlantDetail(docSnap.data());
+        setPlantDetail(docSnap.data() as UserPlant);
         const q = query(
           collection(db, 'dictionary'),
           where('name', '==', docSnap.data().plantName),
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(doc => {
-          setPlantDictDetail(doc.data());
+          setPlantDictDetail(doc.data() as PlantType);
         });
       } else {
         console.log('문서가 존재하지 않습니다.');

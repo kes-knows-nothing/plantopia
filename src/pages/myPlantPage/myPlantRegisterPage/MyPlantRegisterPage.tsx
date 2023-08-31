@@ -67,7 +67,7 @@ const MyPlantRegisterPage = () => {
   const readFileAsDataURL = (file: File) => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result as string);
+      reader.onload = e => resolve(e.target?.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -90,7 +90,7 @@ const MyPlantRegisterPage = () => {
     } catch (error) {
       console.error('파일 업로드 에러:', error);
     }
-    event.target.value = null;
+    event.target.value = '';
   };
 
   // 이미지 저장 로직

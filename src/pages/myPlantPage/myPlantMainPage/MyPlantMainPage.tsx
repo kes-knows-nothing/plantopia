@@ -37,7 +37,7 @@ const MyPlantMainPage = () => {
           where('isMain', '==', true),
         );
         const mainData = (await getDocs(q)).docs[0]?.data();
-        setMyMainPlant(mainData);
+        setMyMainPlant(mainData as UserPlant);
       }
     };
     getQuerySnapshot();
@@ -45,12 +45,12 @@ const MyPlantMainPage = () => {
   return (
     <>
       <Header />
-      <main>
-        <div className="my_plant_info_message">
+      <main className="my_plant_wrapper">
+        <h2 className="my_plant_info_message">
           <span className="username">{user?.displayName}</span> 님의 식물을
           한눈에 보기!
-        </div>
-        <div className="main_plant_info_box">
+        </h2>
+        <div className="main_plant_info_box inner">
           {myMainPlant ? (
             <div className="main_plant_main_data">
               <img
@@ -91,9 +91,9 @@ const MyPlantMainPage = () => {
               </button>
             </div>
           )}
-          {user && (
+          {user?.email && (
             <MainPagePlantList
-              userEmail={user?.email}
+              userEmail={user.email}
               setMyMainPlant={setMyMainPlant}
               setPlantCount={setPlantCount}
             />

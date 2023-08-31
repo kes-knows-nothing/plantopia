@@ -26,7 +26,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 30.6rem;
 
   > .main_plant_img {
     @include mixins.avatar(50%);

@@ -6,6 +6,7 @@ import { getDocs, collection, where, query } from 'firebase/firestore';
 import './myPlantMainPage.scss';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
+import Progress from '@/components/progress/Progress';
 import plusIcon from '@/assets/images/icons/ph_plus-light.png';
 import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
@@ -18,6 +19,7 @@ const MyPlantMainPage = () => {
   const user = useAuth();
   const [myMainPlant, setMyMainPlant] = useState<UserPlant>();
   const [plantCount, setPlantCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const navigateRegi = () => {
     if (plantCount >= 10) {
@@ -95,11 +97,13 @@ const MyPlantMainPage = () => {
               userEmail={user.email}
               setMyMainPlant={setMyMainPlant}
               setPlantCount={setPlantCount}
+              setIsLoading={setIsLoading}
             />
           )}
         </div>
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </>
   );
 };

@@ -24,12 +24,14 @@ interface MainPagePlantListProps {
   userEmail: string;
   setMyMainPlant: (data: UserPlant) => void;
   setPlantCount: (data: number) => void;
+  setIsLoading: (data: boolean) => void;
 }
 
 const MainPagePlantList = ({
   userEmail,
   setMyMainPlant,
   setPlantCount,
+  setIsLoading,
 }: MainPagePlantListProps) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
@@ -137,6 +139,7 @@ const MainPagePlantList = ({
       setPlantCount(plantData.length);
     };
     getUserPlants();
+    setIsLoading(false);
   }, []);
 
   return (

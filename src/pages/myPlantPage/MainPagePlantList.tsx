@@ -39,6 +39,10 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
     setPlantCount(plantData.length);
   };
 
+  const navigateEdit = () => {
+    navigate(`/myplant/${plant?.id}`);
+  };
+
   const handleClickIsMain = async (clickedPlant: UserPlant) => {
     if (clickedPlant.isMain === false) {
       const previousMain = myPlantData.find(item => (item.isMain = true));
@@ -111,31 +115,44 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
       <Toast />
       <div className="subplant_container">
         {myPlantData.map(plant => (
-          <div key={plant.id} className="subplant_list_box">
-            <div className="subplant_main_data">
-              <img
-                className="subplant_img"
-                src={plant.imgUrl}
-                alt="subPlantImg"
-              />
-              <Link to={`/myplant/${plant.id}`}>
+          <Link to={`/myplant/${plant.id}`} style={{ width: '100%' }}>
+            <div key={plant.id} className="subplant_list_box">
+              <div className="subplant_main_data">
+                <img
+                  className="subplant_img"
+                  src={plant.imgUrl}
+                  alt="subPlantImg"
+                />
                 <p className="subplant_name">{plant.nickname}</p>
-              </Link>
+              </div>
+              <div className="main_check_and_edit">
+                <button
+                  onClick={e => {
+                    e.preventDefault();
+                    handleClickIsMain(plant);
+                  }}
+                >
+                  <img
+                    className="mainPlantOrNot"
+                    src={plant.isMain ? mainPlantTrueIcon : mainPlantFalseIcon}
+                    alt="mainPlantOrNotImg"
+                  />
+                </button>
+                <button
+                  onClick={e => {
+                    e.preventDefault();
+                    handleEditData(plant);
+                  }}
+                >
+                  <img
+                    className="edit_button_img"
+                    src={myPlantEditIcon}
+                    alt="EditPlantImg"
+                  />
+                </button>
+              </div>
             </div>
-            <div className="main_check_and_edit">
-              <img
-                onClick={() => handleClickIsMain(plant)}
-                className="mainPlantOrNot"
-                src={plant.isMain ? mainPlantTrueIcon : mainPlantFalseIcon}
-                alt="mainPlantOrNotImg"
-              />
-              <img
-                src={myPlantEditIcon}
-                alt="EditPlantImg"
-                onClick={() => handleEditData(plant)}
-              />
-            </div>
-          </div>
+          </Link>
         ))}
       </div>
     </>

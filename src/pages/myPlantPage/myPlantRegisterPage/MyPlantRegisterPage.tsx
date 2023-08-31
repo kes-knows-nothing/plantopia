@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useLocation, useNavigate  } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks';
-import 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
@@ -28,6 +27,8 @@ const MyPlantRegisterPage = () => {
   const [frequency, setFrequency] = useState(waterCodeToNumber(waterCode));
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
+  const [saving, setSaving] = useState(false);
+
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
   };
@@ -92,6 +93,7 @@ const MyPlantRegisterPage = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSaving(true);
     if (!searchInputValue) {
       errorNoti('식물을 지정해주세요.');
       return;
@@ -222,8 +224,12 @@ const MyPlantRegisterPage = () => {
               </div>
             </div>
           </div>
-          <button className="my_plant_register_btn" type="submit">
-            등록
+          <button
+            className="my_plant_register_btn"
+            type="submit"
+            disabled={saving}
+          >
+            {saving ? '저장 중...' : '내 식물 저장'}
           </button>
         </form>
       </main>

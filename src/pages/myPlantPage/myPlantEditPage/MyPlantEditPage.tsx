@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import 'firebase/storage';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import './myPlantEditPage.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import Progress from '@/components/progress/Progress';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import { secondsToDate, dateToTimestamp } from '@/utils/dateUtil';
 import { successNoti } from '@/utils/alarmUtil';
@@ -15,6 +15,7 @@ const MyPlantEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { docId } = useParams();
+  const [saving, setSaving] = useState(false);
 
   const nicknameFromDetail = location.state?.nicknameFromDetail;
   const plantNameFromDetail = location.state?.plantNameFromDetail;
@@ -31,6 +32,7 @@ const MyPlantEditPage = () => {
   const frequencyFromList = location.state?.frequencyFromList;
 
   const [myPlantData, setMyPlantData] = useState<UserPlant>();
+  const [isLoading, setIsLoading] = useState(true);
   const [plantNickname, setPlantNickname] = useState<string>(
     nicknameFromDetail || nicknameFromList,
   );
@@ -103,6 +105,7 @@ const MyPlantEditPage = () => {
 
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setSaving(true);
     if (!docId) return;
     const documentRef = doc(db, 'plant', docId);
     myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
@@ -144,6 +147,7 @@ const MyPlantEditPage = () => {
       setPlantName(myPlantData?.plantName);
       setPlantNickname(myPlantData?.nickname);
     }
+    setIsLoading(false);
   }, []);
 
   return (
@@ -221,10 +225,15 @@ const MyPlantEditPage = () => {
             </div>
           </div>
         </div>
-        <button className="my_plant_register_btn" onClick={handleUpdate}>
-          수정 완료
+        <button
+          className="my_plant_register_btn"
+          onClick={handleUpdate}
+          disabled={saving}
+        >
+          {saving ? '수정 사항 저장 중...' : '내 식물 수정하기'}
         </button>
       </main>
+      {isLoading && <Progress />}
     </>
   );
 };

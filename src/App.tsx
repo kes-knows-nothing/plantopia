@@ -4,7 +4,7 @@ import Progress from './components/progress/Progress';
 import Toast from './components/notification/ToastContainer';
 import AppRoutes from './routes/AppRoutes';
 import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
+import '@/styles/customToastStyles.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import '@/styles/alertStyle.scss';
 

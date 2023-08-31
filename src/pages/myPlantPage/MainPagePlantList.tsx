@@ -7,7 +7,6 @@ import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
 import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import { successNoti } from '@/utils/alarmUtil';
 import {
   getDocs,

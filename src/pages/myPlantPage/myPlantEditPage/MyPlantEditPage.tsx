@@ -15,6 +15,7 @@ const MyPlantEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { docId } = useParams();
+  const [saving, setSaving] = useState(false);
 
   const nicknameFromDetail = location.state?.nicknameFromDetail;
   const plantNameFromDetail = location.state?.plantNameFromDetail;
@@ -104,6 +105,7 @@ const MyPlantEditPage = () => {
 
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setSaving(true);
     if (!docId) return;
     const documentRef = doc(db, 'plant', docId);
     myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
@@ -223,8 +225,12 @@ const MyPlantEditPage = () => {
             </div>
           </div>
         </div>
-        <button className="my_plant_register_btn" onClick={handleUpdate}>
-          수정 완료
+        <button
+          className="my_plant_register_btn"
+          onClick={handleUpdate}
+          disabled={saving}
+        >
+          {saving ? '수정 사항 저장 중...' : '내 식물 수정하기'}
         </button>
       </main>
       {isLoading && <Progress />}

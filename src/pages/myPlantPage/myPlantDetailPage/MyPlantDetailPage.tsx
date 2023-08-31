@@ -1,18 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import './myPlantDetailPage.scss';
-import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
-import sunOn from '@/assets/images/icons/sun_on_icon.png';
-import sunOff from '@/assets/images/icons/sun_off_icon.png';
-import waterOn from '@/assets/images/icons/water_on_icon.png';
-import waterOff from '@/assets/images/icons/water_off_icon.png';
-import { PlantType } from '@/@types/dictionary.type';
-import { UserPlant } from '@/@types/plant.type';
-import format from 'date-fns/format';
-import differenceInMonths from 'date-fns/differenceInMonths';
 import { useAuth } from '@/hooks';
-import { showAlert } from '@/utils/myPlantUtil';
+import { db } from '@/firebaseApp';
 import {
   doc,
   getDoc,
@@ -23,8 +12,17 @@ import {
   deleteDoc,
   updateDoc,
 } from 'firebase/firestore';
-import { db } from '@/firebaseApp';
-import { successNoti } from '@/utils/myPlantUtil';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import './myPlantDetailPage.scss';
+import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
+import sunOn from '@/assets/images/icons/sun_on_icon.png';
+import sunOff from '@/assets/images/icons/sun_off_icon.png';
+import waterOn from '@/assets/images/icons/water_on_icon.png';
+import waterOff from '@/assets/images/icons/water_off_icon.png';
+import { monthDifference, secondsToDate } from '@/utils/dateUtil';
+import { showAlert, successNoti } from '@/utils/alarmUtil';
+import { PlantType } from '@/@types/dictionary.type';
+import { UserPlant } from '@/@types/plant.type';
 
 const MyPlantDetailPage = () => {
   const user = useAuth();
@@ -33,19 +31,6 @@ const MyPlantDetailPage = () => {
   const [plantDetail, setPlantDetail] = useState<UserPlant>();
   const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
 
-  const formatSeconds = (seconds: number) => {
-    const date = new Date(seconds * 1000);
-    const formattedDate = format(date, 'yyyy-MM-dd');
-    return formattedDate;
-  };
-
-  const calculateMonthDifference = (seconds: number) => {
-    const monthsDifference = differenceInMonths(
-      new Date(),
-      new Date(seconds * 1000),
-    );
-    return monthsDifference;
-  };
   const navigateDictDetail = () => {
     navigate(`/dict/detail?plantName=${plantDictDetail?.name}`, {
       state: plantDictDetail,
@@ -92,7 +77,7 @@ const MyPlantDetailPage = () => {
           navigate('/myplant');
           successNoti('내 식물이 삭제 되었습니다.');
         } catch (error) {
-          console.error('Error deleting document: ', error);
+          return;
         }
       }
     }
@@ -114,7 +99,7 @@ const MyPlantDetailPage = () => {
           setPlantDictDetail(doc.data() as PlantType);
         });
       } else {
-        console.log('문서가 존재하지 않습니다.');
+        return;
       }
     };
     getData();
@@ -156,9 +141,7 @@ const MyPlantDetailPage = () => {
               <p>
                 ⏰ {plantDetail?.nickname}와 함께한지{' '}
                 <span>
-                  {calculateMonthDifference(
-                    plantDetail?.purchasedDay?.seconds || 0,
-                  )}
+                  {monthDifference(plantDetail?.purchasedDay?.seconds || 0)}
                   개월
                 </span>
                 이 지났어요
@@ -172,7 +155,7 @@ const MyPlantDetailPage = () => {
               <div className="last_watering_info">
                 <span>마지막 물준 날</span>
                 <span>
-                  {formatSeconds(
+                  {secondsToDate(
                     plantDetail?.wateredDays?.at(-1)?.seconds || 0,
                   )}
                 </span>
@@ -180,7 +163,7 @@ const MyPlantDetailPage = () => {
               <div className="first_day_info">
                 <span>처음 함께한 날</span>
                 <span>
-                  {formatSeconds(plantDetail?.purchasedDay?.seconds || 0)}
+                  {secondsToDate(plantDetail?.purchasedDay?.seconds || 0)}
                 </span>
               </div>
             </div>

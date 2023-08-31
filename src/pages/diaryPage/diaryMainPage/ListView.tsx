@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DiaryProps } from '@/constants/diary';
 import NoContent from './NoContent.tsx';
-import { showAlert } from '@/utils/myPlantUtil';
+import { showAlert } from '@/utils/alarmUtil.ts';
 import './listView.scss';
 
 interface ListViewProps {

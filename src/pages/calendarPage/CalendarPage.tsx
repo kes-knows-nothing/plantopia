@@ -8,7 +8,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { CALENDAR_ICONS, DAY_OF_WEEK_KR } from '@/constants/calendar';
 import { UserPlant } from '@/@types/plant.type';
 import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
-import { errorNoti } from '@/utils/myPlantUtil';
+import { errorNoti } from '@/utils/alarmUtil';
 
 import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';

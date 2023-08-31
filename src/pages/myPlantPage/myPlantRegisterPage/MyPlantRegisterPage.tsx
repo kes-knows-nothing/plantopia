@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseApp';
-import { collection, addDoc, query, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import {
   dateToTimestamp,
@@ -117,10 +117,12 @@ const MyPlantRegisterPage = () => {
       }
       return;
     }
-
-    const isPlant = query(collection(db, 'plant'));
-    const isEmpty = (await getDocs(isPlant)).empty;
-
+    const q = query(
+      collection(db, 'plant'),
+      where('userEmail', '==', user?.email),
+    );
+    const querySnapshot = await getDocs(q);
+    const isEmpty = querySnapshot.empty;
     const newPlantData = {
       frequency: waterCodeToNumber(waterCode),
       imgUrl: imgUrl || image,

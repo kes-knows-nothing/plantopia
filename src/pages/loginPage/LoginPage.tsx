@@ -14,6 +14,7 @@ import './loginPage.scss';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +46,7 @@ const LoginPage = () => {
     }
 
     try {
-      await setPersistence(auth, browserSessionPersistence);
+      isChecked || (await setPersistence(auth, browserSessionPersistence));
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch {
@@ -56,7 +57,7 @@ const LoginPage = () => {
   const handleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await setPersistence(auth, browserSessionPersistence);
+      isChecked || (await setPersistence(auth, browserSessionPersistence));
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch {
@@ -98,6 +99,15 @@ const LoginPage = () => {
             onChange={handleChange}
             placeholder="비밀번호를 입력해주세요."
           />
+          <div className="auto_login">
+            <input
+              id="check"
+              type="checkbox"
+              onChange={() => setIsChecked(prev => !prev)}
+              checked={isChecked}
+            />
+            <label htmlFor="check">자동 로그인</label>
+          </div>
           <button type="submit" className="submit_btn">
             로그인
           </button>

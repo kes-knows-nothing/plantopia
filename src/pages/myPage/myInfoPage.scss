@@ -33,7 +33,6 @@
 
       .edit_btn {
         position: absolute;
-        cursor: pointer;
         right: -0.4rem;
         bottom: 0;
         width: 2.4rem;
@@ -83,5 +82,10 @@
     font-size: 1.4rem;
     color: #ffffff;
     background-color: #1fb0ad;
+
+    &:disabled {
+      background-color: #c4c4c4;
+      cursor: not-allowed;
+    }
   }
 }

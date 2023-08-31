@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useNavigate  } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
@@ -28,6 +28,7 @@ const MyPlantRegisterPage = () => {
   const [frequency, setFrequency] = useState(waterCodeToNumber(waterCode));
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
+
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
   };

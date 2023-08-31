@@ -5,6 +5,7 @@ import { storage, db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import './myPlantEditPage.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import Progress from '@/components/progress/Progress';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import { secondsToDate, dateToTimestamp } from '@/utils/dateUtil';
 import { successNoti } from '@/utils/alarmUtil';
@@ -30,6 +31,7 @@ const MyPlantEditPage = () => {
   const frequencyFromList = location.state?.frequencyFromList;
 
   const [myPlantData, setMyPlantData] = useState<UserPlant>();
+  const [isLoading, setIsLoading] = useState(true);
   const [plantNickname, setPlantNickname] = useState<string>(
     nicknameFromDetail || nicknameFromList,
   );
@@ -143,6 +145,7 @@ const MyPlantEditPage = () => {
       setPlantName(myPlantData?.plantName);
       setPlantNickname(myPlantData?.nickname);
     }
+    setIsLoading(false);
   }, []);
 
   return (
@@ -224,6 +227,7 @@ const MyPlantEditPage = () => {
           수정 완료
         </button>
       </main>
+      {isLoading && <Progress />}
     </>
   );
 };

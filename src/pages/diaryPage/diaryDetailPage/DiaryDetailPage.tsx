@@ -70,8 +70,6 @@ const DiaryDetailPage = () => {
             <div
               className="btn delete"
               onClick={() => {
-                console.log(docId);
-
                 showAlert('글을 삭제하시겠습니까?', '', async () => {
                   await handleDelete(docId);
                   closeModal();

@@ -19,7 +19,7 @@ import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import Progress from '@/components/progress/Progress';
 import Toast from '@/components/notification/ToastContainer';
-import MainPlant from './MainPlantSection';
+import MainPlantSection from './MainPlantSection';
 import WeatherSection from './WeatherSection';
 import './mainPage.scss';
 
@@ -29,27 +29,29 @@ interface PlantListProps {
 }
 
 const PlantList = ({ plants, onClickItem }: PlantListProps) => {
-  return (
-    <div className="slide_wrapper">
-      <Swiper slidesPerView={4} className="swiper">
-        {plants.map(plant => (
-          <SwiperSlide key={nanoid()}>
-            <button className="slide" onClick={() => onClickItem(plant)}>
-              <div className="avatar">
-                <img src={plant.imgUrl} alt="plant" />
-              </div>
-              <span className="name">{plant.nickname}</span>
-            </button>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  );
+  if (plants.length > 0) {
+    return (
+      <div className="slide_wrapper">
+        <Swiper slidesPerView={3.5} className="swiper">
+          {plants.map(plant => (
+            <SwiperSlide key={nanoid()}>
+              <button className="slide" onClick={() => onClickItem(plant)}>
+                <div className="avatar">
+                  <img src={plant.imgUrl} alt="plant" />
+                </div>
+                <span className="name">{plant.nickname}</span>
+              </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    );
+  }
 };
 
 const MainPage = () => {
   const [focusPlant, setFocusPlant] = useState<UserPlant>();
-  const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const [plantList, setPlantList] = useState<UserPlant[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const user = useAuth();
 
@@ -80,12 +82,12 @@ const MainPage = () => {
   const getUserPlant = async () => {
     if (!user) return;
 
+    setIsLoading(true);
+
     const emailRef = collection(db, 'plant');
     const q = query(emailRef, where('userEmail', '==', user.email));
 
     try {
-      setIsLoading(true);
-
       const userPlantList: UserPlant[] = [];
 
       const querySnapshot = await getDocs(q);
@@ -98,14 +100,15 @@ const MainPage = () => {
         });
       });
 
-      const mainPlantData = userPlantList.find(({ id, isMain }) => {
+      const mainVisiblePlant = userPlantList.find(({ id, isMain }) => {
         return focusPlant ? focusPlant.id === id : isMain;
       });
 
-      setFocusPlant(mainPlantData || userPlantList[0]);
+      setFocusPlant(mainVisiblePlant || userPlantList[0]);
       setPlantList(userPlantList);
     } catch (error) {
       errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
+      setPlantList(null);
     } finally {
       setIsLoading(false);
     }
@@ -115,8 +118,6 @@ const MainPage = () => {
     getUserPlant();
   }, [user]);
 
-  const hasPlant = !!(focusPlant && plantList.length > 0);
-
   return (
     <>
       <Toast />
@@ -124,14 +125,17 @@ const MainPage = () => {
       <main className="main_page">
         <section>
           <WeatherSection />
-          <div className="inner">
-            <MainPlant plant={focusPlant} onWaterPlant={onWaterPlant} />
-          </div>
-          {hasPlant && (
-            <PlantList
-              plants={plantList}
-              onClickItem={(plant: UserPlant) => setFocusPlant(plant)}
-            />
+          {plantList && (
+            <>
+              <MainPlantSection
+                plant={focusPlant}
+                onWaterPlant={onWaterPlant}
+              />
+              <PlantList
+                plants={plantList}
+                onClickItem={(plant: UserPlant) => setFocusPlant(plant)}
+              />
+            </>
           )}
         </section>
       </main>

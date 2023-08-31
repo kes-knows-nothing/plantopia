@@ -66,8 +66,6 @@ const MyInfo = () => {
     setIsBtnActive(true);
   };
 
-  console.log(isBtnActive);
-
   return (
     <div className="my_info_page">
       <HeaderBefore title="내 정보" />

@@ -3,10 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import { setBodyHeight } from './utils/setBodyHeight';
 import Progress from './components/progress/Progress';
 import Toast from './components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import '@/styles/alertStyle.scss';
 
 const MainPage = lazy(() => import('./pages/mainPage/MainPage'));
 const LoginPage = lazy(() => import('./pages/loginPage/LoginPage'));

@@ -20,10 +20,6 @@ import NotFoundPage from './pages/notFoundPage/NotFoundPage';
 import Toast from './components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
-
-import Toast from './components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import '@/styles/alertStyle.scss';
 

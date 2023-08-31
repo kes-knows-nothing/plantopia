@@ -114,9 +114,7 @@ export const showAlert = (
     closeOnEscape: false, // 창이 뜨고 esc로 나갈 수 있는 지 여부 false는 못나감.
     closeOnClickOutside: false, // 다른 데 눌러도 대화 상자가 안 닫힘.
     willUnmount: () => {},
-    afterClose: () => {},
     onClickOutside: () => {},
-    onKeypress: () => {},
     onKeypressEscape: () => {},
     overlayClassName: 'overlay-custom-class-name',
   });

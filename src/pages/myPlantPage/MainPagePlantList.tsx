@@ -24,7 +24,6 @@ interface MainPagePlantListProps {
   setMyMainPlant: (data: UserPlant) => void;
   setPlantCount: (data: number) => void;
 }
-
 import { db } from '@/firebaseApp';
 
 const MainPagePlantList = ({
@@ -51,7 +50,7 @@ const MainPagePlantList = ({
         isMain: data.isMain,
         plantName: data.plantName,
         userEmail: data.userEmail,
-        wateredDays: data.waterDays,
+        wateredDays: data.wateredDays,
         purchasedDay: data.purchasedDay,
       };
       plantData.push(userPlant);
@@ -90,6 +89,7 @@ const MainPagePlantList = ({
   };
 
   const handleEditData = (clickedPlant: UserPlant) => {
+    console.log(clickedPlant);
     const dataFromList = {
       imgUrlFromList: clickedPlant.imgUrl,
       nicknameFromList: clickedPlant.nickname,
@@ -128,7 +128,7 @@ const MainPagePlantList = ({
           isMain: data.isMain,
           plantName: data.plantName,
           userEmail: data.userEmail,
-          wateredDays: data.waterDays,
+          wateredDays: data.wateredDays,
           purchasedDay: data.purchasedDay,
         };
         plantData.push(userPlant);
@@ -145,8 +145,12 @@ const MainPagePlantList = ({
       <Toast />
       <div className="subplant_container">
         {myPlantData.map(plant => (
-          <Link to={`/myplant/${plant.id}`} className="subplant_list_box_link">
-            <div key={plant.id} className="subplant_list_box">
+          <Link
+            key={plant.id}
+            to={`/myplant/${plant.id}`}
+            className="subplant_list_box_link"
+          >
+            <div className="subplant_list_box">
               <div className="subplant_main_data">
                 <img
                   className="subplant_img"

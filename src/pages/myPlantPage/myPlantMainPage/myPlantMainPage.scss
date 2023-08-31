@@ -1,21 +1,25 @@
 @use '@/styles/mixins';
 
-.main_plant_info_box {
-  width: 100%;
-  padding: 0 2rem;
+.my_plant_wrapper {
+  margin-bottom: 5.6rem;
+  min-height: calc(100vh - 11.2rem);
+
+  > .my_plant_info_message {
+    font-size: 1.6rem;
+    font-weight: 400;
+    padding: 2rem;
+
+    > .username {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+  }
 }
 
-.my_plant_info_message {
-  height: 7.7rem;
-  display: flex;
-  align-items: center;
+.main_plant_info_box {
   width: 100%;
-  font-weight: 400;
-  font-size: 1.6rem;
-  padding: 0 2rem;
-  > span {
-    font-weight: 700;
-  }
+  // padding: 0 2rem;
+  margin-top: 3.1rem;
 }
 
 .main_plant_main_data {

@@ -53,11 +53,12 @@ const MainPage = () => {
 
       await fetchWateringPlant(focusPlant);
       const userPlantList = await getPlantList(user.email);
-      const mainVisiblePlant = userPlantList.find(({ id, isMain }) => {
-        return focusPlant ? focusPlant.id === id : isMain;
-      });
+      const mainVisiblePlant = userPlantList.find(
+        ({ id }) => focusPlant.id === id,
+      );
 
-      setFocusPlant(mainVisiblePlant || userPlantList[0]);
+      setFocusPlant(mainVisiblePlant);
+      setPlantList(userPlantList);
       successNoti('물을 잘 먹었어요!');
     } catch (error) {
       errorNoti('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
@@ -66,30 +67,25 @@ const MainPage = () => {
     }
   };
 
-  const getUserPlant = async () => {
-    if (!user?.email) return;
-
-    setIsLoading(true);
-
-    try {
-      const userPlantList = await getPlantList(user.email);
-
-      const mainVisiblePlant = userPlantList.find(({ id, isMain }) => {
-        return focusPlant ? focusPlant.id === id : isMain;
-      });
-
-      setFocusPlant(mainVisiblePlant || userPlantList[0]);
-      setPlantList(userPlantList);
-    } catch (error) {
-      errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
-      setPlantList(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getUserPlant();
+    (async () => {
+      if (!user?.email) return;
+
+      setIsLoading(true);
+
+      try {
+        const userPlantList = await getPlantList(user.email);
+        const mainVisiblePlant = userPlantList.find(({ isMain }) => isMain);
+
+        setFocusPlant(mainVisiblePlant || userPlantList[0]);
+        setPlantList(userPlantList);
+      } catch (error) {
+        errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
+        setPlantList(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, [user]);
 
   return (

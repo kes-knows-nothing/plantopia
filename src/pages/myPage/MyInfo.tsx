@@ -5,7 +5,6 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
 import { nicknameRe } from '@/constants/regEx';
-import Toast from '@/components/notification/ToastContainer';
 import { errorNoti } from '@/utils/myPlantUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import PROFILE from '@/assets/images/icons/default_profile.png';
@@ -46,7 +45,6 @@ const MyInfo = () => {
     return true;
   };
 
-  console.log(nickname);
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!nicknameValidation(nickname)) return;
@@ -68,7 +66,6 @@ const MyInfo = () => {
 
   return (
     <div className="my_info_page">
-      <Toast />
       <HeaderBefore title="내 정보" />
       <main className="my_info_container inner">
         <section className="profile_section">

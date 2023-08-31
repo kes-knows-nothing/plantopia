@@ -2,7 +2,7 @@
 
 .main_plant_info_box {
   width: 100%;
-  height: 100%;
+  min-height: 75rem;
   padding: 0 2rem;
   margin-bottom: 5.6rem;
 }
@@ -24,7 +24,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 30.8rem;
+  height: 30.6rem;
+  
 
   > .main_plant_img {
     @include mixins.avatar(50%);
@@ -95,6 +96,8 @@
   color: #ffffff;
   margin-left: auto;
   margin-top: 3.7rem;
+  position: relative;
+  bottom: 1.8rem;
   > img {
     width: 1.4rem;
     margin-right: 0.3rem;
@@ -131,7 +134,7 @@
 .my_plant_main_add_btn_inner_contents {
   width: 29rem;
   height: 5.2rem;
-  border-radius: 26px;
+  border-radius: 2.6rem;
   border: 1px solid #d6d6d6;
   display: flex;
   justify-content: center;

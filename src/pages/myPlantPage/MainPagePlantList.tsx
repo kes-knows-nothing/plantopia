@@ -21,10 +21,9 @@ import {
 
 import { db } from '@/firebaseApp';
 
-const MainPagePlantList = ({ userEmail, setMyMainPlant }) => {
+const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
-
   const getUserPlants = async () => {
     const q = query(
       collection(db, 'plant'),
@@ -34,9 +33,10 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant }) => {
     const plantData: Array<UserPlant> = [];
     querySnapshot.forEach(doc => {
       plantData.push({ ...doc.data(), id: doc.id });
-      plantData.sort(compare);
-      setMyPlantData(plantData);
     });
+    plantData.sort(compare);
+    setMyPlantData(plantData);
+    setPlantCount(plantData.length);
   };
 
   const handleClickIsMain = async (clickedPlant: UserPlant) => {
@@ -89,6 +89,20 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant }) => {
   };
 
   useEffect(() => {
+    const getUserPlants = async () => {
+      const q = query(
+        collection(db, 'plant'),
+        where('userEmail', '==', userEmail),
+      );
+      const querySnapshot = await getDocs(q);
+      const plantData: Array<UserPlant> = [];
+      querySnapshot.forEach(doc => {
+        plantData.push({ ...doc.data(), id: doc.id });
+      });
+      plantData.sort(compare);
+      setMyPlantData(plantData);
+      setPlantCount(plantData.length);
+    };
     getUserPlants();
   }, []);
 

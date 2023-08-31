@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { DiaryProps, ListViewProps } from '@/@types/diary.type';
 import { showAlert } from '@/utils/myPlantUtil';
 import NoContent from './NoContent';
+=======
+import { DiaryProps } from '@/constants/diary';
+import NoContent from './NoContent.tsx';
+import { showAlert } from '@/utils/alarmUtil.ts';
+>>>>>>> a1e98d4df9a4685333d3ded73adacd7440ea5a68
 import './listView.scss';
 
 const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {

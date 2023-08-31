@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import { useAuth } from '@/hooks';
 import { UserPlant } from '@/@types/plant.type';
 import { db } from '@/firebaseApp';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import {
   collection,
   getDocs,

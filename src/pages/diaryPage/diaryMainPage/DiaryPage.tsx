@@ -7,6 +7,10 @@ import useDiaryData from '@/hooks/useDiaryData';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import Progress from '@/components/progress/Progress';
+<<<<<<< HEAD
+=======
+import { showAlert } from '@/utils/alarmUtil.ts';
+>>>>>>> a1e98d4df9a4685333d3ded73adacd7440ea5a68
 
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';

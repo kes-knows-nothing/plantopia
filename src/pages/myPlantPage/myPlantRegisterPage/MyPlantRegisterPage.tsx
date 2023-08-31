@@ -1,23 +1,18 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import './myPlantRegisterPage.scss';
+import { useLocation, useNavigate  } from 'react-router-dom';
 import { useAuth } from '@/hooks';
-import { useNavigate } from 'react-router-dom';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebaseApp';
-import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
-import { db } from '@/firebaseApp';
-import {
-  dateToTimestamp,
-  errorNoti,
-  successNoti,
-  waterCodeToNumber,
-} from '@/utils/myPlantUtil';
 import 'firebase/storage';
+import { storage, db } from '@/firebaseApp';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
+import './myPlantRegisterPage.scss';
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
+import { waterCodeToNumber } from '@/utils/convertDataUtil';
+import { dateToTimestamp } from '@/utils/dateUtil';
 
 const MyPlantRegisterPage = () => {
   const user = useAuth();

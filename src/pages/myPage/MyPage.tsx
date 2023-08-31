@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
 import { customerService } from '@/constants/myPage';
-import { errorNoti } from '@/utils/myPlantUtil';
+import { errorNoti } from '@/utils/alarmUtil';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Progress from '@/components/progress/Progress';

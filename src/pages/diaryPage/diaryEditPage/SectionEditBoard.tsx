@@ -1,4 +1,6 @@
-import { ArrowImages, SectionEditBoardProps } from '@/constants/diary';
+import { ArrowImages } from '@/constants/diary';
+import { SectionEditBoardProps } from '@/@types/diary.type';
+
 import './sectionEditBoard.scss';
 
 const SectionEditBoard = ({
@@ -68,6 +70,9 @@ const SectionEditBoard = ({
                 <label htmlFor={plant.nickname}>{plant.nickname}</label>
               </li>
             ))}
+            <li className="choose_complete" onClick={toggleSelect}>
+              선택 완료
+            </li>
           </ul>
         )}
       </div>

@@ -11,7 +11,65 @@
 }
 
 /* DIARY-Detail 페이지 */
+.more_btn_wrap {
+  min-width: 400px;
+  margin-left: 50px;
+  height: 5.6rem;
+  position: fixed;
+  left: 50%;
+  top: 0.3rem;
+  transform: translateX(-50%);
+  z-index: 15;
 
+  > .more {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 3rem;
+    height: 3rem;
+    transform: translateX(0.2rem);
+    color: #979797;
+    opacity: 0.8;
+    background: url('@/assets/images/icons/diary_more.png') no-repeat center /
+      0.35rem;
+  }
+
+  .more_modal {
+    width: 11.5rem;
+    height: 7.5rem;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 2rem;
+    top: 4rem;
+    font-size: 1.3rem;
+    background: #fff;
+    overflow: hidden;
+    z-index: 15;
+    border-radius: 0.4rem;
+    box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
+
+    > .btn {
+      padding: 1rem;
+      height: 50%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        background: #f7f8f7;
+      }
+    }
+
+    > .modify {
+      color: #22274c;
+    }
+
+    > .delete {
+      color: red;
+    }
+  }
+}
 .diary_detail_page {
   width: 100%;
   min-height: calc(100vh - 5.6rem);

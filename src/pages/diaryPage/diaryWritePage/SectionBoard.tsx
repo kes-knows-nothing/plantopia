@@ -1,4 +1,6 @@
-import { ArrowImages, SectionBoardProps } from '@/constants/diary';
+import { ArrowImages } from '@/constants/diary';
+import { SectionBoardProps } from '@/@types/diary.type';
+
 import './sectionBoard.scss';
 
 const SectionBoard = ({
@@ -65,21 +67,26 @@ const SectionBoard = ({
           </div>
 
           {state.isVisible && (
-            <ul className="plant_list">
-              {(plantTag || []).map(plant => (
-                <li key={plant.nickname}>
-                  <input
-                    type="checkbox"
-                    name={plant.nickname}
-                    id={plant.nickname}
-                    value={plant.nickname}
-                    onChange={handlePlantSelection}
-                    checked={chosenPlants.includes(plant.nickname)}
-                  />
-                  <label htmlFor={plant.nickname}>{plant.nickname}</label>
+            <>
+              <ul className="plant_list">
+                {(plantTag || []).map(plant => (
+                  <li key={plant.nickname}>
+                    <input
+                      type="checkbox"
+                      name={plant.nickname}
+                      id={plant.nickname}
+                      value={plant.nickname}
+                      onChange={handlePlantSelection}
+                      checked={chosenPlants.includes(plant.nickname)}
+                    />
+                    <label htmlFor={plant.nickname}>{plant.nickname}</label>
+                  </li>
+                ))}
+                <li className="choose_complete" onClick={toggleSelect}>
+                  선택 완료
                 </li>
-              ))}
-            </ul>
+              </ul>
+            </>
           )}
         </div>
 

@@ -25,7 +25,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-import Toast from '@/components/notification/ToastContainer';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantDetailPage = () => {
@@ -122,7 +121,6 @@ const MyPlantDetailPage = () => {
 
   return (
     <>
-      <Toast />
       <HeaderBefore ex={false} title="식물 상세" />
       <main>
         <div className="my_plant_detail_upper_container">

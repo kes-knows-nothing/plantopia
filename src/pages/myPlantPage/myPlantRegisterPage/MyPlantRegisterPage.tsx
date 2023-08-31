@@ -7,7 +7,6 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseApp';
 import { collection, addDoc, query, getDocs } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-import Toast from '@/components/notification/ToastContainer';
 import {
   dateToTimestamp,
   errorNoti,
@@ -138,7 +137,6 @@ const MyPlantRegisterPage = () => {
   };
   return (
     <>
-      <Toast />
       <HeaderBefore ex={true} title="식물 등록" />
       <main>
         <form action="" onSubmit={handleRegister}>
@@ -231,7 +229,6 @@ const MyPlantRegisterPage = () => {
               </div>
             </div>
           </div>
-
           <button className="my_plant_register_btn" type="submit">
             등록
           </button>

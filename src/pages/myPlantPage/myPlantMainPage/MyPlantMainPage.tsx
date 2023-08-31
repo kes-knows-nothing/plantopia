@@ -9,7 +9,6 @@ import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import Toast from '@/components/notification/ToastContainer';
 import { useAuth } from '@/hooks';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
@@ -19,7 +18,7 @@ import { infoNoti } from '@/utils/myPlantUtil';
 const MyPlantMainPage = () => {
   const user = useAuth();
   const [myMainPlant, setMyMainPlant] = useState<UserPlant>();
-  const [plantCount, setPlantCount] = useState<number>(0);
+  const [plantCount, setPlantCount] = useState(0);
   const navigate = useNavigate();
   const navigateRegi = () => {
     if (plantCount >= 10) {
@@ -45,7 +44,6 @@ const MyPlantMainPage = () => {
   }, [user]);
   return (
     <>
-      <Toast />
       <Header />
       <main>
         <div className="my_plant_info_message">

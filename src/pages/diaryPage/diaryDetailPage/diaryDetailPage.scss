@@ -12,6 +12,15 @@
 
 /* DIARY-Detail 페이지 */
 .more_btn_wrap {
+  min-width: 400px;
+  margin-left: 50px;
+  height: 5.6rem;
+  position: fixed;
+  left: 50%;
+  top: 0.3rem;
+  transform: translateX(-50%);
+  z-index: 15;
+
   > .more {
     position: absolute;
     right: 1rem;
@@ -23,7 +32,6 @@
     opacity: 0.8;
     background: url('@/assets/images/icons/diary_more.png') no-repeat center /
       0.35rem;
-    z-index: 15;
   }
 
   .more_modal {

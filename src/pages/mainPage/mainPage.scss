@@ -2,12 +2,17 @@
 @use 'swiper/scss';
 
 .main_page {
-  min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
-  margin-bottom: 5.6rem;
+  // min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
+  height: 100%;
+  padding-bottom: 5.6rem;
   background-color: #ffffff;
 
   > section {
     min-height: inherit;
+
+    > :last-child {
+      padding-bottom: 2rem;
+    }
   }
 
   .weather_text_box {
@@ -244,7 +249,7 @@
 /* 서브 식물 리스트 슬라이드*/
 .main_page > section > .slide_wrapper {
   margin-top: 3.3rem;
-  padding: 0 0 2rem 2rem;
+  margin-left: 2rem;
   min-height: 10.9rem;
 
   > .swiper {

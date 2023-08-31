@@ -97,26 +97,23 @@ const MyPlantRegisterPage = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      plantName.trim() === '' ||
-      purchasedDay === '' ||
-      searchInputValue === '' ||
-      frequency === null
-    ) {
-      if (!searchInputValue) {
-        errorNoti('식물을 지정해주세요.');
-      }
-      if (!plantName) {
-        errorNoti('식물 닉네임을 설정해주세요.');
-      }
-      if (!frequency) {
-        errorNoti('식물의 물 주기를 설정해주세요.');
-      }
-      if (!purchasedDay) {
-        errorNoti('식물과 함께한 날을 지정해주세요.');
-      }
+    if (!searchInputValue) {
+      errorNoti('식물을 지정해주세요.');
       return;
     }
+    if (!plantName) {
+      errorNoti('식물 닉네임을 설정해주세요.');
+      return;
+    }
+    if (!frequency) {
+      errorNoti('식물의 물 주기를 설정해주세요.');
+      return;
+    }
+    if (!purchasedDay) {
+      errorNoti('식물과 함께한 날을 지정해주세요.');
+      return;
+    }
+
     const q = query(
       collection(db, 'plant'),
       where('userEmail', '==', user?.email),

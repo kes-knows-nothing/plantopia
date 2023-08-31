@@ -8,7 +8,7 @@ import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/custom-toast-styles.scss';
-import { successNoti } from '@/utils/myPlantUtil';
+import { successNoti } from '@/utils/alarmUtil';
 import {
   getDocs,
   collection,
@@ -18,13 +18,13 @@ import {
   updateDoc,
   getDoc,
 } from 'firebase/firestore';
+import { db } from '@/firebaseApp';
 
 interface MainPagePlantListProps {
   userEmail: string;
   setMyMainPlant: (data: UserPlant) => void;
   setPlantCount: (data: number) => void;
 }
-import { db } from '@/firebaseApp';
 
 const MainPagePlantList = ({
   userEmail,
@@ -89,7 +89,6 @@ const MainPagePlantList = ({
   };
 
   const handleEditData = (clickedPlant: UserPlant) => {
-    console.log(clickedPlant);
     const dataFromList = {
       imgUrlFromList: clickedPlant.imgUrl,
       nicknameFromList: clickedPlant.nickname,

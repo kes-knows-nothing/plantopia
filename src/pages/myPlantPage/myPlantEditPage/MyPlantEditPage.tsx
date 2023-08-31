@@ -1,15 +1,15 @@
-import './myPlantEditPage.scss';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
+import 'firebase/storage';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
-import { useState, useEffect } from 'react';
+import './myPlantEditPage.scss';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
+import { secondsToDate, dateToTimestamp } from '@/utils/dateUtil';
+import { successNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
-import 'firebase/storage';
-import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {
   const navigate = useNavigate();
@@ -68,7 +68,6 @@ const MyPlantEditPage = () => {
     setFrequency(Number(e.target.value));
   };
 
-  // 이미지 저장 로직
   const cleanFileName = (fileName: string) => {
     const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
     return cleanedName;
@@ -97,7 +96,7 @@ const MyPlantEditPage = () => {
       const url = await getDownloadURL(snapshot.ref);
       setImgUrl(url);
     } catch (error) {
-      console.error('파일 업로드 에러:', error);
+      return;
     }
     event.target.value = '';
   };
@@ -120,7 +119,7 @@ const MyPlantEditPage = () => {
       successNoti('식물 정보를 수정하였습니다!');
       navigate('/myplant');
     } catch (error) {
-      console.error('Error updating document: ', error);
+      return;
     }
   };
 

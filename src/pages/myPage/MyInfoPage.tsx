@@ -5,10 +5,10 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
 import { nicknameRe } from '@/constants/regEx';
-import { errorNoti } from '@/utils/myPlantUtil';
+import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import PROFILE from '@/assets/images/icons/default_profile.png';
-import './myInfo.scss';
+import './myInfoPage.scss';
 
 const MyInfo = () => {
   const user = useAuth();
@@ -56,9 +56,8 @@ const MyInfo = () => {
         displayName: nickname?.trim(),
         photoURL: imgUrl,
       });
-      navigate('/mypage', {
-        state: { message: '회원정보 수정에 성공했습니다.' },
-      });
+      successNoti('회원정보 수정에 성공했습니다.');
+      navigate('/mypage');
     } catch {
       errorNoti('회원정보 수정에 실패했습니다.');
     }

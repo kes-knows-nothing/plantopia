@@ -7,7 +7,7 @@ import DiaryWritePage from './pages/diaryPage/diaryWritePage/DiaryWritePage';
 import DiaryEditPage from './pages/diaryPage/diaryEditPage/DiaryEditPage';
 import DiaryDetailPage from './pages/diaryPage/diaryDetailPage/DiaryDetailPage';
 import MyPage from './pages/myPage/MyPage';
-import MyInfo from './pages/myPage/MyInfo';
+import MyInfoPage from './pages/myPage/MyInfoPage';
 import MyPlantMainPage from './pages/myPlantPage/myPlantMainPage/MyPlantMainPage';
 import MyPlantDetailPage from './pages/myPlantPage/myPlantDetailPage/MyPlantDetailPage';
 import MyPlantRegisterPage from './pages/myPlantPage/myPlantRegisterPage/MyPlantRegisterPage';
@@ -42,7 +42,7 @@ const App = () => {
         <Route path="/diary/:docId/edit" element={<DiaryEditPage />} />
         <Route path="/diary/:docId" element={<DiaryDetailPage />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/info" element={<MyInfo />} />
+        <Route path="/mypage/info" element={<MyInfoPage />} />
         <Route path="/myplant" element={<MyPlantMainPage />} />
         <Route path="/myplant/:docId" element={<MyPlantDetailPage />} />
         <Route path="/myplant/:docId/edit" element={<MyPlantEditPage />} />

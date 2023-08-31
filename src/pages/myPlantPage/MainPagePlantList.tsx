@@ -39,10 +39,6 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
     setPlantCount(plantData.length);
   };
 
-  const navigateEdit = () => {
-    navigate(`/myplant/${plant?.id}`);
-  };
-
   const handleClickIsMain = async (clickedPlant: UserPlant) => {
     if (clickedPlant.isMain === false) {
       const previousMain = myPlantData.find(item => (item.isMain = true));

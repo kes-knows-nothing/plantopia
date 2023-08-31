@@ -30,7 +30,7 @@ const MyPlantRegisterPage = () => {
   const [plantName, setPlantName] = useState<string>('');
   const [purchasedDay, setPurchasedDay] = useState<string>('');
   const [wateredDays, setWateredDays] = useState<string>('');
-  const [frequency, setFrequency] = useState<number>();
+  const [frequency, setFrequency] = useState(waterCodeToNumber(waterCode));
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +127,7 @@ const MyPlantRegisterPage = () => {
       nickname: plantName,
       plantName: searchInputValue,
       purchasedDay: dateToTimestamp(purchasedDay),
-      userEmail: 'test@test.com',
+      userEmail: user?.email,
       wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
@@ -200,7 +200,6 @@ const MyPlantRegisterPage = () => {
                 <input
                   className="watering_frequency_input"
                   value={frequency}
-                  defaultValue={waterCodeToNumber(waterCode)}
                   onChange={handleFrequency}
                 />
 

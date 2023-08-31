@@ -5,6 +5,9 @@ import { useAuth } from '@/hooks';
 import useDiaryData from '@/hooks/useDiaryData';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
+import Progress from '@/components/progress/Progress';
+import { showAlert } from '@/utils/myPlantUtil';
+
 import ListView from './ListView.tsx';
 import GalleryView from './GalleryView.tsx';
 import './diaryPage.scss';
@@ -12,7 +15,8 @@ import './diaryPage.scss';
 const DiaryPage = () => {
   const user = useAuth();
   const navigate = useNavigate();
-  const { diaryData, checkPlantExistence, handleDelete } = useDiaryData();
+  const { diaryData, checkPlantExistence, handleDelete, isLoading } =
+    useDiaryData();
   const [currentTab, setCurrentTab] = useState('list_tab');
 
   const handleTabChange = (tab: string) => {
@@ -39,12 +43,13 @@ const DiaryPage = () => {
   const redirectToPage = async () => {
     const plantExists = await checkPlantExistence();
     if (!plantExists) {
-      const confirmed = window.confirm(
-        '등록된 식물이 없습니다. 내 식물을 등록하시겠습니까?',
+      showAlert(
+        '등록된 식물이 없습니다.',
+        '내 식물을 등록하시겠습니까?',
+        () => {
+          navigate('/myplant/register');
+        },
       );
-      if (confirmed) {
-        navigate('/myplant/register');
-      }
     } else {
       navigate('/diary/write');
     }
@@ -91,6 +96,7 @@ const DiaryPage = () => {
         </button>
       </main>
       <Footer />
+      {isLoading && <Progress />}
     </>
   );
 };

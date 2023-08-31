@@ -8,32 +8,6 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
-/* sub_header */
-
-.sub_header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 6.4rem;
-  background-color: #fff;
-  border-bottom: 1px solid #f7f8f7;
-
-  strong {
-    font-size: 1.6rem;
-    font-weight: 900;
-  }
-  .close_btn {
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2.4rem;
-    height: 2.4rem;
-    background: url('@/assets/images/icons/icon_close.png') no-repeat center /
-      contain;
-  }
-}
 /* DIARY-WRITE 페이지 */
 
 .diary_write_wrap {

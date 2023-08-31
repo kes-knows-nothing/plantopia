@@ -21,7 +21,6 @@ interface EditPhotoProps {
 const SectionEditPhoto: React.FC<EditPhotoProps> = ({
   imgUrls,
   setImgUrls,
-  isLoading,
   setIsLoading,
 }) => {
   const [previewImgs, setPreviewImgs] = useState<{ backgroundImage: string }[]>(
@@ -38,7 +37,7 @@ const SectionEditPhoto: React.FC<EditPhotoProps> = ({
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setIsLoading(true);
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     if (!file) return;
 
     try {
@@ -54,7 +53,10 @@ const SectionEditPhoto: React.FC<EditPhotoProps> = ({
       console.error('파일 업로드 에러:', error);
     }
 
-    event.target.value = null;
+    if (event.target instanceof HTMLInputElement) {
+      event.target.value = '';
+    }
+
     setIsLoading(false);
   };
 

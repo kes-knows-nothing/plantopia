@@ -77,7 +77,11 @@ const MyPlantDetailPage = () => {
       const dataBeforeDeletion = documentSnapshot.data();
       if (dataBeforeDeletion?.isMain) {
         await deleteDoc(docRef);
-        const querySnapshot = await getDocs(collection(db, 'plant'));
+        const q = query(
+          collection(db, 'plant'),
+          where('userEmail', '==', user?.email),
+        );
+        const querySnapshot = await getDocs(q);
         const firstDocumentid = querySnapshot.docs[0].id;
         const documentRef = doc(db, 'plant', firstDocumentid);
         const updatedFields = {

@@ -80,13 +80,15 @@ const MyPlantMainPage = () => {
                 src={samplePlant}
                 alt="samplePlantImg"
               />
-              <div
+              <button
                 className="my_plant_main_add_btn_inner_contents"
                 onClick={navigateRegi}
               >
-                <img src={editIcon} alt="editIcon" />
-                <p>내 식물 등록하기</p>
-              </div>
+                <div className="my_plant_main_add_btn_inner_contents_box">
+                  <img src={editIcon} alt="editIcon" />
+                  <p>내 식물 등록하기</p>
+                </div>
+              </button>
             </div>
           )}
           {user && (

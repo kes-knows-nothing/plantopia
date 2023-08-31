@@ -6,12 +6,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 5.6rem;
+  margin-bottom: 5.7rem;
 }
 
 .subplant_container:last-child {
   border-bottom: none;
-  margin-bottom: 1.2rem;
 }
 
 .subplant_list_box {
@@ -47,12 +46,24 @@
   width: 4.75rem;
   align-items: center;
   justify-content: space-between;
-  :first-child {
+  > button {
     width: 1.8rem;
     height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  :last-child {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
+}
+.mainPlantOrNot {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.edit_button_img {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.subplant_list_box_link {
+  width: 100%;
 }

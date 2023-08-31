@@ -9,7 +9,6 @@ import {
 } from 'firebase/auth';
 import { auth } from '../../firebaseApp';
 import { errorNoti } from '@/utils/myPlantUtil';
-import Toast from '@/components/notification/ToastContainer';
 import './login.scss';
 
 const LoginPage = () => {
@@ -50,7 +49,7 @@ const LoginPage = () => {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch {
-      alert('이메일 또는 비밀번호가 일치하지 않습니다.');
+      errorNoti('이메일 또는 비밀번호가 일치하지 않습니다.');
     }
   };
 
@@ -61,14 +60,13 @@ const LoginPage = () => {
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch {
-      alert('구글 로그인에 실패했습니다.');
+      errorNoti('구글 로그인에 실패했습니다.');
       navigate('/login');
     }
   };
 
   return (
     <main className="login_page">
-      <Toast />
       <div className="login_box inner">
         <h1>
           <span>Plantopia</span>

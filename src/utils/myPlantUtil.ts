@@ -91,8 +91,8 @@ export const infoNoti = (content: string) => {
  * @param {() => void} onCancel 취소 버튼 클릭 시 함수를 정의합니다.
  */
 export const showAlert = (
-  msg: string,
-  title?: string,
+  title: string,
+  msg?: string,
   onConfirm: () => void = () => {},
   onCancel: () => void = () => {},
 ) => {
@@ -101,12 +101,14 @@ export const showAlert = (
     message: msg,
     buttons: [
       {
-        label: '확인',
-        onClick: onConfirm,
+        label: '취소',
+        className: 'cancel',
+        onClick: onCancel,
       },
       {
-        label: '취소',
-        onClick: onCancel,
+        label: '확인',
+        className: 'confirm',
+        onClick: onConfirm,
       },
     ],
     closeOnEscape: false, // 창이 뜨고 esc로 나갈 수 있는 지 여부 false는 못나감.

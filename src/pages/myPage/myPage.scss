@@ -16,11 +16,9 @@
       background-color: #ffffff;
 
       h2 {
-        padding-top: 1rem;
-        padding-bottom: 2.8rem;
         font-size: 1.6rem;
         color: #22264c;
-        line-height: 2.2rem;
+        padding: 2rem 0 2.8rem 0;
 
         em {
           font-size: 1.8rem;
@@ -31,7 +29,7 @@
       .my_profile {
         display: flex;
         align-items: center;
-        padding-bottom: 3.6rem;
+        padding-bottom: 3rem;
 
         > img {
           width: 6rem;

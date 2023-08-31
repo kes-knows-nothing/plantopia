@@ -20,7 +20,7 @@ const useDiaryData = () => {
   const navigate = useNavigate();
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   /* 다이어리 메인 데이터 불러오기 */
   useEffect(() => {
@@ -101,7 +101,7 @@ const useDiaryData = () => {
       const updatedDiaryData = diaryData.filter(diary => diary.id !== diaryId);
       setDiaryData(updatedDiaryData);
       successNoti('삭제가 완료되었어요!');
-      navigate('/diary'); 
+      navigate('/diary');
     } catch (error) {
       return;
     }

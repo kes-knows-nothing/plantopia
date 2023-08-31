@@ -66,6 +66,12 @@
       background-color: rgba($color: #ffffff, $alpha: 0.5);
       filter: drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.06));
       font-size: 1.4rem;
+      color: #22264c;
+      font-family: 'Pretendard', Arial, sans-serif;
+
+      &:hover {
+        background-color: #e7e7e7;
+      }
     }
 
     .oauth_box {

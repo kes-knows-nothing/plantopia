@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DiaryImages } from '@/constants/diary';
 import { useAuth } from '@/hooks';
@@ -15,13 +15,9 @@ import './diaryPage.scss';
 const DiaryPage = () => {
   const user = useAuth();
   const navigate = useNavigate();
-  const { diaryData, checkPlantExistence, handleDelete } = useDiaryData();
+  const { diaryData, checkPlantExistence, handleDelete, isLoading } =
+    useDiaryData();
   const [currentTab, setCurrentTab] = useState('list_tab');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    diaryData.length && setIsLoading(false);
-  }, [diaryData]);
 
   const handleTabChange = (tab: string) => {
     if (tab !== currentTab) {

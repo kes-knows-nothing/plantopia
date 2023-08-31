@@ -1,91 +1,18 @@
-import { useState, useEffect, useRef} from 'react';
-import { db } from '@/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-
-import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
-import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
+import { ArrowImages, SectionEditBoardProps } from '@/constants/diary';
 import './sectionEditBoard.scss';
 
-interface Plant {
-  nickname: string;
-  userEmail: string;
-}
-
-interface SectionBoardProps {
-  title: string;
-  setTitle: (title: string) => void;
-  content: string;
-  setContent: (content: string) => void;
-  chosenPlants: string[];
-  setChosenPlants: (plants: string[]) => void;
-}
-
-const SectionEditBoard: React.FC<SectionBoardProps> = ({
+const SectionEditBoard = ({
   title,
   setTitle,
   content,
   setContent,
   chosenPlants,
-  setChosenPlants,
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [plantTag, setPlantTag] = useState<Plant[]>([]);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const getPlantsFromFirestore = async () => {
-      const plantRef = collection(db, 'plant');
-      const q = query(plantRef, where('userEmail', '==', 'test@test.com'));
-      const querySnapshot = await getDocs(q);
-      const plants: Plant[] = [];
-      querySnapshot.forEach(doc => {
-        const { nickname, userEmail } = doc.data();
-        plants.push({ nickname, userEmail });
-      });
-      setPlantTag(plants);
-    };
-    getPlantsFromFirestore();
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const toggleSelect = () => {
-    setIsVisible(prevVisible => !prevVisible);
-  };
-
-  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedPlant = event.target.value;
-
-    setChosenPlants(prevChosenPlants => {
-      const isSelected = prevChosenPlants.includes(selectedPlant);
-
-      return isSelected
-        ? prevChosenPlants.filter(plant => plant !== selectedPlant)
-        : [...prevChosenPlants, selectedPlant];
-    });
-  };
-
-  const handleChosenPlantClick = (plant: string) => {
-    setChosenPlants(prevChosenPlants =>
-      prevChosenPlants.filter(p => p !== plant),
-    );
-  };
-
+  handleChosenPlantClick,
+  handlePlantSelection,
+  isVisible,
+  toggleSelect,
+  plantTag,
+}: SectionEditBoardProps) => {
   return (
     <section className="board_section">
       <div className="title_wrapper">
@@ -98,7 +25,7 @@ const SectionEditBoard: React.FC<SectionBoardProps> = ({
         />
       </div>
 
-      <div className="plant_select_wrapper" ref={wrapperRef}>
+      <div className="plant_select_wrapper">
         <div className="plant_select">
           {chosenPlants.length === 0 ? (
             <div className="choose_text" onClick={toggleSelect}>
@@ -120,9 +47,9 @@ const SectionEditBoard: React.FC<SectionBoardProps> = ({
           )}
           <div className="arrow_icon" onClick={toggleSelect}>
             {isVisible ? (
-              <img src={ARROW_UP} alt="Up" />
+              <img src={ArrowImages.ARROW_UP} alt="Up" />
             ) : (
-              <img src={ARROW_DOWN} alt="Down" />
+              <img src={ArrowImages.ARROW_DOWN} alt="Down" />
             )}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import './myPlantDetailPage.scss';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
@@ -13,7 +13,6 @@ import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import { useAuth } from '@/hooks';
 import { showAlert } from '@/utils/myPlantUtil';
-
 import {
   doc,
   getDoc,
@@ -26,9 +25,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantDetailPage = () => {
@@ -56,9 +52,21 @@ const MyPlantDetailPage = () => {
     return monthsDifference;
   };
   const navigateDictDetail = () => {
-    console.log(plantDictDetail?.name);
     navigate(`/dict/detail?plantName=${plantDictDetail?.name}`, {
       state: plantDictDetail,
+    });
+  };
+
+  const navigateEdit = () => {
+    navigate(`/myplant/${docId}/edit`, {
+      state: {
+        imgUrlFromDetail: plantDetail.imgUrl,
+        nicknameFromDetail: plantDetail.nickname,
+        plantNameFromDetail: plantDetail.plantName,
+        purchasedDayFromDetail: plantDetail.purchasedDay,
+        wateredDayFromDetail: plantDetail.wateredDays.at(-1),
+        frequencyFromDetail: plantDetail.frequency,
+      },
     });
   };
 
@@ -76,13 +84,11 @@ const MyPlantDetailPage = () => {
           isMain: true,
         };
         await updateDoc(documentRef, updatedFields);
-
         navigate('/myplant');
         successNoti('내 식물을 삭제 하였습니다.');
       } else {
         try {
           await deleteDoc(docRef);
-
           navigate('/myplant');
           successNoti('내 식물이 삭제 되었습니다.');
         } catch (error) {
@@ -97,7 +103,6 @@ const MyPlantDetailPage = () => {
       const docRef = doc(db, 'plant', docId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log(docSnap.data());
         setPlantDetail(docSnap.data());
         const q = query(
           collection(db, 'dictionary'),
@@ -105,7 +110,6 @@ const MyPlantDetailPage = () => {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(doc => {
-          console.log(doc.data());
           setPlantDictDetail(doc.data());
         });
       } else {
@@ -117,7 +121,6 @@ const MyPlantDetailPage = () => {
 
   return (
     <>
-      <Toast />
       <HeaderBefore ex={false} title="식물 상세" />
       <main>
         <div className="my_plant_detail_upper_container">
@@ -139,24 +142,11 @@ const MyPlantDetailPage = () => {
               {plantDetail?.nickname}
             </p>
           </div>
-
-          <div className="my_plant_detail_edit_btn">
-            <Link
-              to={`/myplant/${docId}/edit`}
-              state={{
-                imgUrlFromDetail: plantDetail.imgUrl,
-                nicknameFromDetail: plantDetail.nickname,
-                plantNameFromDetail: plantDetail.plantName,
-                purchasedDayFromDetail: plantDetail.purchasedDay,
-                wateredDayFromDetail: plantDetail.wateredDays.at(-1),
-                frequencyFromDetail: plantDetail.frequency,
-              }}
-            >
-              <div className="my_plant_detail_edit_btn_inner_contents">
-                <img src={editIcon} alt="editIcon" />
-                <p>식물 정보 수정하기</p>
-              </div>
-            </Link>
+          <div className="my_plant_detail_edit_btn" onClick={navigateEdit}>
+            <div className="my_plant_detail_edit_btn_inner_contents">
+              <img src={editIcon} alt="editIcon" />
+              <p>식물 정보 수정하기</p>
+            </div>
           </div>
         </div>
         <div className="my_plant_detail_lower_container">

@@ -85,8 +85,8 @@ export const infoNoti = (content: string) => {
  * title과 msg는 필수 인자이지만 나머지 두 함수는 필수값이 아닙니다.
  * 함수를 정의하지 않을 경우 아무 동작하지 않습니다.
  * import 'react-confirm-alert/src/react-confirm-alert.css'; 사용 컴포넌트에 필수
- * @param {string} title 대화상자의 제목(필수)
- * @param {string} msg 대화상자 안내 메시지(필수)
+ * @param {string} title 대화상자의 제목
+ * @param {string} msg 대화상자 안내 메시지
  * @param {() => void} onConfirm 확인 버튼 클릭 시 함수를 정의합니다.
  * @param {() => void} onCancel 취소 버튼 클릭 시 함수를 정의합니다.
  */

@@ -6,11 +6,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 1.8rem;
   margin-bottom: 5.6rem;
-  :last-child {
-    border-bottom: none;
-  }
+}
+
+.subplant_container:last-child {
+  border-bottom: none;
+  margin-bottom: 1.2rem;
 }
 
 .subplant_list_box {

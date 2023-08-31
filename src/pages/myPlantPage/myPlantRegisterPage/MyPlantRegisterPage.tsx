@@ -1,25 +1,22 @@
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './myPlantRegisterPage.scss';
 import { useAuth } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
-import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
-import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
-import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseApp';
 import { collection, addDoc, query, getDocs } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import {
   dateToTimestamp,
   errorNoti,
+  successNoti,
   waterCodeToNumber,
 } from '@/utils/myPlantUtil';
 import 'firebase/storage';
-import Toast from '@/components/notification/ToastContainer';
-import 'react-toastify/dist/ReactToastify.css';
-import '@/styles/custom-toast-styles.scss';
-import { successNoti } from '@/utils/myPlantUtil';
+import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
+import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
+import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 const MyPlantRegisterPage = () => {
@@ -51,7 +48,7 @@ const MyPlantRegisterPage = () => {
   };
 
   const handleFrequency = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFrequency(e.target.value);
+    setFrequency(Number(e.target.value));
   };
 
   const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,12 +132,11 @@ const MyPlantRegisterPage = () => {
       wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
-    successNoti('새 식물을 등록하였습니다!');
+    successNoti('새 식물 등록에 성공하였습니다');
     navigate('/myplant');
   };
   return (
     <>
-      <Toast />
       <HeaderBefore ex={true} title="식물 등록" />
       <main>
         <form action="" onSubmit={handleRegister}>
@@ -179,10 +175,8 @@ const MyPlantRegisterPage = () => {
                   placeholder="식물 이름으로 검색해보세요."
                   value={searchInputValue}
                   onChange={handleSearchInput}
-                  onClick={navigateSearch}
                   readOnly
                 />
-
                 <img
                   className="input_glass"
                   src={inputGlass}
@@ -191,18 +185,18 @@ const MyPlantRegisterPage = () => {
               </div>
             </div>
             <div className="my_plant_info_form">
-              <p className="my_plant_name_title">
+              <div className="my_plant_name_title">
                 식물이름<p>* 5글자 이내로 설정해주세요.</p>
-              </p>
+              </div>
               <input
                 className="my_plant_name"
                 maxLength={5}
                 value={plantName}
                 onChange={plantNameHandler}
               />
-              <p className="watering_frequency">
+              <div className="watering_frequency">
                 물 주는 날<p>* 주변 환경에 맞게 조절해주세요.</p>
-              </p>
+              </div>
               <div className="watering_frequency_input_box">
                 <input
                   className="watering_frequency_input"
@@ -235,7 +229,6 @@ const MyPlantRegisterPage = () => {
               </div>
             </div>
           </div>
-
           <button className="my_plant_register_btn" type="submit">
             등록
           </button>

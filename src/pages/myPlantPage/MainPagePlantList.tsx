@@ -19,9 +19,19 @@ import {
   getDoc,
 } from 'firebase/firestore';
 
+interface MainPagePlantListProps {
+  userEmail: string;
+  setMyMainPlant: (data: UserPlant) => void;
+  setPlantCount: (data: number) => void;
+}
+
 import { db } from '@/firebaseApp';
 
-const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
+const MainPagePlantList = ({
+  userEmail,
+  setMyMainPlant,
+  setPlantCount,
+}: MainPagePlantListProps) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
   const getUserPlants = async () => {
@@ -32,7 +42,19 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
     const querySnapshot = await getDocs(q);
     const plantData: Array<UserPlant> = [];
     querySnapshot.forEach(doc => {
-      plantData.push({ ...doc.data(), id: doc.id });
+      const data = doc.data();
+      const userPlant: UserPlant = {
+        id: doc.id,
+        imgUrl: data.imgUrl,
+        nickname: data.nickname,
+        frequency: data.frequency,
+        isMain: data.isMain,
+        plantName: data.plantName,
+        userEmail: data.userEmail,
+        wateredDays: data.waterDays,
+        purchasedDay: data.purchasedDay,
+      };
+      plantData.push(userPlant);
     });
     plantData.sort(compare);
     setMyPlantData(plantData);
@@ -58,11 +80,11 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
         await updateDoc(documentFalseRef, updatedFalseFields);
         const updatedDocSnapshot = await getDoc(documentTrueRef);
         const updatedData = updatedDocSnapshot.data();
-        setMyMainPlant(updatedData);
+        setMyMainPlant(updatedData as UserPlant);
         await getUserPlants();
         successNoti('메인 식물을 변경하였습니다.');
       } catch (error) {
-        console.error('Error updating document: ', error);
+        return;
       }
     }
   };
@@ -97,7 +119,19 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
       const querySnapshot = await getDocs(q);
       const plantData: Array<UserPlant> = [];
       querySnapshot.forEach(doc => {
-        plantData.push({ ...doc.data(), id: doc.id });
+        const data = doc.data();
+        const userPlant: UserPlant = {
+          id: doc.id,
+          imgUrl: data.imgUrl,
+          nickname: data.nickname,
+          frequency: data.frequency,
+          isMain: data.isMain,
+          plantName: data.plantName,
+          userEmail: data.userEmail,
+          wateredDays: data.waterDays,
+          purchasedDay: data.purchasedDay,
+        };
+        plantData.push(userPlant);
       });
       plantData.sort(compare);
       setMyPlantData(plantData);
@@ -111,7 +145,7 @@ const MainPagePlantList = ({ userEmail, setMyMainPlant, setPlantCount }) => {
       <Toast />
       <div className="subplant_container">
         {myPlantData.map(plant => (
-          <Link to={`/myplant/${plant.id}`} style={{ width: '100%' }}>
+          <Link to={`/myplant/${plant.id}`} className="subplant_list_box_link">
             <div key={plant.id} className="subplant_list_box">
               <div className="subplant_main_data">
                 <img

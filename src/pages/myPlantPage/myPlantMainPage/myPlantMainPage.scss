@@ -2,9 +2,7 @@
 
 .main_plant_info_box {
   width: 100%;
-  min-height: 75rem;
   padding: 0 2rem;
-  margin-bottom: 5.6rem;
 }
 
 .my_plant_info_message {
@@ -113,7 +111,7 @@
 .my_plant_main_add_btn_inner_contents_box {
   height: 2.4rem;
   width: 13.3rem;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
 
@@ -130,7 +128,6 @@
     font-size: 1.3rem;
   }
 }
-
 
 .main_plant_sample_img {
   @include mixins.avatar(50%);

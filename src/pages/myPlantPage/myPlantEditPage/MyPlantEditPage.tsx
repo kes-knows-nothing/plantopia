@@ -224,7 +224,6 @@ const MyPlantEditPage = () => {
             </div>
           </div>
         </div>
-
         <button className="my_plant_register_btn" onClick={handleUpdate}>
           수정 완료
         </button>

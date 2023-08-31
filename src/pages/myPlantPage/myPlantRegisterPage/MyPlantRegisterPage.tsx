@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseApp';
-import { collection, addDoc, query, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import {
   dateToTimestamp,
@@ -30,7 +30,7 @@ const MyPlantRegisterPage = () => {
   const [plantName, setPlantName] = useState<string>('');
   const [purchasedDay, setPurchasedDay] = useState<string>('');
   const [wateredDays, setWateredDays] = useState<string>('');
-  const [frequency, setFrequency] = useState<number>();
+  const [frequency, setFrequency] = useState(waterCodeToNumber(waterCode));
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,30 +97,29 @@ const MyPlantRegisterPage = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      plantName.trim() === '' ||
-      purchasedDay === '' ||
-      searchInputValue === '' ||
-      frequency === null
-    ) {
-      if (!searchInputValue) {
-        errorNoti('식물을 지정해주세요.');
-      }
-      if (!plantName) {
-        errorNoti('식물 닉네임을 설정해주세요.');
-      }
-      if (!frequency) {
-        errorNoti('식물의 물 주기를 설정해주세요.');
-      }
-      if (!purchasedDay) {
-        errorNoti('식물과 함께한 날을 지정해주세요.');
-      }
+    if (!searchInputValue) {
+      errorNoti('식물을 지정해주세요.');
+      return;
+    }
+    if (!plantName) {
+      errorNoti('식물 닉네임을 설정해주세요.');
+      return;
+    }
+    if (!frequency) {
+      errorNoti('식물의 물 주기를 설정해주세요.');
+      return;
+    }
+    if (!purchasedDay) {
+      errorNoti('식물과 함께한 날을 지정해주세요.');
       return;
     }
 
-    const isPlant = query(collection(db, 'plant'));
-    const isEmpty = (await getDocs(isPlant)).empty;
-
+    const q = query(
+      collection(db, 'plant'),
+      where('userEmail', '==', user?.email),
+    );
+    const querySnapshot = await getDocs(q);
+    const isEmpty = querySnapshot.empty;
     const newPlantData = {
       frequency: waterCodeToNumber(waterCode),
       imgUrl: imgUrl || image,
@@ -128,7 +127,7 @@ const MyPlantRegisterPage = () => {
       nickname: plantName,
       plantName: searchInputValue,
       purchasedDay: dateToTimestamp(purchasedDay),
-      userEmail: 'test@test.com',
+      userEmail: user?.email,
       wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
@@ -201,7 +200,6 @@ const MyPlantRegisterPage = () => {
                 <input
                   className="watering_frequency_input"
                   value={frequency}
-                  defaultValue={waterCodeToNumber(waterCode)}
                   onChange={handleFrequency}
                 />
 

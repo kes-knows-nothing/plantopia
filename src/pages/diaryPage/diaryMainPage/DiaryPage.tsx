@@ -6,10 +6,10 @@ import useDiaryData from '@/hooks/useDiaryData';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import Progress from '@/components/progress/Progress';
-import { showAlert } from '@/utils/alarmUtil.ts';
+import { showAlert } from '@/utils/alarmUtil';
 
-import ListView from './ListView.tsx';
-import GalleryView from './GalleryView.tsx';
+import ListView from './ListView';
+import GalleryView from './GalleryView';
 import './diaryPage.scss';
 
 const DiaryPage = () => {

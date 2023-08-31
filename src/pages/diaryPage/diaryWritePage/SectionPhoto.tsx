@@ -41,7 +41,7 @@ const SectionPhoto: React.FC<{
 
       setImgUrls(prevImgUrls => [...prevImgUrls, url]);
     } catch (error) {
-      console.error('파일 업로드 에러:', error);
+      return;
     }
 
     event.target.value = '';
@@ -66,7 +66,7 @@ const SectionPhoto: React.FC<{
 
       setImgUrls(prevImgUrls => prevImgUrls.filter((_, i) => i !== index));
     } catch (error) {
-      console.error('파일 삭제 에러:', error);
+      return;
     }
   };
 

@@ -1,3 +1,7 @@
+@use 'react-toastify/dist/ReactToastify.css';
+@use '@/styles/custom-toast-styles.scss';
+@use 'react-confirm-alert/src/react-confirm-alert.css';
+@use '@/styles/alertStyle.scss';
 @use 'reset';
 @use 'fonts';
 @use 'colors';
@@ -31,6 +35,10 @@ button {
 
 .inner {
   padding: 0 2rem;
+}
+
+.hide {
+  visibility: hidden;
 }
 
 /* REM rules */

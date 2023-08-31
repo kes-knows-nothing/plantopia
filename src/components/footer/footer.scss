@@ -5,43 +5,48 @@
   bottom: 0;
   width: 100%;
   max-width: 500px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   height: 5.6rem;
   background: #fff;
   border: 1px solid colors.$main-border-color;
   border-bottom: none;
   z-index: 10;
 
-  > .home_btn {
-    height: min-content;
-    width: 4.8rem;
-    height: 4.8rem;
-
-    > img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  }
-
-  > .btn {
+  > nav {
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    font-size: 1rem;
-    color: #747474;
 
-    &.active {
-      color: #1fb0ad;
+    > .home_btn {
+      height: min-content;
+      width: 4.8rem;
+      height: 4.8rem;
+
+      > img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
 
-    > img {
-      margin-bottom: 0.4rem;
-      width: 2.8rem;
-      height: 2.8rem;
+    > .btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      color: #747474;
+
+      &.active {
+        color: #1fb0ad;
+      }
+
+      > img {
+        margin-bottom: 0.4rem;
+        width: 2.8rem;
+        height: 2.8rem;
+      }
     }
   }
 }

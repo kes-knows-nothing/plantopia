@@ -92,7 +92,7 @@ export const infoNoti = (content: string) => {
  */
 export const showAlert = (
   title: string,
-  msg: string,
+  msg?: string,
   onConfirm: () => void = () => {},
   onCancel: () => void = () => {},
 ) => {
@@ -101,12 +101,14 @@ export const showAlert = (
     message: msg,
     buttons: [
       {
-        label: '확인',
-        onClick: onConfirm,
+        label: '취소',
+        className: 'cancel',
+        onClick: onCancel,
       },
       {
-        label: '취소',
-        onClick: onCancel,
+        label: '확인',
+        className: 'confirm',
+        onClick: onConfirm,
       },
     ],
     closeOnEscape: false, // 창이 뜨고 esc로 나갈 수 있는 지 여부 false는 못나감.

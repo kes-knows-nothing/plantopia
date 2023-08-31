@@ -6,8 +6,6 @@ import { DiaryProps } from '@/constants/diary';
 import SectionEditPhoto from './SectionEditPhoto';
 import SectionEditBoard from './SectionEditBoard';
 import { errorNoti, successNoti } from '@/utils/myPlantUtil';
-import './diaryEditPage.scss';
-import './sectionEditBoard.scss';
 
 const DiaryEditPage = () => {
   const { docId } = useParams();

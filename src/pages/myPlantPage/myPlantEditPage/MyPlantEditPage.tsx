@@ -9,7 +9,6 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
 import { useState, useEffect } from 'react';
 import { UserPlant } from '@/@types/plant.type';
-import 'firebase/storage';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {

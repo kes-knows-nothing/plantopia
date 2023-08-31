@@ -13,7 +13,6 @@ import { errorNoti } from '@/utils/myPlantUtil';
 import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
-import 'react-calendar/dist/Calendar.css';
 import './calendarPage.scss';
 
 type ValuePiece = Date | null;

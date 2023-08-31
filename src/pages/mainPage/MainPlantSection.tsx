@@ -4,7 +4,6 @@ import { UserPlant } from '@/@types/plant.type';
 import { showAlert } from '@/utils/myPlantUtil';
 import { useAuth } from '@/hooks';
 
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import WATERING from '@/assets/images/icons/watering.png';
 import MAIN_PLANT from '@/assets/images/plants/main_plant.png';
 import EDIT_ICON from '@/assets/images/icons/my_plant_detail_edit_icon.png';

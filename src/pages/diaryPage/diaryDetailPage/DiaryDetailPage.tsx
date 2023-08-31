@@ -4,13 +4,10 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import { DiaryProps } from '@/constants/diary';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-import './diaryDetailPage.scss';
 import { db } from '@/firebaseApp';
 import { doc, getDoc } from 'firebase/firestore';
+
+import './diaryDetailPage.scss';
 
 const DiaryDetailPage = () => {
   const { docId } = useParams();

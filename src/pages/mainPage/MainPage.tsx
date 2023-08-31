@@ -3,22 +3,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
 import { useAuth } from '@/hooks';
 import { UserPlant } from '@/@types/plant.type';
-import { db } from '@/firebaseApp';
 import { errorNoti, successNoti } from '@/utils/myPlantUtil';
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  Timestamp,
-  doc,
-  updateDoc,
-} from 'firebase/firestore';
+import { getPlantList, fetchWateringPlant } from '@/api/userPlant';
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import Progress from '@/components/progress/Progress';
-import Toast from '@/components/notification/ToastContainer';
 import MainPlantSection from './MainPlantSection';
 import WeatherSection from './WeatherSection';
 import './mainPage.scss';
@@ -55,22 +45,19 @@ const MainPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useAuth();
 
-  const onWaterPlant = async (plantId: string) => {
-    if (!focusPlant) return;
-
-    const plantRef = doc(db, 'plant', plantId);
+  const onWaterPlant = async () => {
+    if (!(focusPlant && user?.email)) return;
 
     try {
       setIsLoading(true);
 
-      await updateDoc(plantRef, {
-        wateredDays: [
-          ...focusPlant.wateredDays,
-          Timestamp.fromDate(new Date()),
-        ],
+      await fetchWateringPlant(focusPlant);
+      const userPlantList = await getPlantList(user.email);
+      const mainVisiblePlant = userPlantList.find(({ id, isMain }) => {
+        return focusPlant ? focusPlant.id === id : isMain;
       });
-      await getUserPlant();
 
+      setFocusPlant(mainVisiblePlant || userPlantList[0]);
       successNoti('물을 잘 먹었어요!');
     } catch (error) {
       errorNoti('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
@@ -80,25 +67,12 @@ const MainPage = () => {
   };
 
   const getUserPlant = async () => {
-    if (!user) return;
+    if (!user?.email) return;
 
     setIsLoading(true);
 
-    const emailRef = collection(db, 'plant');
-    const q = query(emailRef, where('userEmail', '==', user.email));
-
     try {
-      const userPlantList: UserPlant[] = [];
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(doc => {
-        const plantData = doc.data() as Omit<UserPlant, 'id'>;
-
-        userPlantList.push({
-          id: doc.id,
-          ...plantData,
-        });
-      });
+      const userPlantList = await getPlantList(user.email);
 
       const mainVisiblePlant = userPlantList.find(({ id, isMain }) => {
         return focusPlant ? focusPlant.id === id : isMain;
@@ -120,7 +94,6 @@ const MainPage = () => {
 
   return (
     <>
-      <Toast />
       <Header isMainPage />
       <main className="main_page">
         <section>

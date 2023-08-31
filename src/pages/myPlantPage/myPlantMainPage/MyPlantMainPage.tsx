@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks';
+import { db } from '@/firebaseApp';
+import { getDocs, collection, where, query } from 'firebase/firestore';
 import './myPlantMainPage.scss';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
@@ -8,12 +11,8 @@ import MainPagePlantList from '@/pages/myPlantPage/MainPagePlantList';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import { useAuth } from '@/hooks';
-import { getDocs, collection, where, query } from 'firebase/firestore';
-import { db } from '@/firebaseApp';
+import { infoNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
-import { infoNoti } from '@/utils/myPlantUtil';
 
 const MyPlantMainPage = () => {
   const user = useAuth();

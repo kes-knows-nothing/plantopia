@@ -5,7 +5,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useAuth } from '@/hooks';
 import { auth, storage } from '@/firebaseApp';
 import { nicknameRe } from '@/constants/regEx';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import PROFILE from '@/assets/images/icons/default_profile.png';
 import './myInfoPage.scss';

@@ -17,7 +17,10 @@ const diaryRoutes = [
   { path: '/diary', element: <DiaryPage /> },
   { path: '/diary/write', element: <DiaryWritePage /> },
   { path: '/diary/:docId/edit', element: <DiaryEditPage /> },
-  { path: '/diary/:docId', element: <DiaryDetailPage /> },
+  {
+    path: '/diary/:docId',
+    element: <DiaryDetailPage />,
+  },
 ];
 
 export default diaryRoutes;

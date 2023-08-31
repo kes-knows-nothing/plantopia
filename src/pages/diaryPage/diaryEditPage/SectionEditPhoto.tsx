@@ -50,7 +50,7 @@ const SectionEditPhoto: React.FC<EditPhotoProps> = ({
 
       setImgUrls(prevImgUrls => [...prevImgUrls, url]);
     } catch (error) {
-      console.error('파일 업로드 에러:', error);
+      return;
     }
 
     if (event.target instanceof HTMLInputElement) {
@@ -80,7 +80,7 @@ const SectionEditPhoto: React.FC<EditPhotoProps> = ({
 
       setImgUrls(prevImgUrls => prevImgUrls.filter((_, i) => i !== index));
     } catch (error) {
-      console.error('파일 삭제 에러:', error);
+      return;
     }
     setIsLoading(false);
   };

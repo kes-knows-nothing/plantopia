@@ -5,7 +5,7 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import { DiaryProps } from '@/constants/diary';
 import SectionEditPhoto from './SectionEditPhoto';
 import SectionEditBoard from './SectionEditBoard';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
 
 const DiaryEditPage = () => {
   const { docId } = useParams();

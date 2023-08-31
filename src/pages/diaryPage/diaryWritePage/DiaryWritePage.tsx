@@ -6,7 +6,7 @@ import useDiaryData from '@/hooks/useDiaryData';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import SectionPhoto from './SectionPhoto';
 import SectionBoard from './SectionBoard';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import './diaryWritePage.scss';
 
 const DiaryWritePage = () => {

@@ -1,18 +1,17 @@
-import './myPlantEditPage.scss';
-import { useAuth } from '@/hooks';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
+import 'firebase/storage';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { secondsToDate, dateToTimestamp } from '@/utils/myPlantUtil';
-import { useState, useEffect } from 'react';
+import './myPlantEditPage.scss';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
+import { secondsToDate, dateToTimestamp } from '@/utils/dateUtil';
+import { successNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
-import { successNoti } from '@/utils/myPlantUtil';
 
 const MyPlantEditPage = () => {
-  const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { docId } = useParams();
@@ -69,11 +68,6 @@ const MyPlantEditPage = () => {
     setFrequency(Number(e.target.value));
   };
 
-  const handleGoBack = () => {
-    window.history.back();
-  };
-
-  // 이미지 저장 로직
   const cleanFileName = (fileName: string) => {
     const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
     return cleanedName;
@@ -82,7 +76,7 @@ const MyPlantEditPage = () => {
   const readFileAsDataURL = (file: File) => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result as string);
+      reader.onload = e => resolve(e.target?.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -93,7 +87,6 @@ const MyPlantEditPage = () => {
   ) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     try {
       const previewUrl = await readFileAsDataURL(file);
       setPreviewImg(previewUrl);
@@ -103,14 +96,14 @@ const MyPlantEditPage = () => {
       const url = await getDownloadURL(snapshot.ref);
       setImgUrl(url);
     } catch (error) {
-      console.error('파일 업로드 에러:', error);
+      return;
     }
-    event.target.value = null;
+    event.target.value = '';
   };
-  // 이미지 저장 로직
 
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (!docId) return;
     const documentRef = doc(db, 'plant', docId);
     myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
     const updatedFields = {
@@ -126,23 +119,24 @@ const MyPlantEditPage = () => {
       successNoti('식물 정보를 수정하였습니다!');
       navigate('/myplant');
     } catch (error) {
-      console.error('Error updating document: ', error);
+      return;
     }
   };
 
   useEffect(() => {
     const getMyPlantData = async () => {
       try {
+        if (!docId) return;
         const docRef = doc(db, 'plant', docId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const plantData = docSnap.data();
-          setMyPlantData(plantData);
+          setMyPlantData(plantData as UserPlant);
         } else {
           throw new Error('문서가 존재하지 않습니다.');
         }
       } catch (error) {
-        console.error(error);
+        return;
       }
     };
     getMyPlantData();
@@ -159,7 +153,11 @@ const MyPlantEditPage = () => {
         <div className="my_plant_registeration_container">
           <div className="my_plant_register_img_box">
             <div className="img_wrapper">
-              <img className="main_img" src={imgUrl} alt="samplePlant1" />
+              <img
+                className="main_img"
+                src={imgUrl || previewImg}
+                alt="samplePlant1"
+              />
               <div className="edit_icon_wrapper">
                 <label htmlFor="photoInput" className="photo_label">
                   <img

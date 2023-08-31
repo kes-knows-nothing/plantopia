@@ -7,7 +7,7 @@ import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
 import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
 import '@/styles/custom-toast-styles.scss';
-import { successNoti } from '@/utils/myPlantUtil';
+import { successNoti } from '@/utils/alarmUtil';
 import {
   getDocs,
   collection,
@@ -17,14 +17,13 @@ import {
   updateDoc,
   getDoc,
 } from 'firebase/firestore';
+import { db } from '@/firebaseApp';
 
 interface MainPagePlantListProps {
   userEmail: string;
   setMyMainPlant: (data: UserPlant) => void;
   setPlantCount: (data: number) => void;
 }
-
-import { db } from '@/firebaseApp';
 
 const MainPagePlantList = ({
   userEmail,
@@ -50,7 +49,7 @@ const MainPagePlantList = ({
         isMain: data.isMain,
         plantName: data.plantName,
         userEmail: data.userEmail,
-        wateredDays: data.waterDays,
+        wateredDays: data.wateredDays,
         purchasedDay: data.purchasedDay,
       };
       plantData.push(userPlant);
@@ -127,7 +126,7 @@ const MainPagePlantList = ({
           isMain: data.isMain,
           plantName: data.plantName,
           userEmail: data.userEmail,
-          wateredDays: data.waterDays,
+          wateredDays: data.wateredDays,
           purchasedDay: data.purchasedDay,
         };
         plantData.push(userPlant);
@@ -144,8 +143,12 @@ const MainPagePlantList = ({
       <Toast />
       <div className="subplant_container">
         {myPlantData.map(plant => (
-          <Link to={`/myplant/${plant.id}`} className="subplant_list_box_link">
-            <div key={plant.id} className="subplant_list_box">
+          <Link
+            key={plant.id}
+            to={`/myplant/${plant.id}`}
+            className="subplant_list_box_link"
+          >
+            <div className="subplant_list_box">
               <div className="subplant_main_data">
                 <img
                   className="subplant_img"

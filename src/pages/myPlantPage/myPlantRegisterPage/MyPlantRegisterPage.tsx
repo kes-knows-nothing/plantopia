@@ -1,23 +1,18 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import './myPlantRegisterPage.scss';
+import { useLocation, useNavigate  } from 'react-router-dom';
 import { useAuth } from '@/hooks';
-import { useNavigate } from 'react-router-dom';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebaseApp';
-import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
-import { db } from '@/firebaseApp';
-import {
-  dateToTimestamp,
-  errorNoti,
-  successNoti,
-  waterCodeToNumber,
-} from '@/utils/myPlantUtil';
 import 'firebase/storage';
+import { storage, db } from '@/firebaseApp';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
+import './myPlantRegisterPage.scss';
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
+import { waterCodeToNumber } from '@/utils/convertDataUtil';
+import { dateToTimestamp } from '@/utils/dateUtil';
 
 const MyPlantRegisterPage = () => {
   const user = useAuth();
@@ -67,7 +62,7 @@ const MyPlantRegisterPage = () => {
   const readFileAsDataURL = (file: File) => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result as string);
+      reader.onload = e => resolve(e.target?.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -90,7 +85,7 @@ const MyPlantRegisterPage = () => {
     } catch (error) {
       console.error('파일 업로드 에러:', error);
     }
-    event.target.value = null;
+    event.target.value = '';
   };
 
   // 이미지 저장 로직

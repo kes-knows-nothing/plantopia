@@ -7,8 +7,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '@/firebaseApp';
-import { errorNoti } from '@/utils/myPlantUtil';
+import { auth } from '../../firebaseApp';
+import { errorNoti } from '@/utils/alarmUtil';
 import './loginPage.scss';
 
 const LoginPage = () => {

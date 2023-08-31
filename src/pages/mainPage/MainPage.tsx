@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
 import { useAuth } from '@/hooks';
 import { UserPlant } from '@/@types/plant.type';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
 import { getPlantList, fetchWateringPlant } from '@/api/userPlant';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';

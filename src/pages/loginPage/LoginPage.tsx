@@ -9,7 +9,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../../firebaseApp';
 import { errorNoti } from '@/utils/myPlantUtil';
-import './login.scss';
+import './loginPage.scss';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

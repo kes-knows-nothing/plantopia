@@ -50,11 +50,7 @@ const MainPlantSection = ({ plant, onWaterPlant }: MainPlantProps) => {
   const onClickWatering = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
 
-    showAlert(
-      '식물에 물을 주시겠습니까?',
-      '물을 주려면 확인을 눌러주세요!',
-      () => onWaterPlant(plant.id),
-    );
+    showAlert('식물에 물을 주시겠습니까?', '', () => onWaterPlant(plant.id));
   };
 
   const lastWateringDate = (plant.wateredDays.at(-1)?.seconds || 0) * 1000;

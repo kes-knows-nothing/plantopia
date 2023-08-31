@@ -31,7 +31,6 @@ const Recommend = ({ icon, title, target, setIsLoading }: RecommendProps) => {
         slidesPerView={target === 'beginner' ? 2 : 3}
         spaceBetween={target === 'beginner' ? 14 : 13}
         navigation={true}
-        loop={true}
         pagination={{ clickable: true }}
         modules={[Navigation, Pagination]}
         className="plants_container"

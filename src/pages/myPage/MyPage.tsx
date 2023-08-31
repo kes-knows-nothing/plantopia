@@ -1,10 +1,10 @@
 import { useState, useEffect, Children } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
 import { customerService } from '@/constants/myPage';
-import { errorNoti, successNoti } from '@/utils/myPlantUtil';
+import { errorNoti } from '@/utils/myPlantUtil';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Progress from '@/components/progress/Progress';
@@ -14,8 +14,6 @@ import './myPage.scss';
 const MyPage = () => {
   const user = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
-  location.state?.message && successNoti(location.state.message);
 
   useEffect(() => {
     user && setIsLoading(false);

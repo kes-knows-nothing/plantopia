@@ -1,4 +1,4 @@
-import { PlantType } from '@/pages/dictPage/Recommend';
+import { PlantType } from '@/@types/dictionary.type';
 
 export const mockData: PlantType[] = [
   {

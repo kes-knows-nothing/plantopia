@@ -70,6 +70,9 @@ const SectionEditBoard = ({
                 <label htmlFor={plant.nickname}>{plant.nickname}</label>
               </li>
             ))}
+            <li className="choose_complete" onClick={toggleSelect}>
+              선택 완료
+            </li>
           </ul>
         )}
       </div>

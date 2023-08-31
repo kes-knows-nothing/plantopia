@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore';
 import { useAuth } from '@/hooks';
 import { DiaryProps, Plant } from '@/@types/diary.type';
-import { successNoti } from '@/utils/myPlantUtil';
+import { successNoti } from '@/utils/alarmUtil';
 
 const useDiaryData = () => {
   const user = useAuth();

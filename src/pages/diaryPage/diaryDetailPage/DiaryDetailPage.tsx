@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DiaryProps } from '@/@types/diary.type';
-import { showAlert } from '@/utils/myPlantUtil';
+import { showAlert } from '@/utils/alarmUtil';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import useDiaryData from '@/hooks/useDiaryData';

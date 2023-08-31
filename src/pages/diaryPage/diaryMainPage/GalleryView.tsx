@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { DiaryProps } from '@/@types/diary.type';
-import NoContent from './NoContent.tsx';
+import NoContent from './NoContent';
 import './galleryView.scss';
 
 interface GalleryViewProps {

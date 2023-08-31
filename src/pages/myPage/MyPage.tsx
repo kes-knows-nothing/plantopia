@@ -5,7 +5,6 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/firebaseApp';
 import { customerService } from '@/constants/myPage';
 import { errorNoti, successNoti } from '@/utils/myPlantUtil';
-import Toast from '@/components/notification/ToastContainer';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Progress from '@/components/progress/Progress';
@@ -33,7 +32,6 @@ const MyPage = () => {
 
   return (
     <div className="my_page">
-      <Toast />
       <Header />
       <main className="my_container">
         <section className="my_info_box inner">

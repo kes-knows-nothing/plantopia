@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import { DiaryProps } from '@/constants/diary';
+import { useParams, useNavigate } from 'react-router-dom';
+import { DiaryProps, DiaryDetailProps } from '@/@types/diary.type';
+import { showAlert } from '@/utils/myPlantUtil';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
+import useDiaryData from '@/hooks/useDiaryData';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -12,17 +14,31 @@ import './diaryDetailPage.scss';
 import { db } from '@/firebaseApp';
 import { doc, getDoc } from 'firebase/firestore';
 
-const DiaryDetailPage = () => {
+const DiaryDetailPage: React.FC<DiaryDetailProps> = () => {
   const { docId } = useParams();
   if (!docId) {
-    return;
+    return null;
   }
+  const { handleDelete } = useDiaryData();
+
   const slideSectionPrevBtn = useRef<HTMLDivElement>(null);
   const slideSectionNextBtn = useRef<HTMLDivElement>(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [diaryDetailData, setDiaryDetailData] = useState<DiaryProps | null>(
     null,
   );
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const navigateToEdit = () => {
+    navigate(`/diary/${docId}/edit`);
+    closeModal();
+  };
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDiaryDetailData = async () => {
@@ -39,6 +55,34 @@ const DiaryDetailPage = () => {
   return (
     <>
       <HeaderBefore ex={false} title="다이어리" />
+      <div className="more_btn_wrap">
+        <button
+          className="more"
+          onClick={() => {
+            setIsModalOpen(!isModalOpen);
+          }}
+        ></button>
+        {isModalOpen && (
+          <div className="more_modal">
+            <div className="btn modify" onClick={navigateToEdit}>
+              게시글 수정
+            </div>
+            <div
+              className="btn delete"
+              onClick={() => {
+                console.log(docId);
+
+                showAlert('글을 삭제하시겠습니까?', '', async () => {
+                  await handleDelete(docId);
+                  closeModal();
+                });
+              }}
+            >
+              삭제
+            </div>
+          </div>
+        )}
+      </div>
       <main className="diary_detail_page">
         <div className="diary_detail_container">
           {diaryDetailData &&

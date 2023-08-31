@@ -1,14 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { DiaryProps } from '@/constants/diary';
-import NoContent from './NoContent.tsx';
+import { DiaryProps, ListViewProps } from '@/@types/diary.type';
 import { showAlert } from '@/utils/myPlantUtil';
+import NoContent from './NoContent.tsx';
 import './listView.scss';
-
-interface ListViewProps {
-  diaryData: DiaryProps[];
-  handleDelete: (index: number) => void;
-}
 
 const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,8 +32,8 @@ const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {
         <NoContent />
       ) : (
         <ul className="diary_list_wrap">
-          {diaryData.map((diary, index) => (
-            <li className="diary_list" key={index}>
+          {diaryData.map(diary => (
+            <li className="diary_list" key={diary.id}>
               <Link to={`/diary/${diary.id}`}>
                 <div className="left_box">
                   <h5 className="title">{diary.title}</h5>
@@ -76,7 +71,7 @@ const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {
                     className="btn delete"
                     onClick={() => {
                       showAlert('글을 삭제하시겠습니까?', '', () => {
-                        handleDelete(index);
+                        handleDelete(diary.id);
                         closeModal();
                       });
                     }}

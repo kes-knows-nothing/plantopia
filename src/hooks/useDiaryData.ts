@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { db } from '@/firebaseApp.ts';
 import {
   getDocs,
@@ -11,11 +12,12 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { useAuth } from '@/hooks';
-import { DiaryProps, Plant } from '@/constants/diary';
+import { DiaryProps, Plant } from '@/@types/diary.type';
 import { successNoti } from '@/utils/myPlantUtil';
 
 const useDiaryData = () => {
   const user = useAuth();
+  const navigate = useNavigate();
   const [diaryData, setDiaryData] = useState<DiaryProps[]>([]);
   const [plantTag, setPlantTag] = useState<Plant[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,21 +48,6 @@ const useDiaryData = () => {
 
     fetchData();
   }, [user]);
-
-  /* 삭제하기 */
-  const handleDelete = async (index: number) => {
-    try {
-      const diaryIdToDelete = diaryData[index].id;
-
-      await deleteDoc(doc(db, 'diary', diaryIdToDelete));
-
-      const updatedDiaryData = diaryData.filter((_, i) => i !== index);
-      setDiaryData(updatedDiaryData);
-      successNoti('삭제가 완료되었어요!');
-    } catch (error) {
-      console.error('일기 삭제 중 오류:', error);
-    }
-  };
 
   /* 등록한 식물이 있는지 확인하기 => 없을 경우 등록페이지로 */
   const checkPlantExistence = async () => {
@@ -101,8 +88,22 @@ const useDiaryData = () => {
         ),
       );
     } catch (error) {
-      console.error('일기 업데이트 중 오류:', error);
       setIsLoading(false);
+      return;
+    }
+  };
+
+  /* 삭제하기 */
+  const handleDelete = async (diaryId: string) => {
+    try {
+      await deleteDoc(doc(db, 'diary', diaryId));
+
+      const updatedDiaryData = diaryData.filter(diary => diary.id !== diaryId);
+      setDiaryData(updatedDiaryData);
+      successNoti('삭제가 완료되었어요!');
+      navigate('/diary'); 
+    } catch (error) {
+      return;
     }
   };
 

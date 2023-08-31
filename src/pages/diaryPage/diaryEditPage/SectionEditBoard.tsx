@@ -1,4 +1,6 @@
-import { ArrowImages, SectionEditBoardProps } from '@/constants/diary';
+import { ArrowImages } from '@/constants/diary';
+import { SectionEditBoardProps } from '@/@types/diary.type';
+
 import './sectionEditBoard.scss';
 
 const SectionEditBoard = ({

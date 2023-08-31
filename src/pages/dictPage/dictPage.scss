@@ -2,6 +2,8 @@
   margin-bottom: 5rem;
 
   .dict_wrapper {
+    min-height: calc(100vh - 11.2rem);
+
     .dict_title {
       font-size: 1.6rem;
       font-weight: 400;

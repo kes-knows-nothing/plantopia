@@ -10,7 +10,7 @@ import './diaryEditPage.scss';
 import './sectionEditBoard.scss';
 
 const DiaryEditPage = () => {
-  const { docId } = useParams<{ docId: string }>();
+  const { docId } = useParams();
   if (!docId) {
     return;
   }

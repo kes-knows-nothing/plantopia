@@ -8,15 +8,7 @@ import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
-import {
-  getDocs,
-  collection,
-  where,
-  query,
-  doc,
-  updateDoc,
-  getDoc,
-} from 'firebase/firestore';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { getPlantList } from '@/api/userPlant';
 

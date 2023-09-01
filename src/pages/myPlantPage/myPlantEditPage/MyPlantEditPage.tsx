@@ -7,7 +7,7 @@ import './myPlantEditPage.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
-import { secondsToDate, dateToTimestamp } from '@/utils/dateUtil';
+import { secondsToDate, dateToTimestamp, maxDate } from '@/utils/dateUtil';
 import { successNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
 
@@ -203,15 +203,7 @@ const MyPlantEditPage = () => {
               />
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
-            <p className="my_plant_register_small_title">마지막 물준 날</p>
-            <div className="my_plant_register_calender_value">
-              <input
-                type="date"
-                className="date_selector"
-                value={wateredDay}
-                onChange={wateredDaysHandler}
-              />
-            </div>
+
             <p className="my_plant_register_small_title">
               식물과 처음 함께한 날
             </p>
@@ -221,6 +213,16 @@ const MyPlantEditPage = () => {
                 type="date"
                 value={purchasedDay}
                 onChange={purchasedDayHandler}
+              />
+            </div>
+            <p className="my_plant_register_small_title">마지막 물준 날</p>
+            <div className="my_plant_register_calender_value">
+              <input
+                type="date"
+                className="date_selector"
+                value={wateredDay}
+                onChange={wateredDaysHandler}
+                max={maxDate()}
               />
             </div>
           </div>

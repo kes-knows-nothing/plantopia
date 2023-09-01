@@ -11,7 +11,7 @@ import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { waterCodeToNumber } from '@/utils/convertDataUtil';
-import { dateToTimestamp } from '@/utils/dateUtil';
+import { dateToTimestamp, maxDate } from '@/utils/dateUtil';
 
 const MyPlantRegisterPage = () => {
   const user = useAuth();
@@ -190,6 +190,7 @@ const MyPlantRegisterPage = () => {
                 value={plantName}
                 onChange={plantNameHandler}
               />
+
               <div className="watering_frequency">
                 물 주는 날<p>* 주변 환경에 맞게 조절해주세요.</p>
               </div>
@@ -202,15 +203,7 @@ const MyPlantRegisterPage = () => {
 
                 <p className="watering_frequency_info">일에 한 번</p>
               </div>
-              <p className="my_plant_register_small_title">마지막 물준 날</p>
-              <div className="my_plant_register_calender_value">
-                <input
-                  type="date"
-                  className="date_selector"
-                  value={wateredDays}
-                  onChange={wateredDaysHandler}
-                />
-              </div>
+
               <p className="my_plant_register_small_title">
                 식물과 처음 함께한 날
               </p>
@@ -220,6 +213,16 @@ const MyPlantRegisterPage = () => {
                   type="date"
                   value={purchasedDay}
                   onChange={purchasedDayHandler}
+                />
+              </div>
+              <p className="my_plant_register_small_title">마지막 물준 날</p>
+              <div className="my_plant_register_calender_value">
+                <input
+                  type="date"
+                  className="date_selector"
+                  value={wateredDays}
+                  onChange={wateredDaysHandler}
+                  max={maxDate()}
                 />
               </div>
             </div>

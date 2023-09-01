@@ -33,3 +33,9 @@ export const monthDifference = (seconds: number) => {
   );
   return monthsDifference;
 };
+
+export const maxDate = () => {
+  const today = new Date();
+  const maxDate = format(today, 'yyyy-MM-dd');
+  return maxDate;
+};

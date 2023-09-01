@@ -1,4 +1,7 @@
 /* Common Styles */
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/pagination';
 
 .hide {
   overflow: hidden;

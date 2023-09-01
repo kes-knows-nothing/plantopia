@@ -1,3 +1,7 @@
+@use 'swiper/scss';
+@use 'swiper/scss/navigation';
+@use 'swiper/scss/pagination';
+
 @mixin common_img_props($bgColor) {
   display: inline-block;
   width: 3.2rem;

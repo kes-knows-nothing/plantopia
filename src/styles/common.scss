@@ -6,7 +6,6 @@
 @use 'fonts';
 @use 'colors';
 
-html,
 body {
   font-family: 'Pretendard', Arial, sans-serif;
 }
@@ -55,6 +54,18 @@ header,
 main {
   border-left: 1px solid colors.$main-border-color;
   border-right: 1px solid colors.$main-border-color;
+}
+
+/* confirm 관련 스타일 */
+#react-confirm-alert * {
+  .react-confirm-alert-body {
+    width: 100%;
+    max-width: 400px;
+
+    * {
+      font-family: 'Pretendard', Arial, sans-serif;
+    }
+  }
 }
 
 @media screen and (min-width: 216px) {

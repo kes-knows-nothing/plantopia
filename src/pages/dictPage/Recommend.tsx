@@ -5,9 +5,6 @@ import { Pagination, Navigation } from 'swiper/modules';
 import { targetClassName, targetQuery } from '@/constants/dictionary';
 import { useRecommend } from '@/hooks';
 import './recommend.scss';
-import 'swiper/scss';
-import 'swiper/scss/navigation';
-import 'swiper/scss/pagination';
 
 interface RecommendProps {
   icon: string;

@@ -2,14 +2,16 @@
 @use 'swiper/scss';
 
 .main_page {
-  width: 100%;
-  min-height: calc(100vh - 11.2rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 5.6rem;
+  background-color: #ffffff;
 
   > section {
     min-height: inherit;
+
+    > :last-child {
+      padding-bottom: 2rem;
+    }
   }
 
   .weather_text_box {
@@ -135,7 +137,7 @@
       left: 0;
       right: 0;
       color: #22264c;
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 700;
     }
   }
@@ -246,7 +248,7 @@
 /* 서브 식물 리스트 슬라이드*/
 .main_page > section > .slide_wrapper {
   margin-top: 3.3rem;
-  padding: 0 0 2rem 2rem;
+  margin-left: 2rem;
   min-height: 10.9rem;
 
   > .swiper {

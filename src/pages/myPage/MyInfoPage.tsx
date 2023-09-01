@@ -17,6 +17,7 @@ const MyInfo = () => {
   const [password, setPassword] = useState('');
   const [uploadedImg, setUploadedImg] = useState<string>('');
   const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [isBtnActive, setIsBtnActive] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) return;
@@ -47,6 +48,7 @@ const MyInfo = () => {
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setIsBtnActive(false);
     if (!nicknameValidation(nickname)) return;
     try {
       if (!user?.email || !auth.currentUser) throw Error();
@@ -61,6 +63,7 @@ const MyInfo = () => {
     } catch {
       errorNoti('회원정보 수정에 실패했습니다.');
     }
+    setIsBtnActive(true);
   };
 
   return (
@@ -107,8 +110,12 @@ const MyInfo = () => {
           </ul>
         </section>
       </main>
-      <button className="info_post" onClick={handleClick}>
-        저장
+      <button
+        className="info_post"
+        disabled={!isBtnActive}
+        onClick={handleClick}
+      >
+        {isBtnActive ? '저장' : '저장 중...'}
       </button>
     </div>
   );

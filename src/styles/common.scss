@@ -1,13 +1,17 @@
 @use 'react-toastify/dist/ReactToastify.css';
-@use '@/styles/custom-toast-styles.scss';
+@use '@/styles/customToastStyles.scss';
 @use 'react-confirm-alert/src/react-confirm-alert.css';
 @use '@/styles/alertStyle.scss';
 @use 'reset';
 @use 'fonts';
 @use 'colors';
 
+html,
 body {
   font-family: 'Pretendard', Arial, sans-serif;
+}
+
+body {
   margin: auto;
   min-width: 320px;
   max-width: 500px;

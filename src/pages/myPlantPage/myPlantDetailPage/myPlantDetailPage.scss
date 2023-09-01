@@ -21,9 +21,8 @@
 }
 
 .my_plant_detail_upper_container {
-  height: 36.9rem;
   width: 100%;
-  padding: 0 2rem;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -235,7 +234,7 @@
   font-size: 1.2rem;
   font-weight: 400;
   margin: 0 auto;
-  margin-top: 6rem;
+  margin: 6rem 0 3rem;
   color: #969696;
   cursor: pointer;
 }
@@ -254,7 +253,6 @@
   width: 16rem;
   height: 16rem;
   margin: 0 auto;
-  margin-top: 5.3rem;
 }
 
 .detail_plant_name {

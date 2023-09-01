@@ -124,7 +124,7 @@ const MainPagePlantList = ({
                   }}
                 >
                   <img
-                    className="mainPlantOrNot"
+                    className="main_tag_img"
                     src={plant.isMain ? mainPlantTrueIcon : mainPlantFalseIcon}
                     alt="mainPlantOrNotImg"
                   />

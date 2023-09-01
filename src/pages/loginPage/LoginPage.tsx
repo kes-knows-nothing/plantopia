@@ -72,7 +72,7 @@ const LoginPage = () => {
         <h1>
           <span>Plantopia</span>
         </h1>
-        <h2>
+        <h2 className="sub_title">
           <div>
             간편하게 로그인하고
             <br />
@@ -105,7 +105,9 @@ const LoginPage = () => {
               onChange={() => setIsChecked(prev => !prev)}
               checked={isChecked}
             />
-            <label htmlFor="check">자동 로그인</label>
+            <label htmlFor="check" draggable>
+              자동 로그인
+            </label>
           </div>
           <button type="submit" className="submit_btn">
             로그인

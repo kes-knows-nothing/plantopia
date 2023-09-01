@@ -17,6 +17,7 @@
       font-size: 2.4rem;
       font-weight: 900;
       text-align: center;
+      margin-bottom: 5rem;
 
       span {
         display: flex;
@@ -28,10 +29,16 @@
       }
     }
 
+    @media screen and (max-height: 800px) {
+      .sub_title {
+        display: none;
+      }
+    }
+
     h2 {
       display: flex;
       justify-content: center;
-      padding: 5rem 0 3.8rem;
+      padding: 0 0 3.8rem 0;
       font-size: 1.8rem;
       color: #22264c;
 

@@ -7,7 +7,7 @@ import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
 import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
-import { successNoti } from '@/utils/alarmUtil';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import {
   getDocs,
   collection,
@@ -18,6 +18,7 @@ import {
   getDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
+import { getPlantList } from '@/api/userPlant';
 
 interface MainPagePlantListProps {
   userEmail: string;
@@ -34,31 +35,27 @@ const MainPagePlantList = ({
 }: MainPagePlantListProps) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
-  const getUserPlants = async () => {
-    const q = query(
-      collection(db, 'plant'),
-      where('userEmail', '==', userEmail),
-    );
-    const querySnapshot = await getDocs(q);
-    const plantData: Array<UserPlant> = [];
-    querySnapshot.forEach(doc => {
-      const data = doc.data();
-      const userPlant: UserPlant = {
-        id: doc.id,
-        imgUrl: data.imgUrl,
-        nickname: data.nickname,
-        frequency: data.frequency,
-        isMain: data.isMain,
-        plantName: data.plantName,
-        userEmail: data.userEmail,
-        wateredDays: data.wateredDays,
-        purchasedDay: data.purchasedDay,
-      };
-      plantData.push(userPlant);
-    });
-    plantData.sort(compare);
-    setMyPlantData(plantData);
-    setPlantCount(plantData.length);
+
+  const compare = (a: UserPlant, b: UserPlant): number => {
+    if (a.isMain === b.isMain) {
+      return 0;
+    } else if (a.isMain) {
+      return -1;
+    } else {
+      return 1;
+    }
+  };
+
+  const getUserPlantsSorted = async () => {
+    try {
+      const plantData = await getPlantList(userEmail);
+      if (plantData.length == 0) return;
+      plantData.sort(compare);
+      setMyPlantData(plantData);
+      setPlantCount(plantData.length);
+    } catch {
+      errorNoti('유저 식물 데이터를 불러오지 못 했습니다.');
+    }
   };
 
   const handleClickIsMain = async (clickedPlant: UserPlant) => {
@@ -81,7 +78,7 @@ const MainPagePlantList = ({
         const updatedDocSnapshot = await getDoc(documentTrueRef);
         const updatedData = updatedDocSnapshot.data();
         setMyMainPlant(updatedData as UserPlant);
-        await getUserPlants();
+        await getUserPlantsSorted();
         successNoti('메인 식물을 변경하였습니다.');
       } catch (error) {
         return;
@@ -100,44 +97,9 @@ const MainPagePlantList = ({
     };
     navigate(`/myplant/${clickedPlant.id}/edit`, { state: dataFromList });
   };
-  const compare = (a: UserPlant, b: UserPlant): number => {
-    if (a.isMain === b.isMain) {
-      return 0;
-    } else if (a.isMain) {
-      return -1;
-    } else {
-      return 1;
-    }
-  };
 
   useEffect(() => {
-    const getUserPlants = async () => {
-      const q = query(
-        collection(db, 'plant'),
-        where('userEmail', '==', userEmail),
-      );
-      const querySnapshot = await getDocs(q);
-      const plantData: Array<UserPlant> = [];
-      querySnapshot.forEach(doc => {
-        const data = doc.data();
-        const userPlant: UserPlant = {
-          id: doc.id,
-          imgUrl: data.imgUrl,
-          nickname: data.nickname,
-          frequency: data.frequency,
-          isMain: data.isMain,
-          plantName: data.plantName,
-          userEmail: data.userEmail,
-          wateredDays: data.wateredDays,
-          purchasedDay: data.purchasedDay,
-        };
-        plantData.push(userPlant);
-      });
-      plantData.sort(compare);
-      setMyPlantData(plantData);
-      setPlantCount(plantData.length);
-    };
-    getUserPlants();
+    getUserPlantsSorted();
     setIsLoading(false);
   }, []);
 

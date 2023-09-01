@@ -3,8 +3,6 @@ import Calendar from 'react-calendar';
 import { nanoid } from 'nanoid';
 import { format, getDay } from 'date-fns';
 import { useAuth } from '@/hooks';
-import { db } from '@/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { CALENDAR_ICONS, DAY_OF_WEEK_KR } from '@/constants/calendar';
 import { UserPlant } from '@/@types/plant.type';
 import { TileArgs } from 'node_modules/react-calendar/dist/esm/shared/types';
@@ -14,6 +12,7 @@ import Progress from '@/components/progress/Progress';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 import './calendarPage.scss';
+import { getPlantList } from '@/api/userPlant';
 
 type ValuePiece = Date | null;
 interface RecordDataType {
@@ -79,50 +78,48 @@ const CalendarPage = () => {
     if (dateMatchedItem) return <img src={dateMatchedItem.icon} />;
   };
 
-  const getUserPlant = async (userEmail?: string | null) => {
-    if (!userEmail) return;
+  const formatCalendarData = (items: UserPlant[]) => {
+    const calendarData: CalendarDataType = {};
 
-    const waterRef = collection(db, 'plant');
-    const q = query(waterRef, where('userEmail', '==', userEmail));
+    items.forEach(({ nickname, wateredDays }) => {
+      wateredDays.forEach(date => {
+        const time = format(date.toDate(), 'HH:mm');
+        const fullDate = format(date.toDate(), 'yyyy-MM-dd');
 
-    try {
-      const querySnapshot = await getDocs(q);
-      const newData: CalendarDataType = {};
+        if (!calendarData[fullDate]) {
+          const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
+          const randomIcon = CALENDAR_ICONS[Math.floor(randomIndex)];
 
-      querySnapshot.forEach(doc => {
-        const calendarData = doc.data() as Omit<UserPlant, 'id'>;
+          calendarData[fullDate] = {
+            icon: randomIcon,
+            items: [],
+          };
+        }
 
-        calendarData.wateredDays.forEach(date => {
-          const time = format(date.toDate(), 'HH:mm');
-          const fullDate = format(date.toDate(), 'yyyy-MM-dd');
-
-          if (!newData[fullDate]) {
-            const randomIndex = Math.random() * (CALENDAR_ICONS.length - 1);
-            const randomIcon = CALENDAR_ICONS[Math.floor(randomIndex)];
-
-            newData[fullDate] = {
-              icon: randomIcon,
-              items: [],
-            };
-          }
-
-          newData[fullDate].items.push({
-            time,
-            plantName: calendarData.nickname,
-          });
+        calendarData[fullDate].items.push({
+          time,
+          plantName: nickname,
         });
       });
+    });
 
-      setCalendarData(newData);
-    } catch (error) {
-      errorNoti('데이터를 받아오지 못했습니다! 잠시 후 다시 시도해주세요!');
-    } finally {
-      setIsLoading(false);
-    }
+    return calendarData;
   };
 
   useEffect(() => {
-    getUserPlant(user?.email);
+    (async () => {
+      if (!user?.email) return;
+
+      try {
+        const userPlants = await getPlantList(user?.email);
+        const calendarData = formatCalendarData(userPlants);
+        setCalendarData(calendarData);
+      } catch (error) {
+        errorNoti('데이터를 받아오지 못했습니다! 잠시 후 다시 시도해주세요!');
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, [user]);
 
   const visibleContent = selectedDate

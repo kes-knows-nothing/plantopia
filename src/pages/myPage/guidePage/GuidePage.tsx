@@ -38,7 +38,7 @@ const NotiPage = () => {
     <div className="noti_container">
       <HeaderBefore title="사용 가이드" />
       <main>
-        <h2 className="noti_title">플랜토피아를 앱처럼 사용해 보세요!</h2>
+        <h2 className="noti_title">앱처럼 사용해 보세요!</h2>
         <section className="list_box inner">
           <span className="list_title">기종별 다운로드 방법</span>
           <ul className="list_contents">

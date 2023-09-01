@@ -54,13 +54,15 @@ const MyPage = () => {
             {Children.toArray(
               customerService.map(({ title, url }) => (
                 <li>
-                  <a
-                    href={url}
-                    target={title === customerService[2].title ? '_blank' : ''}
-                    className="move"
-                  >
-                    {title}
-                  </a>
+                  {title === customerService[2].title ? (
+                    <a href={url} target="_blank" className="move">
+                      {title}
+                    </a>
+                  ) : (
+                    <Link to={url} className="move">
+                      {title}
+                    </Link>
+                  )}
                 </li>
               )),
             )}

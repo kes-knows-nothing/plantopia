@@ -105,7 +105,9 @@ const LoginPage = () => {
               onChange={() => setIsChecked(prev => !prev)}
               checked={isChecked}
             />
-            <label htmlFor="check">자동 로그인</label>
+            <label htmlFor="check" draggable>
+              자동 로그인
+            </label>
           </div>
           <button type="submit" className="submit_btn">
             로그인

@@ -5,26 +5,27 @@
   width: 100%;
 
   .react-confirm-alert-body {
+    max-width: 30rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 1.4rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
 
     > h1 {
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       color: #22264c;
-      line-height: 3rem;
+      line-height: 4rem;
     }
 
     .react-confirm-alert-button-group {
       display: flex;
       justify-content: space-between;
-      width: 90%;
+      width: 25rem;
 
       > button {
-        padding: 1rem 2rem;
         width: 12.7rem;
+        height: 4rem;
         border-radius: 1rem;
         font-size: 1.4rem;
 
@@ -33,7 +34,8 @@
         }
 
         &.cancel {
-          background-color: #969696;
+          background-color: #eee;
+          color: #22264c;
         }
 
         &:hover {

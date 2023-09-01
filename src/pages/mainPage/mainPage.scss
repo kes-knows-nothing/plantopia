@@ -113,13 +113,15 @@
 
   > .watering_btn {
     position: absolute;
-    right: 2.4rem;
+    right: 1.7rem;
     bottom: 0.7rem;
-    padding: 0 0 0.3rem 0;
-    width: 4.6rem;
-    height: 4.6rem;
+    padding: 0;
+    width: 5.3rem;
+    height: 5.3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f8f8fa;
     filter: drop-shadow(0 0.4rem 2rem rgba(0, 0, 0, 0.25));
-
     > img {
       width: 100%;
       height: 100%;
@@ -127,14 +129,11 @@
 
     > .watering_label {
       position: absolute;
-      bottom: 0;
+      bottom: 0.6rem;
       left: 0;
       right: 0;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3rem;
-      background-color: #ffffff;
       color: #22264c;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
     }
   }

@@ -6,6 +6,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { db } from '@/firebaseApp';
 import { doc, getDoc } from 'firebase/firestore';
+import useDiaryData from '@/hooks/useDiaryData';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 import './diaryDetailPage.scss';
 

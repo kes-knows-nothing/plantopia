@@ -4,15 +4,10 @@ import { DiaryProps } from '@/@types/diary.type';
 import { showAlert } from '@/utils/alarmUtil';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import useDiaryData from '@/hooks/useDiaryData';
-import HeaderBefore from '@/components/headerBefore/HeaderBefore';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-import './diaryDetailPage.scss';
 import { db } from '@/firebaseApp';
 import { doc, getDoc } from 'firebase/firestore';
+
+import './diaryDetailPage.scss';
 
 const DiaryDetailPage = () => {
   const { docId } = useParams();

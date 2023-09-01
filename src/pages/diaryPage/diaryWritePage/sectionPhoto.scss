@@ -1,3 +1,5 @@
+@use 'swiper/css';
+
 /* 포토슬라이드 공통 */
 @mixin photo-slide-wrap($width, $height) {
   width: $width;
@@ -7,7 +9,6 @@
   overflow: hidden;
   padding: 0;
 }
-
 
 /* PHOTO 섹션 */
 .photo_section {

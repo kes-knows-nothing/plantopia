@@ -107,8 +107,14 @@ const MyPlantEditPage = () => {
     e.preventDefault();
     setSaving(true);
     if (!docId) return;
+    if (!myPlantData?.wateredDays) {
+      myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
+    } else {
+      myPlantData?.wateredDays.pop();
+      myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
+    }
+
     const documentRef = doc(db, 'plant', docId);
-    myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
     const updatedFields = {
       imgUrl: imgUrl,
       nickname: plantNickname,
@@ -183,7 +189,11 @@ const MyPlantEditPage = () => {
           <div className="my_plant_input_box">
             <p className="my_plant_input_title">식물 이름</p>
             <div className="my_plant_input_wrapper">
-              <input className="my_plant_input" value={plantName} disabled />
+              <input
+                className="my_plant_edit_input"
+                value={plantName}
+                disabled
+              />
             </div>
           </div>
           <div className="my_plant_info_form">

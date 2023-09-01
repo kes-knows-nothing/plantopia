@@ -7,7 +7,7 @@ import './myPlantEditPage.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
-import { secondsToDate, dateToTimestamp } from '@/utils/dateUtil';
+import { secondsToDate, dateToTimestamp, maxDate } from '@/utils/dateUtil';
 import { successNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
 
@@ -107,8 +107,14 @@ const MyPlantEditPage = () => {
     e.preventDefault();
     setSaving(true);
     if (!docId) return;
+    if (!myPlantData?.wateredDays) {
+      myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
+    } else {
+      myPlantData?.wateredDays.pop();
+      myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
+    }
+
     const documentRef = doc(db, 'plant', docId);
-    myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
     const updatedFields = {
       imgUrl: imgUrl,
       nickname: plantNickname,
@@ -157,11 +163,13 @@ const MyPlantEditPage = () => {
         <div className="my_plant_registeration_container">
           <div className="my_plant_register_img_box">
             <div className="img_wrapper">
-              <img
-                className="main_img"
-                src={imgUrl || previewImg}
-                alt="samplePlant1"
-              />
+              <span>
+                <img
+                  className="main_img"
+                  src={imgUrl || previewImg}
+                  alt="samplePlant1"
+                />
+              </span>
               <div className="edit_icon_wrapper">
                 <label htmlFor="photoInput" className="photo_label">
                   <img
@@ -183,7 +191,11 @@ const MyPlantEditPage = () => {
           <div className="my_plant_input_box">
             <p className="my_plant_input_title">식물 이름</p>
             <div className="my_plant_input_wrapper">
-              <input className="my_plant_input" value={plantName} disabled />
+              <input
+                className="my_plant_edit_input"
+                value={plantName}
+                disabled
+              />
             </div>
           </div>
           <div className="my_plant_info_form">
@@ -203,15 +215,7 @@ const MyPlantEditPage = () => {
               />
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
-            <p className="my_plant_register_small_title">마지막 물준 날</p>
-            <div className="my_plant_register_calender_value">
-              <input
-                type="date"
-                className="date_selector"
-                value={wateredDay}
-                onChange={wateredDaysHandler}
-              />
-            </div>
+
             <p className="my_plant_register_small_title">
               식물과 처음 함께한 날
             </p>
@@ -221,6 +225,16 @@ const MyPlantEditPage = () => {
                 type="date"
                 value={purchasedDay}
                 onChange={purchasedDayHandler}
+              />
+            </div>
+            <p className="my_plant_register_small_title">마지막 물준 날</p>
+            <div className="my_plant_register_calender_value">
+              <input
+                type="date"
+                className="date_selector"
+                value={wateredDay}
+                onChange={wateredDaysHandler}
+                max={maxDate()}
               />
             </div>
           </div>

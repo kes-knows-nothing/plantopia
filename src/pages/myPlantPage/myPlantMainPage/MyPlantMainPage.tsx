@@ -54,11 +54,13 @@ const MyPlantMainPage = () => {
         <div className="main_plant_info_box inner">
           {myMainPlant ? (
             <div className="main_plant_main_data">
-              <img
-                className="main_plant_img"
-                src={myMainPlant?.imgUrl}
-                alt="mainPlantImg"
-              />
+              <span>
+                <img
+                  className="main_plant_img"
+                  src={myMainPlant?.imgUrl}
+                  alt="mainPlantImg"
+                />
+              </span>
               <div className="main_plant_head">
                 <img src={mainPlantTrueIcon} alt="" />{' '}
                 <p className="main_plant_title">메인 식물</p>

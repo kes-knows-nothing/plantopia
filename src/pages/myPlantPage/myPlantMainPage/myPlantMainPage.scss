@@ -27,12 +27,13 @@
   flex-direction: column;
   width: 100%;
 
-  > .main_plant_img {
-    @include mixins.avatar(50%);
+  span {
     width: 14.8rem;
     height: 14.8rem;
+    @include mixins.avatar(50%);
     margin: 0 auto;
   }
+
   > .main_plant_head {
     height: 3rem;
     width: 9rem;

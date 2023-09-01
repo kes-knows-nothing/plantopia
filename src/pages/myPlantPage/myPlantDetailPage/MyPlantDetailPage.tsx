@@ -58,13 +58,19 @@ const MyPlantDetailPage = () => {
       const docRef = doc(db, 'plant', docId);
       const documentSnapshot = await getDoc(docRef);
       const dataBeforeDeletion = documentSnapshot.data();
+      const q = query(
+        collection(db, 'plant'),
+        where('userEmail', '==', user?.email),
+      );
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.size == 1) {
+        await deleteDoc(docRef);
+        navigate('/myplant');
+        successNoti('내 식물이 삭제 되었습니다.');
+        return;
+      }
       if (dataBeforeDeletion?.isMain) {
         await deleteDoc(docRef);
-        const q = query(
-          collection(db, 'plant'),
-          where('userEmail', '==', user?.email),
-        );
-        const querySnapshot = await getDocs(q);
         const firstDocumentid = querySnapshot.docs[0].id;
         const documentRef = doc(db, 'plant', firstDocumentid);
         const updatedFields = {
@@ -73,6 +79,7 @@ const MyPlantDetailPage = () => {
         await updateDoc(documentRef, updatedFields);
         navigate('/myplant');
         successNoti('내 식물을 삭제 하였습니다.');
+        return;
       } else {
         try {
           await deleteDoc(docRef);
@@ -113,12 +120,13 @@ const MyPlantDetailPage = () => {
       <HeaderBefore ex={false} title="식물 상세" />
       <main>
         <div className="my_plant_detail_upper_container">
-          <img
-            className="detail_plant_img"
-            src={plantDetail?.imgUrl}
-            alt="mainPlantImg"
-          />
-
+          <span className="detail_img_wrap">
+            <img
+              className="detail_plant_img"
+              src={plantDetail?.imgUrl}
+              alt="mainPlantImg"
+            />
+          </span>
           <p className="detail_plant_name">{plantDictDetail?.scientificName}</p>
           <div className="detail_nickname_box">
             <p

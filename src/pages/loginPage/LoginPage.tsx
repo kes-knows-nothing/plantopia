@@ -95,7 +95,6 @@ const LoginPage = () => {
           <input
             type="password"
             name="password"
-            value={password}
             onChange={handleChange}
             placeholder="비밀번호를 입력해주세요."
           />

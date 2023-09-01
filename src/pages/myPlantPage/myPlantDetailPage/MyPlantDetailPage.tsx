@@ -120,12 +120,13 @@ const MyPlantDetailPage = () => {
       <HeaderBefore ex={false} title="식물 상세" />
       <main>
         <div className="my_plant_detail_upper_container">
-          <img
-            className="detail_plant_img"
-            src={plantDetail?.imgUrl}
-            alt="mainPlantImg"
-          />
-
+          <span className="detail_img_wrap">
+            <img
+              className="detail_plant_img"
+              src={plantDetail?.imgUrl}
+              alt="mainPlantImg"
+            />
+          </span>
           <p className="detail_plant_name">{plantDictDetail?.scientificName}</p>
           <div className="detail_nickname_box">
             <p

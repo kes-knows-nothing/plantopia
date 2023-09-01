@@ -249,7 +249,7 @@
   background-color: #1fb0ad;
 }
 
-.detail_plant_img {
+.detail_img_wrap {
   @include mixins.avatar(50%);
   width: 16rem;
   height: 16rem;

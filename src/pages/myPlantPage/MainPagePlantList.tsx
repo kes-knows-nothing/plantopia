@@ -6,7 +6,7 @@ import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png'
 import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
 import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
-import '@/styles/custom-toast-styles.scss';
+import 'react-toastify/dist/ReactToastify.css';
 import { successNoti } from '@/utils/alarmUtil';
 import {
   getDocs,
@@ -23,12 +23,14 @@ interface MainPagePlantListProps {
   userEmail: string;
   setMyMainPlant: (data: UserPlant) => void;
   setPlantCount: (data: number) => void;
+  setIsLoading: (data: boolean) => void;
 }
 
 const MainPagePlantList = ({
   userEmail,
   setMyMainPlant,
   setPlantCount,
+  setIsLoading,
 }: MainPagePlantListProps) => {
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
@@ -136,6 +138,7 @@ const MainPagePlantList = ({
       setPlantCount(plantData.length);
     };
     getUserPlants();
+    setIsLoading(false);
   }, []);
 
   return (

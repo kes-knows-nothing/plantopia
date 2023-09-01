@@ -13,6 +13,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+import Progress from '@/components/progress/Progress';
 import './myPlantDetailPage.scss';
 import editIcon from '@/assets/images/icons/my_plant_detail_edit_icon.png';
 import sunOn from '@/assets/images/icons/sun_on_icon.png';
@@ -28,6 +29,7 @@ const MyPlantDetailPage = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [plantDetail, setPlantDetail] = useState<UserPlant>();
   const [plantDictDetail, setPlantDictDetail] = useState<PlantType>();
 
@@ -103,6 +105,7 @@ const MyPlantDetailPage = () => {
       }
     };
     getData();
+    setIsLoading(false);
   }, [docId]);
 
   return (
@@ -279,6 +282,7 @@ const MyPlantDetailPage = () => {
           내 식물 삭제하기
         </button>
       </main>
+      {isLoading && <Progress />}
     </>
   );
 };

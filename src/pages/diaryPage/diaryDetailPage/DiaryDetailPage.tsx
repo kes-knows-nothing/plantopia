@@ -53,7 +53,7 @@ const DiaryDetailPage = () => {
   }, [docId]);
 
   return (
-    <>
+    <div className="diary_detail_wrap">
       <HeaderBefore ex={false} title="다이어리" />
       <div className="more_btn_wrap">
         <button
@@ -146,7 +146,7 @@ const DiaryDetailPage = () => {
           </section>
         </div>
       </main>
-    </>
+    </div>
   );
 };
 

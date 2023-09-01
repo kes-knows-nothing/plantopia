@@ -11,197 +11,202 @@
 }
 
 /* DIARY-Detail 페이지 */
-.more_btn_wrap {
-  min-width: 400px;
-  margin-left: 50px;
-  height: 5.6rem;
-  position: fixed;
-  left: 50%;
-  top: 0.3rem;
-  transform: translateX(-50%);
-  z-index: 15;
-
-  > .more {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    width: 3rem;
-    height: 3rem;
-    transform: translateX(0.2rem);
-    color: #979797;
-    opacity: 0.8;
-    background: url('@/assets/images/icons/diary_more.png') no-repeat center /
-      0.35rem;
-  }
-
-  .more_modal {
-    width: 11.5rem;
-    height: 7.5rem;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    right: 2rem;
-    top: 4rem;
-    font-size: 1.3rem;
-    background: #fff;
-    overflow: hidden;
-    z-index: 15;
-    border-radius: 0.4rem;
-    box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
-
-    > .btn {
-      padding: 1rem;
-      height: 50%;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      &:hover {
-        background: #f7f8f7;
-      }
-    }
-
-    > .modify {
-      color: #22274c;
-    }
-
-    > .delete {
-      color: red;
-    }
-  }
-}
-.diary_detail_page {
-  width: 100%;
-  min-height: calc(100vh - 5.6rem);
+.diary_detail_wrap {
   position: relative;
 
-  > .diary_detail_container {
+  > .more_btn_wrap {
+    position: absolute;
+    width: 3rem;
+    z-index: 15;
+    height: 5.6rem;
+
+    right: 0;
+    top: 0;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
+    align-items: center;
 
-    /* 이미지 슬라이드 SECTION */
-    > .slide_section {
-      position: relative;
-      width: 100%;
-      padding-bottom: 3rem;
+    > .more {
+      width: 3rem;
+      height: 3rem;
+      transform: translateX(0.2rem);
+      color: #979797;
+      opacity: 0.8;
+      background: url('@/assets/images/icons/diary_more.png') no-repeat center /
+        0.35rem;
+      z-index: 15;
+    }
+
+    .more_modal {
+      width: 11.5rem;
+      height: 7.5rem;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: 1.3rem;
+      top: 4rem;
+      font-size: 1.3rem;
+      background: #fff;
       overflow: hidden;
+      z-index: 15;
+      border-radius: 0.4rem;
+      box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
 
-      > .swiper {
-        position: relative;
-        width: 100%;
-        height: 36rem;
-        overflow: visible;
-
-        &:hover {
-          .swiper_nav {
-            opacity: 1;
-          }
-        }
-      }
-
-      .swiper-slide {
-        overflow: hidden;
+      > .btn {
+        padding: 1rem;
+        height: 50%;
         display: flex;
-        justify-content: center;
         align-items: center;
         cursor: pointer;
 
-        > .slide_container {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          display: flex;
-
-          > .slide_img {
-            display: block;
-            width: 36rem;
-            height: 36rem;
-            object-fit: cover;
-            margin: 0 auto;
-          }
+        &:hover {
+          background: #f7f8f7;
         }
       }
 
-      .swiper_nav {
-        display:none // 수정 예정
-
-        > .nav_btn {
-          position: absolute;
-          width: 6rem;
-          height: 100%;
-          height: 36rem;
-          cursor: pointer;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        > .swiper_nav_prev {
-          left: 0;
-
-          > .prev_btn {
-            width: 2rem;
-            height: 2rem;
-            background: url('@/assets/images/icons/slide_left.png') no-repeat
-              center / contain;
-          }
-        }
-        > .swiper_nav_next {
-          right: 0;
-
-          > .next_btn {
-            width: 2rem;
-            height: 2rem;
-            background: url('@/assets/images/icons/slide_right.png') no-repeat
-              center / contain;
-          }
-        }
+      > .modify {
+        color: #22274c;
       }
 
-      .swiper-pagination {
-        bottom: -2rem;
-
-        .swiper-pagination-bullet {
-          background-color: #c4c4c4;
-        }
-
-        & .swiper-pagination-bullet-active {
-          background-color: #1fb0ad;
-        }
+      > .delete {
+        color: red;
       }
     }
+  }
 
-    /* 게시글 SECTION */
-    > .content_section {
-      > .diary_title {
-        font-size: 2rem;
-        color: #22264c;
-        padding: 2rem 0;
+  > .diary_detail_page {
+    width: 100%;
+    min-height: calc(100vh - 5.6rem);
+    position: relative;
+
+    > .diary_detail_container {
+      display: flex;
+      flex-direction: column;
+
+      /* 이미지 슬라이드 SECTION */
+      > .slide_section {
+        position: relative;
+        width: 100%;
+        padding-bottom: 3rem;
+        overflow: hidden;
+
+        > .swiper {
+          position: relative;
+          width: 100%;
+          height: 36rem;
+          overflow: visible;
+
+          &:hover {
+            .swiper_nav {
+              opacity: 1;
+            }
+          }
+        }
+
+        .swiper-slide {
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          > .slide_container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+
+            > .slide_img {
+              display: block;
+              width: 36rem;
+              height: 36rem;
+              object-fit: cover;
+              margin: 0 auto;
+            }
+          }
+        }
+
+        .swiper_nav {
+          display:none // 수정 예정
+  
+          > .nav_btn {
+            position: absolute;
+            width: 6rem;
+            height: 100%;
+            height: 36rem;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          > .swiper_nav_prev {
+            left: 0;
+
+            > .prev_btn {
+              width: 2rem;
+              height: 2rem;
+              background: url('@/assets/images/icons/slide_left.png') no-repeat
+                center / contain;
+            }
+          }
+          > .swiper_nav_next {
+            right: 0;
+
+            > .next_btn {
+              width: 2rem;
+              height: 2rem;
+              background: url('@/assets/images/icons/slide_right.png') no-repeat
+                center / contain;
+            }
+          }
+        }
+
+        .swiper-pagination {
+          bottom: -2rem;
+
+          .swiper-pagination-bullet {
+            background-color: #c4c4c4;
+          }
+
+          & .swiper-pagination-bullet-active {
+            background-color: #1fb0ad;
+          }
+        }
       }
 
-      > .plant_list {
-        > span {
+      /* 게시글 SECTION */
+      > .content_section {
+        > .diary_title {
+          font-size: 2rem;
+          color: #22264c;
+          padding: 2rem 0;
+        }
+
+        > .plant_list {
+          > span {
+            color: #979797;
+            padding: 0.2rem 1rem;
+            border-radius: 0.4rem;
+            background: #f8f8fa;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+          }
+        }
+
+        > .text_wrap {
+          padding: 3rem 0;
           color: #979797;
-          padding: 0.2rem 1rem;
-          border-radius: 0.4rem;
-          background: #f8f8fa;
-          margin-right: 1rem;
-          font-size: 1.2rem;
-        }
-      }
 
-      > .text_wrap {
-        padding: 3rem 0;
-        color: #979797;
-
-        > .diary_text {
-          font-size: 1.4rem;
-          line-height: 2.2rem;
-        }
-        > .diary_date {
-          font-size: 1.2rem;
-          margin-top: 3rem;
+          > .diary_text {
+            font-size: 1.4rem;
+            line-height: 2.2rem;
+          }
+          > .diary_date {
+            font-size: 1.2rem;
+            margin-top: 3rem;
+          }
         }
       }
     }

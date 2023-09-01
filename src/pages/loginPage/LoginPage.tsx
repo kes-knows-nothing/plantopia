@@ -72,7 +72,7 @@ const LoginPage = () => {
         <h1>
           <span>Plantopia</span>
         </h1>
-        <h2>
+        <h2 className="sub_title">
           <div>
             간편하게 로그인하고
             <br />

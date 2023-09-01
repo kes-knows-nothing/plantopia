@@ -103,6 +103,18 @@ const CalendarPage = () => {
       });
     });
 
+    for (const [date] of Object.entries(calendarData)) {
+      calendarData[date].items.sort((a, b) => {
+        const { time: prevTime } = a;
+        const { time: nextTime } = b;
+
+        return (
+          Number(prevTime.split(':').join('')) -
+          Number(nextTime.split(':').join(''))
+        );
+      });
+    }
+
     return calendarData;
   };
 

@@ -163,11 +163,13 @@ const MyPlantEditPage = () => {
         <div className="my_plant_registeration_container">
           <div className="my_plant_register_img_box">
             <div className="img_wrapper">
-              <img
-                className="main_img"
-                src={imgUrl || previewImg}
-                alt="samplePlant1"
-              />
+              <span>
+                <img
+                  className="main_img"
+                  src={imgUrl || previewImg}
+                  alt="samplePlant1"
+                />
+              </span>
               <div className="edit_icon_wrapper">
                 <label htmlFor="photoInput" className="photo_label">
                   <img

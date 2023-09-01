@@ -132,7 +132,7 @@ const MyPlantRegisterPage = () => {
     navigate('/myplant');
   };
   return (
-    <>
+    <div className="layout">
       <HeaderBefore ex={true} title="식물 등록" />
       <main>
         <form action="" onSubmit={handleRegister}>
@@ -234,11 +234,11 @@ const MyPlantRegisterPage = () => {
             type="submit"
             disabled={saving}
           >
-            {saving ? '저장 중...' : '내 식물 저장'}
+            {saving ? '등록 중...' : '등록하기'}
           </button>
         </form>
       </main>
-    </>
+    </div>
   );
 };
 

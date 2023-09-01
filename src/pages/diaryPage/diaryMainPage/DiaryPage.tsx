@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DiaryImages } from '@/constants/diary';
 import { useAuth } from '@/hooks';
+import { showAlert } from '@/utils/alarmUtil';
 import useDiaryData from '@/hooks/useDiaryData';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import Progress from '@/components/progress/Progress';
-import { showAlert } from '@/utils/alarmUtil';
 
 import ListView from './ListView';
 import GalleryView from './GalleryView';
@@ -56,7 +56,7 @@ const DiaryPage = () => {
   };
 
   return (
-    <>
+    <div className="layout">
       <Header />
       <main className="diary_page">
         <div className="diary_container">
@@ -97,7 +97,7 @@ const DiaryPage = () => {
       </main>
       <Footer />
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

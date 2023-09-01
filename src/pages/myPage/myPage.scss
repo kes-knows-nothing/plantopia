@@ -20,6 +20,7 @@
         font-weight: 400;
         color: #22264c;
         padding: 2rem 0 2.8rem 0;
+        line-height: 1.5;
 
         em {
           font-size: 1.8rem;
@@ -69,7 +70,11 @@
           line-height: 4rem;
           border-radius: 0.6rem;
           color: #22264c;
+          background-color: #f2f2f2;
+          &:hover{
           background-color: #e7e7e7;
+
+          }
         }
       }
     }

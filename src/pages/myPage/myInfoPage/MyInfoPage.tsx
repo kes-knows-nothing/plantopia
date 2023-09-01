@@ -67,7 +67,7 @@ const MyInfo = () => {
   };
 
   return (
-    <div className="my_info_page">
+    <div className="my_info_page layout">
       <HeaderBefore title="내 정보" />
       <main className="my_info_container inner">
         <section className="profile_section">
@@ -115,7 +115,7 @@ const MyInfo = () => {
         disabled={!isBtnActive}
         onClick={handleClick}
       >
-        {isBtnActive ? '저장' : '저장 중...'}
+        {isBtnActive ? '수정하기' : '수정 중...'}
       </button>
     </div>
   );

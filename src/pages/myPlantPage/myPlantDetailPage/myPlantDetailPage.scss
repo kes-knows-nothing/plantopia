@@ -30,26 +30,25 @@
 
 .my_plant_detail_edit_btn {
   width: 29rem;
-  height: 5.2rem;
+  height: 5rem;
+  margin-top: 2rem;
   border-radius: 2.6rem;
   border: 1px solid #d6d6d6;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
   cursor: pointer;
 }
 
 .my_plant_detail_edit_btn_inner_contents {
   width: 13.3rem;
-  height: 2.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   > img {
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   > p {
     width: 9.7rem;
@@ -233,19 +232,27 @@
   text-decoration: underline;
   font-size: 1.2rem;
   font-weight: 400;
-  margin: 0 auto;
-  margin: 6rem 0 3rem;
+  margin: 6rem 0;
   color: #969696;
   cursor: pointer;
 }
 
 .delete_my_plant {
   width: 100%;
+  max-width: 500px;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
   height: 5rem;
+  background: #1fb0ad;
+  color: #fff;
   font-size: 1.4rem;
   font-weight: 700;
-  color: #ffffff;
-  background-color: #1fb0ad;
+
+  &:hover {
+    background: rgb(51, 142, 142);
+  }
 }
 
 .detail_img_wrap {

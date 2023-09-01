@@ -157,11 +157,11 @@ const MyPlantEditPage = () => {
   }, []);
 
   return (
-    <>
+    <div className="layout">
       <HeaderBefore ex={true} title="식물 수정" />
       <main>
-        <div className="my_plant_registeration_container">
-          <div className="my_plant_register_img_box">
+        <div className="my_plant_edit_container">
+          <div className="my_plant_edit_img_box">
             <div className="img_wrapper">
               <span>
                 <img
@@ -244,11 +244,11 @@ const MyPlantEditPage = () => {
           onClick={handleUpdate}
           disabled={saving}
         >
-          {saving ? '수정 사항 저장 중...' : '내 식물 수정하기'}
+          {saving ? '수정 중...' : '수정하기'}
         </button>
       </main>
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

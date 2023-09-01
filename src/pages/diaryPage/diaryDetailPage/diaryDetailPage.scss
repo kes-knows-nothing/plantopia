@@ -16,14 +16,15 @@
 /* DIARY-Detail 페이지 */
 .diary_detail_wrap {
   position: relative;
+  padding-bottom: 3rem;
 
   > .more_btn_wrap {
-    position: absolute;
+    position: fixed;
     width: 3rem;
     z-index: 15;
     height: 5.6rem;
 
-    right: 0;
+    right: calc(50% - 18rem);
     top: 0;
     transform: translateX(-50%);
     display: flex;
@@ -125,43 +126,6 @@
               height: 36rem;
               object-fit: cover;
               margin: 0 auto;
-            }
-          }
-        }
-
-        .swiper_nav {
-          display:none // 수정 예정
-  
-          > .nav_btn {
-            position: absolute;
-            width: 6rem;
-            height: 100%;
-            height: 36rem;
-            cursor: pointer;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          > .swiper_nav_prev {
-            left: 0;
-
-            > .prev_btn {
-              width: 2rem;
-              height: 2rem;
-              background: url('@/assets/images/icons/slide_left.png') no-repeat
-                center / contain;
-            }
-          }
-          > .swiper_nav_next {
-            right: 0;
-
-            > .next_btn {
-              width: 2rem;
-              height: 2rem;
-              background: url('@/assets/images/icons/slide_right.png') no-repeat
-                center / contain;
             }
           }
         }

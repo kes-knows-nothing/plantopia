@@ -88,7 +88,7 @@ const DiaryWritePage = () => {
   }, [state.isVisible]);
 
   return (
-    <>
+    <div className="layout">
       <HeaderBefore ex={true} title="글쓰기" />
       <main className="diary_main">
         <SectionPhoto
@@ -111,9 +111,9 @@ const DiaryWritePage = () => {
         onClick={handleSaveClick}
         disabled={state.saving}
       >
-        {state.saving ? '저장 중...' : '저장'}
+        {state.saving ? '저장 중...' : '저장하기'}
       </button>
-    </>
+    </div>
   );
 };
 

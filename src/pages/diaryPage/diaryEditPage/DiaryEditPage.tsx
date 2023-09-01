@@ -83,25 +83,8 @@ const DiaryEditPage = () => {
     navigate('/diary');
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
-    <>
+    <div className="layout">
       <HeaderBefore ex={true} title="수정하기" />
       <main className="diary_write_wrap">
         <SectionEditPhoto
@@ -127,10 +110,10 @@ const DiaryEditPage = () => {
           onClick={handleSaveClick}
           disabled={isLoading}
         >
-          {isLoading ? '저장 중...' : '저장'}
+          {isLoading ? '수정 중...' : '수정하기'}
         </button>
       </main>
-    </>
+    </div>
   );
 };
 

@@ -44,12 +44,12 @@ const MyPlantMainPage = () => {
     getQuerySnapshot();
   }, [user]);
   return (
-    <>
+    <div className="layout">
       <Header />
       <main className="my_plant_wrapper">
         <h2 className="my_plant_info_message">
           <span className="username">{user?.displayName}</span>님의 식물을
-          한눈에 보기!
+          한 눈에 보기!
         </h2>
         <div className="main_plant_info_box inner">
           {myMainPlant ? (
@@ -106,7 +106,7 @@ const MyPlantMainPage = () => {
       </main>
       <Footer />
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

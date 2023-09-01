@@ -8,9 +8,11 @@
 
 body {
   font-family: 'Pretendard', Arial, sans-serif;
+  background: url('@/assets/images/bg.png') no-repeat center fixed;
+  background-size: cover;
 }
 
-body {
+.layout {
   margin: auto;
   min-width: 320px;
   max-width: 500px;
@@ -59,8 +61,7 @@ main {
 /* confirm 관련 스타일 */
 #react-confirm-alert * {
   .react-confirm-alert-body {
-    width: 100%;
-    max-width: 400px;
+    max-width: 26rem;
 
     * {
       font-family: 'Pretendard', Arial, sans-serif;

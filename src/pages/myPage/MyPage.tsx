@@ -29,7 +29,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="my_page">
+    <div className="my_page layout">
       <Header />
       <main className="my_container">
         <section className="my_info_box inner">

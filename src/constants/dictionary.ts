@@ -2,7 +2,7 @@ import { OrderByDirection } from 'firebase/firestore';
 import { CodeToImg } from '@/components/codeToImg/CodeToImg';
 import SUN_ON_ICON from '@/assets/images/icons/dict_sun_on.png';
 import SUN_OFF_ICON from '@/assets/images/icons/dict_sun_off.png';
-import WATER_ON_ICON from '@/assets/images/icons/dict_water_on.png';
+import WATER_ON_ICON from '@/assets/images/icons/water_on_icon.png';
 import WATER_OFF_ICON from '@/assets/images/icons/dict_water_off.png';
 import PLANT1_ICON from '@/assets/images/icons/dict_plant1.png';
 import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';

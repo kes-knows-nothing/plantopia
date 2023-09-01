@@ -38,9 +38,10 @@
     h2 {
       display: flex;
       justify-content: center;
-      padding: 0 0 3.8rem 0;
+      padding: 0 0 6.5rem 0;
       font-size: 1.8rem;
       color: #22264c;
+      text-align: center;
 
       em {
         display: inline-block;
@@ -64,18 +65,40 @@
     }
 
     .auto_login {
+      margin: 1.2rem 0;
       display: flex;
       justify-content: flex-end;
       align-items: center;
 
-      > label {
-        padding-left: 0.5rem;
-        font-size: 1.2rem;
-        color: #9b9fb1;
+      > input[type='checkbox'] {
+        appearance: none;
+        width: 1.8rem;
+        height: 1.8rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        position: relative;
+        margin-right: 0.8rem;
+
+        &:checked {
+          background-color: #1fb0ad;
+          border-color: #1fb0ad;
+
+          &::before {
+            content: '✓';
+            font-size: 1.1rem;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
       }
 
-      > input {
-        width: 1.1rem;
+      > label {
+        font-size: 1.4rem;
+        color: #4d4d4d;
+        cursor: pointer;
       }
     }
 
@@ -93,7 +116,7 @@
       font-family: 'Pretendard', Arial, sans-serif;
 
       &:hover {
-        background-color: #e7e7e7;
+        background-color: #efefef;
       }
     }
 

@@ -2,8 +2,7 @@
 @use 'swiper/scss';
 
 .main_page {
-  // min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
-  height: 100%;
+  min-height: 100vh;
   padding-bottom: 5.6rem;
   background-color: #ffffff;
 
@@ -34,6 +33,7 @@
   align-items: center;
   padding-top: 0.4rem;
   min-height: 10.7rem;
+  padding-left: 2rem;
 
   > .text_wrapper {
     display: flex;
@@ -112,18 +112,20 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: #dfe9e4;
+    background-color: #e4ece8;
   }
 
   > .watering_btn {
     position: absolute;
-    right: 2.4rem;
+    right: 1.7rem;
     bottom: 0.7rem;
-    padding: 0 0 0.3rem 0;
-    width: 4.6rem;
-    height: 4.6rem;
+    padding: 0;
+    width: 5.3rem;
+    height: 5.3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f8f8fa;
     filter: drop-shadow(0 0.4rem 2rem rgba(0, 0, 0, 0.25));
-
     > img {
       width: 100%;
       height: 100%;
@@ -131,14 +133,10 @@
 
     > .watering_label {
       position: absolute;
-      bottom: 0;
+      bottom: 0.6rem;
       left: 0;
       right: 0;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3rem;
-      background-color: #ffffff;
       color: #22264c;
-      font-family: 'Pretendard', Arial, sans-serif;
       font-size: 1rem;
       font-weight: 700;
     }
@@ -262,7 +260,7 @@
         width: 8rem;
         height: 8rem;
         text-align: center;
-        background: #cbe7d9;
+        background: #d8e8e0;
         border-radius: 50%;
         padding: 0.3rem;
 
@@ -298,9 +296,11 @@
     font-size: 1.6rem;
     font-weight: 400;
     word-break: keep-all;
+    text-align: center;
 
     > strong {
       font-size: 1.8rem;
+      line-height: 1.5;
       font-weight: 700;
     }
   }

@@ -38,7 +38,7 @@ const WeatherSection = () => {
   const content = getWeatherContent(weatherInfo?.weather[0].id);
 
   return (
-    <div className="weather_wrapper inner">
+    <div className="weather_wrapper">
       {weatherInfo && content ? (
         <>
           <div className="text_wrapper">

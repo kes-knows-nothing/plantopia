@@ -58,13 +58,19 @@ const MyPlantDetailPage = () => {
       const docRef = doc(db, 'plant', docId);
       const documentSnapshot = await getDoc(docRef);
       const dataBeforeDeletion = documentSnapshot.data();
+      const q = query(
+        collection(db, 'plant'),
+        where('userEmail', '==', user?.email),
+      );
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.size == 1) {
+        await deleteDoc(docRef);
+        navigate('/myplant');
+        successNoti('내 식물이 삭제 되었습니다.');
+        return;
+      }
       if (dataBeforeDeletion?.isMain) {
         await deleteDoc(docRef);
-        const q = query(
-          collection(db, 'plant'),
-          where('userEmail', '==', user?.email),
-        );
-        const querySnapshot = await getDocs(q);
         const firstDocumentid = querySnapshot.docs[0].id;
         const documentRef = doc(db, 'plant', firstDocumentid);
         const updatedFields = {
@@ -73,6 +79,7 @@ const MyPlantDetailPage = () => {
         await updateDoc(documentRef, updatedFields);
         navigate('/myplant');
         successNoti('내 식물을 삭제 하였습니다.');
+        return;
       } else {
         try {
           await deleteDoc(docRef);

@@ -107,11 +107,13 @@ const MainPagePlantList = ({
           >
             <div className="subplant_list_box">
               <div className="subplant_main_data">
-                <img
-                  className="subplant_img"
-                  src={plant.imgUrl}
-                  alt="subPlantImg"
-                />
+                <span>
+                  <img
+                    className="subplant_img"
+                    src={plant.imgUrl}
+                    alt="subPlantImg"
+                  />
+                </span>
                 <p className="subplant_name">{plant.nickname}</p>
               </div>
               <div className="main_check_and_edit">

@@ -26,7 +26,8 @@
   display: flex;
   width: 15rem;
   align-items: center;
-  > img {
+
+  span {
     @include mixins.avatar(50%);
     width: 6rem;
     height: 6rem;

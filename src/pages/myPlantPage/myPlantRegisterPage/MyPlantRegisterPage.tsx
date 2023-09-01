@@ -139,11 +139,13 @@ const MyPlantRegisterPage = () => {
           <div className="my_plant_registeration_container">
             <div className="my_plant_register_img_box">
               <div className="img_wrapper">
-                <img
-                  className="main_img"
-                  src={previewImg || image || samplePlant1}
-                  alt="samplePlant1"
-                />
+                <span>
+                  <img
+                    className="main_img"
+                    src={previewImg || image || samplePlant1}
+                    alt="samplePlant1"
+                  />
+                </span>
                 <div className="edit_icon_wrapper">
                   <label htmlFor="photoInput" className="photo_label">
                     <img
@@ -168,7 +170,7 @@ const MyPlantRegisterPage = () => {
                 <input
                   className="my_plant_input"
                   type="text"
-                  placeholder="식물 이름으로 검색해보세요."
+                  placeholder="클릭하여 식물 이름을 검색해보세요."
                   value={searchInputValue}
                   onChange={handleSearchInput}
                   readOnly
@@ -181,8 +183,8 @@ const MyPlantRegisterPage = () => {
               </div>
             </div>
             <div className="my_plant_info_form">
-              <div className="my_plant_name_title">
-                식물이름<p>* 5글자 이내로 설정해주세요.</p>
+              <div className="my_plant_name_title required">
+                식물이름<p>(5글자 이내로 설정해주세요.)</p>
               </div>
               <input
                 className="my_plant_name"
@@ -191,8 +193,8 @@ const MyPlantRegisterPage = () => {
                 onChange={plantNameHandler}
               />
 
-              <div className="watering_frequency">
-                물 주는 날<p>* 주변 환경에 맞게 조절해주세요.</p>
+              <div className="watering_frequency required">
+                물 주는 날<p>(주변 환경에 맞게 조절해주세요.)</p>
               </div>
               <div className="watering_frequency_input_box">
                 <input
@@ -204,7 +206,7 @@ const MyPlantRegisterPage = () => {
                 <p className="watering_frequency_info">일에 한 번</p>
               </div>
 
-              <p className="my_plant_register_small_title">
+              <p className="my_plant_register_small_title required">
                 식물과 처음 함께한 날
               </p>
               <div className="my_plant_register_calender_value">

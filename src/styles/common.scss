@@ -10,6 +10,27 @@ body {
   font-family: 'Pretendard', Arial, sans-serif;
   background: url('@/assets/images/bg.png') no-repeat center fixed;
   background-size: cover;
+
+  .scroll {
+    overflow: auto;
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #6ecfcd;
+    border-radius: 100px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(99, 160, 160);
+    border-radius: 100px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  ::selection{
+    background-color: #dfedec;
+  }
 }
 
 .layout {

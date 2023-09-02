@@ -184,7 +184,7 @@ const MyPlantRegisterPage = () => {
             </div>
             <div className="my_plant_info_form">
               <div className="my_plant_name_title required">
-                식물이름<p>(5글자 이내로 설정해주세요.)</p>
+                식물별명<p>(5글자 이내로 설정해주세요)</p>
               </div>
               <input
                 className="my_plant_name"
@@ -194,30 +194,38 @@ const MyPlantRegisterPage = () => {
               />
 
               <div className="watering_frequency required">
-                물 주는 날<p>(주변 환경에 맞게 조절해주세요.)</p>
+                물 주는 날<p>(주변 환경에 맞게 조절해주세요)</p>
               </div>
               <div className="watering_frequency_input_box">
                 <input
+                  type="number"
                   className="watering_frequency_input"
                   value={frequency}
                   onChange={handleFrequency}
+                  min={1}
+                  max={60}
                 />
 
                 <p className="watering_frequency_info">일에 한 번</p>
               </div>
 
               <p className="my_plant_register_small_title required">
-                식물과 처음 함께한 날
+                식물과 처음 함께한 날{' '}
+                <span>(달력을 클릭하여 설정해주세요)</span>
               </p>
+
               <div className="my_plant_register_calender_value">
                 <input
                   className="date_selector"
                   type="date"
                   value={purchasedDay}
                   onChange={purchasedDayHandler}
+                  max={maxDate()}
                 />
               </div>
-              <p className="my_plant_register_small_title">마지막 물준 날</p>
+              <p className="my_plant_register_small_title">
+                마지막 물준 날<span>(선택 입력)</span>
+              </p>
               <div className="my_plant_register_calender_value">
                 <input
                   type="date"

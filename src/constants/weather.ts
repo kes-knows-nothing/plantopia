@@ -53,11 +53,11 @@ export const weatherContents: { [code: string]: WeatherContentType } = {
   803: {
     imgSrc: weather.CLOUD,
     title: '흐림',
-    description: '날씨는 흐리지만 식물과 함께 힐링해요',
+    description: '흐린 날씨지만 식물과 함께 힐링해요♥',
   },
   804: {
     imgSrc: weather.CLOUD,
     title: '흐림',
-    description: '날씨는 흐리지만 식물과 함께 힐링해요',
+    description: '흐린 날씨지만 식물과 함께 힐링해요',
   },
 };

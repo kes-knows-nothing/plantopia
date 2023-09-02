@@ -20,7 +20,12 @@
   /* 저장 버튼 */
 
   > .save_button {
+    position: fixed;
     width: 100%;
+    max-width: 500px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
     height: 5rem;
     margin-top: auto;
     background: #1fb0ad;

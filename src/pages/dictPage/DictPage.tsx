@@ -25,9 +25,9 @@ const DictPage = () => {
   };
 
   return (
-    <div className="dict_conatiner">
+    <div className="dict_conatiner layout">
       <Header />
-      <main className="dict_wrapper inner">
+      <main className="dict_wrapper ">
         <h2 className="dict_title">
           <span>{user?.displayName}</span>님, 어떤 식물을 찾고있나요?
         </h2>

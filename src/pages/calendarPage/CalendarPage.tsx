@@ -139,7 +139,7 @@ const CalendarPage = () => {
     : null;
 
   return (
-    <>
+    <div className ="layout">
       <HeaderBefore ex={true} title="물주기 기록" />
       <main className="calendar_page">
         <section className="calendar_wrap inner">
@@ -161,7 +161,7 @@ const CalendarPage = () => {
         />
       </main>
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

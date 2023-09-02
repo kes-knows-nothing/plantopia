@@ -67,60 +67,62 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="login_page">
-      <div className="login_box inner">
-        <h1>
-          <span>Plantopia</span>
-        </h1>
-        <h2 className="sub_title">
-          <div>
-            간편하게 로그인하고
-            <br />
-            <em>다양한 서비스를 이용하세요.</em>
-          </div>
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="inpEmail">이메일</label>
-          <input
-            type="text"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            placeholder="이메일을 입력해주세요."
-            id="inpEmail"
-          />
-          <label htmlFor="inpPwd" className="mar_top32">
-            비밀번호
-          </label>
-          <input
-            type="password"
-            name="password"
-            onChange={handleChange}
-            placeholder="비밀번호를 입력해주세요."
-          />
-          <div className="auto_login">
+    <div className="layout">
+      <main className="login_page">
+        <div className="login_box inner">
+          <h1>
+            <span>Plantopia</span>
+          </h1>
+          <h2 className="sub_title">
+            <div>
+              간편하게 로그인하고
+              <br />
+              <em>다양한 서비스를 이용하세요.</em>
+            </div>
+          </h2>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="inpEmail">이메일</label>
             <input
-              id="check"
-              type="checkbox"
-              onChange={() => setIsChecked(prev => !prev)}
-              checked={isChecked}
+              type="text"
+              name="email"
+              value={email}
+              onChange={handleChange}
+              placeholder="이메일을 입력해주세요."
+              id="inpEmail"
             />
-            <label htmlFor="check" draggable>
-              자동 로그인
+            <label htmlFor="inpPwd" className="mar_top32">
+              비밀번호
             </label>
+            <input
+              type="password"
+              name="password"
+              onChange={handleChange}
+              placeholder="비밀번호를 입력해주세요."
+            />
+            <div className="auto_login">
+              <input
+                id="check"
+                type="checkbox"
+                onChange={() => setIsChecked(prev => !prev)}
+                checked={isChecked}
+              />
+              <label htmlFor="check" draggable>
+                자동 로그인
+              </label>
+            </div>
+            <button type="submit" className="submit_btn">
+              로그인
+            </button>
+          </form>
+          <div className="oauth_box">
+            <p>SNS 계정으로 로그인하기</p>
+            <button className="google" onClick={handleClick}>
+              <span className="hide">구글 아이디로 로그인하기</span>
+            </button>
           </div>
-          <button type="submit" className="submit_btn">
-            로그인
-          </button>
-        </form>
-        <div className="oauth_box">
-          <p>SNS 계정으로 로그인하기</p>
-          <button className="google" onClick={handleClick}>
-            <span className="hide">구글 아이디로 로그인하기</span>
-          </button>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 

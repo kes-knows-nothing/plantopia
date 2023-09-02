@@ -42,7 +42,7 @@ const QuestionPage = () => {
   ];
 
   return (
-    <div className="noti_container">
+    <div className="noti_container layout">
       <HeaderBefore title="자주 묻는 질문" />
       <main>
         <h2 className="noti_title">궁금한 점이 있으신가요?</h2>

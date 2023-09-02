@@ -116,8 +116,8 @@ const MyPlantDetailPage = () => {
   }, [docId]);
 
   return (
-    <>
-      <HeaderBefore ex={false} title="식물 상세" />
+    <div className="layout">
+      <HeaderBefore ex={false} title="내 식물 상세" />
       <main>
         <div className="my_plant_detail_upper_container">
           <span className="detail_img_wrap">
@@ -150,7 +150,7 @@ const MyPlantDetailPage = () => {
           <div className="my_plant_detail_info_box">
             <div className="my_plant_detail_info_head">
               <p>
-                ⏰ {plantDetail?.nickname}와 함께한지{' '}
+                ⏰ {plantDetail?.nickname} 식물과 함께한지{' '}
                 <span>
                   {monthDifference(plantDetail?.purchasedDay?.seconds || 0)}
                   개월
@@ -287,11 +287,11 @@ const MyPlantDetailPage = () => {
             showAlert('삭제 확인', '정말로 삭제 하시겠습니까?', deletePlant)
           }
         >
-          내 식물 삭제하기
+          내 식물에서 삭제하기
         </button>
       </main>
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

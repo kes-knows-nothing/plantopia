@@ -49,6 +49,7 @@ header {
       height: 14.8rem;
       border-radius: 50%;
       background: lightcoral;
+      object-fit: cover;
     }
 
     .english_name {
@@ -66,11 +67,11 @@ header {
     }
 
     > button {
-      width: 100%;
-      height: 5.2rem;
+      width: 29rem;
+      height: 5rem;
       border: 1px solid #d6d6d6;
       border-radius: 3rem;
-      margin-top: 1.1rem;
+      margin-top: 2rem;
       font-size: 1.3rem;
       font-family: 'Pretendard', Arial, sans-serif;
       color: #22264c;
@@ -78,7 +79,8 @@ header {
 
       > img {
         margin-right: 1rem;
-        width: 2rem;
+        width: 2.5rem;
+        height: 2.5rem;
       }
     }
   }
@@ -94,6 +96,7 @@ header {
 
       .info_type {
         padding: 0 1.4rem 1.6rem 1.4rem;
+        word-break: keep-all;
 
         > h4 {
           display: inline-block;
@@ -103,6 +106,7 @@ header {
 
           > img {
             width: 2rem;
+            height: 2rem;
             margin: 0 0.8rem 0 0;
           }
         }

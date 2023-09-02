@@ -157,11 +157,11 @@ const MyPlantEditPage = () => {
   }, []);
 
   return (
-    <>
+    <div className="layout">
       <HeaderBefore ex={true} title="식물 수정" />
       <main>
-        <div className="my_plant_registeration_container">
-          <div className="my_plant_register_img_box">
+        <div className="my_plant_edit_container">
+          <div className="my_plant_edit_img_box">
             <div className="img_wrapper">
               <span>
                 <img
@@ -186,27 +186,31 @@ const MyPlantEditPage = () => {
                   onChange={handleFileSelect}
                 />
               </div>
+              <div className="my_plant_input_box">
+                <input
+                  className="my_plant_edit_input"
+                  value={plantName}
+                  disabled
+                />
+              </div>
             </div>
           </div>
-          <div className="my_plant_input_box">
-            <p className="my_plant_input_title">식물 이름</p>
-            <div className="my_plant_input_wrapper">
-              <input
-                className="my_plant_edit_input"
-                value={plantName}
-                disabled
-              />
-            </div>
-          </div>
+
           <div className="my_plant_info_form">
-            <p className="my_plant_name_title">식물 별명</p>
+            <div className="my_plant_name_title required">
+              식물 별명
+              <span>(5글자 이내로 설정해주세요)</span>
+            </div>
             <input
               className="my_plant_name"
+              maxLength={5}
               value={plantNickname}
               onChange={handlePlantNickname}
             />
 
-            <p className="watering_frequency">물 주는 날</p>
+            <div className="watering_frequency required">
+              물 주는 날<span>(주변 환경에 맞게 조절해주세요)</span>
+            </div>
             <div className="watering_frequency_input_box">
               <input
                 className="watering_frequency_input"
@@ -216,8 +220,8 @@ const MyPlantEditPage = () => {
               <p className="watering_frequency_info">일에 한 번</p>
             </div>
 
-            <p className="my_plant_register_small_title">
-              식물과 처음 함께한 날
+            <p className="my_plant_register_small_title  required">
+              식물과 처음 함께한 날<span>(달력을 클릭하여 설정해주세요)</span>
             </p>
             <div className="my_plant_register_calender_value">
               <input
@@ -227,7 +231,9 @@ const MyPlantEditPage = () => {
                 onChange={purchasedDayHandler}
               />
             </div>
-            <p className="my_plant_register_small_title">마지막 물준 날</p>
+            <p className="my_plant_register_small_title">
+              마지막 물준 날 <span>(선택 입력)</span>
+            </p>
             <div className="my_plant_register_calender_value">
               <input
                 type="date"
@@ -244,11 +250,11 @@ const MyPlantEditPage = () => {
           onClick={handleUpdate}
           disabled={saving}
         >
-          {saving ? '수정 사항 저장 중...' : '내 식물 수정하기'}
+          {saving ? '수정 중...' : '수정하기'}
         </button>
       </main>
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

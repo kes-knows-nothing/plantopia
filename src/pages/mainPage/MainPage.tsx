@@ -96,7 +96,7 @@ const MainPage = () => {
   }, [user]);
 
   return (
-    <>
+    <div className="layout">
       <Header isMainPage />
       <main className="main_page">
         <section>
@@ -117,7 +117,7 @@ const MainPage = () => {
       </main>
       <Footer />
       {isLoading && <Progress />}
-    </>
+    </div>
   );
 };
 

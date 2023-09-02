@@ -35,7 +35,7 @@ const NotiPage = () => {
   ];
 
   return (
-    <div className="noti_container">
+    <div className="noti_container layout">
       <HeaderBefore title="사용 가이드" />
       <main>
         <h2 className="noti_title">앱처럼 사용해 보세요!</h2>

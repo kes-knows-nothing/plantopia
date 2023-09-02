@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DiaryProps, ListViewProps } from '@/@types/diary.type';
 import NoContent from './NoContent';
@@ -25,6 +25,21 @@ const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {
   };
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.more_modal')) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="list_view">
@@ -57,7 +72,10 @@ const ListView: React.FC<ListViewProps> = ({ diaryData, handleDelete }) => {
               </Link>
               <button
                 className="more"
-                onClick={() => toggleModal(diary)}
+                onClick={event => {
+                  event.stopPropagation();
+                  toggleModal(diary);
+                }}
               ></button>
               {isModalOpen && selectedDiary === diary && (
                 <div className="more_modal">

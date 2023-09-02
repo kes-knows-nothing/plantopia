@@ -49,8 +49,24 @@ const DiaryDetailPage = () => {
     fetchDiaryDetailData();
   }, [docId]);
 
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const targetElement = event.target as HTMLElement;
+
+      if (isModalOpen && !targetElement.closest('.more_btn_wrap')) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [isModalOpen]);
+
   return (
-    <div className="diary_detail_wrap">
+    <div className="diary_detail_wrap layout">
       <HeaderBefore ex={false} title="다이어리" />
       <div className="more_btn_wrap">
         <button

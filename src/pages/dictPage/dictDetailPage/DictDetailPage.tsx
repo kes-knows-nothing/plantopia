@@ -67,7 +67,7 @@ const DictDetailPage = () => {
   };
 
   return (
-    <div>
+    <div className="layout">
       <HeaderBefore ex={false} title="식물 상세" />
       <main className="detail_container">
         <section className="thumbnail_wrapper">

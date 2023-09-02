@@ -61,7 +61,7 @@ const DictSearchPage = () => {
   }, [inputValue]);
 
   return (
-    <div className="search_container">
+    <div className="search_container layout">
       <HeaderBefore ex={false} title="검색 결과" />
       <main className="inner">
         <section className="search_wrapper">
@@ -98,12 +98,26 @@ const DictSearchPage = () => {
                 </Link>
               )),
             )
-          ) : (
+          ) : inputValue ? (
             <div className="no_search">
               <p>검색 결과가 없습니다.</p>
-              <a href="https://forms.gle/g4AjkNKqVDP48Xnc7" target="_blank">
-                내가 찾는 식물이 없다면, 식물 등록 요청하기
-              </a>
+              <div className="notice">
+                👷‍♂️ 식물도감에 없는 식물의 등록 기능을 준비중입니다.
+                <a href="https://forms.gle/g4AjkNKqVDP48Xnc7" target="_blank">
+                  내가 찾는 식물이 없다면, 식물 등록 요청하기
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div className="search_notice">
+              <strong>🌱 식물 검색 TIP </strong>
+              <p>
+                식물 이름의 첫번째 글자부터 입력하여
+                <br />내 식물을 검색해보세요.
+              </p>
+              <span>
+                <br /> (ex. 몬스테라 : 몬 / 산세베리아 : 산세)
+              </span>
             </div>
           )}
         </section>

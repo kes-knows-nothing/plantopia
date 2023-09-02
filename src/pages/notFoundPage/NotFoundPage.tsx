@@ -6,7 +6,7 @@ const NotFoundPage = () => {
   useAuth();
 
   return (
-    <div className="not_found_container">
+    <div className="not_found_container layout">
       <main className="inner">
         <section className="not_found_wrapper">
           <h2>

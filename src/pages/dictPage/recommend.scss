@@ -30,6 +30,8 @@
 
   .title_wrapper {
     display: flex;
+    padding: 0 2rem;
+    color: #22264c;
 
     .img_wrapper {
       @include common_img_props(#f8f8fa);
@@ -69,6 +71,7 @@
     padding: 2rem 0.5rem 4rem 0.5rem;
     display: flex;
     position: relative;
+    padding: 2rem;
 
     .plant_wrapper {
       display: flex;
@@ -146,18 +149,35 @@
 
     .swiper-button-prev {
       @include swiper_button;
-      left: 0;
+      left: 0.5rem;
+
+      @media (max-width: 499px) {
+        display: none !important;
+      }
     }
 
     .swiper-button-next {
       @include swiper_button;
-      right: 0;
+      right: 0.5rem;
+      @media (max-width: 499px) {
+        display: none !important;
+      }
     }
 
     .swiper-button-next::after,
     .swiper-button-prev::after {
-      font-size: 1.2rem;
-      color: #ffffffd0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #c3c3c3;
+      background-color: #fff;
+      border: 1px solid #ecebeb;
+      box-shadow: 0.1rem 0.1rem 0.5rem rgba(1, 1, 1, 0.08);
     }
 
     .swiper-pagination-bullet {

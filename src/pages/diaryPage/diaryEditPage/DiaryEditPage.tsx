@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useDiaryData from '@/hooks/useDiaryData';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
@@ -26,7 +26,6 @@ const DiaryEditPage = () => {
   const [chosenPlants, setChosenPlants] = useState<string[]>([]);
   const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!diaryToUpdate) {

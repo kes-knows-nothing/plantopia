@@ -198,7 +198,8 @@ const MyPlantEditPage = () => {
 
           <div className="my_plant_info_form">
             <div className="my_plant_name_title required">
-              식물별명<p>(5글자 이내로 설정해주세요)</p>
+              식물 별명
+              <span>(5글자 이내로 설정해주세요)</span>
             </div>
             <input
               className="my_plant_name"
@@ -208,7 +209,7 @@ const MyPlantEditPage = () => {
             />
 
             <div className="watering_frequency required">
-              물 주는 날<p>(주변 환경에 맞게 조절해주세요)</p>
+              물 주는 날<span>(주변 환경에 맞게 조절해주세요)</span>
             </div>
             <div className="watering_frequency_input_box">
               <input
@@ -220,8 +221,7 @@ const MyPlantEditPage = () => {
             </div>
 
             <p className="my_plant_register_small_title  required">
-              식물과 처음 함께한 날
-              <span>(달력을 클릭하여 설정해주세요)</span>
+              식물과 처음 함께한 날<span>(달력을 클릭하여 설정해주세요)</span>
             </p>
             <div className="my_plant_register_calender_value">
               <input

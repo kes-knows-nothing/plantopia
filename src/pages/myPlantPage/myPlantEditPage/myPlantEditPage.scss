@@ -92,6 +92,14 @@
       font-size: 1.2rem;
       color: #22264c;
       margin-bottom: 0.5rem;
+      display: inline;
+
+      > span {
+        padding-left: 0.5rem;
+        font-weight: 400;
+        size: 1.2rem;
+        color: #9b9fb1;
+      }
     }
 
     > .my_plant_name {
@@ -113,6 +121,21 @@
       font-size: 1.2rem;
       color: #22264c;
       margin-top: 3rem;
+      display: inline;
+
+      > span {
+        padding-left: 0.5rem;
+        font-weight: 400;
+        size: 1.2rem;
+        color: #9b9fb1;
+      }
+    }
+
+    .required::before {
+      display: inline-block;
+      content: '*';
+      margin-right: 0.5rem;
+      color: red;
     }
 
     > .watering_frequency_input_box {
@@ -147,6 +170,7 @@
       font-size: 1.2rem;
       color: #22264c;
       margin-top: 3rem;
+      margin-bottom: 0.8rem;
     }
 
     > .my_plant_register_calender_value {

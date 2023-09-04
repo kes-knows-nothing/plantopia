@@ -1,0 +1,61 @@
+@use '@/styles/mixins';
+
+.subplant_container {
+  width: 100%;
+  border-top: 1px solid #f8f8fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5.7rem;
+}
+
+.subplant_container:last-child {
+  border-bottom: none;
+}
+
+.subplant_list_box {
+  border-bottom: 1px solid #f8f8fa;
+  width: 100%;
+  height: 8.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subplant_main_data {
+  display: flex;
+  width: 15rem;
+  align-items: center;
+
+  span {
+    @include mixins.avatar(50%);
+    width: 6rem;
+    height: 6rem;
+    margin-right: 1.4rem;
+  }
+}
+
+.subplant_name {
+  width: 7rem;
+  height: 1.7rem;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.main_check_and_edit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > button {
+    width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+}
+
+.subplant_list_box_link {
+  width: 100%;
+}

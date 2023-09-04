@@ -1,0 +1,57 @@
+.dict_conatiner {
+  margin-bottom: 5rem;
+
+  .dict_wrapper {
+    min-height: calc(100vh - 11.2rem);
+
+    .dict_title {
+      font-size: 1.6rem;
+      font-weight: 400;
+      padding: 2rem;
+      color: #22264c;
+
+      span {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+    }
+
+    .search_wrapper {
+      padding: 1rem 2rem 2rem 2rem;
+
+      .input_wrapper {
+        position: relative;
+        width: 100%;
+        height: 4rem;
+        border-radius: 2.6rem;
+        background-color: #f8f8fa;
+        line-height: 4rem;
+
+        input {
+          width: 100%;
+          padding: 0 4rem 0.2rem 1.4rem;
+          font-size: 1.4rem;
+          color: #22264c;
+          background-color: transparent;
+
+          &::placeholder {
+            color: #757897;
+          }
+        }
+
+        button {
+          position: absolute;
+          right: 0.5rem;
+          width: 3.5rem;
+          height: 3.5rem;
+          margin: 0.1rem 0 0 1rem;
+
+          .search_img {
+            width: 1.8rem;
+            height: 1.8rem;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,318 @@
+@use '@/styles/mixins';
+.my_plant_detail_header {
+  height: 5.8rem;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f7f8f7;
+
+  > img {
+    width: 1.461rem;
+    height: 1.762rem;
+  }
+
+  > p {
+    width: 6rem;
+    height: 1.9rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0 auto;
+  }
+}
+
+.my_plant_detail_upper_container {
+  width: 100%;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my_plant_detail_edit_btn {
+  width: 29rem;
+  height: 5rem;
+  margin-top: 2rem;
+  border-radius: 2.6rem;
+  border: 1px solid #d6d6d6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.my_plant_detail_edit_btn_inner_contents {
+  width: 13.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  > p {
+    width: 9.7rem;
+    height: 1.6rem;
+    color: #000000;
+    font-weight: 400;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.my_plant_detail_lower_container {
+  padding-bottom: 5rem;
+  width: 100%;
+  background-color: #f8f8fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > .my_plant_detail_info_box {
+    width: 32rem;
+    height: 12.9rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 2.7rem;
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.my_plant_detail_info_head {
+  display: flex;
+  align-items: center;
+  height: 4.2rem;
+  border-bottom: 1px solid #f8f8fa;
+  > p {
+    margin-left: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+
+    > span {
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.my_plant_detail_info_metadata {
+  display: flex;
+  width: 32rem;
+  height: 8.7rem;
+}
+
+.watering_info {
+  width: 10rem;
+  height: 8.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > :first-child {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #22264c;
+    margin-bottom: 1.6rem;
+  }
+  > :last-child {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #22264c;
+  }
+}
+
+.last_watering_info {
+  width: 11rem;
+  height: 8.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > :first-child {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #22264c;
+    margin-bottom: 1.6rem;
+  }
+  > :last-child {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #22264c;
+  }
+}
+
+.first_day_info {
+  width: 11rem;
+  height: 8.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > :first-child {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #22264c;
+    margin-bottom: 1.6rem;
+  }
+  > :last-child {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #22264c;
+  }
+}
+
+.management_tip_box {
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.3rem;
+}
+
+.management_tip {
+  margin: 0 auto;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #22264c;
+  line-height: 15px;
+}
+
+.gridset {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  > div {
+    display: flex;
+    height: 8.7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    > :first-child {
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #22264c;
+      margin-bottom: 1.4rem;
+    }
+  }
+}
+
+.sun_on_off {
+  width: 6.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+
+  > img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.water_on_off {
+  width: 4.4rem;
+  height: 1.133rem;
+  display: flex;
+  justify-content: space-between;
+  > img {
+    width: 0.8rem;
+    height: 1.117rem;
+  }
+}
+
+.optimal_temp {
+  height: 1.7rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.more_info_btn {
+  width: 20rem;
+  height: 1.4rem;
+  text-decoration: underline;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 6rem 0;
+  color: #969696;
+  cursor: pointer;
+}
+
+.delete_my_plant {
+  width: 100%;
+  max-width: 500px;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 5rem;
+  background: #1fb0ad;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+
+  &:hover {
+    background: rgb(51, 142, 142);
+  }
+}
+
+.detail_img_wrap {
+  @include mixins.avatar(50%);
+  width: 16rem;
+  height: 16rem;
+  margin: 0 auto;
+}
+
+.detail_plant_name {
+  display: flex;
+  align-items: center;
+  height: 1.4rem;
+  color: #b8b8b8;
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin: 0 auto;
+  margin-top: 2.1rem;
+}
+
+.detail_plant_nickname {
+  height: 1.8rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #22264c;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.detail_plant_nickname_main {
+  height: 1.8rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #22264c;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+  &::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    margin: auto 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    background: url('@/assets/images/icons/main_plant_true_icon.png') no-repeat
+      center center/cover;
+    top: 0;
+    bottom: 0;
+    left: -2.5rem;
+  }
+}
+
+.detail_nickname_box {
+  display: flex;
+  width: 100%;
+  height: 1.8rem;
+  align-items: center;
+  position: relative;
+  margin-top: 0.6rem;
+}

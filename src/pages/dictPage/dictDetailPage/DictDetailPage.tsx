@@ -1,21 +1,24 @@
 import { Children } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { codeInfo } from '@/constants/dictionary';
-import { PlantType } from '@/@types/dictionary';
-import './DictDetailPage.scss';
+import { PlantType } from '@/@types/dictionary.type';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import ADD_ICON from '@/assets/images/icons/dict_post.png';
 import PLANT3_ICON from '@/assets/images/icons/dict_plant3.png';
+import PLANT4_ICON from '@/assets/images/icons/dict_plant4.png';
 import WATER_ICON from '@/assets/images/icons/dict_water1.png';
 import WATERPOT_ICON from '@/assets/images/icons/dict_waterpot.png';
 import BUG_ICON from '@/assets/images/icons/dict_bug.png';
+import './dictDetailPage.scss';
 
 const DictDetailPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const plantData: PlantType = location.state;
 
   const plantInfoForm = [
     {
-      image: PLANT3_ICON,
+      image: PLANT4_ICON,
       title: '종',
       content: plantData.speciesInfo,
     },
@@ -52,20 +55,26 @@ const DictDetailPage = () => {
     },
   ];
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate('/myplant/register', {
+      state: {
+        name: plantData.name,
+        image: plantData.imageUrl,
+        waterCode: plantData.waterCode,
+      },
+    });
+  };
+
   return (
-    <div>
-      <header>
-        <Link to="/dict">
-          <span className="back_button">←</span>
-        </Link>
-        <span className="detail_header">식물 상세(임시 헤더)</span>
-      </header>
+    <div className="layout">
+      <HeaderBefore ex={false} title="식물 상세" />
       <main className="detail_container">
         <section className="thumbnail_wrapper">
           <img src={plantData.imageUrl} alt="plant image" />
           <h3 className="english_name">{plantData.scientificName}</h3>
           <h3 className="korean_name">{plantData.name}</h3>
-          <button>
+          <button onClick={handleClick}>
             <img src={ADD_ICON} alt="plant add image" />내 식물로 등록
           </button>
         </section>
@@ -82,7 +91,6 @@ const DictDetailPage = () => {
                         <img src={image} alt="plant icon" />
                         {title}
                       </h4>
-
                       <p>
                         {Array.isArray(content)
                           ? content.map(item => `${item} `)

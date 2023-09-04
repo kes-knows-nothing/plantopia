@@ -21,25 +21,27 @@ const Footer = () => {
 
   return (
     <footer className="inner footer">
-      <Link className={`btn ${dictActive ? 'active' : ''}`} to="/dict">
-        <img src={dictActive ? DICT_ON : DICT_OFF} alt="plant dictionary" />
-        식물도감
-      </Link>
-      <Link className={`btn ${diaryActive ? 'active' : ''}`} to="/diary">
-        <img src={diaryActive ? DIARY_ON : DIARY_OFF} alt="diary" />
-        다이어리
-      </Link>
-      <Link className="home_btn" to="/">
-        <img src={HOME} className="main_logo" alt="home" />
-      </Link>
-      <Link className={`btn ${myPlantActive ? 'active' : ''}`} to="/myplant">
-        <img src={myPlantActive ? MYPLANT_ON : MYPLANT_OFF} alt="myplant" />
-        내식물
-      </Link>
-      <Link className={`btn ${myPageActive ? 'active' : ''}`} to="/mypage">
-        <img src={myPageActive ? MYPAGE_ON : MYPAGE_OFF} alt="my" />
-        MY
-      </Link>
+      <nav>
+        <Link className={`btn ${dictActive ? 'active' : ''}`} to="/dict">
+          <img src={dictActive ? DICT_ON : DICT_OFF} alt="plant dictionary" />
+          식물도감
+        </Link>
+        <Link className={`btn ${diaryActive ? 'active' : ''}`} to="/diary">
+          <img src={diaryActive ? DIARY_ON : DIARY_OFF} alt="diary" />
+          다이어리
+        </Link>
+        <Link className="home_btn" to="/">
+          <img src={HOME} className="main_logo" alt="home" />
+        </Link>
+        <Link className={`btn ${myPlantActive ? 'active' : ''}`} to="/myplant">
+          <img src={myPlantActive ? MYPLANT_ON : MYPLANT_OFF} alt="myplant" />
+          내식물
+        </Link>
+        <Link className={`btn ${myPageActive ? 'active' : ''}`} to="/mypage">
+          <img src={myPageActive ? MYPAGE_ON : MYPAGE_OFF} alt="my" />
+          MY
+        </Link>
+      </nav>
     </footer>
   );
 };

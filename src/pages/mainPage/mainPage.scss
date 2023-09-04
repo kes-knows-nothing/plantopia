@@ -1,11 +1,17 @@
+@use '@/styles/mixins';
+@use 'swiper/scss';
+
 .main_page {
+  min-height: 100vh;
+  padding-bottom: 5.6rem;
   background-color: #ffffff;
-  min-height: calc(var(--vh, 1vh) * 100 - 5.6rem);
-  margin-bottom: 5.6rem;
-  padding-bottom: 2rem;
 
   > section {
     min-height: inherit;
+
+    > :last-child {
+      padding-bottom: 2rem;
+    }
   }
 
   .weather_text_box {
@@ -21,10 +27,14 @@
 }
 
 /* 날씨 영역 */
-.main_page > section > div > .weather_wrapper {
+.main_page > section > .weather_wrapper {
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-top: 0.4rem;
+  min-height: 10.7rem;
+  padding-left: 2rem;
 
   > .text_wrapper {
     display: flex;
@@ -70,6 +80,13 @@
     }
   }
 
+  > .info_text {
+    margin: auto;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #9b9fb1;
+  }
+
   .weather_icon {
     width: 10rem;
     height: 10rem;
@@ -85,35 +102,31 @@
   width: 26rem;
   height: 26rem;
   background: #ffffff;
-  border-radius: 26rem;
+  border-radius: 50%;
   box-shadow: 0 1rem 1.6rem 0 rgba(0, 0, 0, 0.1);
 
   > .inner_circle {
+    @include mixins.avatar(50%);
+
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
     width: 100%;
     height: 100%;
-    background-color: #dfe9e4;
-    border-radius: 26rem;
-
-    > img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+    background-color: #e4ece8;
   }
 
   > .watering_btn {
     position: absolute;
-    right: 2.4rem;
+    right: 1.7rem;
     bottom: 0.7rem;
-    padding: 0 0 0.3rem 0;
-    width: 4.6rem;
-    height: 4.6rem;
+    padding: 0;
+    width: 5.3rem;
+    height: 5.3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f8f8fa;
     filter: drop-shadow(0 0.4rem 2rem rgba(0, 0, 0, 0.25));
-
     > img {
       width: 100%;
       height: 100%;
@@ -121,12 +134,9 @@
 
     > .watering_label {
       position: absolute;
-      bottom: 0;
+      bottom: 0.6rem;
       left: 0;
       right: 0;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3rem;
-      background-color: #ffffff;
       color: #22264c;
       font-size: 1rem;
       font-weight: 700;
@@ -157,6 +167,24 @@
     color: #22264c;
     font-size: 2.2rem;
     font-weight: 700;
+
+    > .main-plant {
+      position: relative;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        margin: auto 0;
+        width: 1.8rem;
+        height: 1.8rem;
+        background: url('@/assets/images/icons/main_plant_true_icon.png')
+          no-repeat center center/cover;
+        top: 0;
+        bottom: 0;
+        left: -2.5rem;
+      }
+    }
   }
 
   > .plant_info_wrapper {
@@ -202,8 +230,16 @@
           display: flex;
           padding: 0.55rem 1.1rem;
           border-radius: 3rem;
-          background: #edc27e;
+          background: #66a85e;
           color: #ffffff;
+
+          &.upcoming {
+            background: #edc27e;
+          }
+
+          &.urgent {
+            background: #e74c3c;
+          }
         }
       }
     }
@@ -213,49 +249,83 @@
 /* 서브 식물 리스트 슬라이드*/
 .main_page > section > .slide_wrapper {
   margin-top: 3.3rem;
-  padding-left: 2rem;
+  margin-left: 2rem;
   min-height: 10.9rem;
 
   > .swiper {
     min-height: inherit;
 
     > .swiper-wrapper > .swiper-slide {
-      margin-right: 2rem;
-
       > .slide {
         padding: 0;
         width: 8rem;
         height: 8rem;
         text-align: center;
-        background: #cbe7d9;
+        background: #d8e8e0;
         border-radius: 50%;
         padding: 0.3rem;
 
         > .avatar {
-          padding: 0.3rem;
+          @include mixins.avatar(50%);
+
           display: flex;
           justify-content: center;
           align-items: center;
           width: 100%;
           height: 100%;
           background: #ffffff;
-          border-radius: 50%;
           filter: drop-shadow(0 0.4rem 0.8rem rgba(0, 0, 0, 0.1));
-
-          > img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-          }
         }
 
         > .name {
           display: block;
           margin-top: 1.2rem;
+          font-family: 'Pretendard', Arial, sans-serif;
           font-size: 1.4rem;
           font-weight: 700;
+          color: #22264c;
         }
       }
+    }
+  }
+}
+
+.main_page > section > div {
+  > .welcome_text {
+    margin: 4.6rem auto 0 auto;
+    width: 22.4rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    word-break: keep-all;
+    text-align: center;
+
+    > strong {
+      font-size: 1.8rem;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+  }
+
+  > .register_btn {
+    margin: 3.9rem auto 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 29rem;
+    height: 5.2rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 2.6rem;
+    background-color: #ffffff;
+
+    > img {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    > p {
+      margin-left: 1.6rem;
+      font-size: 1.3rem;
+      color: #000000;
     }
   }
 }

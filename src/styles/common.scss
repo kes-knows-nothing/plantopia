@@ -1,8 +1,39 @@
+@use 'react-toastify/dist/ReactToastify.css';
+@use '@/styles/customToastStyles.scss';
+@use 'react-confirm-alert/src/react-confirm-alert.css';
+@use '@/styles/alertStyle.scss';
 @use 'reset';
 @use 'fonts';
+@use 'colors';
 
 body {
   font-family: 'Pretendard', Arial, sans-serif;
+  background: url('@/assets/images/bg.png') no-repeat center fixed;
+  background-size: cover;
+
+  .scroll {
+    overflow: auto;
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #6ecfcd;
+    border-radius: 100px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(99, 160, 160);
+    border-radius: 100px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  ::selection{
+    background-color: #dfedec;
+  }
+}
+
+.layout {
   margin: auto;
   min-width: 320px;
   max-width: 500px;
@@ -32,10 +63,31 @@ button {
   padding: 0 2rem;
 }
 
+.hide {
+  visibility: hidden;
+}
+
 /* REM rules */
 
 html {
   font-size: 5px;
+}
+
+header,
+main {
+  border-left: 1px solid colors.$main-border-color;
+  border-right: 1px solid colors.$main-border-color;
+}
+
+/* confirm 관련 스타일 */
+#react-confirm-alert * {
+  .react-confirm-alert-body {
+    max-width: 26rem;
+
+    * {
+      font-family: 'Pretendard', Arial, sans-serif;
+    }
+  }
 }
 
 @media screen and (min-width: 216px) {

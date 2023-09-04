@@ -1,147 +1,107 @@
-import { useState, useEffect, useRef } from 'react';
-import { db } from '@/utils/firebaseApp';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { nanoid } from 'nanoid';
+import { ArrowImages } from '@/constants/diary';
+import { SectionBoardProps } from '@/@types/diary.type';
 
-import ARROW_UP from '@/assets/images/icons/diary_arrow_up.png';
-import ARROW_DOWN from '@/assets/images/icons/diary_arrow_down.png';
-
-interface Plant {
-  nickname: string;
-  userEmail: string;
-}
+import './sectionBoard.scss';
 
 const SectionBoard = ({
-  titleRef,
-  contentRef,
+  state,
+  setState,
   chosenPlants,
-  setChosenPlants,
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [plantTag, setPlantTag] = useState<Plant[]>([]);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const getPlantsFromFirestore = async () => {
-      const plantRef = collection(db, 'plant');
-      const q = query(plantRef, where('userEmail', '==', 'test@test.com'));
-      const querySnapshot = await getDocs(q);
-      const plants: Plant[] = [];
-      querySnapshot.forEach(doc => {
-        const { nickname, userEmail } = doc.data();
-        plants.push({ nickname, userEmail });
-      });
-      setPlantTag(plants);
-    };
-    getPlantsFromFirestore();
-  }, []);
-
-  const toggleSelect = () => {
-    setIsVisible(prevVisible => !prevVisible);
-  };
-
-  const handlePlantSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedPlant = event.target.value;
-
-    setChosenPlants(prevChosenPlants => {
-      const isSelected = prevChosenPlants.includes(selectedPlant);
-
-      return isSelected
-        ? prevChosenPlants.filter(plant => plant !== selectedPlant)
-        : [...prevChosenPlants, selectedPlant];
-    });
-  };
-
-  const handleChosenPlantClick = (plant: string) => {
-    setChosenPlants(prevChosenPlants =>
-      prevChosenPlants.filter(p => p !== plant),
-    );
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  SectionBoard.getChosenPlants = () => chosenPlants;
-
+  toggleSelect,
+  handleChosenPlantClick,
+  handlePlantSelection,
+  plantTag,
+}: SectionBoardProps) => {
   return (
-    <section className="board_section">
-      <div className="title_wrapper">
-        <input
-          type="text"
-          placeholder="제목을 작성하세요."
-          className="title"
-          ref={titleRef}
-        />
-      </div>
-
-      <div className="plant_select_wrapper" ref={wrapperRef}>
-        <div className="plant_select">
-          {chosenPlants.length === 0 ? (
-            <div className="choose_text" onClick={toggleSelect}>
-              식물을 선택하세요.
-            </div>
-          ) : (
-            <div className="chosen_wrap">
-              {chosenPlants.map(plant => (
-                <div
-                  key={plant}
-                  className="chosen_plant"
-                  onClick={() => handleChosenPlantClick(plant)}
-                >
-                  {plant}
-                  <span className="cancel"></span>
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="arrow_icon" onClick={toggleSelect}>
-            {isVisible ? (
-              <img src={ARROW_UP} alt="Up" />
-            ) : (
-              <img src={ARROW_DOWN} alt="Down" />
-            )}
-          </div>
+    <div className="section_board">
+      <section className="board">
+        <div className="title_wrapper">
+          <input
+            type="text"
+            placeholder="제목을 작성하세요."
+            className="title"
+            value={state.title}
+            onChange={e =>
+              setState(prev => ({ ...prev, title: e.target.value }))
+            }
+          />
         </div>
 
-        {isVisible && (
-          <ul className="plant_list">
-            {plantTag.map(plant => (
-              <li key={nanoid()}>
-                <input
-                  type="checkbox"
-                  name={plant.nickname}
-                  id={plant.nickname}
-                  value={plant.nickname}
-                  onChange={handlePlantSelection}
-                  checked={chosenPlants.includes(plant.nickname)}
-                />
-                <label htmlFor={plant.nickname}>{plant.nickname}</label>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+        <div className="plant_select_wrapper">
+          <div className="plant_select">
+            {chosenPlants.length === 0 && (
+              <div
+                className={`choose_text ${
+                  chosenPlants.length === 0 ? '' : 'hide'
+                }`}
+                onClick={toggleSelect}
+              >
+                식물을 선택하세요.
+              </div>
+            )}
 
-      <textarea
-        placeholder="내용을 작성하세요."
-        ref={contentRef}
-        className="content"
-      />
-    </section>
+            {chosenPlants.length > 0 && (
+              <div className="chosen_wrap">
+                {chosenPlants.map(plant => (
+                  <div
+                    key={plant}
+                    className="chosen_plant"
+                    onClick={() => handleChosenPlantClick(plant)}
+                  >
+                    {plant}
+                    <span className="cancel"></span>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="arrow_icon" onClick={toggleSelect}>
+              <img
+                src={
+                  state.isVisible
+                    ? ArrowImages.ARROW_UP
+                    : ArrowImages.ARROW_DOWN
+                }
+                alt={state.isVisible ? 'Up' : 'Down'}
+              />
+            </div>
+          </div>
+
+          {state.isVisible && (
+            <>
+              <div className="plant_list">
+                <ul>
+                  {(plantTag || []).map(plant => (
+                    <li key={plant.nickname}>
+                      <input
+                        type="checkbox"
+                        name={plant.nickname}
+                        id={plant.nickname}
+                        value={plant.nickname}
+                        onChange={handlePlantSelection}
+                        checked={chosenPlants.includes(plant.nickname)}
+                      />
+                      <label htmlFor={plant.nickname}>{plant.nickname}</label>
+                    </li>
+                  ))}
+                </ul>
+                <button className="choose_complete" onClick={toggleSelect}>
+                  선택 완료
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
+        <textarea
+          placeholder="내용을 작성하세요."
+          value={state.content}
+          onChange={e =>
+            setState(prev => ({ ...prev, content: e.target.value }))
+          }
+          className="content"
+        />
+      </section>
+    </div>
   );
 };
 

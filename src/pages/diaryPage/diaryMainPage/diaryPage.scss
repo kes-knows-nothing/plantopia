@@ -1,0 +1,116 @@
+.hide {
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  border: 0;
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* DIARY 메인 페이지 */
+
+.diary_page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 5.6rem;
+  background-color: #fff;
+
+  > .diary_container {
+    width: 100%;
+    min-height: calc(100vh - 11.2rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > .title {
+      color: #22264c;
+      width: 100%;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      font-size: 1.6rem;
+      font-weight: 400;
+
+      > span {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      > .plant_icon {
+        margin-left: 0.3rem;
+        font-size: 1.2rem;
+      }
+    }
+
+    > .tab_section {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+
+      > .view_tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        height: 100%;
+        color: #d6d6d6;
+        cursor: pointer;
+        border-bottom: 1px solid #dcdcdc;
+      }
+
+      > .list_tab {
+        font-size: 2.8rem;
+      }
+
+      > .gallery_tab {
+        font-size: 2rem;
+      }
+
+      > .on {
+        color: #22264c;
+        border-bottom: 1px solid #595f8a;
+      }
+    }
+
+    > .content_section {
+      width: 100%;
+    }
+  }
+
+  .write_btn_wrap {
+    position: fixed;
+    right: calc(50% - 18rem);
+    bottom: 5rem;
+    display: flex;
+    padding: 2rem;
+    border-radius: 50%;
+
+    .write_btn {
+      width: 5.5rem;
+      height: 5.5rem;
+      border-radius: 50%;
+      color: #fff;
+      background: #1fb0ad url('@/assets/images/icons/diary_add.png') no-repeat
+        center / 1.5rem;
+      z-index: 1;
+
+      &:hover {
+        background-color: rgb(51, 142, 142);
+      }
+    }
+  }
+}
+
+/* PC 반응형 작업 */
+@media screen and (width: 500px) {
+  .diary_page {
+    > .write_btn_wrap {
+      right: calc(50% - 17.1rem);
+    }
+  }
+}

@@ -1,121 +1,165 @@
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
-
-import { RiMore2Fill } from 'react-icons/ri';
-import { HiOutlineArrowLeft } from 'react-icons/hi';
-
+import { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { DiaryProps } from '@/@types/diary.type';
+import { showAlert } from '@/utils/alarmUtil';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { db } from '@/firebaseApp';
+import { doc, getDoc } from 'firebase/firestore';
+import useDiaryData from '@/hooks/useDiaryData';
+import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 
 import './diaryDetailPage.scss';
 
-import img1 from '@/assets/images/diary_sample1.jpg';
-import img2 from '@/assets/images/diary_sample2.jpg';
-import img3 from '@/assets/images/diary_sample3.jpg';
-import img4 from '@/assets/images/diary_sample4.jpg';
-
 const DiaryDetailPage = () => {
-  const slideSectionPrevBtn = useRef();
-  const slideSectionNextBtn = useRef();
+  const { docId } = useParams();
+  if (!docId) {
+    return null;
+  }
+  const { handleDelete } = useDiaryData();
+
+  const slideSectionPrevBtn = useRef<HTMLDivElement>(null);
+  const slideSectionNextBtn = useRef<HTMLDivElement>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [diaryDetailData, setDiaryDetailData] = useState<DiaryProps | null>(
+    null,
+  );
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const navigateToEdit = () => {
+    navigate(`/diary/${docId}/edit`);
+    closeModal();
+  };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDiaryDetailData = async () => {
+      const docRef = doc(db, 'diary', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setDiaryDetailData(docSnap.data() as DiaryProps);
+      }
+    };
+
+    fetchDiaryDetailData();
+  }, [docId]);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const targetElement = event.target as HTMLElement;
+
+      if (isModalOpen && !targetElement.closest('.more_btn_wrap')) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [isModalOpen]);
 
   return (
-    <main className="diary_detail_page">
-      <div className="diary_detail_container">
-        <div className="sub_header">
-          <Link to="/diary">
-            <button className="header_btn back">
-              <HiOutlineArrowLeft />
-            </button>
-          </Link>
-          <strong>다이어리</strong>
-          <button className="header_btn more">
-            <RiMore2Fill />
-          </button>
-        </div>
-        <section className="slide_section">
-          <Swiper
-            className="diary_img_swiper swiper "
-            modules={[Pagination, Navigation]}
-            slidesPerView={1}
-            spaceBetween={0}
-            loop={true}
-            pagination={{
-              clickable: true,
-            }}
-            onInit={swiper => {
-              swiper.params.navigation.prevEl = slideSectionPrevBtn.current;
-              swiper.params.navigation.nextEl = slideSectionNextBtn.current;
-              swiper.navigation.init();
-              swiper.navigation.update();
-            }}
-          >
-            <SwiperSlide>
-              <div className="slide_container">
-                <img src={img1} className="slide_img" alt="슬라이드 이미지" />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="slide_container">
-                <img src={img2} className="slide_img" alt="슬라이드 이미지" />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="slide_container">
-                <img src={img3} className="slide_img" alt="슬라이드 이미지" />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="slide_container">
-                <img src={img4} className="slide_img" alt="슬라이드 이미지" />
-              </div>
-            </SwiperSlide>
-            <div className="swiper_nav">
-              <div
-                ref={slideSectionPrevBtn}
-                className="swiper_nav_prev nav_btn"
-              >
-                <div className="prev_btn"></div>
-              </div>
-              <div
-                ref={slideSectionNextBtn}
-                className="swiper_nav_next nav_btn"
-              >
-                <div className="next_btn"></div>
-              </div>
+    <div className="diary_detail_wrap layout">
+      <HeaderBefore ex={false} title="다이어리" />
+      <div className="more_btn_wrap">
+        <button
+          className="more"
+          onClick={() => {
+            setIsModalOpen(!isModalOpen);
+          }}
+        ></button>
+        {isModalOpen && (
+          <div className="more_modal">
+            <div className="btn modify" onClick={navigateToEdit}>
+              게시글 수정
             </div>
-          </Swiper>
-        </section>
-        <section className="content_section inner">
-          <h5 className="diary_title">새 잎이 자랐다.</h5>
-          <div className="plant_list">
-            <span>몬식이</span>
-            <span>이름이 긴 식물</span>
-            <span>플래피노</span>
-            <span>또 다른 식물</span>
+            <div
+              className="btn delete"
+              onClick={() => {
+                showAlert('글을 삭제하시겠습니까?', '', async () => {
+                  await handleDelete(docId);
+                  closeModal();
+                });
+              }}
+            >
+              삭제
+            </div>
           </div>
-          <div className="text_wrap">
-            <p className="diary_text">
-              플래피노에 꽃이 피었다. 요즘 날씨가 좋아서 쑥쑥 자라더니 어느새 꽃
-              봉우리가 활짝 펴졌다. 향이 좋아서 자꾸 더 들여다보게 된다. 앞으로
-              다른 꽃들도 더 많이 활짝 피었으면 좋겠다!플래피노에 꽃이 피었다.
-              요즘 날씨가 좋아서 쑥쑥 자라더니 어느새 꽃 봉우리가 활짝 펴졌다.
-              향이 좋아서 자꾸 더 들여다보게 된다. 앞으로 다른 꽃들도 더 많이
-              활짝 피었으면 좋겠다!
-              <br />
-              <br />
-              플래피노에 꽃이 피었다. 요즘 날씨가 좋아서 쑥쑥 자라더니 어느새 꽃
-              봉우리가 활짝 펴졌다. 향이 좋아서 자꾸 더 들여다보게 된다. 앞으로
-              다른 꽃들도 더 많이 활짝 피었으면 좋겠다!
-            </p>
-            <p className="diary_date">2023.08.15.</p>
-          </div>
-        </section>
+        )}
       </div>
-    </main>
+      <main className="diary_detail_page">
+        <div className="diary_detail_container">
+          {diaryDetailData &&
+            diaryDetailData.imgUrls &&
+            diaryDetailData.imgUrls.length > 0 && (
+              <section className="slide_section">
+                <Swiper
+                  className="diary_img_swiper swiper "
+                  modules={[Pagination, Navigation]}
+                  slidesPerView={1}
+                  spaceBetween={0}
+                  loop={true}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  onInit={swiper => {
+                    swiper.navigation.init();
+                    swiper.navigation.update();
+                  }}
+                >
+                  {diaryDetailData.imgUrls.map((imgUrl, index) => (
+                    <SwiperSlide key={index}>
+                      <div className="slide_container">
+                        <img
+                          src={imgUrl}
+                          className="slide_img"
+                          alt="슬라이드 이미지"
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                  <div className="swiper_nav">
+                    <div
+                      ref={slideSectionPrevBtn}
+                      className="swiper_nav_prev nav_btn"
+                    >
+                      <div className="prev_btn"></div>
+                    </div>
+                    <div
+                      ref={slideSectionNextBtn}
+                      className="swiper_nav_next nav_btn"
+                    >
+                      <div className="next_btn"></div>
+                    </div>
+                  </div>
+                </Swiper>
+              </section>
+            )}
+
+          <section className="content_section inner">
+            <h5 className="diary_title">{diaryDetailData?.title}</h5>
+            <div className="plant_list">
+              {diaryDetailData?.tags.map((tag, index) => (
+                <span key={index}>{tag}</span>
+              ))}
+            </div>
+            <div className="text_wrap">
+              <p className="diary_text">{diaryDetailData?.content}</p>
+              <p className="diary_date">
+                {diaryDetailData?.postedAt?.toDate().toLocaleDateString()}
+              </p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 };
 

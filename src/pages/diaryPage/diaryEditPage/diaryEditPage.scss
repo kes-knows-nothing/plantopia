@@ -1,0 +1,45 @@
+.hide {
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  border: 0;
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* DIARY-WRITE 페이지 */
+
+.diary_write_wrap {
+  width: 100%;
+  height: calc(100vh - 6.4rem);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  /* 저장 버튼 */
+
+  > .save_button {
+    position: fixed;
+    width: 100%;
+    max-width: 500px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    height: 5rem;
+    margin-top: auto;
+    background: #1fb0ad;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    &:hover {
+      background: rgb(51, 142, 142);
+    }
+
+    &:disabled {
+      background-color: #c4c4c4;
+      cursor: not-allowed;
+    }
+  }
+}

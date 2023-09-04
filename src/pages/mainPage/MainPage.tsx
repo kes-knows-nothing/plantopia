@@ -1,34 +1,18 @@
 import { useEffect, useState } from 'react';
-import './mainPage.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { nanoid } from 'nanoid';
-import { db } from '@/utils/firebaseApp';
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  Timestamp,
-  doc,
-  updateDoc,
-} from 'firebase/firestore';
+import { useAuth } from '@/hooks';
+import { UserPlant } from '@/@types/plant.type';
+import { getPlantList, updatePlantInfo } from '@/api/userPlant';
+import { errorNoti, successNoti } from '@/utils/alarmUtil';
+import { Timestamp } from 'firebase/firestore';
 
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-import MainPlant from './MainPlantSection';
+import Progress from '@/components/progress/Progress';
+import MainPlantSection from './MainPlantSection';
 import WeatherSection from './WeatherSection';
-
-export interface UserPlant {
-  id: string;
-  frequency: number;
-  imgUrl: string;
-  isMain: boolean;
-  nickname: string;
-  plantName: string;
-  purchasedDay: InstanceType<typeof Timestamp>;
-  userEmail: string;
-  wateredDays: InstanceType<typeof Timestamp>[];
-}
+import './mainPage.scss';
 
 interface PlantListProps {
   plants: UserPlant[];
@@ -36,119 +20,104 @@ interface PlantListProps {
 }
 
 const PlantList = ({ plants, onClickItem }: PlantListProps) => {
-  return (
-    <div className="slide_wrapper">
-      <Swiper slidesPerView={4} className="swiper">
-        {plants.map(plant => (
-          <SwiperSlide key={nanoid()}>
-            <button className="slide" onClick={() => onClickItem(plant)}>
-              <div className="avatar">
-                <img src={plant.imgUrl} alt="plant" />
-              </div>
-              <span className="name">{plant.nickname}</span>
-            </button>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  );
+  if (plants.length > 0) {
+    return (
+      <div className="slide_wrapper">
+        <Swiper slidesPerView={3.5} className="swiper">
+          {plants.map(plant => (
+            <SwiperSlide key={nanoid()}>
+              <button className="slide" onClick={() => onClickItem(plant)}>
+                <div className="avatar">
+                  <img src={plant.imgUrl} alt="plant" />
+                </div>
+                <span className="name">{plant.nickname}</span>
+              </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    );
+  }
 };
 
 const MainPage = () => {
-  const [mainPlant, setMainPlant] = useState<UserPlant>();
-  const [plantList, setPlantList] = useState<UserPlant[]>([]);
+  const [focusPlant, setFocusPlant] = useState<UserPlant>();
+  const [plantList, setPlantList] = useState<UserPlant[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const user = useAuth();
 
-  const onWaterPlant = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const onWaterPlant = async () => {
+    if (!(focusPlant && user?.email)) return;
 
-    if (!mainPlant) return;
-
-    const plantRef = doc(db, 'plant', mainPlant.id);
-
-    try {
-      await updateDoc(plantRef, {
-        wateredDays: [...mainPlant.wateredDays, Timestamp.fromDate(new Date())],
-      });
-      await getUserPlant();
-
-      alert('물을 잘 먹었어요!');
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error(error);
-      }
-
-      alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
-    }
-  };
-
-  const switchMainPlant = (plant: UserPlant) => {
-    setMainPlant(plant);
-  };
-
-  const getUserPlant = async () => {
-    // dummy
-    const email = 'test@test.com';
-
-    const emailRef = collection(db, 'plant');
-    const q = query(emailRef, where('userEmail', '==', email));
+    const newData = { ...focusPlant };
+    newData.wateredDays = [
+      ...newData.wateredDays,
+      Timestamp.fromDate(new Date()),
+    ];
 
     try {
-      const userPlantList: UserPlant[] = [];
+      setIsLoading(true);
 
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(doc => {
-        const plantData: UserPlant = {
-          id: doc.id,
-          ...(doc.data() as Omit<UserPlant, 'id'>),
-        };
+      await updatePlantInfo(newData);
+      const userPlantList = await getPlantList(user.email);
+      const mainVisiblePlant = userPlantList.find(
+        ({ id }) => focusPlant.id === id,
+      );
 
-        userPlantList.push(plantData);
-      });
-
-      let mainPlantData: UserPlant | undefined;
-
-      if (mainPlant) {
-        mainPlantData = userPlantList.find(plant => plant.id === mainPlant.id);
-      } else {
-        mainPlantData =
-          userPlantList.find(plant => plant.isMain) || userPlantList[0];
-      }
-
-      setMainPlant(mainPlantData);
+      setFocusPlant(mainVisiblePlant);
       setPlantList(userPlantList);
+      successNoti('물을 잘 먹었어요!');
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error(error);
-      }
-
-      alert('에러가 발생하였습니다. 새로고침을 해주세요!');
+      errorNoti('에러가 발생하였습니다. 잠시 후 다시 시도해주세요!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getUserPlant();
-  }, []);
+    (async () => {
+      if (!user?.email) return;
+
+      setIsLoading(true);
+
+      try {
+        const userPlantList = await getPlantList(user.email);
+        const mainVisiblePlant = userPlantList.find(({ isMain }) => isMain);
+
+        setFocusPlant(mainVisiblePlant || userPlantList[0]);
+        setPlantList(userPlantList);
+      } catch (error) {
+        errorNoti('에러가 발생하였습니다. 새로고침을 해주세요!');
+        setPlantList(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [user]);
 
   return (
-    <>
+    <div className="layout">
       <Header isMainPage />
       <main className="main_page">
         <section>
-          <div className="inner">
-            <WeatherSection />
-            {mainPlant && (
-              <MainPlant mainPlant={mainPlant} onWaterPlant={onWaterPlant} />
-            )}
-          </div>
-          <PlantList plants={plantList} onClickItem={switchMainPlant} />
+          <WeatherSection />
+          {plantList && (
+            <>
+              <MainPlantSection
+                plant={focusPlant}
+                onWaterPlant={onWaterPlant}
+              />
+              <PlantList
+                plants={plantList}
+                onClickItem={(plant: UserPlant) => setFocusPlant(plant)}
+              />
+            </>
+          )}
         </section>
       </main>
       <Footer />
-    </>
+      {isLoading && <Progress />}
+    </div>
   );
 };
 

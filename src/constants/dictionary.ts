@@ -1,8 +1,8 @@
-import { RecommendProps } from '@/@types/dictionary';
-import { codeToImg } from '@/utils/dictionaryUtil';
+import { OrderByDirection } from 'firebase/firestore';
+import { CodeToImg } from '@/components/codeToImg/CodeToImg';
 import SUN_ON_ICON from '@/assets/images/icons/dict_sun_on.png';
 import SUN_OFF_ICON from '@/assets/images/icons/dict_sun_off.png';
-import WATER_ON_ICON from '@/assets/images/icons/dict_water_on.png';
+import WATER_ON_ICON from '@/assets/images/icons/water_on_icon.png';
 import WATER_OFF_ICON from '@/assets/images/icons/dict_water_off.png';
 import PLANT1_ICON from '@/assets/images/icons/dict_plant1.png';
 import PLANT2_ICON from '@/assets/images/icons/dict_plant2.png';
@@ -24,13 +24,13 @@ const codeInfo = {
   TC03: '21 ~ 25℃',
   TC04: '26 ~ 30℃',
   LC: '',
-  LC01: codeToImg([SUN_ON_ICON, SUN_OFF_ICON, SUN_OFF_ICON]),
-  LC02: codeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_OFF_ICON]),
-  LC03: codeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_ON_ICON]),
+  LC01: CodeToImg([SUN_ON_ICON, SUN_OFF_ICON, SUN_OFF_ICON]),
+  LC02: CodeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_OFF_ICON]),
+  LC03: CodeToImg([SUN_ON_ICON, SUN_ON_ICON, SUN_ON_ICON]),
   WC: '',
-  WC01: codeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_ON_ICON]),
-  WC02: codeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_OFF_ICON]),
-  WC03: codeToImg([WATER_ON_ICON, WATER_OFF_ICON, WATER_OFF_ICON]),
+  WC01: CodeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_ON_ICON]),
+  WC02: CodeToImg([WATER_ON_ICON, WATER_ON_ICON, WATER_OFF_ICON]),
+  WC03: CodeToImg([WATER_ON_ICON, WATER_OFF_ICON, WATER_OFF_ICON]),
 };
 
 const targetQuery = {
@@ -40,7 +40,11 @@ const targetQuery = {
   dark: ['lightCode', 'LC01'],
 };
 
-const recommend: RecommendProps[] = [
+const recommend: {
+  icon: string;
+  title: string;
+  target: keyof typeof targetQuery;
+}[] = [
   { icon: PLANT1_ICON, title: '식린이를 위한 추천 식물!', target: 'beginner' },
   {
     icon: PLANT2_ICON,
@@ -62,4 +66,6 @@ const targetClassName = {
   dark: 'img_wrapper_gray',
 };
 
-export { codeInfo, targetQuery, recommend, targetClassName };
+const orderDirection: OrderByDirection[] = ['asc', 'desc'];
+
+export { codeInfo, targetQuery, recommend, targetClassName, orderDirection };

@@ -1,4 +1,7 @@
 /* Common Styles */
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/pagination';
 
 .hide {
   overflow: hidden;
@@ -11,176 +14,166 @@
 }
 
 /* DIARY-Detail 페이지 */
-
-.diary_detail_page {
-  width: 100%;
+.diary_detail_wrap {
   position: relative;
+  padding-bottom: 3rem;
 
-  .diary_detail_container {
+  > .more_btn_wrap {
+    position: fixed;
+    width: 3rem;
+    z-index: 15;
+    height: 5.6rem;
+
+    right: calc(50% - 18rem);
+    top: 0;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
+    align-items: center;
 
-    .sub_header {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 6.4rem;
-      background-color: #fff;
-      border-bottom: 1px solid #f7f8f7;
-
-      strong {
-        font-size: 1.6rem;
-        font-weight: 900;
-      }
-      .header_btn {
-        position: absolute;
-        font-size: 1.8rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 2.4rem;
-        height: 2.4rem;
-
-        &.back {
-          left: 2rem;
-        }
-
-        &.more {
-          right: 2rem;
-        }
-      }
+    > .more {
+      width: 3rem;
+      height: 3rem;
+      transform: translateX(0.2rem);
+      color: #979797;
+      opacity: 0.8;
+      background: url('@/assets/images/icons/diary_more.png') no-repeat center /
+        0.35rem;
+      z-index: 15;
     }
 
-    /* 이미지 슬라이드 SECTION */
-    .slide_section {
-      position: relative;
-      width: 100%;
-      z-index: 2;
-      padding-bottom: 3rem;
+    .more_modal {
+      width: 11.5rem;
+      height: 7.5rem;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: 1.3rem;
+      top: 4rem;
+      font-size: 1.3rem;
+      background: #fff;
       overflow: hidden;
-      border-bottom: 1px solid #f7f8f7;
+      z-index: 15;
+      border-radius: 0.4rem;
+      box-shadow: 0rem 0rem 0.3rem rgba(1, 1, 1, 0.15);
 
-      .swiper {
-        position: relative;
-        width: 100%;
-        height: 36rem;
-        overflow: visible;
-
-        &:hover {
-          .swiper_nav {
-            opacity: 1;
-          }
-        }
-      }
-
-      .swiper-slide {
-        overflow: hidden;
+      > .btn {
+        padding: 1rem;
+        height: 50%;
         display: flex;
-        justify-content: center;
         align-items: center;
         cursor: pointer;
 
-        .slide_container {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          display: flex;
-
-          .slide_img {
-            display: block;
-            width: 100%;
-            object-fit: cover;
-            margin: 0 auto;
-          }
+        &:hover {
+          background: #f7f8f7;
         }
       }
 
-      .swiper_nav {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: calc(50% - 0rem);
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 999;
-        opacity: 0;
-        transition: 0.4s;
-
-        .nav_btn {
-          position: absolute;
-          width: 6rem;
-          height: 100%;
-          height: 36rem;
-          cursor: pointer;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .swiper_nav_prev {
-          left: 0;
-
-          .prev_btn {
-            width: 2rem;
-            height: 2rem;
-            background: url('@/assets/images/icons/slide_left.png') no-repeat
-              center / contain;
-          }
-        }
-        .swiper_nav_next {
-          right: 0;
-
-          .next_btn {
-            width: 2rem;
-            height: 2rem;
-            background: url('@/assets/images/icons/slide_right.png') no-repeat
-              center / contain;
-          }
-        }
+      > .modify {
+        color: #22274c;
       }
 
-      .swiper-pagination {
-        z-index: 999;
-        bottom: -2rem;
-      }
-      .swiper-pagination-bullet {
-        background-color: #c4c4c4;
-      }
-      & .swiper-pagination-bullet-active {
-        background-color: #1fb0ad;
+      > .delete {
+        color: red;
       }
     }
+  }
 
-    /* 게시글 SECTION */
-    .content_section {
-      .diary_title {
-        font-size: 2rem;
-        color: #22264c;
-        padding: 2rem 0;
+  > .diary_detail_page {
+    width: 100%;
+    min-height: calc(100vh - 5.6rem);
+    position: relative;
+
+    > .diary_detail_container {
+      display: flex;
+      flex-direction: column;
+
+      /* 이미지 슬라이드 SECTION */
+      > .slide_section {
+        position: relative;
+        width: 100%;
+        padding-bottom: 3rem;
+        overflow: hidden;
+
+        > .swiper {
+          position: relative;
+          width: 100%;
+          height: 36rem;
+          overflow: visible;
+
+          &:hover {
+            .swiper_nav {
+              opacity: 1;
+            }
+          }
+        }
+
+        .swiper-slide {
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          > .slide_container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+
+            > .slide_img {
+              display: block;
+              width: 36rem;
+              height: 36rem;
+              object-fit: cover;
+              margin: 0 auto;
+            }
+          }
+        }
+
+        .swiper-pagination {
+          bottom: -2rem;
+
+          .swiper-pagination-bullet {
+            background-color: #c4c4c4;
+          }
+
+          & .swiper-pagination-bullet-active {
+            background-color: #1fb0ad;
+          }
+        }
       }
 
-      .plant_list {
-        span {
+      /* 게시글 SECTION */
+      > .content_section {
+        > .diary_title {
+          font-size: 2rem;
+          color: #22264c;
+          padding: 2rem 0;
+        }
+
+        > .plant_list {
+          > span {
+            color: #979797;
+            padding: 0.2rem 1rem;
+            border-radius: 0.4rem;
+            background: #f8f8fa;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+          }
+        }
+
+        > .text_wrap {
+          padding: 3rem 0;
           color: #979797;
-          padding: 0.2rem 1rem;
-          border-radius: 0.4rem;
-          background: #f8f8fa;
-          margin-right: 1rem;
-          font-size: 1.2rem;
-        }
-      }
 
-      .text_wrap {
-        padding: 3rem 0;
-        color: #979797;
-
-        .diary_text {
-          font-size: 1.4rem;
-          line-height: 2.2rem;
-        }
-        .diary_date {
-          font-size: 1.2rem;
-          margin-top: 3rem;
+          > .diary_text {
+            font-size: 1.4rem;
+            line-height: 2.2rem;
+          }
+          > .diary_date {
+            font-size: 1.2rem;
+            margin-top: 3rem;
+          }
         }
       }
     }

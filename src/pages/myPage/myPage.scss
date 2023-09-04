@@ -1,0 +1,142 @@
+.my_page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f8fa;
+
+  .my_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 auto;
+    margin-bottom: 5.2rem;
+
+    .my_info_box {
+      position: relative;
+      background-color: #ffffff;
+
+      h2 {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: #22264c;
+        padding: 2rem 0 2.8rem 0;
+        line-height: 1.5;
+
+        em {
+          font-size: 1.8rem;
+          font-weight: 700;
+        }
+      }
+
+      .my_profile {
+        display: flex;
+        align-items: center;
+        padding-bottom: 3rem;
+
+        > img {
+          width: 6rem;
+          height: 6rem;
+          border-radius: 50%;
+        }
+
+        .my_info {
+          padding-left: 1.4rem;
+
+          > strong {
+            display: block;
+            padding-bottom: 0.6rem;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #22264c;
+          }
+
+          > p {
+            position: relative;
+            display: inline-block;
+            height: 1.4rem;
+            line-height: 1.4rem;
+            color: #9199a1;
+            font-size: 1rem;
+          }
+        }
+
+        > .edit_info {
+          position: absolute;
+          right: 1.8rem;
+          width: 11.5rem;
+          height: 4rem;
+          font-size: 1.4rem;
+          text-align: center;
+          line-height: 4rem;
+          border-radius: 0.6rem;
+          color: #22264c;
+          background-color: #f2f2f2;
+          &:hover{
+          background-color: #e7e7e7;
+
+          }
+        }
+      }
+    }
+
+    .list_box {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      background-color: #fff;
+
+      .list_title {
+        padding: 0 2rem;
+        display: block;
+        font-size: 1rem;
+        color: #9199a1;
+      }
+
+      .list_contents {
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 4.8rem;
+
+          > a {
+            margin: 0 2rem;
+            padding: 0;
+            width: 100%;
+            text-align: left;
+            font-size: 1.4rem;
+            line-height: 4.8rem;
+            cursor: pointer;
+            background: url('../../assets/images/icons/icon_move.png') no-repeat
+              right center / 16px;
+            color: #22264c;
+          }
+        }
+        li ~ li {
+          border-top: 1px solid #f8f8fa;
+        }
+      }
+
+      > .logout_wrapper {
+        display: flex;
+        flex: 1;
+        padding: 2rem;
+        background-color: #f8f8fa;
+
+        > .logout_btn {
+          margin-top: auto;
+          width: 100%;
+          height: 4.8rem;
+          line-height: 4.8rem;
+          border: 1px solid #d6d6d6;
+          background-color: #ffffff;
+          border-radius: 0.6rem;
+          font-size: 1.4rem;
+          color: #acacac;
+        }
+      }
+    }
+  }
+}

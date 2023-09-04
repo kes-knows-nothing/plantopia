@@ -4,13 +4,13 @@ import '@/pages/myPlantPage/mainPagePlantList.scss';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import mainPlantFalseIcon from '@/assets/images/icons/main_plant_false_icon.png';
 import myPlantEditIcon from '@/assets/images/icons/my_plants_edit_icon.png';
-import { UserPlant } from '@/@types/plant.type';
 import Toast from '@/components/notification/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebaseApp';
 import { getPlantList } from '@/api/userPlant';
+import { UserPlant } from '@/@types/plant.type';
 
 interface MainPagePlantListProps {
   userEmail: string;
@@ -28,17 +28,16 @@ const MainPagePlantList = ({
   const navigate = useNavigate();
   const [myPlantData, setMyPlantData] = useState<UserPlant[]>([]);
 
-  const compare = (a: UserPlant, b: UserPlant): number => {
-    if (a.isMain === b.isMain) {
-      return 0;
-    } else if (a.isMain) {
-      return -1;
-    } else {
-      return 1;
-    }
-  };
-
   const getUserPlantsSorted = async () => {
+    const compare = (a: UserPlant, b: UserPlant): number => {
+      if (a.isMain === b.isMain) {
+        return 0;
+      } else if (a.isMain) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
     try {
       const plantData = await getPlantList(userEmail);
       if (plantData.length == 0) return;
@@ -53,9 +52,8 @@ const MainPagePlantList = ({
   const handleClickIsMain = async (clickedPlant: UserPlant) => {
     if (clickedPlant.isMain === false) {
       const previousMain = myPlantData.find(item => (item.isMain = true));
-      if (!previousMain) {
-        return;
-      }
+      if (!previousMain) return;
+
       const documentTrueRef = doc(db, 'plant', clickedPlant.id);
       const documentFalseRef = doc(db, 'plant', previousMain.id);
       const updatedTrueFields = {
@@ -78,7 +76,7 @@ const MainPagePlantList = ({
     }
   };
 
-  const handleEditData = (clickedPlant: UserPlant) => {
+  const navigateEditPage = (clickedPlant: UserPlant) => {
     const dataFromList = {
       imgUrlFromList: clickedPlant.imgUrl,
       nicknameFromList: clickedPlant.nickname,
@@ -132,7 +130,7 @@ const MainPagePlantList = ({
                 <button
                   onClick={e => {
                     e.preventDefault();
-                    handleEditData(plant);
+                    navigateEditPage(plant);
                   }}
                 >
                   <img

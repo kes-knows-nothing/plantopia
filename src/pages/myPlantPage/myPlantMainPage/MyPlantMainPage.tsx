@@ -14,6 +14,7 @@ import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import { infoNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
+import { findMainPlantByEmail } from '@/utils/handleMainPlantUtil';
 
 const MyPlantMainPage = () => {
   const user = useAuth();
@@ -30,26 +31,21 @@ const MyPlantMainPage = () => {
   };
 
   useEffect(() => {
-    const getQuerySnapshot = async () => {
+    const setMainPlantData = async () => {
       if (user?.email) {
-        const q = query(
-          collection(db, 'plant'),
-          where('userEmail', '==', user?.email),
-          where('isMain', '==', true),
-        );
-        const mainData = (await getDocs(q)).docs[0]?.data();
-        setMyMainPlant(mainData as UserPlant);
+        const mainPlantData = await findMainPlantByEmail(user?.email);
+        setMyMainPlant(mainPlantData as UserPlant);
       }
     };
-    getQuerySnapshot();
+    setMainPlantData();
   }, [user]);
   return (
     <div className="layout">
       <Header />
       <main className="my_plant_wrapper">
         <h2 className="my_plant_info_message">
-          <span className="username">{user?.displayName}</span>님의 식물을
-          한 눈에 보기!
+          <span className="username">{user?.displayName}</span>님의 식물을 한
+          눈에 보기!
         </h2>
         <div className="main_plant_info_box inner">
           {myMainPlant ? (

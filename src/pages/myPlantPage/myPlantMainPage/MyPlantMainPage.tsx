@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks';
-import { db } from '@/firebaseApp';
-import { getDocs, collection, where, query } from 'firebase/firestore';
 import './myPlantMainPage.scss';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
@@ -14,7 +12,7 @@ import samplePlant from '@/assets/images/icons/sample_plant1.png';
 import mainPlantTrueIcon from '@/assets/images/icons/main_plant_true_icon.png';
 import { infoNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
-import { findMainPlantByEmail } from '@/utils/handleMainPlantUtil';
+import { findMainPlantByEmail } from '@/api/userPlant';
 
 const MyPlantMainPage = () => {
   const user = useAuth();

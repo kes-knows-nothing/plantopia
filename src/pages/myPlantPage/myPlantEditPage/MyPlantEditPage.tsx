@@ -8,8 +8,9 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import { secondsToDate, dateToTimestamp, maxDate } from '@/utils/dateUtil';
-import { successNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
+import { findPlantDataByDocId, updatePlantData } from '@/api/userPlant';
+import { errorNoti } from '@/utils/alarmUtil';
 
 const MyPlantEditPage = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const MyPlantEditPage = () => {
   const wateredDayFromList = location.state?.wateredDayFromList;
   const frequencyFromList = location.state?.frequencyFromList;
 
-  const [myPlantData, setMyPlantData] = useState<UserPlant>();
+  const [plantData, setPlantData] = useState<UserPlant>();
   const [isLoading, setIsLoading] = useState(true);
   const [plantNickname, setPlantNickname] = useState<string>(
     nicknameFromDetail || nicknameFromList,
@@ -106,52 +107,40 @@ const MyPlantEditPage = () => {
   const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setSaving(true);
-    if (!docId) return;
-    if (!myPlantData?.wateredDays) {
-      myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
+    if (!plantData?.wateredDays) {
+      plantData?.wateredDays.push(dateToTimestamp(wateredDay));
     } else {
-      myPlantData?.wateredDays.pop();
-      myPlantData?.wateredDays.push(dateToTimestamp(wateredDay));
+      plantData?.wateredDays.pop();
+      plantData?.wateredDays.push(dateToTimestamp(wateredDay));
     }
-
-    const documentRef = doc(db, 'plant', docId);
-    const updatedFields = {
-      imgUrl: imgUrl,
-      nickname: plantNickname,
-      purchasedDay: dateToTimestamp(purchasedDay),
-      wateredDays: myPlantData?.wateredDays,
-      frequency: frequency,
-    };
-
-    try {
-      await updateDoc(documentRef, updatedFields);
-      successNoti('식물 정보를 수정하였습니다!');
-      navigate('/myplant');
-    } catch (error) {
-      return;
+    if (plantData?.wateredDays) {
+      const updatedFields = {
+        imgUrl: imgUrl,
+        nickname: plantNickname,
+        purchasedDay: dateToTimestamp(purchasedDay),
+        wateredDays: plantData?.wateredDays,
+        frequency: frequency,
+      };
+      if (!docId) return;
+      updatePlantData(docId, updatedFields);
     }
+    navigate('/myplant');
   };
 
   useEffect(() => {
-    const getMyPlantData = async () => {
-      try {
-        if (!docId) return;
-        const docRef = doc(db, 'plant', docId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const plantData = docSnap.data();
-          setMyPlantData(plantData as UserPlant);
-        } else {
-          throw new Error('문서가 존재하지 않습니다.');
-        }
-      } catch (error) {
+    const getPlantDataByDocId = async () => {
+      if (!docId) {
+        errorNoti('잘못된 식물 id입니다.');
         return;
+      } else {
+        const plantData = await findPlantDataByDocId(docId);
+        setPlantData(plantData as UserPlant);
       }
     };
-    getMyPlantData();
-    if (myPlantData) {
-      setPlantName(myPlantData?.plantName);
-      setPlantNickname(myPlantData?.nickname);
+    getPlantDataByDocId();
+    if (plantData) {
+      setPlantName(plantData.plantName);
+      setPlantNickname(plantData.nickname);
     }
     setIsLoading(false);
   }, []);

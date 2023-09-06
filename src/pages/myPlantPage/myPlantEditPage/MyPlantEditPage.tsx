@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage, db } from '@/firebaseApp';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import './myPlantEditPage.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
@@ -235,7 +234,7 @@ const MyPlantEditPage = () => {
           </div>
         </div>
         <button
-          className="my_plant_register_btn"
+          className="my_plant_edit_btn"
           onClick={handleUpdate}
           disabled={saving}
         >

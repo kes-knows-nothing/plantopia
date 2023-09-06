@@ -62,24 +62,6 @@ const MyPlantDetailPage = () => {
   };
 
   useEffect(() => {
-    const getData = async () => {
-      if (!docId) return;
-      const docRef = doc(db, 'plant', docId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setPlantDetail(docSnap.data() as UserPlant);
-        const q = query(
-          collection(db, 'dictionary'),
-          where('name', '==', docSnap.data().plantName),
-        );
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(doc => {
-          setPlantDictDetail(doc.data() as PlantType);
-        });
-      } else {
-        return;
-      }
-    };
     const setPlantData = async (docId: string) => {
       if (docId) {
         const { plantDataByDocId, plantDataFromDict } =
@@ -91,8 +73,6 @@ const MyPlantDetailPage = () => {
     if (docId) {
       setPlantData(docId);
     }
-
-    getData();
     setIsLoading(false);
   }, [docId]);
 

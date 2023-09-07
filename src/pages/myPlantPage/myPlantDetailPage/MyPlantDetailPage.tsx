@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks';
-import { db } from '@/firebaseApp';
-import {
-  doc,
-  getDoc,
-  getDocs,
-  collection,
-  where,
-  query,
-} from 'firebase/firestore';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import './myPlantDetailPage.scss';

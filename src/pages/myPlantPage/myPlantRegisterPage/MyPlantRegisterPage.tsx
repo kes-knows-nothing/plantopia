@@ -50,6 +50,7 @@ const MyPlantRegisterPage = () => {
   const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPurchasedDay(e.target.value);
   };
+
   const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWateredDays(e.target.value);
   };

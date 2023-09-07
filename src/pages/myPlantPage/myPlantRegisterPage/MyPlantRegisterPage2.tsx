@@ -12,8 +12,17 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { waterCodeToNumber } from '@/utils/convertDataUtil';
 import { dateToTimestamp, maxDate } from '@/utils/dateUtil';
+import { useForm } from 'react-hook-form';
+import { MyPlantForm } from '@/@types/plant.type';
 
-const MyPlantRegisterPage = () => {
+const MyPlantRegisterPage2 = () => {
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onValid = () => {};
   const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,7 +30,7 @@ const MyPlantRegisterPage = () => {
   const image = location.state?.image;
   const waterCode = location.state?.waterCode;
   const [searchInputValue, setSearchInputValue] = useState(name);
-  const [plantName, setPlantName] = useState<string>('');
+
   const [purchasedDay, setPurchasedDay] = useState<string>('');
   const [wateredDays, setWateredDays] = useState<string>('');
   const [frequency, setFrequency] = useState(waterCodeToNumber(waterCode));
@@ -37,10 +46,6 @@ const MyPlantRegisterPage = () => {
     navigate('/dict/search', {
       state: { inputValue: '' },
     });
-  };
-
-  const plantNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlantName(e.target.value);
   };
 
   const handleFrequency = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,22 +102,18 @@ const MyPlantRegisterPage = () => {
     setSaving(true);
     if (!searchInputValue) {
       errorNoti('식물을 지정해주세요.');
-      setSaving(false);
       return;
     }
     if (!plantName) {
       errorNoti('식물 닉네임을 설정해주세요.');
-      setSaving(false);
       return;
     }
     if (!frequency) {
       errorNoti('식물의 물 주기를 설정해주세요.');
-      setSaving(false);
       return;
     }
     if (!purchasedDay) {
       errorNoti('식물과 함께한 날을 지정해주세요.');
-      setSaving(false);
       return;
     }
 
@@ -133,7 +134,6 @@ const MyPlantRegisterPage = () => {
       wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
-    
     successNoti('새 식물 등록에 성공하였습니다');
     navigate('/myplant');
   };
@@ -141,7 +141,7 @@ const MyPlantRegisterPage = () => {
     <div className="layout">
       <HeaderBefore ex={true} title="식물 등록" />
       <main>
-        <form action="" onSubmit={handleRegister}>
+        <form action="" onSubmit={handleSubmit(onValid)}>
           <div className="my_plant_registeration_container">
             <div className="my_plant_register_img_box">
               <div className="img_wrapper">
@@ -194,11 +194,8 @@ const MyPlantRegisterPage = () => {
               </div>
               <input
                 className="my_plant_name"
-                maxLength={5}
-                value={plantName}
-                onChange={plantNameHandler}
+                {...register('plantName', { required: true, minLength: 5 })}
               />
-
               <div className="watering_frequency required">
                 물 주는 날<p>(주변 환경에 맞게 조절해주세요)</p>
               </div>
@@ -256,4 +253,4 @@ const MyPlantRegisterPage = () => {
   );
 };
 
-export default MyPlantRegisterPage;
+export default MyPlantRegisterPage2;

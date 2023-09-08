@@ -1,5 +1,4 @@
 import { UserPlant } from '@/@types/plant.type';
-import { PlantType } from '@/@types/dictionary.type';
 import { db } from '@/firebaseApp';
 import {
   collection,
@@ -11,6 +10,7 @@ import {
   Timestamp,
   getDoc,
   deleteDoc,
+  addDoc,
 } from 'firebase/firestore';
 import { successNoti, errorNoti } from '@/utils/alarmUtil';
 
@@ -147,4 +147,16 @@ export const findPlantDataWithDictData = async (docId: string) => {
   }))[0];
   console.log({ plantDataByDocId, plantDataFromDict });
   return { plantDataByDocId, plantDataFromDict };
+};
+
+export const isUserPlantEmpty = async (userEmail: string): Promise<boolean> => {
+  const q = query(collection(db, 'plant'), where('userEmail', '==', userEmail));
+  const querySnapshot = await getDocs(q);
+  const isEmpty = querySnapshot.empty;
+  return isEmpty;
+};
+
+export const registerPlantData = async (newPlantData: UserPlant) => {
+  await addDoc(collection(db, 'plant'), newPlantData);
+  return;
 };

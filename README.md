@@ -22,7 +22,7 @@
 ![SASS](https://img.shields.io/badge/Sass-323330?style=flat-square&logo=Sass&logoColor=CC6699)
 ![Firebase](https://img.shields.io/badge/Firebase-323330?style=flat-square&logo=Firebase&logoColor=FFCA28)
 ![Vercel](https://img.shields.io/badge/Vercel-323330?style=flat-square&logo=Vercel&logoColor=000000)
-
+<br/>
 
 ## 플랜토피아 시작하기
 
@@ -45,6 +45,19 @@ ID: elice@code.com / PW: elice1234
 #### 노션: 프로젝트 관리 
 
 <a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
-<img src="https://img.shields.io/badge/Notion-323330?style=flat-square&logo=Notion&logoColor=ffffff">
+  <img src="https://img.shields.io/badge/Notion-323330?style=flat-square&logo=Notion&logoColor=ffffff">
 </a>
+
+#### 프로젝트 시연 영상
+
+<a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
+  <img src="https://img.shields.io/badge/Youtube-323330?style=flat-square&logo=Youtube&logoColor=FF0000">
+</a>
+
+#### 프로젝트 발표 영상
+
+<a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
+  <img src="https://img.shields.io/badge/Youtube-323330?style=flat-square&logo=Youtube&logoColor=FF0000">
+</a>
+
 </div>

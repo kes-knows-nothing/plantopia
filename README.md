@@ -15,6 +15,8 @@
 <br/> 
 
 ## 기술 스택
+<br/>
+
 ![React](https://img.shields.io/badge/React-323330?style=flat-square&logo=React&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-323330?style=flat-square&logo=TypeScript&logoColor=3178C6)
 ![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=flat-square&logo=JavaScript&logoColor=F7DF1E)
@@ -22,6 +24,7 @@
 ![SASS](https://img.shields.io/badge/Sass-323330?style=flat-square&logo=Sass&logoColor=CC6699)
 ![Firebase](https://img.shields.io/badge/Firebase-323330?style=flat-square&logo=Firebase&logoColor=FFCA28)
 ![Vercel](https://img.shields.io/badge/Vercel-323330?style=flat-square&logo=Vercel&logoColor=000000)
+
 <br/>
 
 ## 플랜토피아 시작하기
@@ -39,10 +42,13 @@ https://plant-utopia.vercel.app/
 ```
 ID: elice@code.com / PW: elice1234
 ```
+<br/>
 
 ## 프로젝트 상세보기
 
 #### 노션: 프로젝트 관리 
+
+<br/>
 
 <a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
   <img src="https://img.shields.io/badge/Notion-323330?style=flat-square&logo=Notion&logoColor=ffffff">

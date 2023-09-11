@@ -40,4 +40,11 @@ https://plant-utopia.vercel.app/
 ID: elice@code.com / PW: elice1234
 ```
 
+## 프로젝트 상세보기
+
+#### 노션: 프로젝트 관리 
+
+<a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
+<img src="https://img.shields.io/badge/Notion-323330?style=flat-square&logo=Notion&logoColor=ffffff">
+</a>
 </div>

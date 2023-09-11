@@ -48,9 +48,15 @@ ID: elice@code.com / PW: elice1234
   <img src="https://img.shields.io/badge/Notion-323330?style=flat-square&logo=Notion&logoColor=ffffff">
 </a>
 
+#### 피그마
+
+<a href="https://www.figma.com/file/NpxLwqcttC04Tx25FNU0Z2/plantopia(%ED%8E%B8%EC%A7%91%ED%8E%98%EC%9D%B4%EC%A7%80)?type=design&node-id=1-2925&mode=design">
+  <img src="https://img.shields.io/badge/Figma-323330?style=flat-square&logo=Figma&logoColor=F24E1E">
+</a>
+
 #### 프로젝트 시연 영상
 
-<a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
+<a href="https://www.youtube.com/watch?v=WD4rZKuwJGA&ab_channel=%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80%EB%90%98%EB%A0%A4%EA%B3%A0%EB%B0%9C%EC%95%85%ED%95%98%EB%8A%94%EC%9E%90">
   <img src="https://img.shields.io/badge/Youtube-323330?style=flat-square&logo=Youtube&logoColor=FF0000">
 </a>
 

@@ -1,9 +1,12 @@
 <div align="center">
+
+<br/>
   
+![og_img](https://github.com/kes-knows-nothing/plantopia/assets/119156401/8bf94aed-34c5-4743-a856-d23929feface)
 
 <br/>  
 
-## 기획 의도
+## 프로젝트 소개
 <br/> 
 
 #### 플랜토피아는 식물 관리 어플리케이션입니다. 
@@ -21,5 +24,20 @@
 ![Vercel](https://img.shields.io/badge/Vercel-323330?style=flat-square&logo=Vercel&logoColor=000000)
 
 
+## 플랜토피아 시작하기
+
+<br/>
+
+#### 플랜토피아 주소
+
+```
+https://plant-utopia.vercel.app/
+```
+
+#### 플랜토피아 테스트 계정
+
+```
+ID: elice@code.com / PW: elice1234
+```
 
 </div>

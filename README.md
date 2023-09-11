@@ -11,6 +11,7 @@
 
 #### 플랜토피아는 식물 관리 어플리케이션입니다. 
 #### 코로나 블루 대응 방안으로 떠오르는 반려식물! 플랜토피아로 편리하게 관리하세요!
+#### 지원자 파트: myPlant CRUD page, 라이브러리 초기 세팅, 팀장, PT 및 영상 제작
 
 <br/> 
 
@@ -46,9 +47,9 @@ ID: elice@code.com / PW: elice1234
 
 ## 프로젝트 상세보기
 
-#### 노션: 프로젝트 관리 
-
 <br/>
+
+#### 노션: 프로젝트 관리 
 
 <a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
   <img src="https://img.shields.io/badge/Notion-323330?style=flat-square&logo=Notion&logoColor=ffffff">

@@ -62,7 +62,7 @@ ID: elice@code.com / PW: elice1234
 
 #### 프로젝트 발표 영상
 
-<a href="https://capable-grapple-591.notion.site/c94ed1cab84f4a50816811dad83c82bd?pvs=4">
+<a href="https://www.youtube.com/watch?v=_AKzD-VKsag&ab_channel=%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80%EB%90%98%EB%A0%A4%EA%B3%A0%EB%B0%9C%EC%95%85%ED%95%98%EB%8A%94%EC%9E%90">
   <img src="https://img.shields.io/badge/Youtube-323330?style=flat-square&logo=Youtube&logoColor=FF0000">
 </a>
 

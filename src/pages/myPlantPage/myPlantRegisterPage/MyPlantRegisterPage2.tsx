@@ -11,7 +11,7 @@ import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { waterCodeToNumber } from '@/utils/convertDataUtil';
 import { dateToTimestamp, maxDate } from '@/utils/dateUtil';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldErrors } from 'react-hook-form';
 import { MyPlantForm, UserPlant } from '@/@types/plant.type';
 import { isUserPlantEmpty, registerPlantData } from '@/api/userPlant';
 
@@ -34,35 +34,21 @@ const MyPlantRegisterPage2 = () => {
     formState: { errors },
   } = useForm<MyPlantForm>();
 
+  const onInvalid = (errors: FieldErrors) => {
+    console.log(errors);
+    for (const fieldName in errors) {
+      if (errors[fieldName]?.message) {
+        const message = errors[fieldName]?.message as string;
+        errorNoti(message);
+        return;
+      }
+    }
+  };
+
   const onValid = async (data: MyPlantForm) => {
     setSaving(true);
-
-    // const fieldNamesToCheck = [
-    //   errors.plantName?.message,
-    //   errors.nickname?.message,
-    //   errors.purchasedDay?.message,
-    // ];
-
-    // for (const errorMessage of fieldNamesToCheck) {
-    //   if (errorMessage) {
-    //     errorNoti(errorMessage);
-    //     setSaving(false);
-    //     return;
-    //   }
-    // }
-
-    if (errors.plantName?.message) {
-      errorNoti(errors.plantName?.message);
-      setSaving(false);
-      return;
-    }
-    if (errors.nickname?.message) {
-      errorNoti(errors.nickname?.message);
-      setSaving(false);
-      return;
-    }
-    if (errors.purchasedDay?.message) {
-      errorNoti(errors.purchasedDay?.message);
+    if (!data.nickname) {
+      errorNoti('식물 닉네임을 설정해주세요.');
       setSaving(false);
       return;
     }
@@ -130,15 +116,16 @@ const MyPlantRegisterPage2 = () => {
     if (name) {
       setValue('plantName', name);
     }
-    if (!waterCodeToNumber(waterCode)) return;
-    setValue('frequency', waterCodeToNumber(waterCode));
+    if (waterCodeToNumber(waterCode)) {
+      setValue('frequency', waterCodeToNumber(waterCode));
+    }
   }, [name, setValue, waterCode]);
 
   return (
     <div className="layout">
       <HeaderBefore ex={true} title="식물 등록" />
       <main>
-        <form action="" onSubmit={handleSubmit(onValid)}>
+        <form action="" onSubmit={handleSubmit(onValid, onInvalid)}>
           <div className="my_plant_registeration_container">
             <div className="my_plant_register_img_box">
               <div className="img_wrapper">
@@ -193,8 +180,11 @@ const MyPlantRegisterPage2 = () => {
               <input
                 className="my_plant_name"
                 {...register('nickname', {
-                  required: '식물 이름을 작성해주세요.',
-                  maxLength: { value: 5, message: '5글자 이내로 작성해주세요' },
+                  required: '식물 이름을 지정해주세요!',
+                  maxLength: {
+                    value: 5,
+                    message: '5글자 이내로 지정해주세요!',
+                  },
                 })}
               />
               <div className="watering_frequency required">

@@ -133,7 +133,6 @@ const MyPlantRegisterPage = () => {
       wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
     };
     await addDoc(collection(db, 'plant'), newPlantData);
-    
     successNoti('새 식물 등록에 성공하였습니다');
     navigate('/myplant');
   };

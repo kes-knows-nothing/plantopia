@@ -27,12 +27,7 @@ const MyPlantRegisterPage2 = () => {
   const [previewImg, setPreviewImg] = useState<string>();
   const [saving, setSaving] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<MyPlantForm>();
+  const { register, handleSubmit, setValue } = useForm<MyPlantForm>();
 
   const onInvalid = (errors: FieldErrors) => {
     console.log(errors);
@@ -47,11 +42,6 @@ const MyPlantRegisterPage2 = () => {
 
   const onValid = async (data: MyPlantForm) => {
     setSaving(true);
-    if (!data.nickname) {
-      errorNoti('식물 닉네임을 설정해주세요.');
-      setSaving(false);
-      return;
-    }
     if (!user?.email) return;
     const isEmpty = await isUserPlantEmpty(user?.email);
     const newPlantData = {
@@ -116,8 +106,9 @@ const MyPlantRegisterPage2 = () => {
     if (name) {
       setValue('plantName', name);
     }
-    if (waterCodeToNumber(waterCode)) {
-      setValue('frequency', waterCodeToNumber(waterCode));
+    const frequencyValue = waterCodeToNumber(waterCode);
+    if (frequencyValue !== undefined && frequencyValue !== null) {
+      setValue('frequency', frequencyValue);
     }
   }, [name, setValue, waterCode]);
 

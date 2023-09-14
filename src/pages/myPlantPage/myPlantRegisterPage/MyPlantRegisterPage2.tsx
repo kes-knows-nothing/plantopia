@@ -51,9 +51,6 @@ const MyPlantRegisterPage2 = () => {
     //   }
     // }
 
-    if (!user?.email) return;
-    const isEmpty = await isUserPlantEmpty(user?.email);
-
     if (errors.plantName?.message) {
       errorNoti(errors.plantName?.message);
       setSaving(false);
@@ -69,7 +66,8 @@ const MyPlantRegisterPage2 = () => {
       setSaving(false);
       return;
     }
-
+    if (!user?.email) return;
+    const isEmpty = await isUserPlantEmpty(user?.email);
     const newPlantData = {
       frequency: data.frequency,
       imgUrl: imgUrl || image,

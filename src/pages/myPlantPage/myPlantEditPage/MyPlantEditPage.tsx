@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage, db } from '@/firebaseApp';
-import './myPlantEditPage.scss';
+import { storage } from '@/firebaseApp';
+import style from './myPlantEditPage.module.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
@@ -148,35 +148,35 @@ const MyPlantEditPage = () => {
     <div className="layout">
       <HeaderBefore ex={true} title="식물 수정" />
       <main>
-        <div className="my_plant_edit_container">
-          <div className="my_plant_edit_img_box">
-            <div className="img_wrapper">
+        <div className={`${style.my_plant_edit_container}`}>
+          <div className={`${style.my_plant_edit_img_box}`}>
+            <div className={`${style.img_wrapper}`}>
               <span>
                 <img
-                  className="main_img"
+                  className={`${style.main_img}`}
                   src={imgUrl || previewImg}
                   alt="samplePlant1"
                 />
               </span>
-              <div className="edit_icon_wrapper">
-                <label htmlFor="photoInput" className="photo_label">
+              <div className={`${style.edit_icon_wrapper}`}>
+                <label htmlFor="photoInput" className={`${style.photo_label}`}>
                   <img
-                    className="edit_icon"
+                    className={`${style.edit_icon}`}
                     src={myPlantImgEditIcon}
                     alt="editIcon"
                   />
                 </label>
                 <input
-                  className="photo_input"
+                  className={`${style.photo_input}`}
                   id="photoInput"
                   accept="image/*"
                   type="file"
                   onChange={handleFileSelect}
                 />
               </div>
-              <div className="my_plant_input_box">
+              <div className={`${style.my_plant_input_box}`}>
                 <input
-                  className="my_plant_edit_input"
+                  className={`${style.my_plant_edit_input}`}
                   value={plantName}
                   disabled
                 />
@@ -184,45 +184,45 @@ const MyPlantEditPage = () => {
             </div>
           </div>
 
-          <div className="my_plant_info_form">
-            <div className="my_plant_name_title required">
+          <div className={`${style.my_plant_info_form}`}>
+            <div className={`${style.my_plant_name_title}`}>
               식물 별명
               <span>(5글자 이내로 설정해주세요)</span>
             </div>
             <input
-              className="my_plant_name"
+              className={`${style.my_plant_name}`}
               maxLength={5}
               value={plantNickname}
               onChange={handlePlantNickname}
             />
 
-            <div className="watering_frequency required">
+            <div className={`${style.watering_frequency}`}>
               물 주는 날<span>(주변 환경에 맞게 조절해주세요)</span>
             </div>
-            <div className="watering_frequency_input_box">
+            <div className={`${style.watering_frequency_input_box}`}>
               <input
-                className="watering_frequency_input"
+                className={`${style.watering_frequency_input}`}
                 onChange={handleFrequency}
                 defaultValue={frequencyFromDetail || frequencyFromList}
               />
-              <p className="watering_frequency_info">일에 한 번</p>
+              <p className={`${style.watering_frequency_info}`}>일에 한 번</p>
             </div>
 
-            <p className="my_plant_register_small_title  required">
+            <p className={`${style.my_plant_register_small_title}`}>
               식물과 처음 함께한 날<span>(달력을 클릭하여 설정해주세요)</span>
             </p>
-            <div className="my_plant_register_calender_value">
+            <div className={`${style.my_plant_register_calender_value}`}>
               <input
-                className="date_selector"
+                className={`${style.date_selector}`}
                 type="date"
                 value={purchasedDay}
                 onChange={purchasedDayHandler}
               />
             </div>
-            <p className="my_plant_register_small_title">
+            <p className={`${style.my_plant_register_small_title}`}>
               마지막 물준 날 <span>(선택 입력)</span>
             </p>
-            <div className="my_plant_register_calender_value">
+            <div className={`${style.my_plant_register_calender_value}`}>
               <input
                 type="date"
                 className="date_selector"
@@ -234,7 +234,7 @@ const MyPlantEditPage = () => {
           </div>
         </div>
         <button
-          className="my_plant_edit_btn"
+          className={`${style.my_plant_edit_btn}`}
           onClick={handleUpdate}
           disabled={saving}
         >

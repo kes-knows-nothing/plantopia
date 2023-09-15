@@ -83,7 +83,7 @@ const MainPagePlantList = ({
       nicknameFromList: clickedPlant.nickname,
       plantNameFromList: clickedPlant.plantName,
       purchasedDayFromList: clickedPlant.purchasedDay,
-      wateredDayFromList: clickedPlant.wateredDays.at(-1),
+      wateredDayFromList: clickedPlant.wateredDays,
       frequencyFromList: clickedPlant.frequency,
     };
     navigate(`/myplant/${clickedPlant.id}/edit`, { state: dataFromList });

@@ -14,7 +14,7 @@ import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { waterCodeToNumber } from '@/utils/convertDataUtil';
 import { dateToTimestamp, maxDate } from '@/utils/dateUtil';
 
-import { MyPlantForm, UserPlant } from '@/@types/plant.type';
+import { UserPlantForm, UserPlant } from '@/@types/plant.type';
 import {
   handleFileSelect,
   isUserPlantEmpty,
@@ -31,10 +31,9 @@ const MyPlantRegisterPage = () => {
   const [previewImg, setPreviewImg] = useState<string>();
   const [saving, setSaving] = useState(false);
 
-  const { register, handleSubmit, setValue } = useForm<MyPlantForm>();
+  const { register, handleSubmit, setValue } = useForm<UserPlantForm>();
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log(errors);
     for (const fieldName in errors) {
       if (errors[fieldName]?.message) {
         const message = errors[fieldName]?.message as string;
@@ -44,7 +43,7 @@ const MyPlantRegisterPage = () => {
     }
   };
 
-  const onValid = async (data: MyPlantForm) => {
+  const onValid = async (data: UserPlantForm) => {
     setSaving(true);
     if (!user?.email) return;
     const isEmpty = await isUserPlantEmpty(user?.email);
@@ -59,7 +58,6 @@ const MyPlantRegisterPage = () => {
       wateredDays: data.wateredDays ? [dateToTimestamp(data.wateredDays)] : [],
     };
     registerPlantData(newPlantData as UserPlant);
-    console.log('저장됨');
     successNoti('새 식물 등록에 성공하였습니다');
     navigate('/myplant');
   };
@@ -144,7 +142,7 @@ const MyPlantRegisterPage = () => {
             </div>
             <div className="my_plant_info_form">
               <div className="my_plant_name_title required">
-                식물별명<p>(5글자 이내로 설정해주세요)</p>
+                식물 별명<p>(5글자 이내로 설정해주세요)</p>
               </div>
               <input
                 className="my_plant_name"

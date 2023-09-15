@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import './myPlantDetailPage.scss';
@@ -38,7 +37,7 @@ const MyPlantDetailPage = () => {
         nicknameFromDetail: plantDetail?.nickname,
         plantNameFromDetail: plantDetail?.plantName,
         purchasedDayFromDetail: plantDetail?.purchasedDay,
-        wateredDayFromDetail: plantDetail?.wateredDays.at(-1),
+        wateredDayFromDetail: plantDetail?.wateredDays,
         frequencyFromDetail: plantDetail?.frequency,
       },
     });

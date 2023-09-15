@@ -12,7 +12,7 @@ export interface UserPlant {
   wateredDays: InstanceType<typeof Timestamp>[];
 }
 
-export interface MyPlantForm {
+export interface UserPlantForm {
   plantName: string;
   nickname: string;
   frequency: number;

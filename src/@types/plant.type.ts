@@ -13,6 +13,7 @@ export interface UserPlant {
 }
 
 export interface UserPlantForm {
+  imgUrl: FileList;
   plantName: string;
   nickname: string;
   frequency: number;

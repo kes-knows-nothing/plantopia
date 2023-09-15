@@ -10,14 +10,21 @@ import { updatePlantData } from '@/api/userPlant';
 import { errorNoti } from '@/utils/alarmUtil';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { Timestamp } from 'firebase/firestore';
-import { handleFileSelect } from '@/api/userPlant';
+import {
+  handleFileSelect,
+  readFileAsDataURL,
+  cleanFileName,
+} from '@/api/userPlant';
+import { storage } from '@/firebaseApp';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const MyPlantEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { docId } = useParams();
   const [saving, setSaving] = useState(false);
-  const { register, handleSubmit } = useForm<UserPlantForm>();
+  const { register, handleSubmit, watch } = useForm<UserPlantForm>();
+  const imgFile = watch('imgUrl');
 
   const nicknameFromDetail = location.state?.nicknameFromDetail;
   const plantNameFromDetail = location.state?.plantNameFromDetail;
@@ -34,20 +41,9 @@ const MyPlantEditPage = () => {
   const frequencyFromList = location.state?.frequencyFromList;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [imgUrl, setImgUrl] = useState<string>(
+  const [previewImg, setPreviewImg] = useState<string>(
     imgUrlFromDetail || imgUrlFromList,
   );
-  const [previewImg, setPreviewImg] = useState<string>();
-
-  const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const imgUrls = await handleFileSelect(file);
-    if (!imgUrls) return;
-    setPreviewImg(imgUrls?.previewUrl);
-    setImgUrl(imgUrls?.url);
-    event.target.value = '';
-  };
 
   const onInvalid = (errors: FieldErrors) => {
     for (const fieldName in errors) {
@@ -62,6 +58,12 @@ const MyPlantEditPage = () => {
   const onValid = async (data: UserPlantForm) => {
     setSaving(true);
     console.log(data);
+    const file = data.imgUrl[0];
+    const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
+    const imageRef = ref(storage, storagePath);
+    const snapshot = await uploadBytes(imageRef, file);
+    const url = await getDownloadURL(snapshot.ref);
+
     let modifiedWateredDays: InstanceType<typeof Timestamp>[] = [];
 
     if (data.wateredDays) {
@@ -83,7 +85,7 @@ const MyPlantEditPage = () => {
         : [...wateredDayFromList];
     }
     const updatedFields = {
-      imgUrl: imgUrl,
+      imgUrl: url,
       nickname: data.nickname,
       purchasedDay: dateToTimestamp(data.purchasedDay),
       wateredDays: modifiedWateredDays,
@@ -95,8 +97,16 @@ const MyPlantEditPage = () => {
   };
 
   useEffect(() => {
+    const handlePreview = async () => {
+      if (imgFile && imgFile.length > 0) {
+        const file = imgFile[0];
+        const previewUrl = await readFileAsDataURL(file);
+        setPreviewImg(previewUrl);
+      }
+    };
+    handlePreview();
     setIsLoading(false);
-  }, []);
+  }, [imgFile]);
 
   return (
     <div className="layout">
@@ -109,7 +119,7 @@ const MyPlantEditPage = () => {
                 <span>
                   <img
                     className={`${style.main_img}`}
-                    src={imgUrl || previewImg}
+                    src={previewImg}
                     alt="samplePlant1"
                   />
                 </span>
@@ -129,7 +139,7 @@ const MyPlantEditPage = () => {
                     id="photoInput"
                     accept="image/*"
                     type="file"
-                    onChange={handleImg}
+                    {...register('imgUrl')}
                   />
                 </div>
                 <div className={`${style.my_plant_input_box}`}>
@@ -202,10 +212,6 @@ const MyPlantEditPage = () => {
                   className="date_selector"
                   {...register('wateredDays')}
                   max={maxDate()}
-                  defaultValue={secondsToDate(
-                    wateredDayFromDetail.at(-1)?.seconds ||
-                      wateredDayFromList.at(-1)?.seconds,
-                  )}
                 />
               </div>
             </div>

@@ -154,12 +154,12 @@ export const registerPlantData = async (newPlantData: UserPlant) => {
   return;
 };
 
-const cleanFileName = (fileName: string) => {
+export const cleanFileName = (fileName: string) => {
   const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
   return cleanedName;
 };
 
-const readFileAsDataURL = (file: File) => {
+export const readFileAsDataURL = (file: File) => {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = e => resolve(e.target?.result as string);

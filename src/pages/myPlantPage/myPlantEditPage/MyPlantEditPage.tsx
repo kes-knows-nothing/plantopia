@@ -11,7 +11,7 @@ import { errorNoti } from '@/utils/alarmUtil';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { Timestamp } from 'firebase/firestore';
 import {
-  handleFileSelect,
+  getStoreImgUrl,
   readFileAsDataURL,
   cleanFileName,
 } from '@/api/userPlant';
@@ -25,7 +25,7 @@ const MyPlantEditPage = () => {
   const [saving, setSaving] = useState(false);
   const { register, handleSubmit, watch } = useForm<UserPlantForm>();
   const imgFile = watch('imgUrl');
-
+  console.log(imgFile);
   const nicknameFromDetail = location.state?.nicknameFromDetail;
   const plantNameFromDetail = location.state?.plantNameFromDetail;
   const purchasedDayFromDetail = location.state?.purchasedDayFromDetail;
@@ -57,15 +57,9 @@ const MyPlantEditPage = () => {
 
   const onValid = async (data: UserPlantForm) => {
     setSaving(true);
-    console.log(data);
-    const file = data.imgUrl[0];
-    const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
-    const imageRef = ref(storage, storagePath);
-    const snapshot = await uploadBytes(imageRef, file);
-    const url = await getDownloadURL(snapshot.ref);
-
+    console.log(data.imgUrl);
     let modifiedWateredDays: InstanceType<typeof Timestamp>[] = [];
-
+    let imgUrl = '';
     if (data.wateredDays) {
       if (wateredDayFromDetail || wateredDayFromList) {
         modifiedWateredDays = wateredDayFromDetail
@@ -84,8 +78,11 @@ const MyPlantEditPage = () => {
         ? [...wateredDayFromDetail]
         : [...wateredDayFromList];
     }
+    if (imgFile) {
+      imgUrl = await getStoreImgUrl(data.imgUrl[0]);
+    }
     const updatedFields = {
-      imgUrl: url,
+      imgUrl: imgUrl || imgUrlFromDetail || imgUrlFromList,
       nickname: data.nickname,
       purchasedDay: dateToTimestamp(data.purchasedDay),
       wateredDays: modifiedWateredDays,

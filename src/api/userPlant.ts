@@ -180,3 +180,16 @@ export const handleFileSelect = async (file: File) => {
     console.error('파일 업로드 에러:', error);
   }
 };
+
+export const getStoreImgUrl = async (file: File): Promise<string> => {
+  try {
+    const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
+    const imageRef = ref(storage, storagePath);
+    const snapshot = await uploadBytes(imageRef, file);
+    const url = await getDownloadURL(snapshot.ref);
+    return url;
+  } catch (error) {
+    console.error('파일 업로드 에러:', error);
+    return '';
+  }
+};

@@ -57,7 +57,7 @@ const DictDetailPage = () => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/myplant/register2', {
+    navigate('/myplant/register', {
       state: {
         name: plantData.name,
         image: plantData.imageUrl,

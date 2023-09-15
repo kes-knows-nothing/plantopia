@@ -19,7 +19,6 @@ import {
 } from '@/api/userPlant';
 
 const MyPlantDetailPage = () => {
-  const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -46,8 +45,8 @@ const MyPlantDetailPage = () => {
   };
 
   const deletePlant = async () => {
-    if (docId && user?.email) {
-      deletePlantDataByDocId(docId, user.email);
+    if (docId) {
+      await deletePlantDataByDocId(docId);
     }
     navigate('/myplant');
   };

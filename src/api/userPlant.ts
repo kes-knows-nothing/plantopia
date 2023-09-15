@@ -14,6 +14,7 @@ import {
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { successNoti, errorNoti } from '@/utils/alarmUtil';
 import { UserPlant } from '@/@types/plant.type';
+
 export const getPlantList = async (userEmail: string): Promise<UserPlant[]> => {
   const plantsRef = collection(db, 'plant');
   const q = query(plantsRef, where('userEmail', '==', userEmail));
@@ -25,7 +26,7 @@ export const getPlantList = async (userEmail: string): Promise<UserPlant[]> => {
       ...(doc.data() as Omit<UserPlant, 'id'>),
     };
   });
-
+  console.log('리스트 받아옴');
   return plantList;
 };
 
@@ -84,28 +85,28 @@ export const findPlantDataByDocId = async (docId: string) => {
   }
 };
 
-export const deletePlantDataByDocId = async (
-  docId: string,
-  userEmail: string,
-) => {
+export const deletePlantDataByDocId = async (docId: string) => {
   if (!docId) return;
   // 삭제할 plantData를 먼저 찾고
   const docRef = doc(db, 'plant', docId);
   const plantData = await findPlantDataByDocId(docId);
 
   // 유저 이메일로 데이터를 받아서 사이즈를 확인해야함, 사이즈가 1이면 그냥 바로 삭제.
-  const q = query(collection(db, 'plant'), where('userEmail', '==', userEmail));
+  const q = query(
+    collection(db, 'plant'),
+    where('userEmail', '==', plantData?.userEmail),
+  );
   const userPlants = await getDocs(q);
 
   // 유저가 가지고 있는 plant가 하나인 경우 바로 삭제
-  if (userPlants.size == 1) {
+  if (userPlants.size === 1) {
     await deleteDoc(docRef);
     successNoti('식물을 삭제하였습니다.');
     return;
   }
 
   // id로 찾은 식물 데이터가 메인이니? 삭제하고 유저 데이터의 첫 번째 식물을 메인으로 등록
-  if (plantData?.isMain && userPlants.size >= 2) {
+  if (plantData?.isMain == true) {
     try {
       await deleteDoc(docRef);
       const firstPlantDataId = userPlants.docs[0].id;
@@ -114,6 +115,7 @@ export const deletePlantDataByDocId = async (
         isMain: true,
       };
       await updateDoc(documentRef, updatedFields);
+      console.log('메인에서 삭제됨');
       successNoti('식물을 삭제하였습니다.');
       return;
     } catch {
@@ -122,9 +124,10 @@ export const deletePlantDataByDocId = async (
     }
   }
   // 메인이 아니라면 바로 삭제
-  else if (!plantData?.isMain && userPlants.size >= 2) {
+  else if (plantData?.isMain == false) {
     try {
       await deleteDoc(docRef);
+      console.log('메인 아님에서 삭제됨');
       successNoti('내 식물이 삭제 되었습니다.');
       return;
     } catch (error) {

@@ -170,7 +170,18 @@
       font-size: 1.2rem;
       color: #22264c;
       margin-top: 3rem;
+      display: flex;
       margin-bottom: 0.8rem;
+    
+
+      > span {
+        padding-left: 0.5rem;
+        font-weight: 400;
+        size: 1.2rem;
+        color: #9b9fb1;
+        display: flex;
+        align-items: center;
+      }
     }
 
     > .my_plant_register_calender_value {
@@ -192,8 +203,6 @@
       }
     }
   }
-
-  
 
   .photo_input {
     display: none;

@@ -43,7 +43,6 @@ const MainPagePlantList = ({
       if (plantData.length == 0) return;
       plantData.sort(compare);
       setMyPlantData(plantData);
-      console.log('리스트:' + myPlantData);
       setPlantCount(plantData.length);
     } catch {
       errorNoti('유저 식물 데이터를 불러오지 못 했습니다.');

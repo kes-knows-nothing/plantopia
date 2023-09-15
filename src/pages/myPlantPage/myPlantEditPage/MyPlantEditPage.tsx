@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebaseApp';
 import style from './myPlantEditPage.module.scss';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
@@ -12,6 +10,7 @@ import { updatePlantData } from '@/api/userPlant';
 import { errorNoti } from '@/utils/alarmUtil';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { Timestamp } from 'firebase/firestore';
+import { handleFileSelect } from '@/api/userPlant';
 
 const MyPlantEditPage = () => {
   const navigate = useNavigate();
@@ -33,43 +32,20 @@ const MyPlantEditPage = () => {
   const nicknameFromList = location.state?.nicknameFromList;
   const wateredDayFromList = location.state?.wateredDayFromList;
   const frequencyFromList = location.state?.frequencyFromList;
-  console.log(location.state);
+
   const [isLoading, setIsLoading] = useState(true);
   const [imgUrl, setImgUrl] = useState<string>(
     imgUrlFromDetail || imgUrlFromList,
   );
   const [previewImg, setPreviewImg] = useState<string>();
 
-  const cleanFileName = (fileName: string) => {
-    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
-    return cleanedName;
-  };
-
-  const readFileAsDataURL = (file: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target?.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    try {
-      const previewUrl = await readFileAsDataURL(file);
-      setPreviewImg(previewUrl);
-      const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
-      const imageRef = ref(storage, storagePath);
-      const snapshot = await uploadBytes(imageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      setImgUrl(url);
-    } catch (error) {
-      return;
-    }
+    const imgUrls = await handleFileSelect(file);
+    if (!imgUrls) return;
+    setPreviewImg(imgUrls?.previewUrl);
+    setImgUrl(imgUrls?.url);
     event.target.value = '';
   };
 
@@ -85,7 +61,7 @@ const MyPlantEditPage = () => {
 
   const onValid = async (data: UserPlantForm) => {
     setSaving(true);
-
+    console.log(data);
     let modifiedWateredDays: InstanceType<typeof Timestamp>[] = [];
 
     if (data.wateredDays) {
@@ -153,7 +129,7 @@ const MyPlantEditPage = () => {
                     id="photoInput"
                     accept="image/*"
                     type="file"
-                    onChange={handleFileSelect}
+                    onChange={handleImg}
                   />
                 </div>
                 <div className={`${style.my_plant_input_box}`}>

@@ -1,27 +1,31 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks';
-import { storage } from '@/firebaseApp';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import './myPlantRegisterPage.scss';
+
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks';
+import { useForm, FieldErrors } from 'react-hook-form';
+
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { waterCodeToNumber } from '@/utils/convertDataUtil';
 import { dateToTimestamp, maxDate } from '@/utils/dateUtil';
-import { useForm, FieldErrors } from 'react-hook-form';
+
 import { MyPlantForm, UserPlant } from '@/@types/plant.type';
-import { isUserPlantEmpty, registerPlantData } from '@/api/userPlant';
+import {
+  handleFileSelect,
+  isUserPlantEmpty,
+  registerPlantData,
+} from '@/api/userPlant';
 
 const MyPlantRegisterPage2 = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const name = location.state?.name;
-  const image = location.state?.image;
-  const waterCode = location.state?.waterCode;
+  const { name, image, waterCode } = location.state || {};
 
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
@@ -65,49 +69,22 @@ const MyPlantRegisterPage2 = () => {
     });
   };
 
-  // 이미지 저장 로직
-  const cleanFileName = (fileName: string) => {
-    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
-    return cleanedName;
-  };
-
-  const readFileAsDataURL = (file: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target?.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
-    try {
-      const previewUrl = await readFileAsDataURL(file);
-      setPreviewImg(previewUrl);
-      const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
-      const imageRef = ref(storage, storagePath);
-      const snapshot = await uploadBytes(imageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      setImgUrl(url);
-    } catch (error) {
-      console.error('파일 업로드 에러:', error);
-    }
+    const imgUrls = await handleFileSelect(file);
+    if (!imgUrls) return;
+    setPreviewImg(imgUrls?.previewUrl);
+    setImgUrl(imgUrls?.url);
     event.target.value = '';
   };
-
-  // 이미지 저장 로직
 
   useEffect(() => {
     if (name) {
       setValue('plantName', name);
     }
     const frequencyValue = waterCodeToNumber(waterCode);
-    if (frequencyValue !== undefined && frequencyValue !== null) {
+    if (frequencyValue !== undefined) {
       setValue('frequency', frequencyValue);
     }
   }, [name, setValue, waterCode]);
@@ -140,7 +117,7 @@ const MyPlantRegisterPage2 = () => {
                     id="photoInput"
                     accept="image/*"
                     type="file"
-                    onChange={handleFileSelect}
+                    onChange={handleImg}
                   />
                 </div>
               </div>

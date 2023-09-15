@@ -1,5 +1,4 @@
-import { UserPlant } from '@/@types/plant.type';
-import { db } from '@/firebaseApp';
+import { db, storage } from '@/firebaseApp';
 import {
   collection,
   doc,
@@ -12,8 +11,9 @@ import {
   deleteDoc,
   addDoc,
 } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { successNoti, errorNoti } from '@/utils/alarmUtil';
-
+import { UserPlant } from '@/@types/plant.type';
 export const getPlantList = async (userEmail: string): Promise<UserPlant[]> => {
   const plantsRef = collection(db, 'plant');
   const q = query(plantsRef, where('userEmail', '==', userEmail));
@@ -145,7 +145,6 @@ export const findPlantDataWithDictData = async (docId: string) => {
   const plantDataFromDict = queryPlantData.docs.map(doc => ({
     ...doc.data(),
   }))[0];
-  console.log({ plantDataByDocId, plantDataFromDict });
   return { plantDataByDocId, plantDataFromDict };
 };
 
@@ -159,4 +158,31 @@ export const isUserPlantEmpty = async (userEmail: string): Promise<boolean> => {
 export const registerPlantData = async (newPlantData: UserPlant) => {
   await addDoc(collection(db, 'plant'), newPlantData);
   return;
+};
+
+const cleanFileName = (fileName: string) => {
+  const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
+  return cleanedName;
+};
+
+const readFileAsDataURL = (file: File) => {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target?.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+export const handleFileSelect = async (file: File) => {
+  try {
+    const previewUrl = await readFileAsDataURL(file);
+    const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
+    const imageRef = ref(storage, storagePath);
+    const snapshot = await uploadBytes(imageRef, file);
+    const url = await getDownloadURL(snapshot.ref);
+    return { previewUrl, url };
+  } catch (error) {
+    console.error('파일 업로드 에러:', error);
+  }
 };

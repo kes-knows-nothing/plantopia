@@ -1,17 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks';
-import { db } from '@/firebaseApp';
-import {
-  doc,
-  getDoc,
-  getDocs,
-  collection,
-  where,
-  query,
-  deleteDoc,
-  updateDoc,
-} from 'firebase/firestore';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import './myPlantDetailPage.scss';
@@ -21,12 +9,15 @@ import sunOff from '@/assets/images/icons/sun_off_icon.png';
 import waterOn from '@/assets/images/icons/water_on_icon.png';
 import waterOff from '@/assets/images/icons/water_off_icon.png';
 import { monthDifference, secondsToDate } from '@/utils/dateUtil';
-import { showAlert, successNoti } from '@/utils/alarmUtil';
+import { showAlert } from '@/utils/alarmUtil';
 import { PlantType } from '@/@types/dictionary.type';
 import { UserPlant } from '@/@types/plant.type';
+import {
+  deletePlantDataByDocId,
+  findPlantDataWithDictData,
+} from '@/api/userPlant';
 
 const MyPlantDetailPage = () => {
-  const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -46,72 +37,31 @@ const MyPlantDetailPage = () => {
         nicknameFromDetail: plantDetail?.nickname,
         plantNameFromDetail: plantDetail?.plantName,
         purchasedDayFromDetail: plantDetail?.purchasedDay,
-        wateredDayFromDetail: plantDetail?.wateredDays.at(-1),
+        wateredDayFromDetail: plantDetail?.wateredDays,
         frequencyFromDetail: plantDetail?.frequency,
       },
     });
   };
 
   const deletePlant = async () => {
-    if (plantDetail) {
-      if (!docId) return;
-      const docRef = doc(db, 'plant', docId);
-      const documentSnapshot = await getDoc(docRef);
-      const dataBeforeDeletion = documentSnapshot.data();
-      const q = query(
-        collection(db, 'plant'),
-        where('userEmail', '==', user?.email),
-      );
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.size == 1) {
-        await deleteDoc(docRef);
-        navigate('/myplant');
-        successNoti('내 식물이 삭제 되었습니다.');
-        return;
-      }
-      if (dataBeforeDeletion?.isMain) {
-        await deleteDoc(docRef);
-        const firstDocumentid = querySnapshot.docs[0].id;
-        const documentRef = doc(db, 'plant', firstDocumentid);
-        const updatedFields = {
-          isMain: true,
-        };
-        await updateDoc(documentRef, updatedFields);
-        navigate('/myplant');
-        successNoti('내 식물을 삭제 하였습니다.');
-        return;
-      } else {
-        try {
-          await deleteDoc(docRef);
-          navigate('/myplant');
-          successNoti('내 식물이 삭제 되었습니다.');
-        } catch (error) {
-          return;
-        }
-      }
+    if (docId) {
+      await deletePlantDataByDocId(docId);
     }
+    navigate('/myplant');
   };
 
   useEffect(() => {
-    const getData = async () => {
-      if (!docId) return;
-      const docRef = doc(db, 'plant', docId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setPlantDetail(docSnap.data() as UserPlant);
-        const q = query(
-          collection(db, 'dictionary'),
-          where('name', '==', docSnap.data().plantName),
-        );
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(doc => {
-          setPlantDictDetail(doc.data() as PlantType);
-        });
-      } else {
-        return;
+    const setPlantData = async (docId: string) => {
+      if (docId) {
+        const { plantDataByDocId, plantDataFromDict } =
+          await findPlantDataWithDictData(docId);
+        setPlantDetail(plantDataByDocId as UserPlant);
+        setPlantDictDetail(plantDataFromDict as PlantType);
       }
     };
-    getData();
+    if (docId) {
+      setPlantData(docId);
+    }
     setIsLoading(false);
   }, [docId]);
 
@@ -165,11 +115,13 @@ const MyPlantDetailPage = () => {
               </div>
               <div className="last_watering_info">
                 <span>마지막 물준 날</span>
-                <span>
-                  {secondsToDate(
-                    plantDetail?.wateredDays?.at(-1)?.seconds || 0,
-                  )}
-                </span>
+                {plantDetail?.wateredDays ? (
+                  <span>
+                    {secondsToDate(plantDetail?.wateredDays?.at(-1)?.seconds)}
+                  </span>
+                ) : (
+                  <span>아직 물을 주지 않았어요</span>
+                )}
               </div>
               <div className="first_day_info">
                 <span>처음 함께한 날</span>

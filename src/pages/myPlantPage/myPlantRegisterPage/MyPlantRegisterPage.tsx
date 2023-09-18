@@ -1,36 +1,65 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks';
-import { storage, db } from '@/firebaseApp';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, query, getDocs, where } from 'firebase/firestore';
 import './myPlantRegisterPage.scss';
+
 import samplePlant1 from '@/assets/images/icons/sample_plant1.png';
 import myPlantImgEditIcon from '@/assets/images/icons/solar_pen-bold.png';
 import inputGlass from '@/assets/images/icons/my_plant_input_glass.png';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
+
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks';
+import { useForm, FieldErrors } from 'react-hook-form';
+
 import { errorNoti, successNoti } from '@/utils/alarmUtil';
 import { waterCodeToNumber } from '@/utils/convertDataUtil';
 import { dateToTimestamp, maxDate } from '@/utils/dateUtil';
+
+import { UserPlantForm, UserPlant } from '@/@types/plant.type';
+import {
+  handleFileSelect,
+  isUserPlantEmpty,
+  registerPlantData,
+} from '@/api/userPlant';
 
 const MyPlantRegisterPage = () => {
   const user = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const name = location.state?.name;
-  const image = location.state?.image;
-  const waterCode = location.state?.waterCode;
-  const [searchInputValue, setSearchInputValue] = useState(name);
-  const [plantName, setPlantName] = useState<string>('');
-  const [purchasedDay, setPurchasedDay] = useState<string>('');
-  const [wateredDays, setWateredDays] = useState<string>('');
-  const [frequency, setFrequency] = useState(waterCodeToNumber(waterCode));
+  const { name, image, waterCode } = location.state || {};
+
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [previewImg, setPreviewImg] = useState<string>();
   const [saving, setSaving] = useState(false);
 
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(e.target.value);
+  const { register, handleSubmit, setValue } = useForm<UserPlantForm>();
+
+  const onInvalid = (errors: FieldErrors) => {
+    for (const fieldName in errors) {
+      if (errors[fieldName]?.message) {
+        const message = errors[fieldName]?.message as string;
+        errorNoti(message);
+        return;
+      }
+    }
+  };
+
+  const onValid = async (data: UserPlantForm) => {
+    setSaving(true);
+    if (!user?.email) return;
+    const isEmpty = await isUserPlantEmpty(user?.email);
+    const newPlantData = {
+      frequency: data.frequency,
+      imgUrl: imgUrl || image,
+      isMain: isEmpty ? true : false,
+      nickname: data.nickname,
+      plantName: data.plantName,
+      purchasedDay: dateToTimestamp(data.purchasedDay),
+      userEmail: user?.email,
+      wateredDays: data.wateredDays ? [dateToTimestamp(data.wateredDays)] : [],
+    };
+    registerPlantData(newPlantData as UserPlant);
+    successNoti('새 식물 등록에 성공하였습니다');
+    navigate('/myplant');
   };
 
   const navigateSearch = () => {
@@ -39,103 +68,31 @@ const MyPlantRegisterPage = () => {
     });
   };
 
-  const plantNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlantName(e.target.value);
-  };
-
-  const handleFrequency = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFrequency(Number(e.target.value));
-  };
-
-  const purchasedDayHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPurchasedDay(e.target.value);
-  };
-  const wateredDaysHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWateredDays(e.target.value);
-  };
-
-  // 이미지 저장 로직
-  const cleanFileName = (fileName: string) => {
-    const cleanedName = fileName.replace(/[^\w\s.-]/gi, '');
-    return cleanedName;
-  };
-
-  const readFileAsDataURL = (file: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target?.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
-    try {
-      const previewUrl = await readFileAsDataURL(file);
-      setPreviewImg(previewUrl);
-      const storagePath = `myplant_imgs/${cleanFileName(file.name)}`;
-      const imageRef = ref(storage, storagePath);
-      const snapshot = await uploadBytes(imageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      setImgUrl(url);
-    } catch (error) {
-      console.error('파일 업로드 에러:', error);
-    }
+    const imgUrls = await handleFileSelect(file);
+    if (!imgUrls) return;
+    setPreviewImg(imgUrls?.previewUrl);
+    setImgUrl(imgUrls?.url);
     event.target.value = '';
   };
 
-  // 이미지 저장 로직
+  useEffect(() => {
+    if (name) {
+      setValue('plantName', name);
+    }
+    const frequencyValue = waterCodeToNumber(waterCode);
+    if (frequencyValue !== undefined) {
+      setValue('frequency', frequencyValue);
+    }
+  }, [name, setValue, waterCode]);
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    if (!searchInputValue) {
-      errorNoti('식물을 지정해주세요.');
-      return;
-    }
-    if (!plantName) {
-      errorNoti('식물 닉네임을 설정해주세요.');
-      return;
-    }
-    if (!frequency) {
-      errorNoti('식물의 물 주기를 설정해주세요.');
-      return;
-    }
-    if (!purchasedDay) {
-      errorNoti('식물과 함께한 날을 지정해주세요.');
-      return;
-    }
-
-    const q = query(
-      collection(db, 'plant'),
-      where('userEmail', '==', user?.email),
-    );
-    const querySnapshot = await getDocs(q);
-    const isEmpty = querySnapshot.empty;
-    const newPlantData = {
-      frequency: waterCodeToNumber(waterCode),
-      imgUrl: imgUrl || image,
-      isMain: isEmpty ? true : false,
-      nickname: plantName,
-      plantName: searchInputValue,
-      purchasedDay: dateToTimestamp(purchasedDay),
-      userEmail: user?.email,
-      wateredDays: wateredDays ? [dateToTimestamp(wateredDays)] : [],
-    };
-    await addDoc(collection(db, 'plant'), newPlantData);
-    successNoti('새 식물 등록에 성공하였습니다');
-    navigate('/myplant');
-  };
   return (
     <div className="layout">
       <HeaderBefore ex={true} title="식물 등록" />
       <main>
-        <form action="" onSubmit={handleRegister}>
+        <form action="" onSubmit={handleSubmit(onValid, onInvalid)}>
           <div className="my_plant_registeration_container">
             <div className="my_plant_register_img_box">
               <div className="img_wrapper">
@@ -159,7 +116,7 @@ const MyPlantRegisterPage = () => {
                     id="photoInput"
                     accept="image/*"
                     type="file"
-                    onChange={handleFileSelect}
+                    onChange={handleImg}
                   />
                 </div>
               </div>
@@ -171,8 +128,9 @@ const MyPlantRegisterPage = () => {
                   className="my_plant_input"
                   type="text"
                   placeholder="클릭하여 식물 이름을 검색해보세요."
-                  value={searchInputValue}
-                  onChange={handleSearchInput}
+                  {...register('plantName', {
+                    required: '식물 선택은 필수입니다!',
+                  })}
                   readOnly
                 />
                 <img
@@ -184,15 +142,18 @@ const MyPlantRegisterPage = () => {
             </div>
             <div className="my_plant_info_form">
               <div className="my_plant_name_title required">
-                식물별명<p>(5글자 이내로 설정해주세요)</p>
+                식물 별명<p>(5글자 이내로 설정해주세요)</p>
               </div>
               <input
                 className="my_plant_name"
-                maxLength={5}
-                value={plantName}
-                onChange={plantNameHandler}
+                {...register('nickname', {
+                  required: '식물 이름을 지정해주세요!',
+                  maxLength: {
+                    value: 5,
+                    message: '5글자 이내로 지정해주세요!',
+                  },
+                })}
               />
-
               <div className="watering_frequency required">
                 물 주는 날<p>(주변 환경에 맞게 조절해주세요)</p>
               </div>
@@ -200,10 +161,11 @@ const MyPlantRegisterPage = () => {
                 <input
                   type="number"
                   className="watering_frequency_input"
-                  value={frequency}
-                  onChange={handleFrequency}
-                  min={1}
-                  max={60}
+                  {...register('frequency', {
+                    required: '물 주기를 설정해주세요!',
+                    max: { value: 20, message: '1에서 20사이로 설정해주세요.' },
+                    min: { value: 1, message: '1에서 20사이로 설정해주세요.' },
+                  })}
                 />
 
                 <p className="watering_frequency_info">일에 한 번</p>
@@ -218,8 +180,9 @@ const MyPlantRegisterPage = () => {
                 <input
                   className="date_selector"
                   type="date"
-                  value={purchasedDay}
-                  onChange={purchasedDayHandler}
+                  {...register('purchasedDay', {
+                    required: '처음 함께한 날을 설정해주세요!',
+                  })}
                   max={maxDate()}
                 />
               </div>
@@ -230,8 +193,7 @@ const MyPlantRegisterPage = () => {
                 <input
                   type="date"
                   className="date_selector"
-                  value={wateredDays}
-                  onChange={wateredDaysHandler}
+                  {...register('wateredDays')}
                   max={maxDate()}
                 />
               </div>

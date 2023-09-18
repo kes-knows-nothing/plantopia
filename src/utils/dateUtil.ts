@@ -3,10 +3,14 @@ import { Timestamp } from 'firebase/firestore';
 import format from 'date-fns/format';
 import differenceInMonths from 'date-fns/differenceInMonths';
 
-export const secondsToDate = (seconds: number) => {
-  const date = new Date(seconds * 1000);
-  const formattedDate = format(date, 'yyyy-MM-dd');
-  return formattedDate;
+export const secondsToDate = (seconds = 0) => {
+  if (seconds) {
+    const date = new Date(seconds * 1000);
+    const formattedDate = format(date, 'yyyy-MM-dd');
+    return formattedDate;
+  } else {
+    return '물을 주세요!';
+  }
 };
 
 export const dateToTimestamp = (dateString: string) => {

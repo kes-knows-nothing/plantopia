@@ -105,6 +105,7 @@ export const deletePlantDataByDocId = async (docId: string) => {
     try {
       await deleteDoc(docRef);
       const firstPlantDataId = userPlants.docs[0].id;
+      console.log(firstPlantDataId);
       const documentRef = doc(db, 'plant', firstPlantDataId);
       const updatedFields = {
         isMain: true,

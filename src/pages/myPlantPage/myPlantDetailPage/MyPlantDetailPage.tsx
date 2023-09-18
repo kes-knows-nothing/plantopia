@@ -115,11 +115,13 @@ const MyPlantDetailPage = () => {
               </div>
               <div className="last_watering_info">
                 <span>마지막 물준 날</span>
-                <span>
-                  {secondsToDate(
-                    plantDetail?.wateredDays?.at(-1)?.seconds || 0,
-                  )}
-                </span>
+                {plantDetail?.wateredDays ? (
+                  <span>
+                    {secondsToDate(plantDetail?.wateredDays?.at(-1)?.seconds)}
+                  </span>
+                ) : (
+                  <span>아직 물을 주지 않았어요</span>
+                )}
               </div>
               <div className="first_day_info">
                 <span>처음 함께한 날</span>

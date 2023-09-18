@@ -11,3 +11,12 @@ export interface UserPlant {
   userEmail: string;
   wateredDays: InstanceType<typeof Timestamp>[];
 }
+
+export interface UserPlantForm {
+  imgUrl: FileList;
+  plantName: string;
+  nickname: string;
+  frequency: number;
+  purchasedDay: string;
+  wateredDays?: string;
+}

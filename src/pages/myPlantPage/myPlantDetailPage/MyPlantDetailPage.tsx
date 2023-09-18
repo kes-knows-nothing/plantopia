@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks';
 import HeaderBefore from '@/components/headerBefore/HeaderBefore';
 import Progress from '@/components/progress/Progress';
 import './myPlantDetailPage.scss';
@@ -19,7 +18,6 @@ import {
 } from '@/api/userPlant';
 
 const MyPlantDetailPage = () => {
-  const user = useAuth();
   const navigate = useNavigate();
   const { docId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -39,15 +37,15 @@ const MyPlantDetailPage = () => {
         nicknameFromDetail: plantDetail?.nickname,
         plantNameFromDetail: plantDetail?.plantName,
         purchasedDayFromDetail: plantDetail?.purchasedDay,
-        wateredDayFromDetail: plantDetail?.wateredDays.at(-1),
+        wateredDayFromDetail: plantDetail?.wateredDays,
         frequencyFromDetail: plantDetail?.frequency,
       },
     });
   };
 
   const deletePlant = async () => {
-    if (docId && user?.email) {
-      deletePlantDataByDocId(docId, user.email);
+    if (docId) {
+      await deletePlantDataByDocId(docId);
     }
     navigate('/myplant');
   };
@@ -117,11 +115,13 @@ const MyPlantDetailPage = () => {
               </div>
               <div className="last_watering_info">
                 <span>마지막 물준 날</span>
-                <span>
-                  {secondsToDate(
-                    plantDetail?.wateredDays?.at(-1)?.seconds || 0,
-                  )}
-                </span>
+                {plantDetail?.wateredDays ? (
+                  <span>
+                    {secondsToDate(plantDetail?.wateredDays?.at(-1)?.seconds)}
+                  </span>
+                ) : (
+                  <span>아직 물을 주지 않았어요</span>
+                )}
               </div>
               <div className="first_day_info">
                 <span>처음 함께한 날</span>
